@@ -4,4 +4,10 @@ __pycache__/
 # File
 *.csv
 *.db
-DISADVNTAGES MEHROTRA.pdf
+Thesis.aux
+Thesis.log
+Thesis.pdf
+Thesis.synctex.gz
+Thesis.toc
+Thesis_SR.sas
+Thesis_SR_preamble.sas
