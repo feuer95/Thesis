@@ -1,0 +1,771 @@
+\documentclass[a4paper,10 pt,titlepage,twoside]{book}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\geometry{a4paper,top=3cm,bottom=3cm,left=3.5cm,right=3.5cm,heightrounded,bindingoffset=5mm}
+\usepackage{booktabs}
+\usepackage{color}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{statrep}
+\usepackage{emptypage}
+\usepackage{newlfont}
+
+\newcommand{\numberset}{\mathbb}
+\newcommand{\N}{\numberset{N}}\usepackage{amsmath}
+\newcommand{\Z}{\numberset{Z}}
+\newcommand{\R}{\numberset{R}}
+\newcommand{\Q}{\numberset{Q}}
+\newcommand{\K}{\numberset{K}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\n}{\mathcal{N}}
+
+\DeclareMathOperator{\ord}{ord}
+
+%aggiunto da me
+\theoremstyle{plain} 
+\newtheorem{thm}{Theorem}[chapter] 
+\newtheorem{cor}[thm]{Corollario} 
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposizione} 
+\newtheorem*{theorem*}{Theorem}
+
+
+\theoremstyle{definition} 
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{ex}[thm]{Example}
+\newtheorem{propr}{Proprietà}
+
+\theoremstyle{remark} 
+\newtheorem{oss}[thm]{Osservazione} 
+
+
+%per gli spazi:
+\usepackage{setspace}
+\singlespacing
+
+
+%\renewcommand{\rmdefault}{phv} % Arial
+%\renewcommand{\sfdefault}{phv} % Arial
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\theoremstyle{definition}
+%\newtheorem{definizione}{Definizione}
+
+%\theoremstyle{plain}
+%\newtheorem{teorema}{Teorema}
+
+%\linespread{1.525}\selectfont
+
+\begin{document}
+\thispagestyle{empty}
+
+\centerline {\huge{\textsc{Università degli Studi di Torino}}}
+\vskip 27 pt
+
+\centerline {\Large{\textsc{Dipartimento di Matematica Giuseppe Peano}}}
+
+\vskip 20 pt
+
+\centerline {\Large{\textsc{Scuola di Scienze della Natura}}}
+
+\vskip 20 pt
+
+\centerline {\Large{\textsc{Corso di Laurea Magistrale in Matematica}}}
+
+
+\vskip 60 pt
+
+
+
+
+
+%\begin{tabular}{ccc}
+\centerline {\includegraphics[width=7cm]{logo.jpg}}
+%\end{tabular}
+\vskip 1.2cm
+\centerline {\normalsize {Tesi Magistrale}} 
+
+\vskip 0.7cm
+
+\centerline {\Large {\bf Title}}
+
+\vskip 1.7cm
+
+\noindent Thesis supervisor: Prof.ssa Paola Lamberti
+\hfill  {Candidate: Elena Scotto }\\
+
+
+
+
+
+\vskip 2.7cm
+
+
+\centerline{2018/2019}
+
+\tableofcontents
+
+% 
+%
+% CAPITOLO 0
+%\chapter{Introdution}
+%\addcontentsline{toc}{chapter}{Introdution to the linear programming}  % se non si vuole numerare l'introduzione, ma farla comparire nell'indice
+\chapter{Introduction to the linear programming}
+Optimization is a fundamental tool for understanding nature, science, engineering, economics and mathematics: a large number of real world problems can be treated as optimization problems, in which the goal is to select values that maximize or minimize a given \textit{objective function}, subject to certain \textit{constraints}.\\ The process of identifying objective, variables and constrains for a given problem is knows as \textit{modeling}. Construction of an appropriate model is the first step and, once it is formulated, an optimization algorithm can be used to find its solution. There is a collection of algorithms, each of them is tailored to a particular type of optimization problem. Linear Programming problem (LP) remains one of the most well-studied optimization problems: it consists in maximizing or minimizing a linear function over a certain domain, defined by a set of linear constraints.\\
+Linear programming has been dominant paradigm in optimization since Dantzig's development of the simplex method in the 1940s. Regarding the theoretical complexity of this method, it has proved that the expected number of iterations in the solution of a linear problem is polynomial. Furthermore, the worst case complexity has exponential behavior. It has been observed that the simplex algorithm performs sufficiently well in practice, especially on small or medium sized LPs, but its performance is not satisfactory in large-scale LPs. This weakness of simplex algorithm due to the stalling and cycling problem.\\
+Many anti-cycling pivoting rules have been introduced in the past.
+Since Dantzig’s initial contribution, researchers have made many efforts in order to enhance the performance of simplex algorithm. In the 1980s the monopoly of the simplex algorithm in the solution of the LP has been challenged. Interior Point Methods (IPM) were the result of subsequent research and their performance has been more than satisfactory compared to the simplex algorithm. The main idea of IPMs is that the computation of the optimal solution can be achieved by moving inside the feasible region, defined by the constraints. The next research step was the attempt to combine the simplex algorithm and IPMs in order to enhance the computational behavior of software packages~\cite{2}. Consequently, researchers concluded that the most effective type of algorithms, in computational terms, were the primal-dual algorithms based on IPM and simplex method. %
+%Beyond this, in the 1990s a totally different approach arose; namely Exterior Point Simplex Algorithm (EPSA).\\
+The thesis consists in a introductory section of this two important methods and perform a comparison of the theoretical results, through an analysis of the solutions calculated with Python codes. With computational experiments it will be illustrated my conclusions...
+
+(\textit{Questa e` l'introduzione in cui manca la presentazione dell'obiettivo della tesi})
+%
+% CAPITOLO 1
+\chapter{Basic theory}
+
+In this first chapter it is presented the standard formulations of a linear program and it is given a brief overview of the theory. 
+\section{First definitions}
+A linear programs have a linear objective function and linear constraints that consist of equalities and inequalities.\\
+The feasible set satisfying the constraints is a polytope, a convex and connected set with polygonal faces. We say that the linear program is \textit{infeasible} if the feasible set is empty and \textit{unbounded} if the objective function is unbounded below on the feasible region.\\
+In general, any linear program can be formulated in the following \textit{standard form}:
+\begin{alignat*}{1}\label{eq:stdform}
+\text{minimize\;}\; &c_1 x_1 + c_2 x_2+ ... c_m x_m\\[2mm]
+\text{subject\;to\;} &a_{11} x_1 + a_{12} x_2+ ... +a_{1m}x_m = b_1\\
+&a_{21} x_1 + a_{22} x_2 + ... + a_{2m} x_m= b_2\\
+&\vdots\\
+&a_{n1} x_1 + a_{n2} x_2 + ... + a_{nm} x_m= b_n\\
+\text{and}\; & x_1 \geq 0 , x_2 \geq 0, ... , x_m \geq 0
+ \end{alignat*}
+
+
+where the $b_{i}$, $c_{i}$ \text{and} $a_{ij}$ are fixed real costants.\\ In more compact vector notation, this standard problem becomes 
+\begin{equation}
+ \begin{split}
+\min\; &c^{T}x\\
+\text{subject\;to\;}&Ax = b\;\text{and\;}x\geq0
+ \end{split}
+\end{equation}
+
+with $x$ an \textit{m}-dimensional column, $c^
+{T}$ an \textit{m}-dimensional row vector, \textit{A} an $n \times m$ matrix, and \textit{b} an \textit{n}-dimensional column vector.\\
+In the case the constraints set is determined entirely by linear inequalites $Ax \leq b$, hence in a \textit{canonical form}, the problem may be alternatively expressed as:
+\begin{alignat*}{3}
+\text{minimize\;}&c_1 x_1 + c_2 x_2+ ...+c_m x_m&&&\\[2mm]
+\text{subject\;to\;}&a_{11} x_1 +a_{12}x_2 + ... +a_{1m}x_m +y_{1}&&&= b_1\\
+		   	&a_{21}x_1+a_{22}x_2+ ... +a_{2m}x_m&+y_{2}&&= b_2\\
+&&\;\;\;\vdots&&\\
+&a_{n1}x_1+a_{n2}x_2+ ... +a_{nm}x_m+&&&y_{n}=b_n\\
+\text{and} \;& x_{i} \geq 0; y_{j} \geq 0, \text{for }i \in\left\lbrace 1,...,m\right\rbrace&\text{and }j&\in&\left\lbrace 1,...,n\right\rbrace
+\end{alignat*}
+The new positive variables $\mathit{y_{i}}$, introduced to convert the inequalities, are called \textit{slack variables} and the problem takes the standard form with $n+m$ unknowns variables \begin{itshape}$x_{i}, y_{i}.$\end{itshape}\\ The $n\times(m+n)$ matrix that now describes the linear equality constraints assumes the form $\left[\begin{matrix}A\;\vert\; I\;\end{matrix}\right]$.\\
+Considering the system of equalities (2.1) and selecting a set of \textit{n} linearly independent columns from the \textit{m} columns of  $A$, we create a $n \times n$ matrix denoted  by $A_{B}$ and called \textit{basis matrix}. This matrix is nonsingular and we may uniquely solve the equation $A_{B}x_{B} = b$. \\
+Recalling $x =\left(x_{B},0_{[m-n]}\right)$, we obtain a solution of the original equality system. This led to the following definition:
+\begin{defn}
+	The solution $x$ defined above is called \textit{basic solution} with respect to the basis B, it is \textit{feasible} if $x_{B}\geq 0$. \\The components of $x$ associated with columns of B are called \textit{basic variables}. Instead the components associated to $N  = \left\lbrace 1...m\right\rbrace  \backslash B$ are \textit{nonbasic variables}.\\
+	A basis B is \textit{degenerate} if $x_{i}= 0$ for some $i\in B$.
+	A linear program is said to be \textit{degenerate} if has at least one degenerate basis.
+\end{defn}
+If the $n \times m$ matrix $A$ has $n \leq m$ and the $n$ rows are linear indipendent, then there is at least one basic solution and, accordingly, one solution of the standard problem. Certainly, when the problem assumes a canonical form, then the extended $n \times (n+m)$ matrix [A | I ] this statement is verified.
+
+Another important issue is the fundamental theorem of linear programming, that is the primary importance for basic feasible solutions in solving linear programs.\\ (The method to prove the theorem is in many respects as important as the result itself, since it represents the beginning of the development of the simplex
+method.)
+\begin{thm}[\textbf{Fundamental theorem of liner programming}] \ \\
+Given a linear program in standard form where A is an $n \times m$ matrix of rank $n$
+\begin{enumerate}
+\item if there is a feasible solution, there is a basic feasible solution
+\item if there is an optimal feasible solution, there is an optimal basic feasible solution.
+\end{enumerate}
+\end{thm}
+The theorem shows that it is necessary only to consider basic feasible solutions when seeking an optimal solution because the optimal value is always achieved at such points.
+Thus, it describes a peculiar feature of the linear programming because it reduces the task of solving a linear problem to that of searching over basic feasible solutions. Since for a problem having $m$ variables and $n$ constraints there are at most ${m}\choose{n}$ basic solutions (corresponding to the number of ways of selecting m of n columns), there are only a finite number of possibilities. 
+
+\subsection{A geometric viewpoint}
+The linear programming problem is simple to state and visualize. The set of the linear constraints defines  \textit{polyhedron}, that constitutes the \textit{feasible region} and the \textit{vertices} of this polyhedron are the points that do not lie on a stright line between two other points in the set. Algebraically, the vertices of the feasible set $\mathcal{P}=\lbrace x\; |\; Ax = b , x \geq0\rbrace$ are exactly the basic feasible points.\\ According to the Fundamental theorem, we can restrict our attention to the vertices of this polyhedron and it implies that we can explore only at most $2^{m}$ points. 
+\begin{ex}
+The feasible set of a standard form linear program is defined by the following constraints:
+\begin{alignat*}{3}
+-x_{1}+&x_{2}-x_{3}&\;&\;&= 0\\
+ x_{1}+&\;&+x_{4}\;&\;&= 2\\
+ &x_{2}&\;&+x_{5}&= 3\\
+x \geq 0&\;&\;&\;&\\
+\end{alignat*}
+\end{ex}
+ [\textit{con una illustrazione grafica del poliedro si mostra l'insieme dei vertici presi in considerazione e candidati punti ottimali}]
+
+\section{Optimality and duality}
+Optimality conditions for the LP can be derived from the theory of the constrained optimization related to a general non linear problem NLP, defined as follow:
+
+\begin{equation}
+\min f(x)\text{\;subject\;to\;}\begin{cases} c_{i}(x) = 0 &i \in \mathcal{E}\\ c_{i}(x)\leq 0 &i\in \mathcal{I}\end{cases}
+\end{equation}
+\\
+where $f$ and $c_{i}$ are smooth, real-valued functions on subset of $\mathbb{R}^{n}$, and $\mathcal{E}$ and $\mathcal{I}$ are two finite sets of indices.\\ We recall only the first-order conditions, that are necessary to explain the duality results for the linear programming.\\
+As a preliminary to stating the necessary conditions, we define the \textit{Lagrangian function} for the general problem formulated above 
+\begin{equation*}
+\mathcal{L}\left(x,\lambda\right)=f(x)-\sum_{i\in\mathcal{E}\cup\mathcal{I}}\lambda_{i}c_{i}(x)
+\end{equation*}
+
+and the \textit{LICQ conditions}:
+\begin{defn}
+	Given a point x, $\mathcal{A}(x)= \mathcal{E}\cup\left\lbrace i\in\mathcal{I}\;|\;c_{i}(x) =0\right\rbrace$ is called active set and we say that the linear independence constraint qualification (LICQ) holds if the set of active constraint gradients $\left\lbrace \nabla c_{i}(x),i\in\mathcal{A}(x)\right\rbrace$ is linear indipendent.
+\end{defn}
+The necessary conditions, defined in the following theorem, are called \textit{first-order conditions} because they are concerned with properties of the gradients of the objective and constraint functions.
+\begin{thm}
+Suppose that $x^{*}$ is a local solution of (1.1), that f and $c_{i}$ are continuously differentiable, and the LICQ holds at $x^{*}$. Then there is a Lagrange multiplier vector $\lambda^{*}$, such that 
+\begin{alignat*}{2}
+\mathcal{L}(x^{*},\lambda^{*})&=0&\\
+c_{i}(x^{*})&=0, &\forall i\in\mathcal{E}\\
+c_{i}(x^{*})&\geq 0, &\forall i\in\mathcal{I}\\
+\lambda&\geq 0, &\forall i\in\mathcal{I}\\
+\lambda^{*} &\geq, 0 & \forall \in\mathcal{I}\\
+\lambda^{*}c_{i}(x^{*})&= 0,\;\forall i&\in\mathcal{E}\cup\mathcal{I}.\\
+\end{alignat*} 
+\end{thm}
+
+These equalites are called \textit{Karush-Kuhn-Tucker} conditions, or \textit{KKT} conditions for short and the last condition is the \textit{complementary condition}. The result continues to hold for \textit{dependent} constraints provided they are linear, as in the case of the standard LP.\cite{W}. The LP Lagrangian function is:\\
+\begin{equation}
+\mathcal{L}(x,\lambda,s)=c^{T}x-\lambda^{T}\left(Ax-b\right)-s^{T}x.
+\end{equation}
+Now we illustrate the first-order necessary conditions: let us assume that the matrix $A\in\mathbb{R}^{m,n}$, the vectors $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$ construct a standard LP. Convexity of the problem ensures that these conditions are also sufficient for a global minimum.  A vector $x^{*}$ is a solution if and only if exist Lagrange multipliers $\lambda^{*},\;s^{*}$ such that the primal-dual solution $\left( x^{*},\lambda^{*},s^{*}\right)\in\mathbb{R}^{n}\times\mathbb{R}^{m}\times\mathbb{R}^{n}$ satisfies these conditions, 
+\begin{align}
+A^{T}\lambda+s&=c\\
+Ax&=b\\
+x&\geq 0\\
+s&\geq 0\\
+x_{i}s_{i}&=0,\; for\;i= 1,2,...,m.
+\end{align} 
+The complementary conditions show that at least one of the components $x_{i}$ and $s_{i}$ must be zero for each $i=0,1,2,...,n$.
+Besides, we find that
+\begin{equation*}
+	c^{T}x^{*}=\left(A^{T}\lambda^{*}+s^{*}\right)^{T}x^{*}=\left(Ax^{*}\right)^{T}\lambda^{*}=b^{T}\lambda^{*}.
+\end{equation*}
+With this equality, we can formulate the \textit{dual problem} of (2.1)
+\begin{equation}
+\begin{split}
+&\text{maximize\;} b^{T}\\
+&\text{subject\;to\;}A^{T}\lambda \leq c
+\end{split}
+\end{equation} 
+We can restate this problem in a standard form introducing the slack variables as following:
+\begin{equation}
+\begin{split}
+&\text{maximize\;}b^{T}\lambda\\
+&\text{subject\; to\;}A^{T}\lambda+s=c\\ &\text{and\;} s\geq0
+\end{split}
+\end{equation} 
+The primal-dual relationship is symmetric: by taking the dual of the dual problem, we recover the primal problem. \\
+Given a feasible positive vector $x$ satisfying $Ax=b$ and a feasible point $\left(\lambda,s\right)$ for the dual, we have that: $c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x \geq0$.\\
+Therefore we have $c^{T}x\geq b^{T}\lambda$ when both primal and dual variables are feasible, and this result is known as \textit{dual gap}.\\
+
+\begin{thm}[\textbf{Strong duality}] \
+\begin{itemize}
+\item If either the primal or the dual problem has a finite solution, then so does the other, and the objective values are equal.
+\item If either the primal or the dual problem is unbounded, the the other problem is infeasible.
+\end{itemize}
+\end{thm}
+(\textit{le dimostrazioni dei due importanti teoremi sono abbastanza lunghe, nel corso del lavoro valutero' se inserirle in quanto necesssarie per una completa stesura. Si trovano in [1] capitolo 12})
+The multipliers $(\lambda,s)$ indicate the sensitivity of the optimal objective value  to perturbations in the constraints and the process of finding them is called \textit{sensitivity analysis}. \\ In fact, let we assume a small perturbation of input data, for example $b + \Delta b$. If $\Delta x$ and $\Delta s$ have zero in the same entries as $x$ and $s$ respectively, then
+\begin{equation*}
+0=x^{T}s=x^{T}\Delta s= \left( \Delta x\right)^{T}s=\left( \Delta x\right)^{T}\Delta s
+\end{equation*}
+and by the theorem we have that the optimal objectives of the primal and dual problems are equal, for both the original and perturbated problems, so
+
+\begin{align*}
+&0=c^{T}x=b^{T}\lambda  &c^{T}(x + \Delta x)=\left(b+\Delta b\right)^{T}\left(\lambda+\Delta \lambda\right).
+\end{align*}
+with, by the feasibility of $x + \Delta x$ and $\lambda+\Delta \lambda$:
+\begin{align*}
+&A(x + \Delta x)=b+\Delta b
+&A^{T}\Delta\lambda=-\Delta s.
+\end{align*}
+Hence, the change in optimal objective due to the perturbation is as follows:
+\begin{align*}
+c^{T}\Delta x&=\left(b+\Delta b\right)^{T}\left(\lambda+\Delta \lambda\right) - b^{T}\lambda\\
+&=\left(b+\Delta b\right)^{T}\Delta \lambda+\left(\Delta b\right)^{T}\lambda\\
+&=\left(x+\Delta x\right)^{T}A^{T}\Delta \lambda+\left(\Delta b\right)^{T}\lambda\\
+&=\left(x+\Delta x\right)^{T}\Delta s+\left(\Delta b\right)^{T}\lambda\\
+&=\left(\Delta b\right)^{T}\lambda.\\
+\end{align*} 
+In particular, if $\Delta b = \epsilon e_{j}$, we have that $c^{T}\Delta x+\epsilon \lambda_{j}$ and it shows that the change in optimal objective is $\lambda_{j}$ times the perturbation to $b_{j}$.
+\begin{thm}[\textbf{Complementary slackness}] \ \\
+	Let $x^{*},(\lambda^{*},s^{*})$ be feasible for the primal and the dual problems. The following are equivalent:
+	\begin{itemize}
+		\item $x^{*}$ is an optimal solution to (P) and $(\lambda^{*},s^{*})$ is an optimal solution to (D).
+		\item $(x^{*})^{T}s^{*}=0$
+		\item $x^{*}_{j}s^{*}_{j}=0,\;\forall\; j=0,...,m$
+		\item If $s^{*}_{j} > 0$ then $x^{*}_{j}= 0$.
+	\end{itemize}
+\end{thm}
+[\textit{Ci sono altri due teoremi lunghi che completano il capitolo sulla dualita', ma non utilizzati nella ricerca. Capitolo da perfezionare}]
+%
+%  CAPITOLO 2
+%
+\chapter{The simplex method}
+The simplex method was introduced in 1947 by George Dantzig. The discover of this method happened simultaneously with the realization of linear programming as an efficient modeling tool for practical decision making.\\
+The method exploits the insight provided by the fundamental theorem
+of linear programming, which states that if it exists an optimal solution, it is at one of the vertices of the feasible polyhedron. The simplex method's strategy is checking only basic feasible points. Since the number of vertices is finite, the termination is guaranteed.\\
+We begin the simplex method making a partition of the m-elements vectors $x$ and $c$ and the matrix $A$, with B the basis set:
+\begin{equation}
+\begin{split}
+\text{minimize\;} &c^{T}_{B}x_{B}+c^{T}_{N}x_{N}\\
+\text{subject\;to\;}&A_{B}x_{B}+A_{N}x_{N} = b\text{\;and\;}x_{B}, x_{N}\geq0
+\end{split}
+\end{equation}
+ %with \textit{n} elements corresponding to the basic feasible point we are starting from.
+ \\Note that for any $x$ we have $x_{B}=A_{B}^{-1}b-A_{B}^{-1}A_{N}x_{N}$ and the cost function $c^{T}x=c_{B}A_{B}^{-1}b+(c_{N}-c_{B}A_{B}^{-1}A_{N})\;x_{N}$, denoting the \textit{reduced cost} by $\widetilde{c}=c_{N}-c_{B}A_{B}^{-1}A_{N}$.\\ Since we re dealing only with basic feasible points, we consider the relative basic feasible point $x$ with $x_{N}= 0$ and the cost value it is equal to $\widetilde{c}$.\\
+ If there exists a $j \in N$ such that $\widetilde{c}_{j} \leq 0$, then by increasing $x_{j}$ up from zero, we will decrease the cost (the value of the objective function).\\
+So, in a step of the simplex method, we find a $j \in N$ such that $\widetilde{c}_{j} \leq 0$, and increase it as much as possible while keeping $x_{B} \geq 0$. We enforce that this non-basic variable is now positive and we include it in the basis, following the called \textit{pivoting rule}.
+On the other hand, if there is no $j \in N$ such that $\widetilde{c}_{j} \leq 0$, then we stop and the current basic feasible solution is an optimal solution. The computational procedure is the following:
+
+\begin{tabbing}
+	\textbf{Given} $B, N, x_{B} = A_{B}^{-1}b\geq 0$ with $x_{N}=0$;\\
+	Solve $A_{B}^{T}\lambda = c_{B}, for \lambda$ \\
+	Compute $\widetilde{c}_{N}=c_{N}-A_{N}^{T}\lambda$\\
+	\textbf{if} \= $\widetilde{c}_{N}\geq 0$\\
+	\>\textbf{stop}; (optimal solution found)\\
+	Select $s\in N\;|\;\widetilde{c}_{s}\leq 0$ as the entering index;\\
+	Solve $A_{B}d = A_{s}$ for $d$;\\
+	\textbf{if} \= $d \leq 0$\\
+	\> \textbf{stop}; (the problem is unbounded)\\  
+	Calculate the ratio test $x_{q}^{+} = \min_{i | d_{i} > 0}(x_{B})_{i}/d_{i}$, and use $r$ to denote the minimizing $i$;\\
+	Update \= $x_{B}^{+} = x_{B}-dx_{r}^{+}$\\
+	\> $x_{N} = (0,...,.,x_{q}^{+},0,...,0)$\\
+	Change the sets: $B^{+} = B - B[r] + s$ and $N^{+} = N - s + B[r]$\\ 
+\end{tabbing}
+
+The simplex algorithm still moves from basic feasible solution to another one and, geometrically, it moves from one vertex to an adjacent one for which the basis $B$ differs inexactly one component.\\ Each iteration begins by checking the sign of the coefficients of the objective function $\widetilde{c}$ on nonbasic variables. If none is negative, then the current basic solution is optimal. \\
+As we see, it is required a basic feasible staring point $x$ and a corresponding initial basis $B \in \left\{ 1,2,..., m \right\}$ with $|B|=n$ such that $A_{B}$ is non singular, $A_{B}^{-1}b=x_{B} \geq 0$ and $x_{N}=0$.\\
+A basic feasible solution is sometimes immediately available for linear programs. For example, in problems with constraints in canonical form and with $b \geq 0$, we have a basic feasible solution corresponding to the standard form is provided by the slack variables and this provides a means for initiating the
+simplex procedure.\\Sometimes the problem of finding an initial point and a basis may itself nontrivial but the \textit{two-phase} method deals with this difficulty. The idea is to add artificial variables in order to give a basic feasible initial point for a second phase in which we can extract easily the solution of the original problem.\\
+In \textit{phase I} we solve the following problem:
+\begin{equation}
+\begin{split}
+\min &1^{T}u\\
+\text{subject\;to\;}&A_{B}x_{B}+A_{N}x_{N} + Eu = b\;\text{and\;} u\geq 0\\
+\text{with\;} E_{jj}& =\begin{cases} -1\;\text{if\;} b_{j} \leq 0\\
+0\;\; \text{otherwise}
+\end{cases}   
+\end{split}
+\end{equation} \\
+Using artificial variables in each violated constraint, it is easier to complete a starting feasible point. Since they are restricted to be nonnegative, the objective value is as well. If this last one is zero, then the \textit{phase I} terminates and we compute a second linear program (\textit{Phase II}).\\
+The point $(x,z)$ defined by $x =0$ and $z_{j} = |b_{j}| \text{\;with\;}j =\{1,2,...,n\}$, is a basic feasible point, corresponding to the basis $B = \{m-n,...,m\}$. At any feasible point for (3.2), the artificial variable $u$ represent the amounts by which the constraints $Ax = b$ are violated by the $x$ component an the objective function is the sum of these violations.
+The \textit{phase I} minimizes this sum and it has an optimal objective value of zero if an only if the original LP is feasible. \\In fact we have two cases at the optimal solution $\bar{u}$: 
+\begin{itemize}
+	\item[-]$1^{T}\bar{u}$ is zero and the simplex method finds a solution $(\bar{x},\bar{u})$ and it starts the \textit{phase II} step.
+	\item[-]$1^{T}\bar{u}$ is positive and the original problem is unfeasible.\\
+\end{itemize}
+After dropped all the artificial variables $\bar{u}$, we proceed with the second phase, that consists on an implementation of the simplex method, with strating feasible point $\bar{x}$.\\ 
+While two-phases method deals with feasibility and optimality separately, the \textit{Big-M} method combines these activities in a single search and the key is a composite objective function: the original one added the artificial variable sum times  large positive multiplier M:\\
+\begin{equation}
+\text{minimize\;}\mathbf{c^{T}x+M \sum_{i}{u}_{i}}\\
+\end{equation}  
+ \section{Degenerate steps}
+The simplex method may encounter situations in which $-d_{r} = \left( A_{B}^{-1}A_{s}\right)_{r} < 0$ but $(A_{B}^{-1}b)_{s}= 0$. At this step, called \textit{degenerate step}, the objective function $c^{T}x$ may not decrease and, after a number of successive degenerate steps, we may return to the original basis $B$. \\
+A. Charnes \cite{Lexico2} developed a technique of perturbation, that resulted in a finite simplex algorithm. This algorithm turned out to be equivalent to the lexicographic rule. The \textit{perturbation strategy} avoids this cycling: it consists on adding a small perturbation to the right-hand side of constraints, as follows:
+\begin{equation*}
+b(\epsilon) \vcentcolon= b + A_{B}
+\begin{bmatrix}
+\epsilon\\\epsilon^{2}\\\vdots\\\epsilon^{m}
+\end{bmatrix}
+\end{equation*}
+where $\epsilon$ is a very small positive number. This perturbation in the components of the basic solution vector; we have
+\begin{equation*}x_{B}(\epsilon) \vcentcolon= x_{B} + A_{B}
+\begin{bmatrix}
+\epsilon\\\epsilon^{2}\\\vdots\\\epsilon^{m}
+\end{bmatrix}
+\end{equation*}
+Hence, we have that for all $\epsilon$ sufficiently small, $(x_{B^{+}})>0$. The basis is nondegenerate for the perturbed problem, and we can perform a step of the simplex method that produces a nonzero decrease of the object value.\\
+The question remains of how to choose $\epsilon$ small enough at the point at which the original degenerate basis B is encountered. The \textit{lexicographic strategy} finesses this issue by not making an explicit choice of $\epsilon$, but rather keeping track of the dependence of each basic variable on each power of $\epsilon$. When it comes to selecting the leaving variable, it chooses the index $s$ that minimizes $x_{B}(\epsilon)_{i}/d_{i}$ over all variables in the basis, for a sufficient small $\epsilon$.\\
+Another method that avoids this cycling is the \textit{Bland's rule}. In the algorithm it selects:
+\begin{itemize}
+	\item the index that leaves the nonbasis $s$ such that $\min\limits_{i}\{c_{i}\leq0\}$
+\item the index that leaves the basis $r$ such that $x^{+}_{r} = \min\limits_{q}\{x_{q}^{+}\;|\;x_{q}^{+} \text{\;satisfies the ratio test} \}$ \end{itemize} 
+\begin{theorem*}
+	The simplex method always terminates provided that both the entering and the leaving variable are chosen according to the Bland's rule.
+\end{theorem*}
+\begin{proof}
+see ~\cite{8} pagg. 36-37	
+\end{proof}
+In the implementation of the simplex method it is computed the Bland's rule and in the following example is illustrated the results:
+\begin{ex}
+	We apply the method to Beale's problem ~\cite{}:
+\end{ex} 
+\section{The revised method}
+If the matrix A has far fewer rows than column, ($n$ is much smaller than $m$), the implementation $A_{B}^{-1}A_{N}$ requires useless memory. The revised simplex method is a scheme reduces this big amount of calculations, replacing only one column of the old matrix $A_{B}$ by the new column from $A_{N}$.\\
+
+ \section{The dual simplex method}
+%Leke~\cite{Lem} developed the dual simplex method in 1954 but it was not found to be an alternative to the primal simplex method for nearly 40 years. This changed in
+%due to the contributions of Forrest and Goldfarb.
+After discussing the Karush-Kuhn-Tucker optimality conditions for linear programming, we derive the \textit{dual simplex method} by applying the simplex method to the dual formulation of the standard form LP. 
+\\
+(\textit{I metodi simplesso rivisto e simplesso primale duale sono ancora da implementare e studiare. Essi possono essere approfonditi eventualmente dopo aver completato la parte dello studio degli IPM})
+\chapter{Sensitivity analysis}
+
+\chapter{Interior point methods}
+In the 60 years of research since the introduction of the simplex method, this algorithm has been carefully optimized to perform extremely well in practice. However, a problem arose in the 1970s: it turns out that we cannot guarantee that it will work well on all possible linear programs~\cite{3}.
+This problem led to the introduction of the interior point methods for solving linear programs, which is the argument of this chapter. The interior point methods is a family of algorithms solving linear programs which come along with an efficient performance guarantee.\\
+They share common features that distinguish them from the simplex method. Each interior point iteration is expensive to compute and can make significant progress toward the solution, while the simplex method usually requires a larger number of inexpensive iterations. In fact, geometrically, the simplex method works around the boundary of the feasible polyedron, testing a sequence of vertices in turn until it finds the optimal one. Instead, interior point methods approach the boundary of the feasible set only in the region, but they never actually lie on the boundary of the feasible set.\\
+The first commercial interior point method for linear programming was N. Karmarkar's \textit{projective transformation} procedure and developments have continued to these days. The new algorithms can be divided in two main classes, \textit{affine-scaling} and \textit{projective-scaling} algorithms.
+The first ones are easy to describe but hard to analyze, in fact they have very simple, geometrically descriptions, but they don't have a strong convergence theory behind.
+Instead, the second class, that includes the original algorithm studied by Karmakar, involves technicalities such as logarithmic barrier functions and the analysis proceeds to a proof of polynomial-time convergence~\cite{4}. 
+\newpage
+Following a fundamentally different approach from the simplex method, the interior-point methods avoid the boundary of the polyedra until optimality, and focus on the KKT conditions, solving the primal and dual linear programs currently.\\ Primal and dual variables that are required to be nonnegative at the solution, are kept strictly positive at each interior-point iteration. That is, the iterates stay interior with respect to these constraints, though some of these variables will approach to zero in the limit.
+
+In this chapter, we outline some of the basic ideas behind primal-dual interior point methods, including the concept of central path. After, there is a description and analysis of three particular interior-point methods.
+
+\section{Introduction to primal-dual methods}
+The fundamental ideas of primal-dual methods were developed between 1987 an 1991. 
+These methods find primal-dual solutions $(x^{*},\lambda^{*},s^{*})$ by applying variants of Newtons method to the three equality conditions (2.4), (2.5), (2.8) and modifying the search directions and the step lengths so that the inequalities $(x,s)\geq0$ are satisfied strictly at every iteration.\\
+ Let restate the optimality conditions by a mapping $\mathit{F}$ from $\mathbb{R}^{2n+m}$ to $\mathbb{R}^{2n+m}$:
+\begin{center}
+	$\mathit{F}(x,\lambda,s)= \begin{bmatrix}
+	A^{T}\lambda+s-c \\Ax-b \\XSe
+	\end{bmatrix}=0$, with $(x,s)\geq0.$
+\end{center}
+where $X = diag(x_{1}, x_{2},...,)$ and $S = diag(s_{1}, s_{2},...,)$.\\ Note that $\mathit{F}$ is linear in the first two equations and mildly nonlinear in the last equation. \\ All primal-dual methods generate iterates $(x^{k},\lambda^{k},s^{k})$ with $x^{k}$ and $s^{k}$ strictly positive and this property is the origin of the term \textit{interior point}.\\
+If we define the primal-dual \textit{feasible set} $\mathcal{F}$ and \textit{strictly feasible set} $\mathcal{F}^{o}$ by
+\begin{align*}
+\mathcal{F} = \left\lbrace(x,\lambda,s)\;|\;Ax = b, A^{T}\lambda+s =c,\;(x,s)\geq0\right\rbrace \\
+\mathcal{F}^{o} = \left\lbrace(x,\lambda,s)\;|\;Ax = b, A^{T}\lambda+s =c,\;(x,s)>0\right\rbrace 
+\end{align*}
+
+the strict feasibility condition can be written concisely as $(x,\lambda,s)\in\mathcal{F}^{o}$.\\
+However, many LP have \textit{no} strictly feasible points, that is $\mathcal{F}^{o}=\emptyset$, although hey still may be feasible $(\mathcal{F}=0)$ and still my have finite optimal solutions.
+\begin{ex}
+	\begin{equation*}
+	\min\limits_{x\in\mathbb{R}^{3}} x_{1} \text{subject to }x_{1} + x_{3} = 0, x\geq0
+	\end{equation*}
+\end{ex}
+Although many primal-dual algorithms require a strictly feasible starting point...
+The Newton's method forms a linear model for $\mathit{F}$ around the current point and obtains the search direction $(\Delta x,\Delta \lambda,\Delta s)$ by solving the following system of linear equations:
+\begin{center}
+	$\mathit{J}(x,\lambda,s)\begin{bmatrix}
+	\Delta x\\\Delta\lambda \\\Delta s
+	\end{bmatrix}=-\mathit{F}(x,\lambda,s)$,
+\end{center}
+where $\mathit{J}$ is the Jacobian of $\mathit{F}$. If the current point is strictly feasible, the Newton step equations becomes
+
+\begin{equation}\label{(5.1)}
+	\begin{bmatrix}
+0&A^{T}&I \\A&0&0\\X&0&S
+	\end{bmatrix}\begin{bmatrix}
+	\Delta x\\\Delta\lambda \\\Delta s
+	\end{bmatrix}=\begin{bmatrix}
+	0\\0\\-XSe
+	\end{bmatrix}.
+\end{equation}
+
+A full step along this direction usually is not permissible, since it would violate the bound $(x,s)>0$. To avoid this difficulty, we perform a line search along the Newton direction so that the new iterate is
+\begin{equation*}
+	(x,\lambda,s) +\alpha (\Delta x,\Delta \lambda,\Delta s)
+\end{equation*} 
+for some line search parameter $\alpha \in (0,1]$. \\We maintain positivity conditions of $(x,s)$ at all iterates for two reasons. First, vectors that solve $\mathit{F}$ that have negative components are of no interest in terms of solving the primal and dual problems (2.1) and (2.10). Second, when the matrix $A$ has linearly indipendent rows, the Jacobian $J$ is guaranteed to be nonsingular whenever $x>0$ and $s>0$ hold, and so the solution is guaranteed.
+
+\section{Affine-scaling method}
+
+The simplest primal-dual approach is to apply Newton's method directly to the function $F$, using a step length $\alpha_{k}$ of less than one in order to have $(x^{k+1},\lambda^{k+1},s^{k+1})\in \mathcal{F}^{o}$. There are different ways to do this, and the resulting algorithms are called \textit{primal-dual affine-scaling methods}.\\ 
+ The general primal-dual affine-scaling algorithm takes the following form:
+\begin{tabbing}
+	\textbf{Given} $(x^{o}, \lambda^{o}, s^{o})\in\mathcal{F}^{o}$ \\
+	\textbf{for} \= $k = 0, 1, 2,...$ \\
+	\> Solve
+\end{tabbing}
+\begin{equation}\label{(5.8)}
+\begin{bmatrix}
+0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
+\end{bmatrix}\begin{bmatrix}
+\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
+\end{bmatrix}=-\begin{bmatrix}
+0\\0\\X^{k}S^{k}e
+\end{bmatrix}.
+\end{equation}
+\begin{tabbing}
+	\\
+	\textbf{Set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$\\
+	\> choosing $\alpha_{k}$ so that $(x^{k+1},\lambda^{k+1}, s^{k+1})\in\mathcal{F}^{o}$ \\
+	\textbf{end}
+\end{tabbing}
+%The resulting system is 
+%\begin{center}
+%	$\begin{bmatrix}
+%	0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
+%	\end{bmatrix}\begin{bmatrix}
+%	\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
+%	\end{bmatrix}=-\begin{bmatrix}
+%	0\\0\\X^{k}S^{k}e
+%	\end{bmatrix}$.
+%\end{center}	
+
+The solution of this system $\left(\Delta x^{k},\Delta\lambda^{k},\Delta s^{k}\right)$ has either $\Delta x_{i}^{k}<0$ or $\Delta s_{i}^{k}<0$, or both because $x^{k}>0$ and $s^{k}>0$ and $s^{k}_{i}\Delta x^{k}_{i} + x^{k}_{i}\Delta s^{k}_{i} = - x^{k}_{i}s^{k}_{i}$, by the last block row of this system.\\
+Then, we need to choose $\alpha_{k}$ such that
+\begin{align*}
+x^{k}_{i} + \alpha_{k} \Delta x^{k}_{i} >0 \\
+s^{k}_{i} + \alpha_{k} \Delta s^{k}_{i} >0 \\	\text{for\;} i = 1,...,n.
+\end{align*}
+and the largest value of $\alpha_{k}$ that satisfies these inequalities is computed by the following formula, which is similar to the ratio test used by the simplex method. 
+\begin{align*}
+\alpha_{\max} = \min\bigg(\min_{i|\Delta x^{k}_{i}<0}\frac{x^{k}_{i}}{\Delta x^{k}_{i}}, \min_{i|\Delta s^{k}_{i}<0}\frac{s^{k}_{i}}{\Delta s^{k}_{i}}\bigg)
+\end{align*} 
+
+We can step back from this maximum value, and prevent each $x_{i}$ and $s_{i}$ from being too close to zero, by defining $\alpha_{k} = min\left(1,\eta_{k}*\alpha_{max}\right)$, with $\eta_{k}$ usually $0.999$.\\
+We then define the new iterate $(x^{k},\lambda^{k},s^{k}) +\alpha^{k} (\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})$.\\
+This approach is called \textit{primal-dual affine scaling} and often does not allow us to make much progress toward a solution. Even though, the search direction steps are used to find the predictor directions in the predictor-corrector algorithms, explained in the next pages. 
+Most primal-dual methods use less aggressive Newton search direction, making a perturbation of the system $F$, and they are presented in the next section.
+\subsection{Analysis}
+We examine the asymptotic behavior of this method, that is of significant theoretical interest. 
+\section{Path-following methods}
+
+Another strategy for solving a linear program is to follow a central path from a given initial primal-dual solution point.\\ Assuming $\mathcal{F}^{o}\neq \varnothing$, the \textit{central path} $\mathcal{C}$ is an arc of strictly feasible points that play an important role in the following primal-dual algorithm. It is parametrized by a scalar $\tau  > 0$ and each point $(x_{\tau}, \lambda_{\tau}, s_{\tau})\in \mathcal{C}$ satisfies the following equations:
+\begin{align}
+A^{T}\lambda+s&=c\\
+Ax&=b\\
+x&\geq 0\\
+s&\geq 0\\
+x_{i}s_{i}&= \tau,\; \text{for}\;i= 1,2,...,n.
+\end{align} 
+The conditions (5) are also the optimality conditions for  logarithmic-barrier formulation of the original problem:
+\begin{equation}
+\begin{split}
+\text{minimize\;} &c^{T}x + \tau\sum_{i=0}^{n}\ln{x_{i}}\\
+\text{subject\; to\;}&Ax = b\;\text{and\;} x\geq0
+\end{split}
+\end{equation}
+In fact, the KKT conditions for this problem, with Lagrange multiplier $\lambda$ for the equality constraint, are
+\begin{equation*}
+c_{i} - \dfrac{\tau}{x_{i}} - A^{T}_{i}\lambda,\; \text{for}\;i = 1,2,...,n.
+\end{equation*}  
+Since the objective function is strictly convex, these conditions are sufficient as well as necessary for optimality. Besides, defining $s_{i} = \dfrac{\tau}{x_{i}}$, we recover the last KKT equation.
+\\
+\\
+Let $(x(\tau), \lambda(\tau), s(\tau))$ be on the primal-dual path $\mathcal{C}$, then the non negative dual gap assumes this value: $c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x=\tau$.\\
+Then, the dual gap provides a measure of closeness to optimality. It is clear that as $\tau\to0$ the duality gap goes to zero, and hence both $x(\tau)$ and
+ $(\lambda(\tau), s(\tau))$ approach to optimality for the primal and dual, respectively. The central path guides us to a solution along a route that maintains positivity of the $x$ and $s$ components and decreases the pairwise products $x_{i}s_{i},\;i = 1,2,...,n$ to zero at the same rate.\\
+Most primal-dual methods define $\tau$ as the average value of the point $(x_{1}s_{1},x_{2}s_{2}...,x_{n}s_{n})$. Precisely, they compute the Newton step toward a point $(x_{k}, \lambda_{k},s_{k})$ such that $x_{i}s_{i}=\sigma\mu$, where $\mu$ is the \textit{duality measure} and $\sigma\in[0,1]$ is the \textit{centering parameter}. The general path-following algorithm is:
+\begin{tabbing}
+\textbf{Given} $(x^{o}, \lambda^{o}, s^{o})$ with $(x^{o}, s^{o})>0$;\\
+\textbf{for} \= $k = 0, 1, 2,...$ \\
+\> Choose $\sigma_{k}\in[0,1]$ and solve
+\end{tabbing}
+\begin{equation}\label{(5.8)}
+	\begin{bmatrix}
+	0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
+	\end{bmatrix}\begin{bmatrix}
+	\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
+	\end{bmatrix}=-\begin{bmatrix}
+	A^{T}y^{k}+s^{k}-c\\Ax^{k}-b\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
+	\end{bmatrix}.
+\end{equation}
+\begin{tabbing}
+	\\
+	\textbf{Set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$\\
+	\> Choosing $\alpha_{k}$ so that $(x^{k+1}, s^{k+1})>0$ \\
+	\textbf{end}
+\end{tabbing}
+A path-following algorithm explicity restricts the iterates to a neighborhood of the central path $\mathcal{C}$: if $\sigma = 1$, the equations define a \textit{centering direction}, a Newton step toward the point $(x_{\sigma\mu},\lambda_{\sigma\mu}, s_{\sigma\mu})\in\mathcal{C}$, if $\sigma = 0$ then we have the \textit{affine scaling method}. Many algorithms use intermediate values of $\sigma$ from $(0,1)$ to trade off between the twiin goals of reucing $\mu$ nd improving centrality. The neighborhood excludes points $(x, s) $ that are too close to the boundary of the nonegative orthant. Therefore, search directions calculated from any point in the neighborhood make at least minimal progress toward the solution set.
+ We define the two most interesting neighborhoods of the central path as given
+by Mizuno et al~\cite{5}:\\
+\begin{equation*}
+\mathcal{N}_{2}(\theta) =\{(x, \lambda,s)\in\mathcal{F}^{o} \;|\;\lVert XSe - \mu e \rVert \leq \theta \mu \}, \text{\;for some\;} \theta \in [0,1)
+\end{equation*} 
+\begin{equation*}
+\mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\in\mathcal{F}^{o} \;|\; x_{i}s_{i} \geq \gamma \mu \}, \text{\;for some\;} \gamma \in [0,1),
+\end{equation*} 
+It is important to underline the importance of the first set: it is more restrictive, since $\mathcal{N}_{2}(\theta) \subset\mathcal{F}^{o}$, for all $\theta\in[0,1)$.\\
+In this research it will be proposed the \textit{long-step path-following algorithm}, that combines flexibility in the choice of step length with the use of $\mathcal{N}_{-\infty}(\gamma)$, for some $\gamma$ close to zero. It depends on two parameters $\sigma_{min}$, $\sigma_{max}$, which are lower and upper bounds on the centering parameter $\sigma_{k}$. After computed the search direction with the Newton method, the step length $\alpha_{k}$ is chosed as the maximum value subject to staying inside $\mathcal{N}_{-\infty}(\gamma)$. \newpage
+\begin{tabbing}
+	\textbf{Given} $\gamma, \sigma_{min}, \sigma_{max}$ and $(x^{o}, \lambda^{o}, s^{o})\in\mathcal{N}_{-\infty}(\gamma)$ with $(x^{o}, s^{o})>0$;\\
+	\textbf{for} \= $k = 0, 1, 2,...$ \\
+	\> Choose $\sigma_{k}\in[\sigma_{min},\sigma_{max}]$ and solve
+\end{tabbing}
+\begin{equation}\label{(5.9)}
+\begin{bmatrix}
+0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
+\end{bmatrix}\begin{bmatrix}
+\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
+\end{bmatrix}=-\begin{bmatrix}
+0\\0\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
+\end{bmatrix}
+\end{equation}
+\begin{tabbing}
+	\\
+	\textbf{Set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$\\
+	\> Choosing the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)$\\
+	\textbf{end}
+\end{tabbing}
+
+\subsection{Analysis}
+In this section it is illustrated a comprehensive convergence analysis, using important theoretical results.
+\begin{lem}\label{lem1}
+	Let u and v ba any two vectors in $\mathbb{R}^{n}$ with $u^{T}v \geq 0$. Then, 
+\begin{align*}
+\lVert UVe \rVert_{2}\leq 2^{-3/2}\lVert u + v \rVert^{2}_{2}\\
+\end{align*}
+with $U = diag(u_{1}, u_{2}, ..., u_{n})$ and $V = diag(v_{1}, v_{2}, ..., v_{n})$. 
+\end{lem}
+\begin{proof}
+	We can formulate $0 \leq u^{T}v = \sum\limits_{u_{i}v_{i} \geq 0}u_{i}v_{i} + \sum\limits_{u_{i}v_{i} \leq 0}u_{i}v_{i} = \sum\limits_{i \in \mathcal{P}}|u_{i}v_{i}| - \sum\limits_{i \in \mathcal{M}}|u_{i}v_{i}| $, with $\mathcal{P}= \{i | u_{i}v_{i} \geq 0\}$ and $\mathcal{M}= \{i | u_{i}v_{i} \leq 0\}$.
+
+\begin{align*}
+\lVert UVe \rVert_{2} &= ( \lVert[u_{i}v_{i}]_{i \in \mathcal{P}} \rVert^{2} +  \lVert[u_{i}v_{i}]_{i \in \mathcal{M}} \rVert^{2})^{1/2}\\
+&\leq ( \lVert[u_{i}v_{i}]_{i \in \mathcal{P}} \rVert^{2}_{1} +  \lVert[u_{i}v_{i}]_{i \in \mathcal{M}} \rVert^{2}_{1})^{1/2},\; \text{since\;} \lVert\dot\rVert_{2} \leq \lVert\dot\rVert_{1}\\
+&\leq\sqrt{2}\;\bigg\lVert\bigg[\frac{1}{4}(u_{i} + v_{i})^{2}\bigg]_{i\in \mathcal{P}}\bigg\rVert_{1}, \text{\;since\;} \sqrt{ab} \leq \frac{1}{2}|a+b|\\
+& = 2^{-3/2} \sum\limits_{i \in \mathcal{P}}(u_{i} + v_{i})^{2}\\
+& \leq 2^{-3/2} \sum\limits_{i = 0}^{n}(u_{i} + v_{i})^{2}\\
+& \leq 2^{-3/2} \lVert u + v \rVert^{2}_{2}.
+\end{align*}
+\end{proof}	
+This lemma is an important tool to proof the next statement.
+\begin{lem}
+	If $(x, \lambda, s) \in \mathcal{N}_{-\infty}(\gamma)$, then
+	\begin{align*}
+	\lVert\Delta X\Delta S e \rVert \leq 2^{-3/2}(1 + 1/ \gamma)n\mu.\\
+	\end{align*}
+\end{lem}
+\begin{proof}
+	$(x + \Delta x)^{T}(s +\Delta s) = SX + x \Delta s + s \Delta x + \Delta x \Delta s$ and $S \Delta x + X \Delta s + XS = 0$, by the last row of \ref{(5.1)}. These two equations show that $\Delta x\Delta s = 0$.\\
+	Now, by multiplying the last block row by $(XS)^{-1/2}$ and using the definition $D = X^{1/2}S^{-1/2}$, we obtain 
+	\begin{equation}
+	D^{-1}\Delta x + D \Delta s = (XS)^{-1/2}(-XSe + \sigma \mu e)
+	\end{equation}
+	Since $(D^{-1}\Delta x)^{T}(D \Delta s) = \Delta x^{T} \Delta{s} = 0$, applying the Lemma \ref{lem1} with $u= D^{-1}\Delta x$ and $v = D \Delta s$, we obtain
+	\begin{align*}
+		\lVert \Delta X \Delta S e\rVert &= \lVert(D^{-1}\Delta X)(D\Delta S)e \rVert \\
+		&\leq 2^{-3/2}\lVert D^{-1}\Delta x + D \Delta s\rVert^{2}, \text{\;from the Lemma}\\
+		&= 2^{-3/2}\lVert (XS)^{-1/2}(-XSe + \sigma \mu e)\rVert ^{2} \text{\; from (5.8)}\\
+	\end{align*}
+	Expanding the squared Euclidean norm and using such relationships as $x^{T}s = n\mu$ and $e^{T}e = n$, we obtain
+	\begin{align*}
+	\lVert \Delta X \Delta S e\rVert_{2} &\leq 2^{-3/2}\bigg[x^{T}s - 2\sigma \mu e^{T}e + \sigma^{2}\mu^{2}\sum\limits_{i = 1}^{n}\frac{1}{x_{i}s_{i}}\bigg]\\
+	 &\leq s^{-3/2}\bigg[x^{T}s - 2\sigma \mu e^{T}e + \sigma^{2}\mu^{2}\frac{n}{\gamma \mu}\bigg], \text{\; since\;} s_{i}x_{i} \geq \gamma \mu\\
+	  &\leq 2^{-3/2}\bigg[1 - 2\sigma + \frac{\sigma^{2}}{\mu}\bigg]n \mu\\
+	  &\leq 2^{-3/2}(1 + 1/\gamma)n \mu.
+	\end{align*}
+\end{proof}
+
+\begin{thm}
+	Given the parameters $\gamma$, $\sigma_{min}$ and $\sigma_{max}$ in the long-step path following algorithm, there is a constant $\delta$ indipendent of n such that
+	\begin{equation}\label{(5.10)}
+	\mu_{k+1} \leq \bigg(1 - \frac{\delta}{n}\bigg)\mu_{k}\\
+	\end{equation} 
+\end{thm}
+\begin{proof}
+	First of all we prove that $(x_{k}, \lambda_{k}, s_{k})+\alpha(\Delta x_{k},\Delta \lambda_{k},\Delta s_{k})\in\mathcal{N}_{-\infty}(\gamma)$ for all \\$\sigma \in \bigg[0,2^{3/2}\gamma \frac{1 - \gamma}{1 +\ \gamma}\frac{\sigma_{k}}{n}\bigg]$.\\
+	
+	From the last $n$ equalities of \ref{(5.9)}, we have that 
+	\begin{align}(x_{i}^{k}, \lambda_{i}^{k}, s_{i}^{k})+\alpha(\Delta x_{i}^{k},\Delta \lambda_{i}^{k},\Delta s_{i}^{k}) &=\\ 
+	x_{i}^{k}s_{i}^{k} + \alpha(x_{i}^{k} \Delta s_{i}^{k} + s_{i}^{k} \Delta x_{i}^{k})+\alpha^{2}\Delta x_{i}^{k} \Delta s_{i}^{k} &=\\
+	x_{i}^{k}s_{i}^{k}(1 - \alpha) + \alpha \sigma_{k}\mu_{k}-\alpha^{2}|\Delta x_{i}^{k} \Delta s_{i}^{k}| &\geq\label{(5.11)}\\
+	\gamma(1 - \alpha)\mu_{k} + \alpha \sigma_{k}\mu_{k}-\alpha^{2}2^{-3/2}(1 + 1/\gamma)n\mu_{k} &\label{(5.12)}.
+	\end{align}
+	In the equation \ref{(5.11)} is added $\alpha x_{i}^{k}s_{i}$ in order to use the last equations of the matrix system 
+	In the step \ref{(5.12)} it is used the inequality proved above $|\Delta x_{i}^{k}\Delta s_{i}^{k}|\leq2^{-3/2}(1 + 1/\gamma)n\mu_{k}$, for any $i = 1,2,...,n$. \\
+	By summing the $n$ components of the equation $S^{k}\Delta x^{k} + X^{k} \Delta s^{k} = -X^{k}S^{k}e + \sigma_{k} \mu_{k}e$ and using the null product $\Delta x \Delta s$, we have
+	\begin{align*}\mu_{k}(\alpha)\vcentcolon=(x_{i}^{k} + \alpha\Delta x_{i}^{k})^{T}(s_{i}^{k} + \alpha\Delta s_{i}^{k})/n&=\\ 
+	x_{i}^{k}s_{i}^{k}/n - \alpha \mu_{k}+\alpha \sigma_{k} \mu_{k} &=\\
+	(1-\alpha(1-\sigma_{k}))\mu_{k}
+	\end{align*}
+	From these last two formulas, we can see that proximity condition:\\$(x_{i}^{k} + \alpha\Delta x_{i}^{k})^{T}(s_{i}^{k} + \alpha\Delta s_{i}^{k}) \geq \gamma\mu_{k}(\alpha)$ is satisfied if \begin{equation*}
+		\gamma(1-\alpha)\mu_{k} + \alpha\sigma_{k}\mu_{k} - \alpha^{2}2^{-3/2}(1 + 1/\gamma)n\mu_{k}\geq \gamma(1 - \alpha +\alpha\sigma_{k})\mu_{k}
+		\end{equation*}
+		Rearranging the expression in further two steps, we assert the upper bound of the interval of the parameter $\alpha$:
+		\begin{align*}
+		\alpha\sigma_{k}\mu_{k}(1-\gamma)\geq\alpha^{2}2^{-3/2}(1+1/\gamma)\\
+		\alpha \leq \frac{2^{3/2}}{n} \sigma_{k}\gamma\frac{1-\gamma}{1+\gamma}.\\		
+		\end{align*}
+Now, we complete the prof of the theorem by estimating the reduction in $\mu$ on the $k$th step. Using the inequality above:
+\begin{align*}
+\mu_{k+1}& = (x_{i}^{k} + \alpha_{k}\Delta x_{i}^{k})^{T}(s_{i}^{k} + \alpha_{k}\Delta s_{i}^{k})/n\\
+		 & = [(x^{k})^{T}s^{k} + \alpha_{k}\big((x^{k})^{T}\Delta s^{k} + (s^{k})^{T}\Delta x^{k}\big) +\alpha^{2}_{k}(\Delta x^{k})^{T}\Delta s^{k}]/n\\
+		 & = (1 - \alpha_{k}(1-\sigma_{k}))\mu_{k}\\
+		 & \leq \Big(1 - \frac{2^{3/2}}{n}\gamma\frac{1-\gamma}{1+\gamma}\sigma_{k}(1-\sigma_{k})\Big).\\
+\end{align*}
+Since the function $\sigma(1 - \sigma)$ is a concave quadratic function of $\sigma$, we have:
+\begin{equation*}
+\sigma_{k}(1-\sigma_{k})\geq \text{min}\{\sigma_{min}(1-\sigma_{min}),\sigma_{max}(1-\sigma_{max})\}, \text{\;for all\;}\sigma_{k}\in[\sigma_{min},\sigma_{max}].
+\end{equation*}
+We can use this estimate in the last inequality and setting
+\begin{equation*}
+\delta \vcentcolon=2^{3/2}\gamma\frac{1-\gamma}{1+\gamma}\text{min}\{\sigma_{min}(1-\sigma_{min}),\sigma_{max}(1-\sigma_{max})\}, \text{\;for all\;}\sigma_{k}\in[\sigma_{min},\sigma_{max}].
+\end{equation*}
+\end{proof}
+We complete the analysis theory with the following theorem which shows that a reduction of a factor of $\epsilon$ in the duality measure $\mu$ can be obtained in $\mathcal{O}(n\log{1/\epsilon})$ iterations.
+\begin{thm}
+	Given $\epsilon\in(0,1)$ and $\gamma\in(0,1)$, suppose the starting point in the algorithm satisfies $(x^{o},\lambda^{o},s^{o})\in\mathcal{N}(\gamma)$. Then there is an index $\mathcal{K}$ with $\mathcal{K}=\mathcal{O}(n\log1/\epsilon)$ such hat $\mu_{k}\leq\epsilon\mu_{o}$.
+\end{thm}
+\begin{proof}
+	By taking the logarithms of both sides in \ref{(5.10)},we obtain
+	\begin{equation*}
+	\log\mu_{k+1}\leq \log \bigg(1-\frac{\delta}{n}\bigg)+\log\mu_{k}\end{equation*}
+	By applying this formula repeatedly
+	\begin{equation*}
+	\log\mu_{k+1}\leq \log \bigg(1-\frac{\delta}{n}\bigg)+\log\mu_{o}
+	\end{equation*}
+	\text{Using the log estimate} $\log(1+\beta)\leq\beta$, with $\beta>-1$.\\
+	\begin{equation*}
+	\log(\mu_{k}/\mu_{o})\leq k\bigg(-\frac{\delta}{n}\bigg)
+	\end{equation*}.	
+For every $k$ that satisfy
+\begin{equation*}
+k\geq\mathcal{K}:= \frac{\delta}{n}\log\frac{1}{\epsilon} = \frac{\delta}{n}|\log(\epsilon)|
+\end{equation*}
+we have 
+\begin{equation*}
+k\bigg(-\frac{\delta}{n}\bigg)\leq\log\epsilon
+\end{equation*}	
+that guarantees
+\begin{equation*}
+\mu_{k}/\mu_{o}\leq\epsilon.
+\end{equation*}	
+\end{proof}
+
+[\textit{Le dimostrazioni sono state completate con l'aiuto con suggerimenti del libro, in quanto proposte come esercizi al lettore}]
+\section{Initialization and termination} 
+
+There are several important issues concerning interior-point algorithms
+for linear programs.\\The first one involves the initialization. All the theory explained above assumes that the initial point is strictly feasible, in order to show  a comprehensive convergence analysis. Even though, the most pratical algorithm does not require starting from  feasible initial-points. The search direction needs to be modified so that it moves closer to feasibility as well as to
+centrality: in (5.1) the right hand side $F(x, \lambda, s)\neq0$. The implementation of the LFP method, computed and analyzed in this research, takes the ones-vector as initial point. [\textit{sviluppero` una descrizione e un'analisi al variare del punto iniziale dell'algoritmo implementato}]
+\\
+ The second limit involves termination. Unlike the simplex method,
+which terminates with an exact solution, interior-point algorithms are continuous
+optimization algorithms that generate a sequence of strictly feasible points $(x^{k}, \lambda^{k},s^{k})$ converging to
+an optimal solution. If the data of a particular problem are integral or rational, then, after the worst-case time bound, an exact solution can be
+rounded from the latest approximate solution. But under
+the real number computation model we can not apply this argument.\\ 
+
+[\textit{Dscrivero' il metodo di Ye, che converte l'iterata $(x^{k}, \lambda^{k},s^{k})$, sufficientemente vicina alla soluzione, alla soluzione esatta}]
+
+
+\chapter{Pratical implementations}
+
+\chapter{Conclusion}
+
+\begin{thebibliography}{9}
+	
+	\bibitem{W}Wright J. Stephen, Nocedal Jorge,\emph{\;Numerical Optimization}, Springer Science+Business Media, 2006.
+	\bibitem{1}Dantzig, G. B.,\emph{\;Linear Programming and Extensions}, Princeton, University Press, Princeton, NJ,(1963).
+	\bibitem{2} Andersen, E. D. and Ye, Y. (1996). \textit{Combining interior-point and pivoting algorithms for Linear Programming}.
+	\bibitem{Lem} Lemke, C.E (1954). The dual method of solving the linear programming problem. Nav. Res. Log. Q.
+	\bibitem{3}Victor Klee and George J. Minty.\emph{ How good is the simplex algorithm? Technical report}, (1970). Washington University Department of Mathematics.
+	\bibitem{4} N. K. Karmarkar,\emph{ A new polynomial-time algorithm for linear programming}, Math. Oper. Res. 14 (1974)
+	\bibitem{5} S. Mizuno, M.J. Todd, and Y. Yer,\emph{\;On adaptive-step primal-dual interior-point algorithms for linear programming}, Math. of OR, vol. 18, pp. 964-981, (1993). 
+	\bibitem{5} Dantzig G. B., Orden A., Wolfe P., (1955) \emph{ Notes on linear programming: Part I – The generalized simplex method for
+	minimizing a linear form under linear inequality restrictions.} Pacific J Math pp: 183–195. 
+	\bibitem{Lexico2}  Charnes A (1952)\emph{ Optimality and degeneracy in linear programming}. pp: 160–170. 
+	\bibitem {} Wright J. Stephen, \emph{\;Primal-Dual Interior Point Methods}
+	\bibitem {LP} Vanderbei J. Robert, \emph{\;Linear programming:
+		Foundations and Extensions}. Dept. of Operations Research and Financial Engineering
+	Princeton University, (2001). Springer Science+ Business Media.
+	
+\end{thebibliography}
+
+
+
+\end{document}
