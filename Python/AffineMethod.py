@@ -6,6 +6,7 @@ Created on Mon Apr 29 13:49:50 2019
 """
 from stdForm import stdForm # Standard form transform
 from print_boxed import print_boxed
+from starting_point import sp # Find initial infeasible points
 import numpy as np
 
 # Clean form of printed vectors
@@ -14,8 +15,22 @@ np.set_printoptions(precision=4, threshold=10, edgeitems=4, linewidth=120, suppr
 
 ''' AFFINE-SCALING METHOD '''
 
+"""
+Input data: np.arrays of matrix A, cost vector c, vector b of the LP
+            c_form: canonical form -> 0
+"""
 
-def affine(A, s, b, c):
+
+def affine(A, b, c, c_form = 0):
+        
+    print('\n\tCOMPUTATION OF PRIMAL-DUAL AFFINE SCALING ALGORITHM')
+    
+    # Algorithm in 4 steps:  
+    # 0..Input error checking
+    # 1..Find the initial point with Mehrotra's method 
+    # 2..obtain the search direction,
+    # 3..find the largest step   
+    
         
     """ Input error checking """
         
@@ -23,7 +38,7 @@ def affine(A, s, b, c):
        raise Exception('Inputs must be a numpy arrays')
         
     # Construction in a standard form [A | I]
-    if s == 'True':
+    if c_form == 0:
         A, c = stdForm(A, c)    
     r_A, c_A = A.shape
     
@@ -34,38 +49,11 @@ def affine(A, s, b, c):
         A = A[[i for i in range(r_A) if not np.array_equal(np.linalg.qr(A)[1][i, :], np.zeros(c_A))], :]
         r_A = A.shape[0]  # Update no. of rows
 
-    
-    print('\n\tCOMPUTATION OF ALGORITHM')
-    
-    # Algorithm in three steps:    
-    # 1..Construct the initial point with the two functions, 
-    # 2..obtain the search direction, 
-    # 3..find the largest step   
-    
+
     """ Initial points """
     
-    # Initial infeasible positive (x, s) and Initial gap g
-    V = np.linalg.inv(np.dot(A, A.T)) 
-    x = np.dot(np.linalg.pinv(A), b) # initial feasible x
-    la = np.dot(A, c)                                
-    y = np.dot(V, la)                # initial feasible lambda
-    s = c - np.dot(A.T, y)           # initial feasible s
-            
-    # First update 
-    dx = np.min(x)
-    if dx < 0:
-       x += (-3/2)*dx*np.ones(c_A) 
-    ds = np.min(s)
-    if ds < 0:
-       s += (-3/2)*ds*np.ones(c_A)
-    
-    # Second update 
-    Dx = np.dot(x,s)/sum(s)
-    Ds = np.dot(x,s)/sum(x)
-    
-    x += 2*Dx*np.ones(c_A) 
-    s += 2*Ds*np.ones(c_A)
-    
+    # Initial infeasible positive (x,y,s) and Initial gap g
+    (x,y,s) = sp(A, c, b)    
     g = np.dot(c,x) - np.dot(y,b)
     
     print('\nInitial primal-dual point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))    
@@ -137,10 +125,10 @@ if __name__ == "__main__":
     A = np.array([[1, 0],[0, 1],[1, 1],[4, 2]])
     c = np.array([-12, -9])
     b = np.array([1000, 1500, 1750, 4800])
-    affine(A, 'True', b, c)
+    affine(A, b, c, 0)
     
 # optimal solution of the canonical problem at 
-#  x* = [0. 2.].                                                                                        |
+#  x* = [ 650. 1100.  350.  400.    0.    0.]                                                                                    |
 # Dual gap:   0.002675                               
 # Optimal cost:     -17699.997                                                    
 #| Number of iteration: 31   

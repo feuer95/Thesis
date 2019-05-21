@@ -12,9 +12,17 @@ import numpy as np
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
-'''' SIMPLEX METHOX II PHASES '''
+
+'''' SIMPLEX METHOD II PHASES '''
+
+"""
+Input data: np.arrays of matrix A, cost vector c, vector b of the canonical LP
+            number maximum of iterations
+            rule: Bland's rule -> 0 
+            c_form: canonical form -> 0
+"""
     
-def SimplexMethod(A, b, c, max_iter, rule):
+def SimplexMethod(A, b, c, max_iter, rule, c_form = 0):
     
     """ Error checking """
         
@@ -22,7 +30,8 @@ def SimplexMethod(A, b, c, max_iter, rule):
         raise Exception('Inputs must be a numpy arrays')
                 
     # Construction in a standard form [A | I]
-    (A, c) = stdForm(A, c)   
+    if c_form == 0:
+        (A, c) = stdForm(A, c)   
     A = np.asmatrix(A)    
     r_A, c_A = np.shape(A)
 
@@ -54,14 +63,15 @@ def SimplexMethod(A, b, c, max_iter, rule):
         x_I = np.concatenate((np.zeros(c_A),b))  
         B = set(range(c_A, c_A + r_A)) 
         
-        # Compute the simplex core 
-        infoI, xI, BI, zI, itI = fun(A_I, c_I, x_I, B, 1, max_iter, rule)     
+        # Compute the Algorithm of the extended LP 
+        it = 1
+        infoI, xI, BI, zI, itI = fun(A_I, c_I, x_I, B, it, max_iter, rule)     
         assert infoI == 0
         
         if zI > 0:
            print('The problem is not feasible.\n{} iterations in phase I.'.format(itI))
            print_boxed('Optimal cost in phase I: {}\n'.format(zI))
-           
+           return
         else: # Get initial BFS for original problem (without artificial vars.)
             xI = xI[:c_A]
             print("Found initial BFS at x: {}.\n\tStart phase II\n".format(xI))        
@@ -81,7 +91,7 @@ def SimplexMethod(A, b, c, max_iter, rule):
                     "Basis indexes: {}\n".format(B) +
                     "Nonbasis indexes: {}\n".format(set(range(c_A)) - B) +
                     "Optimal cost: {}\n".format(z.round(decimals = 3))+
-                    "Number of iteration: {}.".format(itII))
+                    "Number of iterations: {}.".format(itII))
     elif info == 1:
         print("Unlimited problem.")
     
@@ -141,10 +151,10 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
         B[r] = s  # Update basic index list
         print("\nCurrent x: {} \nCurrent B: {}\n".format(x,B))
         it += 1      
-
     raise TimeoutError('The problem is not solved after {} iterations.'.format(max_iter))
 
-#%%
+#%%ù
+    
 """Input data"""
 
 # Input data of canonical LP:
@@ -154,7 +164,7 @@ if __name__ == "__main__":
     c = np.array([-0.75, 150, -0.02, 6])
     b = np.array([0, 0, 1])
     A = np.array([[0.25, -60, -0.04, 9],[0.5, -90, -0.02, 3],[0, 0, 1, 0]])
-    SimplexMethod(A, b, c, 3, 0) # With Bland's rule
+    SimplexMethod(A, b, c, 500, 0) # With Bland's rule
 #    SimplexMethod(A, b, c, 500, 1)
     
 #    A = np.array([[1, -1],[-1, 1]])
