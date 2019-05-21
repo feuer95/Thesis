@@ -41,7 +41,7 @@ c = np.array([-1, -1])
 x = affine(A, b, c)    
 
 #Output data
-# After 5 iterations found optimal solution -2 at x* = [0. 2. 0. 1.]
+# After 6 iterations found optimal solution -2 at x* = [0. 2. 0. 1.]
 # with s = [0.5 0.  0.5 0. ]
 
 #%%

@@ -20,7 +20,6 @@ Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             c_form: canonical form -> 0
 """
 
-
 def affine(A, b, c, c_form = 0):
         
     print('\n\tCOMPUTATION OF PRIMAL-DUAL AFFINE SCALING ALGORITHM')
@@ -30,7 +29,6 @@ def affine(A, b, c, c_form = 0):
     # 1..Find the initial point with Mehrotra's method 
     # 2..obtain the search direction,
     # 3..find the largest step   
-    
         
     """ Input error checking """
         
@@ -45,10 +43,8 @@ def affine(A, b, c, c_form = 0):
     """ Check full rank matrix """
     
     if not np.linalg.matrix_rank(A) == r_A: # Remove ld rows:
-        
         A = A[[i for i in range(r_A) if not np.array_equal(np.linalg.qr(A)[1][i, :], np.zeros(c_A))], :]
         r_A = A.shape[0]  # Update no. of rows
-
 
     """ Initial points """
     
@@ -68,7 +64,7 @@ def affine(A, b, c, c_form = 0):
     # with CHOL approach
     
     it = 0
-    while abs(g) > 0.02:
+    while abs(g) > 0.005:
         
         print("\tIteration: {}\n".format(it))
         S_inv = np.linalg.inv(np.diag(s))           
@@ -113,10 +109,13 @@ def affine(A, b, c, c_form = 0):
         print('Current point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
         
-    print_boxed("Found optimal solution of the canonical problem at\n x* = {}.\n".format(x) +
+    print_boxed("Found optimal solution of the problem at\n x* = {}.\n".format(x) +
                 "Dual gap: {}\n".format("%10.6f"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
-                "Number of iteration: {}".format(it))
+                "Number of iterations: {}".format(it))
+    if it == 300:
+        raise TimeoutError("Iterations maxed out")
+
     return x
 
 if __name__ == "__main__":
@@ -125,15 +124,10 @@ if __name__ == "__main__":
     A = np.array([[1, 0],[0, 1],[1, 1],[4, 2]])
     c = np.array([-12, -9])
     b = np.array([1000, 1500, 1750, 4800])
-    affine(A, b, c, 0)
+    affine(A, b, c)
     
 # optimal solution of the canonical problem at 
 #  x* = [ 650. 1100.  350.  400.    0.    0.]                                                                                    |
 # Dual gap:   0.002675                               
-# Optimal cost:     -17699.997                                                    
-#| Number of iteration: 31   
-    A = np.array([[1, 1]])
-    b = np.array([1])
-    c = np.array([1, 0])
-#    array([0.124, 0.438, 0.438]) abs g > 0.5
-    
+# Optimal cost:     -17699.999                                                    
+# Number of iteration: 9   

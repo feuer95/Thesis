@@ -1,71 +1,50 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May 14 16:35:51 2019
-
-@author: Elena
-"""
-
-# -*- coding: utf-8 -*-
 """
 Created on Thu Apr 18 16:52:35 2019
 
 @author: Elena
 """
 from stdForm import stdForm # Function of standard form transform
-import numpy as np
+from starting_point import sp
 from print_boxed import print_boxed
+import numpy as np
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 ''' PREDICTOR-CORRECTOR MEHROTRA ALGORITHM '''
 
-def mehrotra(A, b, c):
+"""
+Input data: np.arrays of matrix A, cost vector c, vector b of the LP
+            c_form: canonical form -> 0 by default
+"""
+
+def mehrotra(A, b, c, c_form = 0):
+    
+    print('\n\tCOMPUTATION OF MEHROTRA ALGORITHM\n')
+    
     if not (isinstance(A, np.ndarray) or isinstance(b, np.ndarray) or isinstance(c, np.ndarray)):
         raise Exception('Inputs must be a numpy arrays')
     
     # Input data in a standard form [A | I]:
-    A, c = stdForm(A, c)    
+    if c_form == 0:
+        A, c = stdForm(A, c)    
     r_A, c_A = A.shape
     
-    # Check if input data are correct
-    if not (isinstance(A, np.ndarray) or isinstance(b, np.ndarray) or isinstance(c, np.ndarray)):
-        raise Exception('Inputs must be a numpy arrays')
+    """ Check full rank matrix """
     
-    print('\n\tCOMPUTATION OF MEHROTRA ALGORITHM\n')
+    if not np.linalg.matrix_rank(A) == r_A: # Remove ld rows:
+        A = A[[i for i in range(r_A) if not np.array_equal(np.linalg.qr(A)[1][i, :], np.zeros(c_A))], :]
+        r_A = A.shape[0]  # Update no. of rows
+
+    """ Initial points """
     
-    #%%
-    
-    """ Infeasible initial vectors"""
-    
-    # We search the feasible points  x and s with minimum norm: min ||x||_2, min ||s||_2 
-    # then we construct positive initial infeasible points
-    
-    V = np.linalg.inv(np.dot(A, A.T)) 
-    x = np.dot(np.linalg.pinv(A), b) # initial feasible x
-    la = np.dot(A, c)                                
-    y = np.dot(V, la)                # initial feasible lambda
-    s = c - np.dot(A.T, y)           # initial feasible s
-            
-    # First update 
-    dx = np.min(x)
-    if dx < 0:
-       x += (-3/2)*dx*np.ones(c_A) 
-    ds = np.min(s)
-    if ds < 0:
-       s += (-3/2)*ds*np.ones(c_A)
-    
-    # Second update 
-    Dx = np.dot(x,s)/sum(s)
-    Ds = np.dot(x,s)/sum(x)
-    
-    x += 2*Dx*np.ones(c_A) 
-    s += 2*Ds*np.ones(c_A)
-    
-    print('Initial infeasible vectors:\n x_0 = {} \n lambda_0 = {}\n s_0 = {}'.format(x.round(decimals = 3),y.round(decimals = 3),s.round(decimals = 3)))
+    # Initial infeasible positive (x,y,s) and Initial gap g
+    (x,y,s) = sp(A, c, b)    
     g = np.dot(c,x) - np.dot(y,b)
-    print('Dual initial gap: {}.'.format("%.3f"%g))
     
+    print('\nInitial primal-dual point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))    
+    print('Dual initial gap: {}.\n'.format("%10.3f"%g))      
+  
     #%%
     
     """ Predictor step: compute affine direction """
@@ -75,7 +54,7 @@ def mehrotra(A, b, c):
     # and R = [rb, rc, - x_0*s_0]
     
     it = 0
-    while abs(sum(x*s)) > 0.5:
+    while abs(g) > 0.005:
         print("\n\tIteration: {}\n".format(it), end='')   
         # CHOLESKY for normal equation with matrix A* D^2 *A^{T}
         S_inv = np.linalg.inv(np.diag(s))  # S^{-1}
@@ -149,21 +128,12 @@ def mehrotra(A, b, c):
         y += Alfa2*y2
         s += Alfa2*s2
         it += 1
-        # Feasibility og primal-dual vector
-        B = np.dot(A,x)
-#        C = np.dot(A.T, y) + s
         # Dual gap c^{T}*x - b^{T}*y = x*s
         z = np.dot(c,x)
         g = z - np.dot(y,b)
-        if max(B-b) < 0.05:
-            feas = 'yes'
-        else:
-            feas = 'no'
-        print('CORRECTOR STEP:\nCurrent primal-dual point: \n x_k = ',x,'\n s_k = ',s,'\nlambda_k = ',y)
-        print('Current g: {}\n'.format("%.3f"%g))
-    #    print('\nCost function: {}\n'.format("%.3f"%np.dot(c,x)))
-        print('Feasibility:',feas)
         
+        print('CORRECTOR STEP:\nCurrent primal-dual point: \n x_k = ',x,'\n s_k = ',s,'\nlambda_k = ',y)
+        print('Current g: {}\n'.format("%.3f"%g))        
         
     print_boxed("Found optimal solution of the standard problem at\n x* = {}.\n\n".format(x) +
                 "Dual gap: {}\n".format("%10.6f"%g) +
@@ -178,8 +148,16 @@ def mehrotra(A, b, c):
 
 # Input data of canonical LP:
 if __name__ == "__main__":
-    
-    A = np.array([[0.25, -60, -0.04, 9, 1, 0, 0],[0.5, -90, -0.02, 3, 0, 1, 0],[0, 0, 1, 0, 0, 0, 1]])   
-    b = np.array([0, 0, 1])
-    c = np.array([-0.75, 150, -0.02, 6, 0, 0, 0])
+      
+#     Input data of canonical LP:
+    A = np.array([[1, 0],[0, 1],[1, 1],[4, 2]])
+    c = np.array([-12, -9])
+    b = np.array([1000, 1500, 1750, 4800])
     mehrotra(A, b, c)
+    
+# optimal solution of the canonical problem at 
+#  x* = [ 649.9999 1100.0001  350.0001  399.9999    0.        0.0003]                                                                              |
+# Dual gap:   0.001343                                                      
+# Optimal cost:  -17699.999                                                                                               
+# Number of iteration: 5   
+    
