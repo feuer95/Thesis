@@ -16,7 +16,8 @@
 \usepackage{statrep}
 \usepackage{emptypage}
 \usepackage{newlfont}
-
+\usepackage{algpseudocode} 
+\usepackage[Algorithm]{algorithm}
 
 \newcommand{\numberset}{\mathbb}
 \newcommand{\N}{\numberset{N}}\usepackage{amsmath}
@@ -494,8 +495,8 @@ where $\mathit{J}$ is the Jacobian of $\mathit{F}$. If the current point is stri
 0&A^{T}&I \\A&0&0\\X&0&S
 	\end{bmatrix}\begin{bmatrix}
 	\Delta x\\\Delta\lambda \\\Delta s
-	\end{bmatrix}=\begin{bmatrix}
-	0\\0\\-XSe
+	\end{bmatrix}=-\begin{bmatrix}
+	0\\0\\XSe
 	\end{bmatrix}.
 \end{equation}
 
@@ -596,7 +597,7 @@ Most primal-dual methods define $\tau$ as the average value of the point $(x_{1}
 	\> Choosing $\alpha_{k}$ so that $(x^{k+1}, s^{k+1})>0$ \\
 	\textbf{end}
 \end{tabbing}
-A path-following algorithm explicity restricts the iterates to a neighborhood of the central path $\mathcal{C}$: if $\sigma = 1$, the equations define a \textit{centering direction}, a Newton step toward the point $(x_{\sigma\mu},\lambda_{\sigma\mu}, s_{\sigma\mu})\in\mathcal{C}$, if $\sigma = 0$ then we have the \textit{affine scaling method}. Many algorithms use intermediate values of $\sigma$ from $(0,1)$ to trade off between the twiin goals of reucing $\mu$ nd improving centrality. The neighborhood excludes points $(x, s) $ that are too close to the boundary of the nonegative orthant. Therefore, search directions calculated from any point in the neighborhood make at least minimal progress toward the solution set.
+A path-following algorithm explicity restricts the iterates to a neighborhood of the central path $\mathcal{C}$: if $\sigma = 1$, the equations define a \textit{centering direction}, a Newton step toward the point $(x_{\sigma\mu},\lambda_{\sigma\mu}, s_{\sigma\mu})\in\mathcal{C}$, if $\sigma = 0$ then we have the \textit{affine scaling method}.\\ Many algorithms use intermediate values of $\sigma$ in $(0,1)$ to trade off between the twin goals of reducing $\mu$ nd improving centrality. The neighborhood excludes points $(x, s) $ that are too close to the boundary of the nonegative orthant. Therefore, search directions calculated from any point in the neighborhood make at least minimal progress toward the solution set.
  We define the two most interesting neighborhoods of the central path as given
 by Mizuno et al~\cite{5}:\\
 \begin{equation*}
@@ -626,7 +627,121 @@ In this research it will be proposed the \textit{long-step path-following algori
 	\> Choosing the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)$\\
 	\textbf{end}
 \end{tabbing}
- \newpage
+The following lemma shows some properties of the points in $\mathcal{N}_{-\infty}(\gamma)$ that are used in the analysis section.
+\begin{lem}
+	Let $\mu_{0}\geq 0$ and $\gamma\in(0,1)$. Then for all points $(x,\lambda,s)$ with
+	\begin{equation*}
+	(x,\lambda,s)\in\mathcal{N}_{-\infty}(\gamma)\subset\mathcal{F}^{o}, \;\; \mu \leq \mu_{0}
+	\end{equation*}
+	there are constants $C_{0}$ and $C_{1}$ such that
+\begin{align*}
+\lVert(x,s) \rVert&\leq C_{0}\\0< x_{i}&\leq \mu/C_{1}\;\; (i \in\mathcal{N}),\\
+0< s_{i}&\leq \mu/C_{1}\;\; (i \in\mathcal{B}),\\ 
+s_{i}&\geq C_{1}\gamma \;\; (i \in\mathcal{N}),\\
+x_{i}&\geq C_{1}\gamma \;\; (i \in\mathcal{B}).\\
+\end{align*}
+\end{lem}
+\begin{proof}
+~\cite{Wright} pag. 101
+\end{proof}
+\newpage
+\section{Mehrotra's method}
+Since Karmarkar's landmark paper \cite{Kar}-pagg. 373-395, interior points methods became one of the most active research area that produced a large amount of research results. Moreover, several powerful IPMs have been developed. Predictor-corrector methods are among the most efficient IPMs and most implementations are based on a variant of Mehrotra's predictor-corector algorithm. \\
+Mehrotra's contribution was to combine the work developed by Montiero, Adles and Resende \cite{MARE} and the infeasible-interior-point path-following approach implemented by Lustig, Marsten and Shanno \cite{LMS}.\\ The pratical importance  of Mehrotra's algorithm and the lack of theoretical analysis of this method giustifies/leads to the study and the analysis in this section.
+\\
+Mehrotra's algorithm generates sequence of infeasible iterates $(x^{k},\lambda^{k},s^{k})$ for which $(x^{k},s^{k})>0$. The search direction at each iteration consists of three components:
+\begin{enumerate}
+	\item an affine-scaling "predictor" direction.
+	\item a centering term whose size is governed by the adaptively chosen centering parameter $\sigma$.
+	\item a "corrector" direction that attempts to compensate for some of the nonlinearity in the affine-scaling direction.
+	\end{enumerate}
+The first two components, the affine-scaling steo and the centering term, combine to make up the standard infeasible-interior-point step from the generic equations. However, the affine-scaling component is calculated separately from, and prior to, the centering component. By arranging the computations in this way, we gain a key advantage: the ability to choose the centering parameter $\sigma$ adaptively rather then a priori, as in the algorithm LPF.\\
+If the affine-scaling direction makes good progress in reducing the duality measure $\mu$ while remaining inside the positive orthant defined by $(x,s)>0$, we conclude that little centering is needed, so we choose $\sigma$ close to 1.\\
+\subsection*{The algorithm}
+Given a point $(x, \lambda, s)$ with $(x, s)> 0$, we compute the affine-scaling direction:
+\begin{equation}\label{(A)}
+\begin{bmatrix}
+0&A^{T}&I \\A&0&0\\X&0&S
+\end{bmatrix}\begin{bmatrix}
+\Delta x^{\text{aff}}\\\Delta\lambda^{\text{aff}}\\\Delta s^{\text{aff}}
+\end{bmatrix}=-\begin{bmatrix}
+A^{T}\lambda+s-c\\Ax-b\\XSe
+\end{bmatrix}.
+\end{equation}
+Now we find the step lengths to the boundary along this direction, performing separate calculations for the primal and dual components as follow
+\begin{align*}
+\alpha_{\text{aff}}^{\text{pri}}=\arg\max\{\alpha\in[0,1]\;|\;x +\alpha\Delta x^{\text{aff}}\geq 0\}\\
+\alpha_{\text{aff}}^{\text{dual}}=\arg\max\{\alpha\in[0,1]\;|\;s +\alpha\Delta s^{\text{aff}}\geq 0\}
+\end{align*}
+To measure the efficacy of the affine-scaling direction, we define $\mu_{\text{aff}}$ as the hypothetical value of $\mu$ resulting from a full step to the boundary, that is,
+\begin{equation*}
+	\mu_{\text{aff}}= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n
+\end{equation*}
+If $\mu_{\text{aff}}\ll\mu$, the affine-scaling direction is a good search direction that permits significant progress to be made in reducing $\mu$, so we choose the centering parameter close to 0. If $\mu_{\text{aff}}$ is just a little smaller than $\mu$, we choose $\sigma$ closer to 1. This choice has the effect of moving us closer  to the central path $\mathcal{C}$, so that the algorithm is in a better position to achieve a substantial decrease in $\mu$ on the next iteration.\\
+Mehrotra \cite{MER} suggests the following heuristic, which has proved to be effective in exhaustive computational testing:
+\begin{equation*}
+\sigma = \bigg(\frac{\mu_{\text{aff}}}{\mu}\bigg)^{3}.
+\end{equation*}
+To calculate the centering step component, we solve a linear system with the same coffeicient matrix as in \ref{(A)} and right-hand side $(0, 0,\sigma\mu e)$.\\
+To motivate the corrector step, we see how the $i$th pairwise product $x_{i}s_{i}$ is affected by a full step in the affine-scaling direction:
+\begin{equation*}
+(x_{i}+\Delta x_{i}^{\text{aff}})(s_{i}+\Delta s_{i}^{\text{aff}})= x_{i}s_{i}+ x_{i}\Delta s_{i}^{\text{aff}}+s_{i}\Delta x_{i}^{\text{aff}}+\Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{aff}} =\Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{aff}}.
+\end{equation*}
+When a full step is taken, the pairwise product $x_{i}s_{i}$ transforms to $\Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{aff}}$, instead of 0. The corrector component $(\Delta x^{\text{cor}}, \Delta \lambda^{\text{cor}}, \Delta s^{\text{cor}})$ tries to compensate for this deviation from linearity, modifying the search direction so that the pairwise products come closer to their target value to 0. This step satisfies the following system:
+\begin{equation}\label{(B)}
+\begin{bmatrix}
+0&A^{T}&I \\A&0&0\\X&0&S
+\end{bmatrix}\begin{bmatrix}
+\Delta x^{\text{cor}}\\\Delta\lambda^{\text{cor}} \\\Delta s^{\text{cor}}
+\end{bmatrix}=-\begin{bmatrix}
+0\\0\\\Delta X^{\text{aff}}\Delta S^{\text{aff}}e
+\end{bmatrix}.
+\end{equation}
+where
+\begin{align*}
+\Delta X^{\text{cor}}& = \text{diag}(\Delta x_{1}^{\text{aff}}, \Delta x_{2}^{\text{aff}},\dots,\Delta x_{n}^{\text{aff}})\\
+\Delta S^{\text{cor}}& = \text{diag}(\Delta s_{1}^{\text{aff}}, \Delta s_{2}^{\text{aff}},\dots,\Delta s_{n}^{\text{aff}}).
+\end{align*}
+To assess the effect of the corrector component, we examine the pairwise product obtained from a full step along the combined affine-scaling/corrector direction. From \ref{(B)}:
+\begin{equation*}
+(x_{i}+\Delta x_{i}^{\text{aff}}+\Delta x_{i}^{\text{cor}})(s_{i}+\Delta s_{i}^{\text{aff}}+\Delta s_{i}^{\text{cor}})= \Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{cor}}+\Delta x_{i}^{\text{cor}}\Delta s_{i}^{\text{aff}}+\Delta x_{i}^{\text{cor}}\Delta s_{i}^{\text{cor}}.
+\end{equation*}
+This result yelds to a better reduction of the duality measure: in fact we have \\$\lVert(\Delta x^{\text{aff}},\Delta s^{\text{aff}}) \rVert = \mathcal{O}(\mu)$ and $\lVert(\Delta x^{\text{cor}},\Delta s^{\text{cor}}) \rVert = \mathcal{O}(\mu^{2})$.\\
+When the limiting matrix is singular, however, the corrector step may no longer be smaller in norm than the affine-scaling step, actually, it is often larger. Even in this situation, the use of the correctot component usually enhances the overall efficiency of the algorithm in practice.\\
+The combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \lambda^{\text{cc}}, \Delta s^{\text{cc}})$ is obtained by solving the following system:
+\begin{equation}\label{(C)}
+\begin{bmatrix}
+0&A^{T}&I \\A&0&0\\X&0&S
+\end{bmatrix}\begin{bmatrix}
+\Delta x^{\text{cc}}\\\Delta\lambda^{\text{cc}} \\\Delta s^{\text{cc}}
+\end{bmatrix}=-\begin{bmatrix}
+0\\0\\\Delta X^{\text{aff}}\Delta S^{\text{aff}}e - \sigma\mu e
+\end{bmatrix}.
+\end{equation}
+Having described the eseential elements of Mehrotra'a approach, the algorithm is structured as following:\\
+\begin{algorithm}
+	\caption{Predictor-corrector Mehrotra algorithm}
+	\begin{algorithmic}[1]
+		\State Given: $(x^{0}, \lambda^{0}, s^{0}) > 0$
+		\For{$k = 1,\dots$}
+		\State set $(x,\lambda,s)=(x^{k},\lambda^{k},s^{k})$ and solve \ref{(A)} for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;
+		\State calculate $\alpha_{\text{aff}}^{\text{pri}}$, $\alpha_{\text{aff}}^{\text{dual}}$ and $\mu_{\text{aff}}$
+		\State set sentering parameter to $\sigma = (\mu_{\text{aff}}/{\mu})^{3}$
+		\State solve \ref{(C)} for $(x^{cc},\lambda^{cc},s^{cc})$
+		\State compute search direction and step to boundary from:
+		\State $\;\;\;\;\;\;\;(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})=(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+(x^{cc},\lambda^{cc},s^{cc})$;
+		\State $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{pri}}=\arg\max\{\alpha\geq0\;|\;x^{k} +\alpha\Delta x^{k}\geq 0\}$
+		\State $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{dual}}=\arg\max\{\alpha\geq0\;|\;s^{k} +\alpha\Delta s^{k}\geq 0\}$\\
+		\State set $\alpha_{k}^{\text{pri}}=\min(0.99\ast\alpha_{\text{max}}^{\text{pri}},1)$ and $\alpha_{k}^{\text{dual}}=\min(0.99\ast\alpha_{\text{max}}^{\text{dual}},1)$;
+		\State set
+		\State$\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;x^{k+1} = x^{k} + \alpha_{k}^{\text{pri}}\Delta x^{k}$;
+		\State$\;\;\;\;\;\;(\lambda^{k+1},s^{k+1}) = (\lambda^{k},s^{k}) + \alpha_{k}^{\text{dual}}\Delta (\lambda^{k},\Delta s^{k})$;		
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+Although we need to solve two linear systems instead of one at each iteration, the marginal cost is not very great because the systems have the same coeffifient matrix and then we need only modify the right-hand side.
+\newpage
 \section{Analysis of the methods}
 In this section it is illustrated a comprehensive convergence analysis, using important theoretical results.
 
@@ -666,7 +781,7 @@ with the set $\mathcal{B}$ defined previously in (2.11).
 	\begin{equation*}
 	\frac{s_{i}}{x_{i}}(\Delta x_{i})^{2}\leq\lVert D^{-1}\Delta x\rVert^{2}\leq n\mu.
 	\end{equation*}
-	Hence, choosing $i\in\mathcal{N}$ and using $x_{i}s_{i}\leq\gamma\mu$, we find that
+	Hence, choosing $i\in\mathcal{N}$ and using $x_{i}s_{i}\geq\gamma\mu$, we find that
 	\begin{equation*}
 	(\Delta x_{i})^{2}\leq\frac{n\mu x_{i}}{s_{i}}=\frac{n\mu x_{i}^{2}}{x_{i}s_{i}}\leq\frac{n\mu^{3}}{\gamma\mu C^{2}}\mu^{2}.
 	\end{equation*}
@@ -739,7 +854,7 @@ In the next lemma $A_{\mathcal{B}}$, $A_{\mathcal{N}}$,$D_{\mathcal{B}}$ and $D_
 	 \end{equation}
 	 Since this problem  has strictly convex objective, unqueness of its solution $v=\Delta s_{\mathcal{N}}$ is guaranteed. To conclude, we can recover $\Delta \lambda=\pi$ as defined above. 
 \end{proof}
-\begin{thm}
+\begin{thm}\label{(Z)}
 	Given $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$ and $(\Delta x,\Delta \lambda, \Delta s)$ computed in ~\ref{(Q)}, there is a constant K such that
 	\begin{equation*}
 	\lVert (\Delta x, \Delta s)\rVert \leq K \mu.
@@ -756,7 +871,7 @@ In the next lemma $A_{\mathcal{B}}$, $A_{\mathcal{N}}$,$D_{\mathcal{B}}$ and $D_
 	\end{equation}
 	The result follows when we define K$\;=\bar{K} \lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert C$.
 \end{proof}
-
+A result similar to the Theorem~\ref{(Z)} holds for steps of an infeasible interior-point algorithm. See~\cite{Wright}.
 
 
 \subsection{Analysis LPF}
@@ -907,21 +1022,23 @@ the real number computation model we can not apply this argument.\\
 
 \begin{thebibliography}{9}
 	
-	\bibitem{W}Wright J. Stephen, Nocedal Jorge,\emph{\;Numerical Optimization}, Springer Science+Business Media, 2006.
-	\bibitem{1}Dantzig, G. B.,\emph{\;Linear Programming and Extensions}, Princeton, University Press, Princeton, NJ,(1963).
-	\bibitem{2} Andersen, E. D. and Ye, Y. (1996). \textit{Combining interior-point and pivoting algorithms for Linear Programming}.
-	\bibitem{Lem} Lemke, C.E (1954). The dual method of solving the linear programming problem. Nav. Res. Log. Q.
-	\bibitem{3}Victor Klee and George J. Minty.\emph{ How good is the simplex algorithm? Technical report}, (1970). Washington University Department of Mathematics.
-	\bibitem{4} N. K. Karmarkar,\emph{ A new polynomial-time algorithm for linear programming}, Math. Oper. Res. 14 (1974)
-	\bibitem{5} S. Mizuno, M.J. Todd, and Y. Yer,\emph{\;On adaptive-step primal-dual interior-point algorithms for linear programming}, Math. of OR, vol. 18, pp. 964-981, (1993). 
+	\bibitem{W}Wright J. Stephen, Nocedal Jorge,\emph{\;Numerical Optimization}, Springer Science+Business Media, (2006).
+	\bibitem{1}Dantzig, G. B.,\emph{\;Linear Programming and Extensions}, Princeton, University Press, Princeton, NJ, (1963).
+	\bibitem{2} Andersen E. D, and Ye Y.,  \textit{Combining interior-point and pivoting algorithms for Linear Programming}, 1996.
+	\bibitem{Lem} Lemke, . The dual method of solving the linear programming problem. Nav. Res. Log. Q, C.E 1954
+	\bibitem{3}Victor Klee and George J. Minty.\emph{ How good is the simplex algorithm? Technical report}, Washington University Department of Mathematics, 1970.
+	\bibitem{Kar} N. K. Karmarkar,\emph{ A new polynomial-time algorithm for linear programming}, Combinatorica, (1984).
+	\bibitem{5} S. Mizuno, M.J. Todd, and Y. Ye,\emph{\;On adaptive-step primal-dual interior-point algorithms for linear programming}, Math. of OR, vol. 18, pp. 964-981, (1993). 
 	\bibitem{5} Dantzig G. B., Orden A., Wolfe P., (1955) \emph{ Notes on linear programming: Part I- The generalized simplex method for
 	minimizing a linear form under linear inequality restrictions.} Pacific J Math pp: 183-195. 
-	\bibitem{Lexico2}  Charnes A (1952)\emph{ Optimality and degeneracy in linear programming}. pp: 160-170. 
-	\bibitem {} Wright J. Stephen, \emph{\;Primal-Dual Interior Point Methods}
+	\bibitem{Lexico2}  Charnes A. \emph{ Optimality and degeneracy in linear programming}, 1952. pp: 160-170. 
+	\bibitem {Wright} Wright J. Stephen, \emph{\;Primal-Dual Interior Point Methods.} SIAM: society for industrial and applied mathematics. Philadelphia, pag 134.
 	\bibitem {LP} Vanderbei J. Robert, \emph{\;Linear programming:
 		Foundations and Extensions}. Dept. of Operations Research and Financial Engineering
-	Princeton University, (2001). Springer Science+ Business Media.
-	
+	Princeton University, Springer Science+ Business Media, 2001.
+	\bibitem{MARE} R. D. C. Monteiro, I. Adler, and M. G. C. Resende, \emph{A polynomial-time primal-dual affine scaling algorithm for linear and convex quadratic programming and its power serier extension}, Math. of OR, 15, ()1990), pp.191-214.
+	\bibitem{LMS} I. J. Lustig, E. Marsten, D. F. Shanno, \emph{Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, (1991), pp. 191-222.
+	\bibitem{MER} S. Mehrotra, \emph{ On the implementation of a primal-dual interior point method. } SIAM, 2 (1992), pp. 575-601. 
 \end{thebibliography}
 
 
