@@ -707,7 +707,8 @@ To assess the effect of the corrector component, we examine the pairwise product
 (x_{i}+\Delta x_{i}^{\text{aff}}+\Delta x_{i}^{\text{cor}})(s_{i}+\Delta s_{i}^{\text{aff}}+\Delta s_{i}^{\text{cor}})= \Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{cor}}+\Delta x_{i}^{\text{cor}}\Delta s_{i}^{\text{aff}}+\Delta x_{i}^{\text{cor}}\Delta s_{i}^{\text{cor}}.
 \end{equation*}
 This result yelds to a better reduction of the duality measure: in fact we have \\$\lVert(\Delta x^{\text{aff}},\Delta s^{\text{aff}}) \rVert = \mathcal{O}(\mu)$ and $\lVert(\Delta x^{\text{cor}},\Delta s^{\text{cor}}) \rVert = \mathcal{O}(\mu^{2})$.\\
-When the limiting matrix is singular, however, the corrector step may no longer be smaller in norm than the affine-scaling step, actually, it is often larger. Even in this situation, the use of the correctot component usually enhances the overall efficiency of the algorithm in practice.\\
+When the limiting matrix is singular, however, the corrector step may no longer be smaller in norm than the affine-scaling step, actually, it is often larger. Even in this situation, the use of the correctot component usually enhances the overall efficiency of the algorithm in practice.
+
 The combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \lambda^{\text{cc}}, \Delta s^{\text{cc}})$ is obtained by solving the following system:
 \begin{equation}\label{(C)}
 \begin{bmatrix}
@@ -717,7 +718,7 @@ The combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \lambda^{\t
 \end{bmatrix}=-\begin{bmatrix}
 0\\0\\\Delta X^{\text{aff}}\Delta S^{\text{aff}}e - \sigma\mu e
 \end{bmatrix}.
-\end{equation}
+\end{equation}\newpage
 Having described the eseential elements of Mehrotra'a approach, the algorithm is structured as following:\\
 \begin{algorithm}
 	\caption{Predictor-corrector Mehrotra algorithm}
@@ -739,10 +740,11 @@ Having described the eseential elements of Mehrotra'a approach, the algorithm is
 		\EndFor
 	\end{algorithmic}
 \end{algorithm}
-
+\\
 Although we need to solve two linear systems instead of one at each iteration, the marginal cost is not very great because the systems have the same coeffifient matrix and then we need only modify the right-hand side.
-\newpage
-\section{Analysis of the methods}
+
+
+\chapter{Analysis of the methods}
 In this section it is illustrated a comprehensive convergence analysis, using important theoretical results.
 
 \subsection{Affine-scaling method convergence}
