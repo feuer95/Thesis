@@ -34,6 +34,10 @@ def SimplexMethod(A, b, c, max_iter, rule):
         r_A = A.shape[0]  # Update no. of rows                                                       
     
     print('\n\tCOMPUTATION OF SIMPLEX ALGORITHM:\n\n')
+    if rule == 0:
+        print('with the Bland\'s rule:\n')
+    else:
+        print('without the Bland\'s rule:\n')
     
     """ IIphases simplex method """
 
@@ -97,7 +101,7 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
         lamda = c[B] * B_inv
         if rule == 0:  # Bland rule
             optimum = True
-            for s in NB:  # Read in lexicographical index order
+            for s in NB:  
                 m = np.asscalar(c[s] - lamda * A[:, s])
                 if m < 0:
                     optimum = False

@@ -1,0 +1,145 @@
+runfile('C:/Users/elena/Documents/Thesis/Python/Bales_example.py', wdir='C:/Users/elena/Documents/Thesis/Python')
+
+Find the optimal solution of the Beale's problem  with the simplex method:
+
+
+        COMPUTATION OF SIMPLEX ALGORITHM:
+
+
+with the Bland's rule:
+
+        Iteration: 1
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [0, 5, 6]
+
+        Iteration: 2
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [0, 1, 6]
+
+        Iteration: 3
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [2, 1, 6]
+
+        Iteration: 4
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [2, 3, 6]
+
+        Iteration: 5
+
+Current x: [0.016 0.    1.    0.004 0.    0.    0.   ] 
+Current B: [2, 3, 0]
+
+        Iteration: 6
+
+Current x: [0.04 0.   1.   0.   0.03 0.   0.  ] 
+Current B: [2, 4, 0]
+
+        Iteration: 7
+----------------------------------------
+| Found optimal solution at x* =       |
+| [0.04 0.   1.   0.   0.03 0.   0.  ] |
+|                                      |
+| Basis indexes: {0, 2, 4}             |
+| Nonbasis indexes: {1, 3, 5, 6}       |
+| Optimal cost: -0.05                  |
+| Number of iteration: 7.              |
+----------------------------------------
+
+
+
+
+
+
+
+
+
+ -.--.--.--.--.--.--.--.--.--.--.--.--.--.--.--.--.- 
+
+
+        COMPUTATION OF SIMPLEX ALGORITHM:
+
+
+without the Bland's rule:
+
+        Iteration: 1
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [0, 5, 6]
+
+        Iteration: 2
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [0, 1, 6]
+
+        Iteration: 3
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [2, 1, 6]
+
+        Iteration: 4
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [2, 3, 6]
+
+        Iteration: 5
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [4, 3, 6]
+
+        Iteration: 6
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [4, 5, 6]
+
+        Iteration: 7
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [0, 5, 6]
+
+        Iteration: 8
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [0, 1, 6]
+
+        Iteration: 9
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [2, 1, 6]
+
+        Iteration: 10
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [2, 3, 6]
+
+        Iteration: 11
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [4, 3, 6]
+
+        Iteration: 12
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [4, 5, 6]
+
+        Iteration: 13
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [0, 5, 6]
+
+        Iteration: 14
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [0, 1, 6]
+
+        Iteration: 15
+
+Current x: [0. 0. 0. 0. 0. 0. 1.] 
+Current B: [2, 1, 6]
+
+Traceback (most recent call last):
+
+TimeoutError: The problem is not solved after 15 iterations.

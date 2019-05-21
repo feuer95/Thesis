@@ -4,80 +4,85 @@ Created on Mon Apr 29 13:49:50 2019
 
 @author: Elena
 """
-from Initial_primal_feasible_point import InitFeas
-from Initial_dual_feasible_point import InitFeasD
-from stdForm import stdForm
+from stdForm import stdForm # Standard form transform
+from print_boxed import print_boxed
 import numpy as np
 
 # Clean form of printed vectors
 np.set_printoptions(precision=4, threshold=10, edgeitems=4, linewidth=120, suppress = True)
 
-""" Info boxes """
-    
-def print_boxed(msg: str) -> None:
-
-    lines = msg.splitlines()
-    max_len = max(len(line) for line in lines)
-
-    if max_len > 100:
-        raise ValueError("Overfull box")
-
-    print('-' * (max_len + 4))
-    for line in lines:
-        print('| ' + line + ' ' * (max_len - len(line)) + ' |')
-    print('-' * (max_len + 4))    
-
-#%%
 
 ''' AFFINE-SCALING METHOD '''
 
-def affine(A, b, c, u, v):
+
+def affine(A, s, b, c):
         
-    """ Error checking """
+    """ Input error checking """
         
     if not (isinstance(A, np.ndarray) or isinstance(b, np.ndarray) or isinstance(c, np.ndarray)):
-        info = 1
-        raise Exception('Inputs must be a numpy arrays: INFO {}'.format(info))
+       raise Exception('Inputs must be a numpy arrays')
         
     # Construction in a standard form [A | I]
-    A, c = stdForm(A, c)    
+    if s == 'True':
+        A, c = stdForm(A, c)    
     r_A, c_A = A.shape
+    
+    """ Check full rank matrix """
+    
+    if not np.linalg.matrix_rank(A) == r_A: # Remove ld rows:
+        
+        A = A[[i for i in range(r_A) if not np.array_equal(np.linalg.qr(A)[1][i, :], np.zeros(c_A))], :]
+        r_A = A.shape[0]  # Update no. of rows
+
+    
     print('\n\tCOMPUTATION OF ALGORITHM')
     
-    # The algorithm in three steps:    
+    # Algorithm in three steps:    
     # 1..Construct the initial point with the two functions, 
     # 2..obtain the search direction, 
     # 3..find the largest step   
     
     """ Initial points """
     
-    # (x, s) is positive
-    if u == 0:
-        x = InitFeas(A, b, 0.009, 0.008)
-    if u == 1:
-        x = np.ones(c_A)*0.1 
-        print(x)
-    if v == 0:
-        (y, s) = InitFeasD(A, c, 0.5, 0.5)
-    if v == 1:
-        s = np.ones(c_A)
-        y = np.ones(r_A)*(-1) 
+    # Initial infeasible positive (x, s) and Initial gap g
+    V = np.linalg.inv(np.dot(A, A.T)) 
+    x = np.dot(np.linalg.pinv(A), b) # initial feasible x
+    la = np.dot(A, c)                                
+    y = np.dot(V, la)                # initial feasible lambda
+    s = c - np.dot(A.T, y)           # initial feasible s
+            
+    # First update 
+    dx = np.min(x)
+    if dx < 0:
+       x += (-3/2)*dx*np.ones(c_A) 
+    ds = np.min(s)
+    if ds < 0:
+       s += (-3/2)*ds*np.ones(c_A)
     
-    # Initial gap
+    # Second update 
+    Dx = np.dot(x,s)/sum(s)
+    Ds = np.dot(x,s)/sum(x)
+    
+    x += 2*Dx*np.ones(c_A) 
+    s += 2*Ds*np.ones(c_A)
+    
     g = np.dot(c,x) - np.dot(y,b)
-    print('Dual initial gap: {}.\n'.format("%10.3f"%g))
     
-    
+    print('\nInitial primal-dual point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))    
+    print('Dual initial gap: {}.\n'.format("%10.3f"%g))      
     
    #%%
         
     """ search vector direction """
     
-    # Compute the search direction solving the matricial system
-    # Instead of solving the std system matrix it is uses AUGMENT SYSTEM with CHOL approach
+    # Compute the search direction solving the matricial system with sigma = 0
+    # Instead of solving the std system matrix it is uses AUGMENT SYSTEM 
+    # with CHOL approach
+    
     it = 0
-    while abs(g) > 0.005:
-        print("\tIteration: {}\n".format(it), end='')
+    while abs(g) > 0.02:
+        
+        print("\tIteration: {}\n".format(it))
         S_inv = np.linalg.inv(np.diag(s))           
         W1 = S_inv*np.diag(x)                       # W1 = D = S^(-1)*X    
         W2 = np.dot(A, W1)                          # W      A*S^(-1)*X
@@ -103,39 +108,44 @@ def affine(A, b, c, u, v):
         
         """ largest step length """
         
-        # Largest step length such that (x, s) is positive
-        m = min([(-x[i] / x1[i], i) for i in range(c_A) if x[i]/x1[i] < 0], default = [0])[0] 
-        n = min([(-s[i] / s1[i], i) for i in range(c_A) if s[i]/s1[i] < 0])[0] 
-        t = (0.999)*min(m, n)
-        if t > 1:
-           t = 1
+        # Largest step length T such that (x, s) + T (x1, s1) is positive
+        m = min([(-x[i] / x1[i], i) for i in range(c_A) if x1[i] < 0], default = [1])[0] 
+        n = min([(-s[i] / s1[i], i) for i in range(c_A) if s1[i] < 0], default = [1])[0] 
+        T = (0.9)*min(m, n) 
+
            
         # INCREMENT of the vectors and the number of iterations
-        x = x + t*x1
-        y = y + t*y1
-        s = s + t*s1
-        
+        x += min(T,1)*x1
+        y += min(T,1)*y1
+        s += min(T,1)*s1        
+        z = np.dot(c, x) # Current optimal solution
+        g = z - np.dot(y, b)        
         it += 1
-        print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
-        z = np.dot(c, x)
-        g = z - np.dot(y,b)
+        
+        print('Current point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
         
-    print_boxed("Found optimal solution of the canonical problem at\n x* = {}.\n\n".format(x[:c_A-r_A].round(decimals = 3)) +
+    print_boxed("Found optimal solution of the canonical problem at\n x* = {}.\n".format(x) +
                 "Dual gap: {}\n".format("%10.6f"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
                 "Number of iteration: {}".format(it))
     return x
 
 if __name__ == "__main__":
+    
 #     Input data of canonical LP:
     A = np.array([[1, 0],[0, 1],[1, 1],[4, 2]])
     c = np.array([-12, -9])
     b = np.array([1000, 1500, 1750, 4800])
-    affine(A, b, c, 0, 0)
+    affine(A, 'True', b, c)
     
 # optimal solution of the canonical problem at 
 #  x* = [0. 2.].                                                                                        |
 # Dual gap:   0.002675                               
-# Optimal cost:     -2.000                           
-#| Number of iteration: 4   
+# Optimal cost:     -17699.997                                                    
+#| Number of iteration: 31   
+    A = np.array([[1, 1]])
+    b = np.array([1])
+    c = np.array([1, 0])
+#    array([0.124, 0.438, 0.438]) abs g > 0.5
+    
