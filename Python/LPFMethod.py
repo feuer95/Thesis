@@ -21,9 +21,9 @@ Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             c_form: canonical form -> 0 by default
 """
 
-def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0):
+def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005):
         
-    print('\n\tCOMPUTATION OF PRIMAL-DUAL AFFINE SCALING ALGORITHM')
+    print('\n\tCOMPUTATION OF LPF ALGORITHM')
     
     # Algorithm in 4 steps:  
     # 0..Input error checking
@@ -70,7 +70,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0):
     # Compute the search direction solving the matricial system
     # Instead of solving the std system matrix it is uses AUGMENT SYSTEM with CHOL approach
     it = 0
-    while abs(g) > 0.005:
+    while abs(g) > w:
         print("\tIteration: {}\n".format(it), end='')
         sigma = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
         print("Centering parameter sigma:{}.\n".format("%10.3f"%sigma))
@@ -102,7 +102,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0):
         
         """ largest step length """
         
-        v = np.arange(0, 1.001, 0.00001)
+        v = np.arange(0, 1.001, 0.0001)
         i = len(v)-1
         while i >= 0:
             if (E(v[i]) > 0).all():
@@ -127,7 +127,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0):
                 "Number of iteration: {}".format(it))
     if it == 300:
         raise TimeoutError("Iterations maxed out")
-    return x
+    return x, y
 
 if __name__ == "__main__":
     

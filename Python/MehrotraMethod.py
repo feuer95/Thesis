@@ -18,7 +18,7 @@ Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             c_form: canonical form -> 0 by default
 """
 
-def mehrotra(A, b, c, c_form = 0):
+def mehrotra(A, b, c, c_form = 0, w = 0.005):
     
     print('\n\tCOMPUTATION OF MEHROTRA ALGORITHM\n')
     
@@ -54,7 +54,7 @@ def mehrotra(A, b, c, c_form = 0):
     # and R = [rb, rc, - x_0*s_0]
     
     it = 0
-    while abs(g) > 0.005:
+    while abs(g) > w:
         print("\n\tIteration: {}\n".format(it), end='')   
         # CHOLESKY for normal equation with matrix A* D^2 *A^{T}
         S_inv = np.linalg.inv(np.diag(s))  # S^{-1}
@@ -141,7 +141,7 @@ def mehrotra(A, b, c, c_form = 0):
                 "Number of iteration: {}".format(it))
     if it == 300:
            raise TimeoutError("Iterations maxed out")
-    return x       
+    return x, y       
 
 
 """ input data """

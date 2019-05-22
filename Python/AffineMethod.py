@@ -10,7 +10,7 @@ from starting_point import sp # Find initial infeasible points
 import numpy as np
 
 # Clean form of printed vectors
-np.set_printoptions(precision=4, threshold=10, edgeitems=4, linewidth=120, suppress = True)
+np.set_printoptions(precision=4, threshold=20, edgeitems=4, linewidth=120, suppress = True)
 
 
 ''' AFFINE-SCALING METHOD '''
@@ -20,7 +20,7 @@ Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             c_form: canonical form -> 0
 """
 
-def affine(A, b, c, c_form = 0):
+def affine(A, b, c, c_form = 0, w = 0.005):
         
     print('\n\tCOMPUTATION OF PRIMAL-DUAL AFFINE SCALING ALGORITHM')
     
@@ -64,7 +64,7 @@ def affine(A, b, c, c_form = 0):
     # with CHOL approach
     
     it = 0
-    while abs(g) > 0.005:
+    while abs(g) > w:
         
         print("\tIteration: {}\n".format(it))
         S_inv = np.linalg.inv(np.diag(s))           
@@ -115,8 +115,7 @@ def affine(A, b, c, c_form = 0):
                 "Number of iterations: {}".format(it))
     if it == 300:
         raise TimeoutError("Iterations maxed out")
-
-    return x
+    return x, y
 
 if __name__ == "__main__":
     

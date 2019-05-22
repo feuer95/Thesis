@@ -22,7 +22,7 @@ Input data: np.arrays of matrix A, cost vector c, vector b of the canonical LP
             c_form: canonical form -> 0
 """
     
-def SimplexMethod(A, b, c, max_iter, rule, c_form = 0):
+def SimplexMethod(A, b, c, max_iter = 500, rule = 0, c_form = 0):
     
     """ Error checking """
         
@@ -71,7 +71,7 @@ def SimplexMethod(A, b, c, max_iter, rule, c_form = 0):
         if zI > 0:
            print('The problem is not feasible.\n{} iterations in phase I.'.format(itI))
            print_boxed('Optimal cost in phase I: {}\n'.format(zI))
-           return
+           return xI
         else: # Get initial BFS for original problem (without artificial vars.)
             xI = xI[:c_A]
             print("Found initial BFS at x: {}.\n\tStart phase II\n".format(xI))        
@@ -94,6 +94,8 @@ def SimplexMethod(A, b, c, max_iter, rule, c_form = 0):
                     "Number of iterations: {}.".format(itII))
     elif info == 1:
         print("Unlimited problem.")
+    
+    return x
     
 
 """Algorithm"""
