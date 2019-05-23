@@ -9,7 +9,8 @@ from print_boxed import print_boxed
 from stdForm import stdForm
 import numpy as np
 import random
-
+import matplotlib.pyplot as plt
+import pandas as pd # Export to excel 
 # Clean form of printed vectors
 np.set_printoptions(precision=4, threshold=10, edgeitems=4, linewidth=120, suppress = True)
 
@@ -70,6 +71,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
     # Compute the search direction solving the matricial system
     # Instead of solving the std system matrix it is uses AUGMENT SYSTEM with CHOL approach
     it = 0
+    u = []
     while abs(g) > w:
         print("\tIteration: {}\n".format(it), end='')
         sigma = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
@@ -119,6 +121,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
         print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
         z = np.dot(c, x)
         g = z - np.dot(y,b)
+        u.append([it, g])
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
         
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
@@ -127,7 +130,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
                 "Number of iteration: {}".format(it))
     if it == 300:
         raise TimeoutError("Iterations maxed out")
-    return x, y
+    return x, y, u
 
 if __name__ == "__main__":
     
@@ -136,13 +139,16 @@ if __name__ == "__main__":
     A = np.array([[1, 0],[0, 1],[1, 1],[4, 2]])
     c = np.array([-12, -9])
     b = np.array([1000, 1500, 1750, 4800])
-    longpath(A, b, c)
+    x, y, u = longpath(A, b, c)
     
+    dfu = pd.DataFrame(u,columns = ["it", "g"])
+    dfu.to_excel("Dual_Gap.xlsx", index = False)
 # optimal solution of the canonical problem at 
 #  x* = [ 650. 1100.  350.  400.    0.    0.]                                                                                    |
 # Dual gap:   0.001343                                                      
 # Optimal cost:     -17700.000                                                    
 # Number of iteration: 21   
 
-
+dfu.plot()
+plt.plot(u)
  

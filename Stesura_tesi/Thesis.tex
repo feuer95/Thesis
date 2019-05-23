@@ -252,7 +252,7 @@ These equalites are called \textit{Karush-Kuhn-Tucker} conditions, or \textit{KK
 \end{equation}
 Now we illustrate the first-order necessary conditions: let us assume that the matrix $A\in\mathbb{R}^{m,n}$, the vectors $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$ construct a standard LP. A vector $x^{*}$ is a solution if and only if exist Lagrange multipliers $\lambda^{*},\;s^{*}$ such that the primal-dual solution $\left( x^{*},\lambda^{*},s^{*}\right)\in\mathbb{R}^{n}\times\mathbb{R}^{m}\times\mathbb{R}^{n}$ satisfies these conditions, 
 \begin{align}
-A^{T}\lambda+s&=c\\
+A^{T}\lambda+s&=c\\ from \label{(Cost)}
 Ax&=b\\
 x&\geq 0\\
 s&\geq 0\\
@@ -360,10 +360,13 @@ We begin the simplex method making a partition of the m-elements vectors $x$ and
 \end{split}
 \end{equation}
  %with \textit{n} elements corresponding to the basic feasible point we are starting from.
- \\Note that for any $x$ we have $x_{B}=A_{B}^{-1}b-A_{B}^{-1}A_{N}x_{N}$ and the cost function $c^{T}x=c_{B}A_{B}^{-1}b+(c_{N}-c_{B}A_{B}^{-1}A_{N})\;x_{N}$, denoting the \textit{reduced cost} by $\widetilde{c}=c_{N}-c_{B}A_{B}^{-1}A_{N}$.\\ Since we are dealing only with basic feasible points, we consider the relative basic feasible point $x$ with $x_{N}= 0$ and the cost value it is equal to $\widetilde{c}$.\\
+ \\Note that for any $x$ we have $x_{B}=A_{B}^{-1}b-A_{B}^{-1}A_{N}x_{N}$ and the cost function $c^{T}x=c_{B}^{T}A_{B}^{-1}b+(c_{N}-c_{B}A_{B}^{-1}A_{N})^{T}x_{N}$, denoting the \textit{reduced cost} by $\widetilde{c}=c_{N}-c_{B}A_{B}^{-1}A_{N}$.\\ Since we are dealing only with basic feasible points, we consider the relative basic feasible point $x$ with $x_{N}= 0$ and the cost value it is equal to $\widetilde{c}$.\\
+ We can choose the dual points $(\lambda,s)$ such that $(x, \lambda, s)$ satisfies the KKT condition as well: we set $s_{B}= 0$ for the complementary condition, therefore we get $s_{N}= c_{N}- A_{N}^{T}\lambda$ from \ref{(Cost)}. Since $A_{B}$ is not singular, \ref{(Cost)} uniquely defines $\lambda$ as $\lambda = A_{B}^{-T}c_{B}$ 
+ 
  If there exists a $j \in N$ such that $\widetilde{c}_{j} \leq 0$, then by increasing $x_{j}$ up from zero, we will decrease the cost (the value of the objective function).\\
-So, in a step of the simplex method, we find a $j \in N$ such that $\widetilde{c}_{j} \leq 0$, and increase it as much as possible while keeping $x_{B} \geq 0$. We enforce that this non-basic variable is now positive and we include it in the basis, following the called \textit{pivoting rule}.
-On the other hand, if there is no $j \in N$ such that $\widetilde{c}_{j} \leq 0$, then we stop and the current basic feasible solution is an optimal solution. The computational procedure is the following:
+So, in a step of the simplex method, we find a $j \in N$ such that $\widetilde{c}_{j} \leq 0$, and increase it as much as possible while keeping $x_{B} \geq 0$. We enforce that this non-basic variable is now positive and we include it in the basis, following the called \textit{pivoting rule}. 
+On the other hand, if there is no $j \in N$ such that $\widetilde{c}_{j} \leq 0$, then we stop and the current basic feasible solution is an optimal solution. 
+The computational procedure is the following:
 \begin{algorithm}
 	\caption{Simplex algorithm}
 	\begin{algorithmic}[1]

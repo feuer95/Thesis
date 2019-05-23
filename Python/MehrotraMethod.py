@@ -111,6 +111,7 @@ def mehrotra(A, b, c, c_form = 0, w = 0.005):
     #    print("Search direction: ({}, {}, {})\n".format(x2, y2, s2))
         
         #%%
+        
         """ Corrector step: compute (x_k+1, lambda_k+1, s_k+1) """
         
         # The steplength without eta_k
