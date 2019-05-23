@@ -1,0 +1,16 @@
+
+\begin{tabbing}
+	\textbf{Given} $B, N, x_{B} = A_{B}^{-1}b\geq 0$ with $x_{N}=0$;\\
+	Solve $A_{B}^{T}\lambda = c_{B}, for \lambda$ \\
+	Compute $\widetilde{c}_{N}=c_{N}-A_{N}^{T}\lambda$\\
+	\textbf{if} \= $\widetilde{c}_{N}\geq 0$\\
+	\>\textbf{stop}; (optimal solution found)\\
+	Select $s\in N\;|\;\widetilde{c}_{s}\leq 0$ as the entering index;\\
+	Solve $A_{B}d = A_{s}$ for $d$;\\
+	\textbf{if} \= $d \leq 0$\\
+	\> \textbf{stop}; (the problem is unbounded)\\  
+	Calculate the ratio test $x_{q}^{+} = \min_{i | d_{i} > 0}(x_{B})_{i}/d_{i}$, and use $r$ to denote the minimizing $i$;\\
+	Update \= $x_{B}^{+} = x_{B}-dx_{r}^{+}$\\
+	\> $x_{N} = (0,...,.,x_{q}^{+},0,...,0)$\\
+	Change the sets: $B^{+} = B - B[r] + s$ and $N^{+} = N - s + B[r]$\\ 
+\end{tabbing}
