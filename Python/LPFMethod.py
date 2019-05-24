@@ -151,4 +151,3 @@ if __name__ == "__main__":
 
 dfu.plot()
 plt.plot(u)
- 

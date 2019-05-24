@@ -360,12 +360,20 @@ We begin the simplex method making a partition of the m-elements vectors $x$ and
 \end{split}
 \end{equation}
  %with \textit{n} elements corresponding to the basic feasible point we are starting from.
- \\Note that for any $x$ we have $x_{B}=A_{B}^{-1}b-A_{B}^{-1}A_{N}x_{N}$ and the cost function $c^{T}x=c_{B}^{T}A_{B}^{-1}b+(c_{N}-c_{B}A_{B}^{-1}A_{N})^{T}x_{N}$, denoting the \textit{reduced cost} by $\widetilde{c}=c_{N}-c_{B}A_{B}^{-1}A_{N}$.\\ Since we are dealing only with basic feasible points, we consider the relative basic feasible point $x$ with $x_{N}= 0$ and the cost value it is equal to $\widetilde{c}$.\\
- We can choose the dual points $(\lambda,s)$ such that $(x, \lambda, s)$ satisfies the KKT condition as well: we set $s_{B}= 0$ for the complementary condition, therefore we get $s_{N}= c_{N}- A_{N}^{T}\lambda$ from \ref{(Cost)}. Since $A_{B}$ is not singular, \ref{(Cost)} uniquely defines $\lambda$ as $\lambda = A_{B}^{-T}c_{B}$ 
+ \\Note that for any $x$ we have $x_{B}=A_{B}^{-1}b-A_{B}^{-1}A_{N}x_{N}$ and the cost function becames $c^{T}x=c_{B}^{T}A_{B}^{-1}b+(c_{N}-A_{N}^{T}A_{B}^{-T}c_{B})^{T}x_{N}$, denoting the \textit{reduced cost} by $\widetilde{c}=c_{N}-A_{N}^{T}A_{B}^{-T}c_{B}$.\\ Since we are dealing only with basic feasible points, we consider the relative basic feasible point $x$ with $x_{N}= 0$ and the cost value it is equal to $\widetilde{c}$.\\
+ We can choose the dual points $(\lambda,s)$ such that $(x, \lambda, s)$ satisfies the KKT condition as well: we set $s_{B}= 0$ for the complementary condition, therefore we get $s_{N}= c_{N}- A_{N}^{T}\lambda$ from \ref{(Cost)}. Since $A_{B}$ is not singular, \ref{(Cost)} uniquely defines $\lambda$ as $\lambda = A_{B}^{-T}c_{B}$, then, we can state that the reduced cost is identical to $s_{N}$.\\  
  
- If there exists a $j \in N$ such that $\widetilde{c}_{j} \leq 0$, then by increasing $x_{j}$ up from zero, we will decrease the cost (the value of the objective function).\\
-So, in a step of the simplex method, we find a $j \in N$ such that $\widetilde{c}_{j} \leq 0$, and increase it as much as possible while keeping $x_{B} \geq 0$. We enforce that this non-basic variable is now positive and we include it in the basis, following the called \textit{pivoting rule}. 
-On the other hand, if there is no $j \in N$ such that $\widetilde{c}_{j} \leq 0$, then we stop and the current basic feasible solution is an optimal solution. 
+ If there exists a $j \in N$ such that $\widetilde{c}_{j} \leq 0$, then by increasing $x_{j}$ up from zero, we will decrease the value of the objective function.\\
+So, in a step of the method, we find a $s \in N$ such that $\widetilde{c}_{s} \leq 0$, and increase it as much as possible while keeping $x_{B} \geq 0$. We enforce that this non-basic variable $x_{s}$ is now positive and we include it in the basis $B$.
+In the next step we keep increasing $x_{s}$ until one of the components of $x_{B}$, for istance $x_{r}$, is driven to zero: the index $r$ is removed from $B$ and replaced it with $s$. This process of selecting entering and leaving indices is called \textit{pivoting rule}. \\
+On the other hand, if there is no $j \in N$ such that $\widetilde{c}_{j} \leq 0$, then we stop and the current basic feasible solution is an optimal solution. \\
+Formalizing the pivoting rule in algebraic terms, we have the new iterate $\bar{x}$ and the current $x$ feasible points such that $\bar{x}_{i} = 0$ for $i \in N\backslash\{s\}$, then we have 
+\begin{align*}
+	A\bar{x} = A_{B}\bar{x}_{B} +A_{s}\bar{x}_{s} = A_{B}x_{B} = Ax \text{  then }
+	\bar{x}_{B} = x_{B} - A_{B}^{-1}A_{s}\bar{x}_{s}.
+\end{align*}
+Geometrically speaking, $\bar{x}_{B}$ is a move along an edge of the feasible polyhedron that decreases $c^{T}x$. We continue to move along the edge until a new vertex is encountered. At this vertex, we have $x_{s}\geq0$ and one of the components $x_{r}\in B$ decreased to zero.\\
+It is possible that we can increase $x_{s}$ to $\infty$ without encountering a suitable $x_{r}$, that means the contraint $x_{\bar{B}} = x_{B} - A_{B}^{-1}A_{s}\bar{x}_{s} \geq0$ holds for all positive values of $\bar{x}_{s}$. When it happens, the LP is \textit{unbounded}: the cost value $c^{T}x$ decreases to $-\infty$.\\
 The computational procedure is the following:
 \begin{algorithm}
 	\caption{Simplex algorithm}
@@ -379,38 +387,37 @@ The computational procedure is the following:
 		\State Solve $A_{B}d = A_{s}$ for $d$;
 		\If {$d \leq 0$} the problem is unbounded \textbf{stop};
 		\Else 
-		\State Calculate the ratio test $x_{q}^{+} = \min_{i | d_{i} > 0}(x_{B})_{i}/d_{i}$, and \State use $r$ to denote the minimizing $i$;
+		\State Calculate the ratio test $\bar{x}_{r} = \min_{i | d_{i} > 0}(x_{B})_{i}/d_{i}$, and \State use $t$ to denote the minimizing $r = B[t]$;
 		
-		\State Update $x_{B}^{+} = x_{B}-dx_{r}^{+}$
-		\State $x_{N} = (0,...,.,x_{q}^{+},0,...,0)$
-		\State$\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;x^{k+1} = x^{k} + \alpha_{k}^{\text{pri}}\Delta x^{k}$;
-		\State Update sets: $B^{+} = B - B[r] + \{s\}$ and $N^{+} = N - \{s\} + B[r]$	
+		\State Update $\bar{x}_{B} = x_{B}-d\bar{x}_{r}$
+		\State $\;\;\;\;\;\;\;\;\;\;\;\;\bar{x}_{N} = (0,...,0_{[s-1]},\bar{x}_{r},0_{[s+1]},...,0)$
+		\State Update sets: $\bar{B} = B \ B[t] + \{s\}$ and $\bar{N} = N - \{s\} + B[t]$	
 		\End
 	\end{algorithmic}
 \end{algorithm}
-\newpage
-The simplex algorithm still moves from basic feasible solution to another one and, geometrically, it moves from one vertex to an adjacent one for which the basis $B$ differs inexactly one component.\\ Each iteration begins by checking the sign of the coefficients of the objective function $\widetilde{c}$ on nonbasic variables. If none is negative, then the current basic solution is optimal. \\
+\\
+Summarizing, the simplex algorithm moves from basic feasible solution to another one and it moves from one vertex to an adjacent one, for which the basis $B$ differs inexactly one component. Each iteration begins by checking the sign of the coefficients of the objective function $\widetilde{c}$ on non-basic variables: if none is negative, then the current basic solution is optimal. \\
 As we see, it is required a basic feasible staring point $x$ and a corresponding initial basis $B \in \left\{ 1,2,..., m \right\}$ with $|B|=n$ such that $A_{B}$ is non singular, $A_{B}^{-1}b=x_{B} \geq 0$ and $x_{N}=0$.\\
 A basic feasible solution is sometimes immediately available for linear programs. For example, in problems with constraints in canonical form and with $b \geq 0$, we have a basic feasible solution corresponding to the standard form is provided by the slack variables and this provides a means for initiating the
 simplex procedure.\\Sometimes the problem of finding an initial point and a basis may itself nontrivial but the \textit{two-phase} method deals with this difficulty. The idea is to add artificial variables in order to give a basic feasible initial point for a second phase in which we can extract easily the solution of the original problem.\\
 In \textit{phase I} we solve the following problem:
 \begin{equation}
 \begin{split}
-\min &1^{T}u\\
-\text{subject\;to\;}&A_{B}x_{B}+A_{N}x_{N} + Eu = b\;\text{and\;} u\geq 0\\
+\min &\;1^{T}u\\
+\text{subject\;to\;}&A_{B}x_{B}+A_{N}x_{N} + \textbf{Eu} = b\;\text{and\;} u\geq 0\\
 \text{with\;} E_{jj}& =\begin{cases} -1\;\text{if\;} b_{j} \leq 0\\
 0\;\; \text{otherwise}
 \end{cases}   
 \end{split}
 \end{equation} \\
 Using artificial variables in each violated constraint, it is easier to complete a starting feasible point. Since they are restricted to be nonnegative, the objective value is as well. If this last one is zero, then the \textit{phase I} terminates and we compute a second linear program (\textit{Phase II}).\\
-The point $(x,z)$ defined by $x =0$ and $z_{j} = |b_{j}| \text{\;with\;}j =\{1,2,...,n\}$, is a basic feasible point, corresponding to the basis $B = \{m-n,...,m\}$. At any feasible point for (3.2), the artificial variable $u$ represent the amounts by which the constraints $Ax = b$ are violated by the $x$ component an the objective function is the sum of these violations.
-The \textit{phase I} minimizes this sum and it has an optimal objective value of zero if an only if the original LP is feasible. \\In fact we have two cases at the optimal solution $\bar{u}$: 
+The point $(x,z)$, defined by $x = 0$ and $z_{j} = |b_{j}| \text{\;with\;}j =\{1,2,...,n\}$, is a basic initial feasible point, corresponding to the basis $B = \{m-n,...,m\}$. At any feasible point for (3.2), the artificial variable $u$ represents the amounts by which the constraints $Ax = b$ are violated by the $x$ component and the objective function is the sum of these violations. \\
+The \textit{phase I} minimizes this sum and it has an optimal objective value of zero if and only if the original LP is feasible. \newpage In fact we have two cases at the optimal solution $\bar{u}$: 
 \begin{itemize}
-	\item[-]$1^{T}\bar{u}$ is zero and the simplex method finds a solution $(\bar{x},\bar{u})$ and it starts the \textit{phase II} step.
-	\item[-]$1^{T}\bar{u}$ is positive and the original problem is unfeasible.\\
+	\item[-]$1^{T}\bar{u}$ is zero: the simplex method finds a solution $(\bar{x},\bar{u})$ with $\bar{u}=0$ and it starts the \textit{phase II} step with initial point $\bar{x}$.
+	\item[-]$1^{T}\bar{u}$ is positive and the original problem is unfeasible.
 \end{itemize}
-After dropped all the artificial variables $\bar{u}$, we proceed with the second phase, that consists on an implementation of the simplex method, with strating feasible point $\bar{x}$.\\ 
+If we get in the first case, after dropped all the artificial variables $\bar{u}$, we proceed with the second phase: it consists on an implementation of the simplex method, with starting feasible point $\bar{x}$.\\ 
 While two-phases method deals with feasibility and optimality separately, the \textit{Big-M} method combines these activities in a single search and the key is a composite objective function: the original one added the artificial variable sum times  large positive multiplier M:\\
 \begin{equation}
 \text{minimize\;}\mathbf{c^{T}x+M \sum_{i}{u}_{i}}\\
@@ -435,12 +442,12 @@ The question remains of how to choose $\epsilon$ small enough at the point at wh
 Another method that avoids this cycling is the \textit{Bland's rule}. In the algorithm it selects:
 \begin{itemize}
 	\item the index that leaves the nonbasis $s$ such that $\min\limits_{i}\{c_{i}\leq0\}$
-\item the index that leaves the basis $r$ such that $x^{+}_{r} = \min\limits_{q}\{x_{q}^{+}\;|\;x_{q}^{+} \text{\;satisfies the ratio test} \}$ \end{itemize} 
+\item the index that leaves the basis $r$ such that $\bar{x}_{r} = \min\limits_{q}\{\bar{x}_{q}\;|\;\bar{x}_{q}^{+} \text{\;satisfies the ratio test} \}$ \end{itemize} 
 \begin{theorem*}
 	The simplex method always terminates provided that both the entering and the leaving variable are chosen according to the Bland's rule.
 \end{theorem*}
 \begin{proof}
-see ~\cite{8} pagg. 36-37	
+see~\cite{LP} pagg. 36-37	
 \end{proof}
 In the implementation of the simplex method it is implemented the Bland's rule and in the following example is illustrated the results:
 \begin{ex}
@@ -454,12 +461,8 @@ In the implementation of the simplex method it is implemented the Bland's rule a
 	\end{alignat*}
 	
 Applying Bland's rule, we find optimal solution at $x^{*} = [0.04, 0,  1,   0,  0.03, 0,   0  ]$ in the basis $B = [0, 2, 4]$ after 7 iterations: the optimal cost value is $c^{T}x^{*} = -0.5$.\\
-Instead without the rule, after 15 iterations we can't find the solution and the problem enters in a cycle.
-
+Instead without the rule, after 15 iterations we can't find the solution and the problem enters in a cycle: the original simplex method repeats the same sequence of six pivotis indefinitely, making no progress toward the solution.
 \end{ex} 
-\includegraphics[page = 1]{Balesexample.pdf}
-\includegraphics[page = 2]{Balesexample.pdf}
-\includegraphics[page = 3]{Balesexample.pdf}
 
 \section{The revised method}
 If the matrix A has far fewer rows than column, ($n$ is much smaller than $m$), the implementation $A_{B}^{-1}A_{N}$ requires useless memory. The revised simplex method is a scheme reduces this big amount of calculations, replacing only one column of the old matrix $A_{B}$ by the new column from $A_{N}$.\\
@@ -475,14 +478,18 @@ After discussing the Karush-Kuhn-Tucker optimality conditions for linear program
 \chapter{Interior point methods}
 In the 60 years of research since the introduction of the simplex method, this algorithm has been carefully optimized to perform extremely well in practice. However, a problem arose in the 1970s: it turns out that we cannot guarantee that it will work well on all possible linear programs~\cite{3}.
 This problem led to the introduction of the interior point methods for solving linear programs, which is the argument of this chapter. The interior point methods is a family of algorithms solving linear programs which come along with an efficient performance guarantee.\\
-They share common features that distinguish them from the simplex method. Each interior point iteration is expensive to compute and can make significant progress toward the solution, while the simplex method usually requires a larger number of inexpensive iterations. In fact, geometrically, the simplex method works around the boundary of the feasible polyedron, testing a sequence of vertices in turn until it finds the optimal one. Instead, interior point methods approach the boundary of the feasible set only in the region, but they never actually lie on the boundary of the feasible set.\\
+They share common features that distinguish them from the simplex method. Each interior point iteration is expensive to compute but can make significant progress toward the solution, while the simplex method usually requires a larger number of inexpensive iterations. In fact, geometrically, the simplex method works around the boundary of the feasible polyedron, testing a sequence of vertices in turn until it finds the optimal one. Instead, interior point methods approach the boundary of the feasible set only in the region, but they never actually lie on the boundary of the feasible set.\\
 The first commercial interior point method for linear programming was N. Karmarkar's \textit{projective transformation} procedure and developments have continued to these days. The new algorithms can be divided in two main classes, \textit{affine-scaling} and \textit{projective-scaling} algorithms.
 The first ones are easy to describe but hard to analyze, in fact they have very simple, geometrically descriptions, but they don't have a strong convergence theory behind.
 Instead, the second class, that includes the original algorithm studied by Karmakar, involves technicalities such as logarithmic barrier functions and the analysis proceeds to a proof of polynomial-time convergence~\cite{4}. 
+The chapter begins with a brief introduction of the basics of the primal-dual interior point methods. Then three algorithms are described: the \textit{primal-dual affine scaling}, the \textit{long-path following} and the \textit{Mehrotra predictor-corrector} method.
+An overview of the details
+of the first two interior-point algorithms are presented in the following chapter: in fact it will be proved their reliability both in theory and in practice. Instead the third one is a variant of the primal–dual interior-point algorithms,
+recently described by Mehrotra \cite{Mer}. 
+
 \newpage
 Following a fundamentally different approach from the simplex method, the interior-point methods avoid the boundary of the polyedra until optimality, and focus on the KKT conditions, solving the primal and dual linear programs currently.\\ Primal and dual variables that are required to be nonnegative at the solution, are kept strictly positive at each interior-point iteration. That is, the iterates stay interior with respect to these constraints, though some of these variables will approach to zero in the limit.
 
-In this chapter, we outline some of the basic ideas behind primal-dual interior point methods, including the concept of central path. After, there is a description and analysis of three particular interior-point methods.
 
 \section{Introduction to primal-dual methods}
 The fundamental ideas of primal-dual methods were developed between 1987 an 1991. 
@@ -768,7 +775,7 @@ Having described the eseential elements of Mehrotra'a approach, the algorithm is
 \end{algorithm}
 \\
 Although we need to solve two linear systems instead of one at each iteration, the marginal cost is not very great because the systems have the same coeffifient matrix and then we need only modify the right-hand side.
-
+\lstinputlisting[language=py,caption=applicationContext.py]{Forest.py}
 
 \chapter{Analysis of the methods}
 In this section it is illustrated a comprehensive convergence analysis, using important theoretical results.
