@@ -116,7 +116,7 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
     u = []
     while it <= max_iter:  # Ensure procedure terminates (for the min reduced cost rule)
         print("\t\nIteration: {}\nCurrent x: {} \nCurrent B: {}\n".format(it, x, B), end='')
-        u.append([it, B , x])
+        u.append([it, B.copy(), x])
         lamda = c[B] * B_inv
         if rule == 0:  # Bland rule
             optimum = True

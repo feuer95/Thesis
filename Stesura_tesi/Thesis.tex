@@ -138,8 +138,9 @@ Many anti-cycling pivoting rules have been introduced in the past.
 Since Dantzig's initial contribution, researchers have made many efforts in order to enhance the performance of simplex algorithm. In the 1980s the monopoly of the simplex algorithm in the solution of the LP has been challenged. Interior point methods were the result of subsequent research and their performance has been more than satisfactory compared to the simplex algorithm. The main idea of IPMs is that the computation of the optimal solution can be achieved by moving inside the feasible region, defined by the constraints. \\
 %The next research step was the attempt to combine the simplex algorithm and IPMs in order to enhance the computational behavior of software packages~\cite{2}. \\ 
 The thesis is organized as follow:
-an introductory section summarizes the basic theory of the linear programming. In the chapter 2 we delineate the simplex method followed by a sensitivity analysis. The chapter 3 is dedicated to the primal-dual interior point methods, taking particular attention to the affine-scaling and the long-path following methods. In this section it is also defined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\After a convergence analysis framework, we present the numerical results that we obtained for the considered physical problems and a comparison is performed.
-Concluding, in chapter 6 we give an overview of the work realized in this thesis and
+an introductory section summarizes the basic theory of the linear programming. In the chapter 2 we delineate the simplex method followed by a sensitivity analysis. The chapter 3 is dedicated to the primal-dual interior point methods, taking particular attention to the affine-scaling and the long-path following methods. In this section it is also defined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\The chapter 7 is devoted to the implementation of the algorithms discussed in the
+previously: we present the numerical results that we obtained for the considered physical problems and a comparison is performed.
+Concluding, in chapter 7 we give an overview of the work realized in this thesis and
 suggest possible next steps. 
 
 (\textit{La mia proposta è quella di testare i metodi del punto interno su un problema a larga scala di ottimizzazione della forma (SO), illustrando così la varietà delle applicazioni degli IPM})
@@ -252,11 +253,11 @@ These equalites are called \textit{Karush-Kuhn-Tucker} conditions, or \textit{KK
 \end{equation}
 Now we illustrate the first-order necessary conditions: let us assume that the matrix $A\in\mathbb{R}^{m,n}$, the vectors $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$ construct a standard LP. A vector $x^{*}$ is a solution if and only if exist Lagrange multipliers $\lambda^{*},\;s^{*}$ such that the primal-dual solution $\left( x^{*},\lambda^{*},s^{*}\right)\in\mathbb{R}^{n}\times\mathbb{R}^{m}\times\mathbb{R}^{n}$ satisfies these conditions, 
 \begin{align}
-A^{T}\lambda+s&=c\\ from \label{(Cost)}
-Ax&=b\\
+A^{T}\lambda+s&=c\\ \label{(Cost)}
+Ax&=b\\ \label{SF}
 x&\geq 0\\
 s&\geq 0\\
-x_{i}s_{i}&=0,\; for\;i= 1,2,...,m.
+x_{i}s_{i}&=0,\; for\;i= 1,2,...,m. \label{CC}
 \end{align} 
 The complementary conditions show that at least one of the components $x_{i}$ and $s_{i}$ must be zero for each $i=0,1,2,...,n$.\\
  Convexity of the problem ensures that these conditions are also sufficient for a global minimum, hence the KKT conditions are also \textit{sufficient}: if we have a primal feasible vector $x$, and another vector $(\lambda, s)$ such that the equations are satisfied, then $x$ is the solution of the \textit{primal} problem. We can prove this claim directly by taking an arbitrary primal feasible vector $\bar{x}$ and showing that its objective value is no smaller than $c^{T}x$:
@@ -477,30 +478,32 @@ After discussing the Karush-Kuhn-Tucker optimality conditions for linear program
 
 \chapter{Interior point methods}
 In the 60 years of research since the introduction of the simplex method, this algorithm has been carefully optimized to perform extremely well in practice. However, a problem arose in the 1970s: it turns out that we cannot guarantee that it will work well on all possible linear programs~\cite{3}.
-This problem led to the introduction of the interior point methods for solving linear programs, which is the argument of this chapter. The interior point methods is a family of algorithms solving linear programs which come along with an efficient performance guarantee.\\
-They share common features that distinguish them from the simplex method. Each interior point iteration is expensive to compute but can make significant progress toward the solution, while the simplex method usually requires a larger number of inexpensive iterations. In fact, geometrically, the simplex method works around the boundary of the feasible polyedron, testing a sequence of vertices in turn until it finds the optimal one. Instead, interior point methods approach the boundary of the feasible set only in the region, but they never actually lie on the boundary of the feasible set.\\
-The first commercial interior point method for linear programming was N. Karmarkar's \textit{projective transformation} procedure and developments have continued to these days. The new algorithms can be divided in two main classes, \textit{affine-scaling} and \textit{projective-scaling} algorithms.
-The first ones are easy to describe but hard to analyze, in fact they have very simple, geometrically descriptions, but they don't have a strong convergence theory behind.
-Instead, the second class, that includes the original algorithm studied by Karmakar, involves technicalities such as logarithmic barrier functions and the analysis proceeds to a proof of polynomial-time convergence~\cite{4}. 
-The chapter begins with a brief introduction of the basics of the primal-dual interior point methods. Then three algorithms are described: the \textit{primal-dual affine scaling}, the \textit{long-path following} and the \textit{Mehrotra predictor-corrector} method.
-An overview of the details
-of the first two interior-point algorithms are presented in the following chapter: in fact it will be proved their reliability both in theory and in practice. Instead the third one is a variant of the primal–dual interior-point algorithms,
-recently described by Mehrotra \cite{Mer}. 
+This problem led to the introduction of the interior point methods for solving linear programs, which is the argument of this chapter.\\The interior point methods is a family of algorithms solving linear programs which come along with an efficient performance guarantee. They share common features that distinguish them from the simplex method. Each interior point iteration is expensive to compute but can make significant progress toward the solution, while the simplex method usually requires a larger number of inexpensive iterations. Geometrically, the simplex method works around the boundary of the feasible polytope, testing a sequence of vertices in turn until it finds the optimal one. Instead, interior point methods approach the boundary of the feasible set only in the region, but they never actually lie on the boundary of the feasible set.\\
+The first commercial interior point method for linear programming was N. Karmarkar's  \textit{projective transformation} procedure \cite{Kar} and developments have continued to these days. 
+%The new algorithms can be divided in two main classes, \textit{affine-scaling} and \textit{projective-scaling} algorithms.
+%The first ones are easy to describe but hard to analyze, in fact they have very simple, geometrically descriptions, but they don't have a strong convergence theory behind.
+%Instead, the second class, that includes the original algorithm studied by Karmakar, involves technicalities such as logarithmic barrier functions and the analysis proceeds to a proof of polynomial-time convergence~\cite{4}.
+By the early 1990s, a subclass of IPMs called \textit{primal-dual methods} had distinguished themselves as the most efficient practical approaches. The primal-dual interior point algorithm was introduced by Megiddo \cite{meg}  who used logarithmic barrier methods to solve
+the primal and dual problems simultaneously. An efficient
+high-order method was proposed by Mehrotra: his second-order predictor-corrector
+strategy, that has been incorporated in all primal-dual type implementations \cite{MER} .\\ 
+After a brief introduction of the primal-dual methods, we present in this research three important algorithms: the \textit{primal-dual affine scaling}, the \textit{long-path following} and the \textit{Mehrotra predictor-corrector} method.\\
+An overview of the details of the first two interior-point algorithms are given in the following chapter, instead no convergence thoery is availabe for the third one. With practical implementations a comparison will be discussed.
+%The lack of theoretical analysis of the Mehrotra's algorithm leads to a study  their reliability both in theory and in practice will be shown 
 
 \newpage
-Following a fundamentally different approach from the simplex method, the interior-point methods avoid the boundary of the polyedra until optimality, and focus on the KKT conditions, solving the primal and dual linear programs currently.\\ Primal and dual variables that are required to be nonnegative at the solution, are kept strictly positive at each interior-point iteration. That is, the iterates stay interior with respect to these constraints, though some of these variables will approach to zero in the limit.
-
-
 \section{Introduction to primal-dual methods}
-The fundamental ideas of primal-dual methods were developed between 1987 an 1991. 
-These methods find primal-dual solutions $(x^{*},\lambda^{*},s^{*})$ by applying variants of Newtons method to the three equality conditions (2.4), (2.5), (2.8) and modifying the search directions and the step lengths so that the inequalities $(x,s)\geq0$ are satisfied strictly at every iteration.\\
+We consider the linear programming problem formulated in a standard form. \\
+Following a fundamentally different approach from the simplex method, the interior-point methods avoid the boundary of the polytope until optimality, and focus on the KKT conditions, solving the primal and dual LP currently.
+Primal and dual variables  $x^{k}$ and $s^{k}$ , that are required to be nonnegative at the solution, are kept strictly positive at each iteration and this property is the origin of the term \textit{interior point}.\\
+The primal-dual methods find primal-dual solutions $(x^{*},\lambda^{*},s^{*})$ by applying variants of Newton's method to the three equality conditions \ref{(Cost)}, \ref{SF}, \ref{CC}, and modifying the search directions and the step lengths so that the inequality $(x,s)>0$ is satisfied.\\
  Let restate the optimality conditions by a mapping $\mathit{F}$ from $\mathbb{R}^{2n+m}$ to $\mathbb{R}^{2n+m}$:
-\begin{center}
+\begin{center}\label{F}
 	$\mathit{F}(x,\lambda,s)= \begin{bmatrix}
 	A^{T}\lambda+s-c \\Ax-b \\XSe
 	\end{bmatrix}=0$, with $(x,s)\geq0.$
 \end{center}
-where $X = diag(x_{1}, x_{2},...,)$ and $S = diag(s_{1}, s_{2},...,)$.\\ Note that $\mathit{F}$ is linear in the first two equations and mildly nonlinear in the last equation. \\ All primal-dual methods generate iterates $(x^{k},\lambda^{k},s^{k})$ with $x^{k}$ and $s^{k}$ strictly positive and this property is the origin of the term \textit{interior point}.\\
+where $X = diag(x_{1}, x_{2},...,)$ and $S = diag(s_{1}, s_{2},...,)$.\\ Note that $\mathit{F}$ is linear in the first two equations and mildly nonlinear in the last equation. \\ All primal-dual methods generate iterates $(x^{k},\lambda^{k},s^{k})$ with\\
 If we define the primal-dual \textit{feasible set} $\mathcal{F}$ and \textit{strictly feasible set} $\mathcal{F}^{o}$ by
 \begin{align*}
 \mathcal{F} = \left\lbrace(x,\lambda,s)\;|\;Ax = b, A^{T}\lambda+s =c,\;(x,s)\geq0\right\rbrace \\
@@ -555,7 +558,7 @@ The simplest primal-dual approach is to apply Newton's method directly to the fu
 \Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
 \end{bmatrix}=-\begin{bmatrix}
 0\\0\\X^{k}S^{k}e
-\end{bmatrix}.
+\end{bmatrix}
 \end{equation}
 \begin{tabbing}
 	\\
@@ -679,16 +682,17 @@ x_{i}&\geq C_{1}\gamma \;\; (i \in\mathcal{B}).\\
 \end{proof}
 \newpage
 \section{Mehrotra's method}
-Since Karmarkar's landmark paper \cite{Kar}-pagg. 373-395, interior points methods became one of the most active research area that produced a large amount of research results. Moreover, several powerful IPMs have been developed. Predictor-corrector methods are among the most efficient IPMs and most implementations are based on a variant of Mehrotra's predictor-corector algorithm. \\
-Mehrotra's contribution was to combine the work developed by Montiero, Adles and Resende \cite{MARE} and the infeasible-interior-point path-following approach implemented by Lustig, Marsten and Shanno \cite{LMS}.\\ The pratical importance  of Mehrotra's algorithm and the lack of theoretical analysis of this method giustifies/leads to the study and the analysis in this section.
+Most interior-point software written since 1990 has been based on Mehrotra's predictor-corrector algorithm.\\
+Since Karmarkar's landmark paper \cite{Kar}, IPMs became one of the most active research area that produced a large amount of research results. Moreover, several powerful methods have been developed: predictor-corrector methods are among the most efficient and most implementations are based on a variant of Mehrotra's algorithm. \\
+Mehrotra's contribution was to combine the work developed by Montiero, Adles and Resende \cite{MARE} and the infeasible-interior-point path-following approach implemented by Lustig, Marsten and Shanno \cite{LMS}.\\ 
 \\
-Mehrotra's algorithm generates sequence of infeasible iterates $(x^{k},\lambda^{k},s^{k})$ for which $(x^{k},s^{k})>0$. The search direction at each iteration consists of three components:
+The algorithm concerned generates sequence of infeasible iterates $(x^{k},\lambda^{k},s^{k})$ for which $(x^{k},s^{k})>0$. The search direction at each iteration consists of three components:
 \begin{enumerate}
 	\item an affine-scaling "predictor" direction.
 	\item a centering term whose size is governed by the adaptively chosen centering parameter $\sigma$.
 	\item a "corrector" direction that attempts to compensate for some of the nonlinearity in the affine-scaling direction.
 	\end{enumerate}
-The first two components, the affine-scaling steo and the centering term, combine to make up the standard infeasible-interior-point step from the generic equations. However, the affine-scaling component is calculated separately from, and prior to, the centering component. By arranging the computations in this way, we gain a key advantage: the ability to choose the centering parameter $\sigma$ adaptively rather then a priori, as in the algorithm LPF.\\
+The first two components, the affine-scaling step and the centering term, combine to generate the standard infeasible-interior-point step from the generic equations. However, the affine-scaling component is calculated before the centering component. By arranging the computations in this way, we gain a key advantage: the ability to choose the centering parameter $\sigma$ adaptively rather then a priori, as in the algorithm LPF.\\
 If the affine-scaling direction makes good progress in reducing the duality measure $\mu$ while remaining inside the positive orthant defined by $(x,s)>0$, we conclude that little centering is needed, so we choose $\sigma$ close to 1.\\
 \subsection*{The algorithm}
 Given a point $(x, \lambda, s)$ with $(x, s)> 0$, we compute the affine-scaling direction:
@@ -715,7 +719,7 @@ Mehrotra \cite{MER} suggests the following heuristic, which has proved to be eff
 \begin{equation*}
 \sigma = \bigg(\frac{\mu_{\text{aff}}}{\mu}\bigg)^{3}.
 \end{equation*}
-To calculate the centering step component, we solve a linear system with the same coffeicient matrix as in \ref{(A)} and right-hand side $(0, 0,\sigma\mu e)$.\\
+To calculate the centering step component, we solve a linear system with the same coefficient matrix as in \ref{(A)} and right-hand side $(0, 0,\sigma\mu e)$.\\
 To motivate the corrector step, we see how the $i$th pairwise product $x_{i}s_{i}$ is affected by a full step in the affine-scaling direction:
 \begin{equation*}
 (x_{i}+\Delta x_{i}^{\text{aff}})(s_{i}+\Delta s_{i}^{\text{aff}})= x_{i}s_{i}+ x_{i}\Delta s_{i}^{\text{aff}}+s_{i}\Delta x_{i}^{\text{aff}}+\Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{aff}} =\Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{aff}}.
@@ -740,7 +744,7 @@ To assess the effect of the corrector component, we examine the pairwise product
 (x_{i}+\Delta x_{i}^{\text{aff}}+\Delta x_{i}^{\text{cor}})(s_{i}+\Delta s_{i}^{\text{aff}}+\Delta s_{i}^{\text{cor}})= \Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{cor}}+\Delta x_{i}^{\text{cor}}\Delta s_{i}^{\text{aff}}+\Delta x_{i}^{\text{cor}}\Delta s_{i}^{\text{cor}}.
 \end{equation*}
 This result yelds to a better reduction of the duality measure: in fact we have \\$\lVert(\Delta x^{\text{aff}},\Delta s^{\text{aff}}) \rVert = \mathcal{O}(\mu)$ and $\lVert(\Delta x^{\text{cor}},\Delta s^{\text{cor}}) \rVert = \mathcal{O}(\mu^{2})$.\\
-When the limiting matrix is singular, however, the corrector step may no longer be smaller in norm than the affine-scaling step, actually, it is often larger. Even in this situation, the use of the correctot component usually enhances the overall efficiency of the algorithm in practice.
+When the limiting matrix is singular, however, the corrector step may no longer be smaller in norm than the affine-scaling step, actually, it is often larger. Even in this situation, the use of the corrector component usually enhances the overall efficiency of the algorithm in practice.
 
 The combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \lambda^{\text{cc}}, \Delta s^{\text{cc}})$ is obtained by solving the following system:
 \begin{equation}\label{(C)}
@@ -752,18 +756,17 @@ The combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \lambda^{\t
 0\\0\\\Delta X^{\text{aff}}\Delta S^{\text{aff}}e - \sigma\mu e
 \end{bmatrix}.
 \end{equation}\newpage
-Having described the eseential elements of Mehrotra'a approach, the algorithm is structured as following:\\
+Having described the eseential elements of Mehrotra'a approach, the algorithm is structured as following:
 \begin{algorithm}
 	\caption{Predictor-corrector Mehrotra algorithm}
-	\begin{algorithmic}[1]
-		\State Given: $(x^{0}, \lambda^{0}, s^{0}) > 0$
+	\begin{algorithmic}[1]		\State Given: $(x^{0}, \lambda^{0}, s^{0}) > 0$
 		\For{$k = 1,\dots$}
 		\State set $(x,\lambda,s)=(x^{k},\lambda^{k},s^{k})$ and solve \ref{(A)} for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;
 		\State calculate $\alpha_{\text{aff}}^{\text{pri}}$, $\alpha_{\text{aff}}^{\text{dual}}$ and $\mu_{\text{aff}}$
 		\State set sentering parameter to $\sigma = (\mu_{\text{aff}}/{\mu})^{3}$
 		\State solve \ref{(C)} for $(x^{cc},\lambda^{cc},s^{cc})$
 		\State compute search direction and step to boundary from:
-		\State $\;\;\;\;\;\;\;(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})=(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+(x^{cc},\lambda^{cc},s^{cc})$;
+		\State $\;\;\;\;\;\;\;(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})=(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+(\Delta x^{cc},\Delta  \lambda^{cc},\Delta s^{cc})$;
 		\State $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{pri}}=\arg\max\{\alpha\geq0\;|\;x^{k} +\alpha\Delta x^{k}\geq 0\}$
 		\State $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{dual}}=\arg\max\{\alpha\geq0\;|\;s^{k} +\alpha\Delta s^{k}\geq 0\}$\\
 		\State set $\alpha_{k}^{\text{pri}}=\min(0.99\ast\alpha_{\text{max}}^{\text{pri}},1)$ and $\alpha_{k}^{\text{dual}}=\min(0.99\ast\alpha_{\text{max}}^{\text{dual}},1)$;
@@ -777,10 +780,9 @@ Having described the eseential elements of Mehrotra'a approach, the algorithm is
 Although we need to solve two linear systems instead of one at each iteration, the marginal cost is not very great because the systems have the same coeffifient matrix and then we need only modify the right-hand side.
 \lstinputlisting[language=py,caption=applicationContext.py]{Forest.py}
 
-\chapter{Analysis of the methods}
+\chapter{Convergence analysis}
 In this section it is illustrated a comprehensive convergence analysis, using important theoretical results.
-
-\subsection{Affine-scaling method convergence}
+\subsection*{Affine-scaling method convergence}
 We examine the asymptotic behavior of this method, that is of significant theoretical interest, recalling the matricial system.\\
 \begin{equation}\label{(Q)}
 \begin{bmatrix}
@@ -908,11 +910,10 @@ In the next lemma $A_{\mathcal{B}}$, $A_{\mathcal{N}}$,$D_{\mathcal{B}}$ and $D_
 \end{proof}
 A result similar to the Theorem~\ref{(Z)} holds for steps of an infeasible interior-point algorithm. See~\cite{Wright}.
 
-
-\subsection{Analysis LPF}
+\subsection*{Analysis LPF}
 
 \begin{lem}\label{lem1}
-	Let u and v ba any two vectors in $\mathbb{R}^{n}$ with $u^{T}v \geq 0$. Then, 
+	Let u and v be any two vectors in $\mathbb{R}^{n}$ with $u^{T}v \geq 0$. Then, 
 \begin{align*}
 \lVert UVe \rVert_{2}\leq 2^{-3/2}\lVert u + v \rVert^{2}_{2}\\
 \end{align*}
@@ -1034,7 +1035,31 @@ that guarantees
 \end{equation*}	
 \end{proof}
 
-[\textit{Le dimostrazioni sono state completate con l'aiuto con suggerimenti del libro, in quanto proposte come esercizi al lettore}]
+\subsection*{MPC analysis}
+In order to study the perform of the Mehrotra's algorithm, we introduce the trajectory-following methods from ODEs. These one define a trajectory from the current point, we say $(x,\lambda,s)$, to the solution set $\Omega$. There are infinitely many trajectories to choose from, but in this casse is obtained from a linear scaling of the function \ref{F}.\\ Denoting this trajectory by $\mathcal{H}$ and parametrizing it by $\tau\in[0,1)$, we find that each point $(x_{\tau},\lambda_{\tau},s_{\tau})\in\mathcal{H}$ is a solution of the following nonlinear system:
+\begin{center}\label{T}
+	$\begin{bmatrix}
+	A^{T}\lambda+s-c \\Ax-b \\XSe
+	\end{bmatrix}=\begin{bmatrix}
+	(1-\tau)(A^{T}\lambda-c)\\(1-\tau)(Ax-b)\\(1-\tau)XSe
+	\end{bmatrix}$, with $(x,s)\geq0$.
+\end{center}
+We see that $(x_{\tau},\lambda_{\tau},s_{\tau})$ with $\tau = 0$ is exactly the initial point and that, if the limit exists, then $\lim\limits_{\tau\to\infty}(x_{\tau},\lambda_{\tau},s_{\tau}) = (x^{*},\lambda^{*},s^{*})$.\\
+To move along the trajectory $\mathcal{H}$, we can form a Taylor series approximation to $(x_{\tau},\lambda_{\tau},s_{\tau})$ by expanding about the initial point  $(x,\lambda,s)$ as follows:
+\begin{equation*}
+(x_{\tau},\lambda_{\tau},s_{\tau})=(x_{0},\lambda_{0},s_{0})+\tau(x_{0}^{'},\lambda_{0}^{'},s_{0}^{'})+\frac{1}{2}\tau^{2}(x_{0}^{"},\lambda_{0}^{"},s_{0}^{"})+\dots = \sum_{j=0}^{\infty}\frac{\tau^{j}}{j!}(x_{0}^{j},\lambda_{0}^{j},s_{0}^{j})
+\end{equation*}
+Here, $(x_{0}^{j},\lambda_{0}^{j},s_{0}^{j})$ is the derivative of $(x_{\tau},\lambda_{\tau},s_{\tau})$ with respect to $\tau$, evaluated in $\tau = 0$. We can find these derivatives by implicity differenziating the equation \ref{T}:
+\begin{equation}
+\begin{bmatrix}
+0&A^{T}&I \\A&0&0\\X&0&S
+\end{bmatrix}\begin{bmatrix}
+x_{0}^{'}\\\lambda_{0}^{'}\\s_{0}^{'}
+\end{bmatrix}=-\begin{bmatrix}
+A^{T}\lambda-c\\Ax-b\\XSe
+\end{bmatrix},
+\end{equation}\\
+which is exactly the same system as affine-scaling step equation.
 \section{Initialization and termination} 
 
 There are several important issues concerning interior-point algorithms
@@ -1051,11 +1076,11 @@ the real number computation model we can not apply this argument.\\
 [\textit{Dscrivero' il metodo di Ye, che converte l'iterata $(x^{k}, \lambda^{k},s^{k})$, sufficientemente vicina alla soluzione, alla soluzione esatta}]
 \chapter{Sensitivity analysis}
 With the simplex method and interior point metods we can compute optimal solution to linear models, but this does not suffice because the constant parameters from which they are derived, such items as costs, profits, supplies, demands, are almost neveer known certainty at the time the model is solved.\\
-In this chapter we will see how the solution might change with variations of input variables.\\ The aim is to formulate a comparison between the simplex and IPM sensitivity and remark the sensitivity information inside the \textit{slack variables}.
+In this chapter we study the effects of changing the input variables with some perturbations.\\ The aim is to formulate a comparison between the simplex and IPM sensitivity and remark the sensitivity information inside the \textit{slack variables}.
 \chapter{Pratical implementations}
 In this chapter it is developed a more comprehensive analysis of the methods presenting some LP applications: the forest service allocation,...\\
-The aim is to screen the efficiency of the simplex method, the long-path following method and the Mehrotra's method tested on the three LP models proposed in order to describe a comparison of them.\\
-
+The aim is to screen the efficiency of the simplex method, the long-path following method and the Mehrotra's method tested on the three LP models proposed, in order to describe a comparison of them.\\
+These computations illustrate that the primal-dual IPMs are strong competitors to the simplex method on large problems
 \subsection{Forest service allocation} 
 The first model we illustrate is the \textit{Forest service allocation}. This example is part of allocation models class: the main issue is how to divide or allocate a valuable resource among competing needs and the resource may be for example land, capital, time or fuel.\\
 The U.S Forest Service has used this model to address the sensitive task of managing 191 million acres of national forestland \cite{(Natural)}. The Forest Service must trade off timber, grazing, recreational, environmental, national preservation, and other demands of forestland\\
@@ -1081,7 +1106,7 @@ s.t& \sum_{i=1}^{3}x_{i,j}=s_{i}\;\;\;\;i = 1, \dots,7&(allocation)\\
 \end{align*}
 Since the LP is not in standard form, we convert the inequalies to equalities adding slack valriables $y_{i,k}$ to the last three constraints, with $i, k = 1, \dots, 3$. The Forest Service Application Data used to test the methods are shown in the following table:\\
 \\
-\begin{array}{ | l | l | l | l | l | l | l | }
++\\begin{array}{ | l | l | l | l | l | l | l | }
 	\hline
 	\text{Analysis area\;}i & \text{Acres\;}j  & \text{Prescription} & \text{NPV} & \text{Timber} & \text{Grazing} & \text{Wilderness index} \\ \hline
 	1& 75 & 1 & 503 & 310 & 0.01 & 40 \\ \hline
@@ -1133,10 +1158,12 @@ x_{5,1}^{*} &= 0 & x_{5,2}^{*}&= 154 & x_{5,3}^{*} &= 58 & x_{6,1}^{*} &= 0 & x_
 	\bibitem {LP} Vanderbei J. Robert, \emph{\;Linear programming:
 		Foundations and Extensions}. Dept. of Operations Research and Financial Engineering
 	Princeton University, Springer Science+ Business Media, 2001.
-	\bibitem{MARE} R. D. C. Monteiro, I. Adler, and M. G. C. Resende, \emph{A polynomial-time primal-dual affine scaling algorithm for linear and convex quadratic programming and its power serier extension}, Math. of OR, 15, ()1990), pp.191-214.
+	\bibitem{MARE} R. D. C. Monteiro, I. Adler, and M. G. C. Resende, \emph{A polynomial-time primal-dual affine scaling algorithm for linear and convex quadratic programming and its power serier extension}, Math. of OR, 15, ()1990), pp. 191-214.
 	\bibitem{LMS} I. J. Lustig, E. Marsten, D. F. Shanno, \emph{Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, (1991), pp. 191-222.
 	\bibitem{MER} S. Mehrotra, \emph{ On the implementation of a primal-dual interior point method. } SIAM, 2 (1992), pp. 575-601.
-	\bibitem{(Natural)} B.Kent, B. B. Bare, R. C. Field, G. A. Bradley, \textit{Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN}, OR, 39, (1991), pp: 13-27. 
+	\bibitem{(Natural)} B.Kent, B. B. Bare, R. C. Field, G. A. Bradley, \textit{Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN}, OR, 39, (1991), pp: 13-27.
+\bibitem{meg} N. Megiddo, \emph{ Pathways to the optimal set in linear programming, in Progress in
+Mathematical Programming}, Springer-Verlag, New York, pp. 131-158, (1986). 
 \end{thebibliography}
 
 
