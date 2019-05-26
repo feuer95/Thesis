@@ -18,7 +18,7 @@ np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 12
 '''' SIMPLEX METHOD II PHASES '''
 
 """
-Input data: np.arrays of matrix A, cost vector c, vector b of the model LP
+Input data: np.arrays of matrix A, vector b, cost vector c of the model LP
             number maximum of iterations (default 500)
             rule: if Bland's rule -> 0 (default 0)
             c_form: if canonical form -> 0 (default 0)
@@ -100,6 +100,8 @@ def SimplexMethod(A, b, c, max_iter = 500, rule = 0, c_form = 0):
                     "Number of iterations: {}.".format(itII))
     elif info == 1:
         print("\nUnlimited problem.")
+    elif info == 2:
+        raise TimeoutError('The problem is not solved after {} iterations.'.format(max_iter))
     
     return x, u
     
@@ -159,8 +161,8 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
         NB = NB - {s} | {B[r]}  # Update nonbasic index set
         B[r] = s  # Update basic index list       
         it += 1
-        
-    raise TimeoutError('The problem is not solved after {} iterations.'.format(max_iter))
+    return 2, x, set(B), z, it, u
+
 
 #%%ù
     
@@ -189,12 +191,12 @@ if __name__ == "__main__":
 #    c = np.array([9, 16, 7, -3, -1])
 #    SimplexMethod(A, b, c, 500, 1)
     
-    A = np.matrix([[1/2, -11/2, -5/2, 9],[1/2, -3/2, -1/2, 1],[1, 0, 0, 0]])
-    c = np.array([-10, 57, 9, 24])
+    c = np.array([-0.75, 150, -0.02, 6])
     b = np.array([0, 0, 1])
-    x, u = SimplexMethod(A, b, c) # With Bland's rule
+    A = np.array([[0.25, -60, -0.04, 9],[0.5, -90, -0.02, 3],[0, 0, 1, 0]])
+    x, u = SimplexMethod(A, b, c, max_iter =10, rule = 0) # With Bland's rule
     dfu = pd.DataFrame(u,columns = ["it", "B", "x"])
-    dfu.to_excel("Simplex_.xlsx", index = False)
+    dfu.to_excel("Simplex_Bales0.xlsx", index = False)
 #    dfu.plot()
 #    plt.plot(uII)
 #    SimplexMethod(A, b, c, 500, 1)
