@@ -693,7 +693,7 @@ The algorithm concerned generates sequence of infeasible iterates $(x^{k},\lambd
 	\item a "corrector" direction that attempts to compensate for some of the nonlinearity in the affine-scaling direction.
 	\end{enumerate}
 The first two components, the affine-scaling step and the centering term, combine to generate the standard infeasible-interior-point step from the generic equations. However, the affine-scaling component is calculated before the centering component. By arranging the computations in this way, we gain a key advantage: the ability to choose the centering parameter $\sigma$ adaptively rather then a priori, as in the algorithm LPF.\\
-If the affine-scaling direction makes good progress in reducing the duality measure $\mu$ while remaining inside the positive orthant defined by $(x,s)>0$, we conclude that little centering is needed, so we choose $\sigma$ close to 1.\\
+If the affine-scaling direction makes good progress in reducing the duality measure $\mu$ while remaining inside the positive orthant defined by $(x,s)>0$, we conclude that little centering is needed, so we choose $\sigma$ close to 1.
 \subsection*{The algorithm}
 Given a point $(x, \lambda, s)$ with $(x, s)> 0$, we compute the affine-scaling direction:
 \begin{equation}\label{(A)}
@@ -719,8 +719,8 @@ Mehrotra \cite{MER} suggests the following heuristic, which has proved to be eff
 \begin{equation*}
 \sigma = \bigg(\frac{\mu_{\text{aff}}}{\mu}\bigg)^{3}.
 \end{equation*}
-To calculate the centering step component, we solve a linear system with the same coefficient matrix as in \ref{(A)} and right-hand side $(0, 0,\sigma\mu e)$.\\
-To motivate the corrector step, we see how the $i$th pairwise product $x_{i}s_{i}$ is affected by a full step in the affine-scaling direction:
+The centering step component is computed solving a linear system with the same coefficient matrix as in \ref{(A)} and right-hand side $(0, 0,\sigma\mu e)$: actually it is combined with the corrector step, as we see later.\\
+Then, to motivate the corrector step, we see how the $i$th pairwise product $x_{i}s_{i}$ is affected by a full step in the affine-scaling direction:
 \begin{equation*}
 (x_{i}+\Delta x_{i}^{\text{aff}})(s_{i}+\Delta s_{i}^{\text{aff}})= x_{i}s_{i}+ x_{i}\Delta s_{i}^{\text{aff}}+s_{i}\Delta x_{i}^{\text{aff}}+\Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{aff}} =\Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{aff}}.
 \end{equation*}
@@ -743,10 +743,11 @@ To assess the effect of the corrector component, we examine the pairwise product
 \begin{equation*}
 (x_{i}+\Delta x_{i}^{\text{aff}}+\Delta x_{i}^{\text{cor}})(s_{i}+\Delta s_{i}^{\text{aff}}+\Delta s_{i}^{\text{cor}})= \Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{cor}}+\Delta x_{i}^{\text{cor}}\Delta s_{i}^{\text{aff}}+\Delta x_{i}^{\text{cor}}\Delta s_{i}^{\text{cor}}.
 \end{equation*}
-This result yelds to a better reduction of the duality measure: in fact we have \\$\lVert(\Delta x^{\text{aff}},\Delta s^{\text{aff}}) \rVert = \mathcal{O}(\mu)$ and $\lVert(\Delta x^{\text{cor}},\Delta s^{\text{cor}}) \rVert = \mathcal{O}(\mu^{2})$.\\
-When the limiting matrix is singular, however, the corrector step may no longer be smaller in norm than the affine-scaling step, actually, it is often larger. Even in this situation, the use of the corrector component usually enhances the overall efficiency of the algorithm in practice.
-
-The combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \lambda^{\text{cc}}, \Delta s^{\text{cc}})$ is obtained by solving the following system:
+This result yelds to a better reduction of the duality measure: in fact we have \\$\lVert(\Delta x^{\text{aff}},\Delta s^{\text{aff}}) \rVert = \mathcal{O}(\mu)$ and $\lVert(\Delta x^{\text{cor}},\Delta s^{\text{cor}}) \rVert = \mathcal{O}(\mu^{2})$.
+\\
+When the limiting matrix is singular, the corrector step may no longer be smaller in norm than the affine-scaling step, ideed, it is often larger. Even in this situation, the use of the corrector component usually enhances the overall efficiency of the algorithm in practice.\\
+Since the centering and corrector components are obtained by solving linear system with the same coefficient matrix and they are indipendent each other, we can merge them into a single direction by adding their corresponding right-hand sides and compute the combined direction. 
+We obtain the combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \lambda^{\text{cc}}, \Delta s^{\text{cc}})$ solving the following system:
 \begin{equation}\label{(C)}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\X&0&S
@@ -755,11 +756,12 @@ The combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \lambda^{\t
 \end{bmatrix}=-\begin{bmatrix}
 0\\0\\\Delta X^{\text{aff}}\Delta S^{\text{aff}}e - \sigma\mu e
 \end{bmatrix}.
-\end{equation}\newpage
-Having described the eseential elements of Mehrotra'a approach, the algorithm is structured as following:
+\end{equation}
+Although we need to solve at each iteration two linear systems instead of one, the marginal cost is not great because the systems have the same coeffifient matrix and then we need only modify the right-hand side. Having described the essential elements of Mehrotra'a approach, the algorithm is structured as following:
 \begin{algorithm}
 	\caption{Predictor-corrector Mehrotra algorithm}
-	\begin{algorithmic}[1]		\State Given: $(x^{0}, \lambda^{0}, s^{0}) > 0$
+	\begin{algorithmic}[1]		
+		\State Given: $(x^{0}, \lambda^{0}, s^{0}) > 0$
 		\For{$k = 1,\dots$}
 		\State set $(x,\lambda,s)=(x^{k},\lambda^{k},s^{k})$ and solve \ref{(A)} for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;
 		\State calculate $\alpha_{\text{aff}}^{\text{pri}}$, $\alpha_{\text{aff}}^{\text{dual}}$ and $\mu_{\text{aff}}$
@@ -776,10 +778,9 @@ Having described the eseential elements of Mehrotra'a approach, the algorithm is
 		\EndFor
 	\end{algorithmic}
 \end{algorithm}
-\\
-Although we need to solve two linear systems instead of one at each iteration, the marginal cost is not very great because the systems have the same coeffifient matrix and then we need only modify the right-hand side.
-\lstinputlisting[language=py,caption=applicationContext.py]{Forest.py}
 
+\\
+\lstinputlisting[language=py,caption=applicationContext.py]{Forest.py}
 \chapter{Convergence analysis}
 In this section it is illustrated a comprehensive convergence analysis, using important theoretical results.
 \subsection*{Affine-scaling method convergence}
@@ -1037,19 +1038,19 @@ that guarantees
 
 \subsection*{MPC analysis}
 In order to study the perform of the Mehrotra's algorithm, we introduce the trajectory-following methods from ODEs. These one define a trajectory from the current point, we say $(x,\lambda,s)$, to the solution set $\Omega$. There are infinitely many trajectories to choose from, but in this casse is obtained from a linear scaling of the function \ref{F}.\\ Denoting this trajectory by $\mathcal{H}$ and parametrizing it by $\tau\in[0,1)$, we find that each point $(x_{\tau},\lambda_{\tau},s_{\tau})\in\mathcal{H}$ is a solution of the following nonlinear system:
-\begin{center}\label{T}
-	$\begin{bmatrix}
+\begin{equation}\label{T}
+	\begin{bmatrix}
 	A^{T}\lambda+s-c \\Ax-b \\XSe
 	\end{bmatrix}=\begin{bmatrix}
 	(1-\tau)(A^{T}\lambda-c)\\(1-\tau)(Ax-b)\\(1-\tau)XSe
-	\end{bmatrix}$, with $(x,s)\geq0$.
-\end{center}
+	\end{bmatrix}, (x,s)\geq0.
+\end{equation}
 We see that $(x_{\tau},\lambda_{\tau},s_{\tau})$ with $\tau = 0$ is exactly the initial point and that, if the limit exists, then $\lim\limits_{\tau\to\infty}(x_{\tau},\lambda_{\tau},s_{\tau}) = (x^{*},\lambda^{*},s^{*})$.\\
 To move along the trajectory $\mathcal{H}$, we can form a Taylor series approximation to $(x_{\tau},\lambda_{\tau},s_{\tau})$ by expanding about the initial point  $(x,\lambda,s)$ as follows:
 \begin{equation*}
 (x_{\tau},\lambda_{\tau},s_{\tau})=(x_{0},\lambda_{0},s_{0})+\tau(x_{0}^{'},\lambda_{0}^{'},s_{0}^{'})+\frac{1}{2}\tau^{2}(x_{0}^{"},\lambda_{0}^{"},s_{0}^{"})+\dots = \sum_{j=0}^{\infty}\frac{\tau^{j}}{j!}(x_{0}^{j},\lambda_{0}^{j},s_{0}^{j})
 \end{equation*}
-Here, $(x_{0}^{j},\lambda_{0}^{j},s_{0}^{j})$ is the derivative of $(x_{\tau},\lambda_{\tau},s_{\tau})$ with respect to $\tau$, evaluated in $\tau = 0$. We can find these derivatives by implicity differenziating the equation \ref{T}:
+Here, $(x_{0}^{j},\lambda_{0}^{j},s_{0}^{j})$ is the derivative of $(x_{\tau},\lambda_{\tau},s_{\tau})$ with respect to $\tau$, evaluated in $\tau = 0$. We can find these derivatives by implicity differenziating the equation \ref{T}. Setting $\tau=0$ we have:
 \begin{equation}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\X&0&S
@@ -1058,8 +1059,36 @@ x_{0}^{'}\\\lambda_{0}^{'}\\s_{0}^{'}
 \end{bmatrix}=-\begin{bmatrix}
 A^{T}\lambda-c\\Ax-b\\XSe
 \end{bmatrix},
-\end{equation}\\
-which is exactly the same system as affine-scaling step equation.
+\end{equation}
+which is exactly the same system as affine-scaling step equation.\\
+Hence, we can make the identification $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})=(x^{'}_{0},\lambda^{'}_{0},s^{'}_{0})$. Differentiating again with respect to $\tau$, we obtain the second derivative solving
+\begin{equation}
+\begin{bmatrix}
+0&A^{T}&I \\A&0&0\\X&0&S
+\end{bmatrix}\begin{bmatrix}
+x_{0}^{''}\\\lambda_{0}^{''}}\\s_{0}^{''}
+\end{bmatrix}=-\begin{bmatrix}
+0\\0\\2X^{'}_{0}S^{'}_{0}e
+\end{bmatrix}
+\end{equation}
+and we see that $(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\Delta s^{\text{cor}})=\frac{1}{2}(x^{''}_{0},\lambda^{''}_{0},s^{''}_{0})$. Now we truncate the Taylor series at two terms and use the last two results, in order to gìhave the following approximation:
+\begin{equation}
+(x_{\tau},\lambda_{\tau}, s_{\tau})\approx(x, \lambda, s)+ \tau(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+\tau^{2}(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\Delta s^{\text{cor}})
+\end{equation}
+If we ignore the centering term  by setting $\sigma =0$ and, hence, constrain the primal and dual step lengths to be identical, then the algorithm searches the successive point along the line
+\begin{equation}
+(x_{\tau},\lambda_{\tau}, s_{\tau})\approx(x, \lambda, s)+ \tau(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+\tau(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\Delta s^{\text{cor}})
+\end{equation} 
+that is, the $\tau^{2}$ coefficient in the òast term is replaced by $\tau$. Instead when we account for the centering parameter, the correspondence between the derivatives of the trajectory and the MPC search direction no longer holds. \\
+Then we introduce the modified trajectory $\mathcal{H}_{\sigma}$ for which the correspondence continues to hold even in the presence of $\sigma$. Also $\mathcal{H}_{\sigma}$ starts at $(x, \lambda, s)$ and aims at the solution set $\Omega$. All $(x_{\tau},\lambda_{\tau},s_{\tau})$ in this trajectory satisfy:
+\begin{equation}\label{T}
+\begin{bmatrix}
+A^{T}\lambda+s-c \\Ax-b \\XSe
+\end{bmatrix}=\begin{bmatrix}
+(1-\tau)(A^{T}\lambda-c)\\(1-\tau)(Ax-b)\\(1-\tau)XSe+\tau^{2}(1-\tau)\sigma\mu e
+\end{bmatrix},(x,s)\geq0.
+\end{equation}
+The tangent to this trajectory is the affine-scaling direction, as for $\mathcal{H}$, but the curvature can be identified with the combined centering-corrector step rather than the corrector component alone. The trajectory $\mathcal{H}_{\sigma}$ tends to bulge more toward the central path than $\mathcal{H}$. Despite the closer relationship between $\mathcal{H}_{\sigma}$  and MPC algorithm, we can not qualify it as a second-order trajectory-following algorithm because it still searches along a linear direction rather than a quadratic path.  
 \section{Initialization and termination} 
 
 There are several important issues concerning interior-point algorithms
@@ -1105,32 +1134,31 @@ s.t& \sum_{i=1}^{3}x_{i,j}=s_{i}\;\;\;\;i = 1, \dots,7&(allocation)\\
 &x_{i,j}\geq 0 \;\;\;\;i = 1,\dots,7;\;\;\;\;j = 1,\dots,3;
 \end{align*}
 Since the LP is not in standard form, we convert the inequalies to equalities adding slack valriables $y_{i,k}$ to the last three constraints, with $i, k = 1, \dots, 3$. The Forest Service Application Data used to test the methods are shown in the following table:\\
-\\
-+\\begin{array}{ | l | l | l | l | l | l | l | }
-	\hline
-	\text{Analysis area\;}i & \text{Acres\;}j  & \text{Prescription} & \text{NPV} & \text{Timber} & \text{Grazing} & \text{Wilderness index} \\ \hline
-	1& 75 & 1 & 503 & 310 & 0.01 & 40 \\ \hline
-	1 & 75 & 2 & 140 & 50 & 0.04 & 80 \\ \hline
-	1& 75 & 3 & 203 & 0 & 0 & 95 \\ \hline
-	2 & 90 & 1 & 675 & 198 & 0.03 & 55 \\ \hline
-	2 & 90 & 2 & 100 & 46 & 0.06 & 60 \\ \hline
-	2 & 90 & 3 & 45 & 0 & 0 & 65 \\ \hline
-	3 & 140 & 1 & 630 & 210 & 0.04 & 45 \\ \hline
-	3 & 140 & 2 & 105 & 57 & 0.07 & 55 \\ \hline
-	3 & 140 & 3 & 40 & 0 & 0 & 60 \\ \hline
-	4 & 60 & 1 & 330 & 112 & 0.01 & 30 \\ \hline
-	4 & 60 & 2 & 40 & 30 & 0.02 & 35 \\ \hline
-	4 & 60 & 3 & 295 & 0 & 0 & 90 \\ \hline
-	5 & 212 & 1 & 105 & 40 & 0.05 & 60 \\ \hline
-	5 & 212 & 2 & 460 & 32 & 0.08 & 60 \\ \hline
-	5 & 212 & 3 & 120 & 0 & 0 & 70 \\ \hline
-	6 & 98 & 1 & 490 & 105 & 0.02 & 35 \\ \hline
-	6 & 98 & 2 & 55 & 25 & 0.03 & 50 \\ \hline
-	6 & 98 & 3 & 180 & 0 & 0 & 75 \\ \hline
-	7 & 113 & 1 & 705 & 213 & 0.02 & 40 \\ \hline
-	7 & 113 & 2 & 60 & 40 & 0.04 & 45 \\ \hline
-	7 & 113 & 3 & 400 & 0 & 0 & 95 \\ \hline
-\end{array}
+
+%\begin{array}{l | l | l | l | l | l | l | l | }
+% &	\hline	\text{Analysis area\;}i & \text{Acres\;}j  & \text{Prescription} & \text{NPV} & \text{Timber} & \text{Grazing} & \text{Wilderness index} \\ \hline
+% &	1& 75 & 1 & 503 & 310 & 0.01 & 40 \\ \hline
+% &	1 & 75 & 2 & 140 & 50 & 0.04 & 80 \\ \hline
+% &	1& 75 & 3 & 203 & 0 & 0 & 95 \\ \hline
+ %&	2 & 90 & 1 & 675 & 198 & 0.03 & 55 \\ \hline
+% &	2 & 90 & 2 & 100 & 46 & 0.06 & 60 \\ \hline
+% &	2 & 90 & 3 & 45 & 0 & 0 & 65 \\ \hline
+% &	3 & 140 & 1 & 630 & 210 & 0.04 & 45 \\ \hline
+% &	3 & 140 & 2 & 105 & 57 & 0.07 & 55 \\ \hline
+% &	3 & 140 & 3 & 40 & 0 & 0 & 60 \\ \hline
+% &	4 & 60 & 1 & 330 & 112 & 0.01 & 30 \\ \hline
+% &	4 & 60 & 2 & 40 & 30 & 0.02 & 35 \\ \hline
+% &	4 & 60 & 3 & 295 & 0 & 0 & 90 \\ \hline
+% &	5 & 212 & 1 & 105 & 40 & 0.05 & 60 \\ \hline
+% &	5 & 212 & 2 & 460 & 32 & 0.08 & 60 \\ \hline
+% &	5 & 212 & 3 & 120 & 0 & 0 & 70 \\ \hline
+% &	6 & 98 & 1 & 490 & 105 & 0.02 & 35 \\ \hline
+% &	6 & 98 & 2 & 55 & 25 & 0.03 & 50 \\ \hline
+% &	6 & 98 & 3 & 180 & 0 & 0 & 75 \\ \hline
+% &	7 & 113 & 1 & 705 & 213 & 0.02 & 40 \\ \hline
+% &	7 & 113 & 2 & 60 & 40 & 0.04 & 45 \\ \hline
+% &	7 & 113 & 3 & 400 & 0 & 0 & 95 \\ \hline
+%\end{array}
 \\
 The minimum total net present value is $\$322515.00$ with the following optimal allocation:
 \begin{align*}
