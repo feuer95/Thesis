@@ -133,14 +133,13 @@ The aim is to show that the significant difference between interior point and si
 
 \chapter{Introduction to the linear programming}
 Optimization is a fundamental tool for understanding nature, science, engineering, economics and mathematics: a large number of real world problems can be treated as optimization problems, in which the goal is to select values that maximize or minimize a given \textit{objective function}, subject to certain \textit{constraints}.\\ The process of identifying objective, variables and constrains for a given problem is knows as \textit{modeling}. Construction of an appropriate model is the first step and, once it is formulated, an optimization algorithm can be used to find its solution. There is a collection of algorithms, each of them is tailored to a particular type of optimization problem. Linear Programming problem (LP) remains one of the most well-studied optimization problems: it consists in maximizing or minimizing a linear function over a certain domain, defined by a set of linear constraints.\\
-Linear programming has been dominant paradigm in optimization since Dantzig's development of the simplex method in the 1940s. Regarding the theoretical complexity of this method, it has proved that the expected number of iterations in the solution of a linear problem is polynomial. Furthermore, the worst case complexity has exponential behavior. It has been observed that the simplex algorithm performs sufficiently well in practice, especially on small or medium sized LPs, but its performance is not satisfactory in large-scale LPs. This weakness of simplex algorithm due to the stalling and cycling problem.\\
+Linear programming has been dominant paradigm in optimization since Dantzig's development of the simplex method in the 1940s. Regarding the theoretical complexity of this method, it has proved that the expected number of iterations in the solution of a linear problem is polynomial. Furthermore, the worst case complexity has exponential behavior. It has been observed that the simplex algorithm performs sufficiently well in practice, especially on small or medium sized LPs, but its performance is not satisfactory in large-scale LPs. This weakness of simplex algorithm due to the stalling and cycling problem.[\textit{Non è ancora certo uno studio a larga scala su un problema di ottimizzazione della forma.}]\\
 Many anti-cycling pivoting rules have been introduced in the past.
 Since Dantzig's initial contribution, researchers have made many efforts in order to enhance the performance of simplex algorithm. In the 1980s the monopoly of the simplex algorithm in the solution of the LP has been challenged. Interior point methods were the result of subsequent research and their performance has been more than satisfactory compared to the simplex algorithm. The main idea of IPMs is that the computation of the optimal solution can be achieved by moving inside the feasible region, defined by the constraints. \\
 %The next research step was the attempt to combine the simplex algorithm and IPMs in order to enhance the computational behavior of software packages~\cite{2}. \\ 
 The thesis is organized as follow:
-an introductory section summarizes the basic theory of the linear programming. In the chapter 2 we delineate the simplex method followed by a sensitivity analysis. The chapter 3 is dedicated to the primal-dual interior point methods, taking particular attention to the affine-scaling and the long-path following methods. In this section it is also defined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\The chapter 7 is devoted to the implementation of the algorithms discussed in the
-previously: we present the numerical results that we obtained for the considered physical problems and a comparison is performed.
-Concluding, in chapter 7 we give an overview of the work realized in this thesis and
+an introductory section summarizes the basic theory of the linear programming. In the chapter 2 we delineate the simplex method. The chapter 3 is dedicated to the primal-dual interior point methods, taking particular attention to the affine-scaling and the long-path following methods. It is also defined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\After a theoretical convergence analysis, the implementation illustrates the numerical results that we obtained for the considered physical problems and a comparison is performed.
+Concluding, in the last chapter we give an overview of the work realized in this thesis and
 suggest possible next steps. 
 
 (\textit{La mia proposta è quella di testare i metodi del punto interno su un problema a larga scala di ottimizzazione della forma (SO), illustrando così la varietà delle applicazioni degli IPM})
@@ -148,7 +147,7 @@ suggest possible next steps.
 % CAPITOLO 1
 \chapter{Basic theory}
 
-In this first chapter it is presented the standard formulations of a linear programming problem and it is given a brief overview of the theory. 
+In this first chapter it is presented the standard formulations of a linear programming problem and it is given a brief overview of the LP theory. 
 \section{First definitions}
 A linear programming problem has a linear objective function and linear constraints that consist of equalities and inequalities.\\
 The feasible set satisfying the constraints is a polytope, a convex and connected set with polygonal faces. We say that the linear program is \textit{infeasible} if the feasible set is empty and \textit{unbounded} if the objective function is unbounded below on the feasible region.\\
@@ -201,7 +200,7 @@ Given a linear program in standard form where A is an $n \times m$ matrix of ran
 \item if there is an optimal feasible solution, there is an optimal basic feasible solution.
 \end{enumerate}
 \end{thm}
-The theorem shows that it is necessary only to consider basic feasible solutions when seeking an optimal solution, because the optimal value is always achieved at such points.
+The theorem shows that we can only consider basic feasible solutions when seeking an optimal solution, because the optimal value is always achieved at such points.
 Thus, it describes a peculiar feature of the linear programming: it reduces the task of solving a linear problem to that of searching over basic feasible solutions. Since for a problem having $m$ variables and $n$ constraints there are at most ${m}\choose{n}$ basic solutions (corresponding to the number of ways of selecting m of n columns), there are only a finite number of possibilities. 
 
 \subsection*{A geometric viewpoint}
@@ -251,7 +250,7 @@ These equalites are called \textit{Karush-Kuhn-Tucker} conditions, or \textit{KK
 \begin{equation}
 \mathcal{L}(x,\lambda,s)=c^{T}x-\lambda^{T}\left(Ax-b\right)-s^{T}x.
 \end{equation}
-Now we illustrate the first-order necessary conditions: let us assume that the matrix $A\in\mathbb{R}^{m,n}$, the vectors $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$ construct a standard LP. A vector $x^{*}$ is a solution if and only if exist Lagrange multipliers $\lambda^{*},\;s^{*}$ such that the primal-dual solution $\left( x^{*},\lambda^{*},s^{*}\right)\in\mathbb{R}^{n}\times\mathbb{R}^{m}\times\mathbb{R}^{n}$ satisfies these conditions, 
+Now we illustrate the first-order necessary conditions: let us assume that the matrix $A\in\mathbb{R}^{n,m}$, the vectors $b\in\mathbb{R}^{n}$ and $c\in\mathbb{R}^{m}$ construct a standard LP. A vector $x^{*}$ is a solution if and only if exist Lagrange multipliers $\lambda^{*},\;s^{*}$ such that the primal-dual solution $\left( x^{*},\lambda^{*},s^{*}\right)\in\mathbb{R}^{n}\times\mathbb{R}^{m}\times\mathbb{R}^{n}$ satisfies these conditions, 
 \begin{align}
 A^{T}\lambda+s&=c\\ \label{(Cost)}
 Ax&=b\\ \label{SF}
@@ -282,7 +281,7 @@ We can restate this problem in a standard form introducing the slack variables a
 &\text{subject\; to\;}A^{T}\lambda+s=c\\ &\text{and\;} s\geq0
 \end{split}
 \end{equation}
-The primal-dual relationship is symmetric: by taking the dual of the dual problem, we recover the primal problem \ref{Prim} that we label briefly with (P). \\
+The primal-dual relationship is symmetric: by taking the dual of the dual problem, we recover the primal problem \ref{Prim} that we label briefly with (P).\\
 Given a feasible positive vector $x$ satisfying $Ax=b$ and a feasible point $\left(\lambda,s\right)$ for the dual, we have that: $c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x \geq0$.\\
 Therefore we have $c^{T}x\geq b^{T}\lambda$ when both primal and dual variables are feasible, and this result is known as \textit{dual gap}.\\
 
@@ -361,7 +360,7 @@ We begin the simplex method making a partition of the m-elements vectors $x$ and
 \end{split}
 \end{equation}
  %with \textit{n} elements corresponding to the basic feasible point we are starting from.
- \\Note that for any $x$ we have $x_{B}=A_{B}^{-1}b-A_{B}^{-1}A_{N}x_{N}$ and the cost function becames $c^{T}x=c_{B}^{T}A_{B}^{-1}b+(c_{N}-A_{N}^{T}A_{B}^{-T}c_{B})^{T}x_{N}$, denoting the \textit{reduced cost} by $\widetilde{c}=c_{N}-A_{N}^{T}A_{B}^{-T}c_{B}$.\\ Since we are dealing only with basic feasible points, we consider the relative basic feasible point $x$ with $x_{N}= 0$ and the cost value it is equal to $\widetilde{c}$.\\
+ \\Note that for any $x$ we have $x_{B}=A_{B}^{-1}b-A_{B}^{-1}A_{N}x_{N}$ and the cost function becames $c^{T}x=c_{B}^{T}A_{B}^{-1}b+(c_{N}-A_{N}^{T}A_{B}^{-T}c_{B})^{T}x_{N}$, denoting the \textit{reduced cost} by $\widetilde{c}=c_{N}-A_{N}^{T}A_{B}^{-T}c_{B}$.\\ Since we are dealing only with basic feasible points, we consider the relative basic feasible point $x$ with $x_{N}= 0$ and the cost value it is exactly $\widetilde{c}$.\\
  We can choose the dual points $(\lambda,s)$ such that $(x, \lambda, s)$ satisfies the KKT condition as well: we set $s_{B}= 0$ for the complementary condition, therefore we get $s_{N}= c_{N}- A_{N}^{T}\lambda$ from \ref{(Cost)}. Since $A_{B}$ is not singular, \ref{(Cost)} uniquely defines $\lambda$ as $\lambda = A_{B}^{-T}c_{B}$, then, we can state that the reduced cost is identical to $s_{N}$.\\  
  
  If there exists a $j \in N$ such that $\widetilde{c}_{j} \leq 0$, then by increasing $x_{j}$ up from zero, we will decrease the value of the objective function.\\
@@ -448,7 +447,7 @@ Another method that avoids this cycling is the \textit{Bland's rule}. In the alg
 	The simplex method always terminates provided that both the entering and the leaving variable are chosen according to the Bland's rule.
 \end{theorem*}
 \begin{proof}
-see~\cite{LP} pagg. 36-37	
+to write ~\cite{LP} pagg. 36-37	
 \end{proof}
 In the implementation of the simplex method it is implemented the Bland's rule and in the following example is illustrated the results:
 \begin{ex}
@@ -462,7 +461,45 @@ In the implementation of the simplex method it is implemented the Bland's rule a
 	\end{alignat*}
 	
 Applying Bland's rule, we find optimal solution at $x^{*} = [0.04, 0,  1,   0,  0.03, 0,   0  ]$ in the basis $B = [0, 2, 4]$ after 7 iterations: the optimal cost value is $c^{T}x^{*} = -0.5$.\\
-Instead without the rule, after 15 iterations we can't find the solution and the problem enters in a cycle: the original simplex method repeats the same sequence of six pivotis indefinitely, making no progress toward the solution.
+\begin{center}
+\begin{array}{ | l | l | l | l | }
+	\hline
+	\text{iteration} & \text{Current Basis} & \text{Current x} & \text{Current cost value} \\ \hline
+	1 & [4, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	2 & [0, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	3 & [0, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	4 & [2, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	5 & [2, 3, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	6 & [2, 3, 0] & [0.016 0.    1.    0.004 0.    0.    0.   ] & -0.008 \\ \hline
+	7 & [2, 4, 0] & [0.04 0.   1.   0.   0.03 0.   0.  ] & -0.050 \\ \hline
+\end{array}
+
+\end{center}
+Instead without the rule, after 18 iterations the simplex method returns to the same basis sequence, entering in a cycle: the original simplex method repeats the same sequence of six pivotis indefinitely, making no progress toward the solution.
+\begin{center}
+\begin{array}{ | l | l | l | l | }
+	\hline
+	\text{iteration} & \text{Current Basis} & \text{Current x} &\text{Current cost value} \\ \hline
+	1 & [4, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	2 & [0, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	3 & [0, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	4 & [2, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	5 & [2, 3, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	6 & [4, 3, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	7 & [4, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	8 & [0, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	9 & [0, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	10 & [2, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	11 & [2, 3, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	12 & [4, 3, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	13 & [4, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	14 & [0, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	15 & [0, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	16 & [2, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	17 & [2, 3, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+	18 & [4, 3, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
+\end{array}
+\end{center}
 \end{ex} 
 
 \section{The revised method}
@@ -566,7 +603,7 @@ The simplest primal-dual approach is to apply Newton's method directly to the fu
 	\> choosing $\alpha_{k}$ so that $(x^{k+1},\lambda^{k+1}, s^{k+1})\in\mathcal{F}^{o}$ \\
 	\textbf{end}
 \end{tabbing}
-%The resulting system is 
+(\textit{Questo metodo è analizzato solo dal punto di vista teorico. Dal punto di vista applicativo verranno messi a confronto: metodo del simplesso, metodo LPF e algoritmo di Mehrotra})
 
 
 The solution of this system $\left(\Delta x^{k},\Delta\lambda^{k},\Delta s^{k}\right)$ has either $\Delta x_{i}^{k}<0$ or $\Delta s_{i}^{k}<0$, or both because $x^{k}>0$ and $s^{k}>0$ and $s^{k}_{i}\Delta x^{k}_{i} + x^{k}_{i}\Delta s^{k}_{i} = - x^{k}_{i}s^{k}_{i}$, by the last block row of this system.\\
@@ -619,7 +656,7 @@ Most primal-dual methods define $\tau$ as the average value of the point $(x_{1}
 \> Choose $\sigma_{k}\in[0,1]$ and solve
 \end{tabbing}
 \begin{equation}\label{(5.8)}
-	\begin{bmatrix}
+	\begin{bmatrix}\label{P}
 	0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
 	\end{bmatrix}\begin{bmatrix}
 	\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
@@ -644,26 +681,44 @@ by Mizuno et al~\cite{5}:\\
 \end{equation*} 
 It is important to underline the importance of the first set: it is more restrictive, since $\mathcal{N}_{2}(\theta) \subset\mathcal{F}^{o}$, for all $\theta\in[0,1)$.\\
 In this research it will be proposed the \textit{long-step path-following algorithm}, that combines flexibility in the choice of step length with the use of $\mathcal{N}_{-\infty}(\gamma)$, for some $\gamma$ close to zero. It depends on two parameters $\sigma_{min}$, $\sigma_{max}$, which are lower and upper bounds on the centering parameter $\sigma_{k}$. After computed the search direction with the Newton method, the step length $\alpha_{k}$ is chosed as the maximum value subject to staying inside $\mathcal{N}_{-\infty}(\gamma)$.
-\begin{tabbing}
-	\textbf{Given} $\gamma, \sigma_{min}, \sigma_{max}$ and $(x^{o}, \lambda^{o}, s^{o})\in\mathcal{N}_{-\infty}(\gamma)$ with $(x^{o}, s^{o})>0$;\\
-	\textbf{for} \= $k = 0, 1, 2,...$ \\
-	\> Choose $\sigma_{k}\in[\sigma_{min},\sigma_{max}]$ and solve
-\end{tabbing}
-\begin{equation}\label{(5.9)}
-\begin{bmatrix}
-0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
-\end{bmatrix}\begin{bmatrix}
-\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
-\end{bmatrix}=-\begin{bmatrix}
-0\\0\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
-\end{bmatrix}
-\end{equation}
-\begin{tabbing}
-	\textbf{Set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$\\
-	\> Choosing the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)$\\
-	\textbf{end}
-\end{tabbing}
-The following lemma shows some properties of the points in $\mathcal{N}_{-\infty}(\gamma)$ that are used in the analysis section.
+%\begin{tabbing}
+%	\textbf{Given} $\gamma, \sigma_{min}, \sigma_{max}$ and $(x^{o}, \lambda^{o}, s^{o})\in\mathcal{N}_{-\infty}(\gamma)$ with $(x^{o}, s^{o})>0$;\\
+%	\textbf{for} \= $k = 0, 1, 2,...$ \\
+%	\> Choose $\sigma_{k}\in[\sigma_{min},\sigma_{max}]$ and solve
+%\end{tabbing}
+%\begin{equation}\label{(5.9)}
+%\begin{bmatrix}
+%0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
+%\end{bmatrix}\begin{bmatrix}
+%\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
+%\end{bmatrix}=-\begin{bmatrix}
+%0\\0\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
+%\end{bmatrix}
+%\end{equation}
+%\begin{tabbing}
+%	\textbf{Set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$\\
+%	\> Choosing the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)$\\
+%	\textbf{end}
+%\end{tabbing}
+\begin{algorithm}
+	\caption{Long-path following algorithm}
+	\begin{algorithmic}[1]		
+		\State Given: $\gamma, \sigma_{min}, \sigma_{max}$ and $(x^{o}, \lambda^{o}, s^{o})\in\mathcal{N}_{-\infty}(\gamma)$ with $(x^{o}, s^{o})>0$;
+	\For{$k = 1,\dots$}
+		\State Choose $\sigma_{k}\in[\sigma_{min},\sigma_{max}]$ and solve
+		\State $\begin{bmatrix}
+			0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
+			\end{bmatrix}\begin{bmatrix}
+			\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
+			\end{bmatrix}=-\begin{bmatrix}
+			0\\0\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
+			\end{bmatrix}$
+		\State $(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$
+		\State Choosing the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)$	
+\textbf{end}
+	\end{algorithmic}
+\end{algorithm}\\
+The following lemma shows properties of the points in $\mathcal{N}_{-\infty}(\gamma)$ that are used in the analysis section.
 \begin{lem}
 	Let $\mu_{0}\geq 0$ and $\gamma\in(0,1)$. Then for all points $(x,\lambda,s)$ with
 	\begin{equation*}
@@ -777,12 +832,12 @@ Although we need to solve at each iteration two linear systems instead of one, t
 		\State$\;\;\;\;\;\;(\lambda^{k+1},s^{k+1}) = (\lambda^{k},s^{k}) + \alpha_{k}^{\text{dual}}\Delta (\lambda^{k},\Delta s^{k})$;		
 		\EndFor
 	\end{algorithmic}
-\end{algorithm}
+\end{algorithm}\\
+\textit{ Capitolo da completare, proponendo due metodi di inizializzazione}
 
-\\
-\lstinputlisting[language=py,caption=applicationContext.py]{Forest.py}
+%\lstinputlisting[language=py,caption=applicationContext.py]{Forest.py}
 \chapter{Convergence analysis}
-In this section it is illustrated a comprehensive convergence analysis, using important theoretical results.
+In this section it is delineated a complete convergence analysis, using important theoretical results.
 \subsection*{Affine-scaling method convergence}
 We examine the asymptotic behavior of this method, that is of significant theoretical interest, recalling the matricial system.\\
 \begin{equation}\label{(Q)}
@@ -831,7 +886,7 @@ with the set $\mathcal{B}$ defined previously in (2.11).
 \end{proof}
 Now we show that $\lVert \Delta x_{\mathcal{B}}\rVert$ and $\lVert \Delta s_{\mathcal{N}}\rVert$ are also $\mathcal{O}(\mu)$ with the following two technical lemmas and an important theorem.
 \begin{lem} \label{(T)}
-	Let the matrix $H\in\mathbb{R}^{pxq}$ be given. Then there exists a nonnegative constant $\bar{C}$ depending only on $H$ with the following property: for any vector $h\in Range(H)$ and any nonsingular diagonal matrix $\Sigma$, the unique solution $\bar{w}$ of the problem
+	Let the matrix $H\in\mathbb{R}^{p,q}$ be given. Then there exists a nonnegative constant $\bar{C}$ depending only on $H$ with the following property: for any vector $h\in Range(H)$ and any nonsingular diagonal matrix $\Sigma$, the unique solution $\bar{w}$ of the problem
 	\begin{align*}
 	\min\limits_{w}\frac{1}{2}\lVert\Sigma\rVert^{2} \text{\;subject to\;} Hw = h\\\text{satisfies\;} \lVert\bar{w}\rVert\leq \bar{C}\lVert h\rVert.
 	\end{align*}
@@ -911,7 +966,7 @@ In the next lemma $A_{\mathcal{B}}$, $A_{\mathcal{N}}$,$D_{\mathcal{B}}$ and $D_
 \end{proof}
 A result similar to the Theorem~\ref{(Z)} holds for steps of an infeasible interior-point algorithm. See~\cite{Wright}.
 
-\subsection*{Analysis LPF}
+\subsection*{Analysis of LPF method}
 
 \begin{lem}\label{lem1}
 	Let u and v be any two vectors in $\mathbb{R}^{n}$ with $u^{T}v \geq 0$. Then, 
@@ -1109,8 +1164,8 @@ In this chapter we study the effects of changing the input variables with some p
 \chapter{Pratical implementations}
 In this chapter it is developed a more comprehensive analysis of the methods presenting some LP applications: the forest service allocation,...\\
 The aim is to screen the efficiency of the simplex method, the long-path following method and the Mehrotra's method tested on the three LP models proposed, in order to describe a comparison of them.\\
-These computations illustrate that the primal-dual IPMs are strong competitors to the simplex method on large problems
-\subsection{Forest service allocation} 
+These computations illustrate that the primal-dual IPMs are strong competitors to the simplex method on large problems.
+\subsection*{Forest service allocation} 
 The first model we illustrate is the \textit{Forest service allocation}. This example is part of allocation models class: the main issue is how to divide or allocate a valuable resource among competing needs and the resource may be for example land, capital, time or fuel.\\
 The U.S Forest Service has used this model to address the sensitive task of managing 191 million acres of national forestland \cite{(Natural)}. The Forest Service must trade off timber, grazing, recreational, environmental, national preservation, and other demands of forestland\\
 The models of a forest begin  by dividing land into homogeneous analysis area, then several prescriptions or land management policies are then proposed and evaluated for each. \\The optimization seeks the best possible allocation of land in the analysis areas to particular prescriptions, subject to forest-wide restrictions on land use.
@@ -1167,7 +1222,8 @@ x_{3,1}^{*} &= 140 & x_{3,2}^{*}&= 0 & x_{3,3}^{*} &= 0 & x_{4,1}^{*} &= 0 & x_{
 x_{5,1}^{*} &= 0 & x_{5,2}^{*}&= 154 & x_{5,3}^{*} &= 58 & x_{6,1}^{*} &= 0 & x_{6,2}^{*} &= 0 & x_{6,3}^{*} &= 98\\
  x_{7,1}^{*}&=0 &x_{7,2}^{*} &= 0 & x_{7,3}^{*} &= 113 & & & &  & & \\
 \end{align*}
-
+\subsection*{Blending models}
+As allocation models split a resource, blending models combine them. Various applications blend everything from chemicals, to diets, to metals, to animal food. This problems are formulated in a LP model in which you have to decide what mix of ingredients best fulfills specified output requirements. In this section we propose the Swedish steel problem \cite{SP}. [\textit{Attesa di conferma del professore di poter studiare questo esempio}] 
 \chapter{Conclusion}
 
 \begin{thebibliography}{9}
@@ -1179,19 +1235,20 @@ x_{5,1}^{*} &= 0 & x_{5,2}^{*}&= 154 & x_{5,3}^{*} &= 58 & x_{6,1}^{*} &= 0 & x_
 	\bibitem{3}Victor Klee and George J. Minty.\emph{ How good is the simplex algorithm? Technical report}, Washington University Department of Mathematics, 1970.
 	\bibitem{Kar} N. K. Karmarkar,\emph{ A new polynomial-time algorithm for linear programming}, Combinatorica, (1984).
 	\bibitem{5} S. Mizuno, M.J. Todd, and Y. Ye,\emph{\;On adaptive-step primal-dual interior-point algorithms for linear programming}, Math. of OR, vol. 18, pp. 964-981, (1993). 
-	\bibitem{5} Dantzig G. B., Orden A., Wolfe P., (1955) \emph{ Notes on linear programming: Part I- The generalized simplex method for
-	minimizing a linear form under linear inequality restrictions.} Pacific J Math pp: 183-195. 
+	\bibitem{5} G. B. Dantzig, A. Orden, P. Wolfe, \emph{ Notes on linear programming: Part I- The generalized simplex method for
+	minimizing a linear form under linear inequality restrictions.} Pacific J Math pp: 183-195, (1955). 
 	\bibitem{Lexico2}  Charnes A. \emph{ Optimality and degeneracy in linear programming}, 1952. pp: 160-170. 
 	\bibitem {Wright} Wright J. Stephen, \emph{\;Primal-Dual Interior Point Methods.} SIAM: society for industrial and applied mathematics. Philadelphia, pag 134.
 	\bibitem {LP} Vanderbei J. Robert, \emph{\;Linear programming:
 		Foundations and Extensions}. Dept. of Operations Research and Financial Engineering
 	Princeton University, Springer Science+ Business Media, 2001.
-	\bibitem{MARE} R. D. C. Monteiro, I. Adler, and M. G. C. Resende, \emph{A polynomial-time primal-dual affine scaling algorithm for linear and convex quadratic programming and its power serier extension}, Math. of OR, 15, ()1990), pp. 191-214.
-	\bibitem{LMS} I. J. Lustig, E. Marsten, D. F. Shanno, \emph{Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, (1991), pp. 191-222.
+	\bibitem{MARE} R. D. C. Monteiro, I. Adler, and M. G. C. Resende, \emph{A polynomial-time primal-dual affine scaling algorithm for linear and convex quadratic programming and its power serier extension}, Math. of OR, 15, pp. 191-214, (1990).
+	\bibitem{LMS} I. J. Lustig, E. Marsten, D. F. Shanno, \emph{Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, pp. 191-222, (1991).
 	\bibitem{MER} S. Mehrotra, \emph{ On the implementation of a primal-dual interior point method. } SIAM, 2 (1992), pp. 575-601.
-	\bibitem{(Natural)} B.Kent, B. B. Bare, R. C. Field, G. A. Bradley, \textit{Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN}, OR, 39, (1991), pp: 13-27.
+	\bibitem{(Natural)} B. Kent, B. B. Bare, R. C. Field, G. A. Bradley, \textit{Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN}, OR, 39, (1991), pp: 13-27.
 \bibitem{meg} N. Megiddo, \emph{ Pathways to the optimal set in linear programming, in Progress in
-Mathematical Programming}, Springer-Verlag, New York, pp. 131-158, (1986). 
+Mathematical Programming}, Springer-Verlag, New York, pp. 131-158, (1986).
+\bibitem{SP} Carl-Henrik Westerberg, B. Bjorklund, E. Hultman, \emph{ An application of Mixed Integer Programming in a Swedish Steel Mill}, Interfaces, pp. 39-43, (1977). 
 \end{thebibliography}
 
 

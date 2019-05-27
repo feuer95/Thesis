@@ -3,13 +3,14 @@ Created on Thu Apr 18 16:52:35 2019
 
 @author: Elena
 """
-from stdForm import stdForm # Function of standard form transform
-from starting_point import sp
-from print_boxed import print_boxed
-import numpy as np
-
+from starting_point import sp # Function to find the initial infeasible point
+from print_boxed import print_boxed # Print pretty info boxes
+from stdForm import stdForm # Function to extend LP in a standard form
+import numpy as np # To create vectors
+import pandas as pd # Export to excel 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
+
 
 ''' PREDICTOR-CORRECTOR MEHROTRA ALGORITHM '''
 
@@ -42,8 +43,8 @@ def mehrotra(A, b, c, c_form = 0, w = 0.005):
     (x,y,s) = sp(A, c, b)    
     g = np.dot(c,x) - np.dot(y,b)
     
-    print('\nInitial primal-dual point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))    
-    print('Dual initial gap: {}.\n'.format("%10.3f"%g))      
+    print('\nInitial primal-dual point:\nx = {} \nlambda = {} \ns = {}'.format(x, y, s))    
+    print('Dual initial g: {}.\n'.format("%10.3f"%g))      
   
     #%%
     
@@ -54,6 +55,7 @@ def mehrotra(A, b, c, c_form = 0, w = 0.005):
     # and R = [rb, rc, - x_0*s_0]
     
     it = 0
+    u = []
     while abs(g) > w:
         print("\n\tIteration: {}\n".format(it), end='')   
         # CHOLESKY for normal equation with matrix A* D^2 *A^{T}
@@ -96,7 +98,6 @@ def mehrotra(A, b, c, c_form = 0, w = 0.005):
         mi = np.dot(x,s)/c_A # Duality measure
         mi_af = np.dot(x + alfa1*x1,s + alfa2*s1)/c_A # Average value of the incremented vectors
         Sigma = (mi_af/mi)**3
-    #    print("alfa_affine = ({}, {})\nmi_affine = {} \nSet centering parameter Sigma = {}\n".format("%.3f"%alfa1, "%.3f"%alfa2, "%.3f"%mi_af, "%.3f"%Sigma))
         
         # SECOND SEARCH DIRECTION
         Rxs = - x1*s1 + Sigma*mi*np.ones((c_A)) # RHS of the New system, including minus
@@ -108,7 +109,6 @@ def mehrotra(A, b, c, c_form = 0, w = 0.005):
         y2 = np.dot(L_inv.T, z)
         s2 = - np.dot(A.T, y2)
         x2 = np.dot(S_inv, Rxs) - np.dot(W1, s2)
-    #    print("Search direction: ({}, {}, {})\n".format(x2, y2, s2))
         
         #%%
         
@@ -132,7 +132,7 @@ def mehrotra(A, b, c, c_form = 0, w = 0.005):
         # Dual gap c^{T}*x - b^{T}*y = x*s
         z = np.dot(c,x)
         g = z - np.dot(y,b)
-        
+        u.append([it, g, x])
         print('CORRECTOR STEP:\nCurrent primal-dual point: \n x_k = ',x,'\n s_k = ',s,'\nlambda_k = ',y)
         print('Current g: {}\n'.format("%.3f"%g))        
         
@@ -142,23 +142,37 @@ def mehrotra(A, b, c, c_form = 0, w = 0.005):
                 "Number of iteration: {}".format(it))
     if it == 300:
            raise TimeoutError("Iterations maxed out")
-    return x, y       
+    return x, s, u 
+     
 
-
-""" input data """
+#%%ù
+    
+"""Input data"""
 
 # Input data of canonical LP:
 if __name__ == "__main__":
-      
-#     Input data of canonical LP:
-    A = np.array([[1, 0],[0, 1],[1, 1],[4, 2]])
-    c = np.array([-12, -9])
-    b = np.array([1000, 1500, 1750, 4800])
-    mehrotra(A, b, c)
     
-# optimal solution of the canonical problem at 
-#  x* = [ 649.9999 1100.0001  350.0001  399.9999    0.        0.0003]                                                                              |
-# Dual gap:   0.001343                                                      
-# Optimal cost:  -17699.999                                                                                               
-# Number of iteration: 5   
+     # Example in cycle, need Bland's rule
+     
+#    c = np.array([-0.75, 150, -0.02, 6])
+#    b = np.array([0, 0, 1])
+#    A = np.array([[0.25, -60, -0.04, 9],[0.5, -90, -0.02, 3],[0, 0, 1, 0]])
+
+    # Unlimited problem
     
+#    A = np.array([[1, -1],[-1, 1]])
+#    c = np.array([-1, -1])
+#    b = np.array([1, 1])
+   
+     # Example with b negative
+    
+    A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
+    b = np.array([-10, -5])
+    c = np.array([9, 16, 7, -3, -1])
+    
+    x, s, u = mehrotra(A, b, c)
+    
+    dfu = pd.DataFrame(u, columns = ["it", "g", "x"])
+    dfu.to_excel("M.xlsx", index = False) 
+    dfu.plot(x = 'it', y = 'g', c = 'species', colormap = 'viridis', grid = True, title = 'Mehrotra algorithm')
+

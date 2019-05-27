@@ -4,13 +4,12 @@ Created on Mon Apr 29 13:49:50 2019
 
 @author: Elena
 """
-from starting_point import sp
-from print_boxed import print_boxed
-from stdForm import stdForm
-import numpy as np
-import random
-import matplotlib.pyplot as plt
+from starting_point import sp # Function to find the initial infeasible point
+from print_boxed import print_boxed # Print pretty info boxes
+from stdForm import stdForm # Function to extend LP in a standard form
+import numpy as np # To create vectors
 import pandas as pd # Export to excel 
+import random
 # Clean form of printed vectors
 np.set_printoptions(precision=4, threshold=10, edgeitems=4, linewidth=120, suppress = True)
 
@@ -56,7 +55,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
     (x,y,s) = sp(A, c, b)    
     g = np.dot(c,x) - np.dot(y,b)
     
-    print('\nInitial primal-dual point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))    
+    print('\nInitial primal-dual point:\nx = {} \nlambda = {} \ns = {}'.format(x, y, s))    
     print('Dual initial gap: {}.\n'.format("%10.3f"%g))      
     
     # Check if (x, y, s) in neighborhood N_inf:
@@ -70,7 +69,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
     
     # Compute the search direction solving the matricial system
     # Instead of solving the std system matrix it is uses AUGMENT SYSTEM with CHOL approach
-    it = 0
+    it = 1
     u = []
     while abs(g) > w:
         print("\tIteration: {}\n".format(it), end='')
@@ -104,6 +103,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
         
         """ largest step length """
         
+        # We find the maximum alpha s. t the next iteration is in N_gamma
         v = np.arange(0, 1.001, 0.0001)
         i = len(v)-1
         while i >= 0:
@@ -114,6 +114,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
             else:
                 i -= 1
         
+        # Increment the points and iteration
         x += t*x1
         y += t*y1
         s += t*s1
@@ -121,7 +122,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
         print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
         z = np.dot(c, x)
         g = z - np.dot(y,b)
-        u.append([it, g])
+        u.append([it, g, x])
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
         
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
@@ -130,24 +131,37 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
                 "Number of iteration: {}".format(it))
     if it == 300:
         raise TimeoutError("Iterations maxed out")
-    return x, y, u
+    return x, s, u
 
+
+#%%ù
+    
+"""Input data"""
+
+# Input data of canonical LP:
 if __name__ == "__main__":
     
-    
-#     Input data of canonical LP:
-    A = np.array([[1, 0],[0, 1],[1, 1],[4, 2]])
-    c = np.array([-12, -9])
-    b = np.array([1000, 1500, 1750, 4800])
-    x, y, u = longpath(A, b, c)
-    
-    dfu = pd.DataFrame(u,columns = ["it", "g"])
-    dfu.to_excel("Dual_Gap.xlsx", index = False)
-# optimal solution of the canonical problem at 
-#  x* = [ 650. 1100.  350.  400.    0.    0.]                                                                                    |
-# Dual gap:   0.001343                                                      
-# Optimal cost:     -17700.000                                                    
-# Number of iteration: 21   
+     # Example in cycle, need Bland's rule
+     
+#    c = np.array([-0.75, 150, -0.02, 6])
+#    b = np.array([0, 0, 1])
+#    A = np.array([[0.25, -60, -0.04, 9],[0.5, -90, -0.02, 3],[0, 0, 1, 0]])
 
-dfu.plot()
-plt.plot(u)
+    # Unlimited problem
+    
+#    A = np.array([[1, -1],[-1, 1]])
+#    c = np.array([-1, -1])
+#    b = np.array([1, 1])
+   
+     # Example with b negative
+    
+    A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
+    b = np.array([-10, -5])
+    c = np.array([9, 16, 7, -3, -1])
+    
+    x, s, u = longpath(A, b, c)
+    
+    dfu = pd.DataFrame(u, columns = ["it", "g", "x"])
+    dfu.to_excel("LPF.xlsx", index = False) 
+    dfu.plot(x = 'it',y = 'g', grid = True, title = 'LPF')
+

@@ -101,7 +101,7 @@ def SimplexMethod(A, b, c, max_iter = 500, rule = 0, c_form = 0):
     elif info == 1:
         print("\nUnlimited problem.")
     elif info == 2:
-        raise TimeoutError('The problem is not solved after {} iterations.'.format(max_iter))
+        print('The problem is not solved after {} iterations.'.format(max_iter))
     
     return x, u
     
@@ -118,16 +118,16 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
     u = []
     while it <= max_iter:  # Ensure procedure terminates (for the min reduced cost rule)
         print("\t\nIteration: {}\nCurrent x: {} \nCurrent B: {}\n".format(it, x, B), end='')
-        u.append([it, B.copy(), x])
+        u.append([it, B.copy(), x, z.copy()]) # Update table
         lamda = c[B] * B_inv
         if rule == 0:  # Bland rule
             optimum = True
-            for s in NB:  
+            for s in NB: # New reduced cost
                 m = np.asscalar(c[s] - lamda * A[:, s])
-                if m < 0:
+                if m < 0: # Find d < 0
                     optimum = False
                     break
-        elif rule == 1:
+        elif rule == 1: # Withou Bland's rule
             m , s = min([(np.asscalar(c[q] - lamda * A[:, q]), q) for q in NB],key=(lambda tup: tup[0]))
 #           ^ c_s and position s
             optimum = (m >= 0) 
@@ -145,11 +145,11 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
         d[s] = 1
         neg = [(-x[B[i]] / d[B[i]], i) for i in range(r_A) if d[B[i]] < 0]
         
-        if len(neg) == 0:
+        if len(neg) == 0: # If d > 0
             info = 1            
-            return info, x, B, None, it, u  #unlimited return
+            return info, x, B, None, it, u  # Unlimited return
         
-        theta, r = min(neg, key=(lambda t: t[0]))
+        theta, r = min(neg, key=(lambda t: t[0]))  # Find r
         
         x = x + theta * d
         z = z + theta * m       
@@ -158,9 +158,9 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
         for i in set(range(r_A)) - {r}:
             B_inv[i, :] -= d[B[i]]/d[B[r]] * B_inv[r, :]
         B_inv[r, :] /= -d[B[r]]
-        NB = NB - {s} | {B[r]}  # Update nonbasic index set
+        NB = NB - {s} | {B[r]}  # Update non-basic index set
         B[r] = s  # Update basic index list       
-        it += 1
+        it += 1 # Update iteration
     return 2, x, set(B), z, it, u
 
 
@@ -171,32 +171,27 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
 # Input data of canonical LP:
 if __name__ == "__main__":
     
-    # Example in cycle, need Bland's rule
+     # Example in cycle, need Bland's rule
+     
 #    c = np.array([-0.75, 150, -0.02, 6])
 #    b = np.array([0, 0, 1])
 #    A = np.array([[0.25, -60, -0.04, 9],[0.5, -90, -0.02, 3],[0, 0, 1, 0]])
-#    A = np.array([[3, 2], [0, 1]])
-#    b = np.array([4, 3])
-#    c = np.array([-1, -1])
 
+    # Unlimited problem
     
-    A = np.array([[1, -1],[-1, 1]])
-    c = np.array([-1, -1])
-    b = np.array([1, 1])
-#    SimplexMethod(A, b, c, 500, 1) # Unlimited problem
-#    
-#    # Example with b negative
-#    A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
-#    b = np.array([-10, -5])
-#    c = np.array([9, 16, 7, -3, -1])
-#    SimplexMethod(A, b, c, 500, 1)
+#    A = np.array([[1, -1],[-1, 1]])
+#    c = np.array([-1, -1])
+#    b = np.array([1, 1])
+   
+     # Example with b negative
     
-    c = np.array([-0.75, 150, -0.02, 6])
-    b = np.array([0, 0, 1])
-    A = np.array([[0.25, -60, -0.04, 9],[0.5, -90, -0.02, 3],[0, 0, 1, 0]])
-    x, u = SimplexMethod(A, b, c, max_iter =10, rule = 0) # With Bland's rule
-    dfu = pd.DataFrame(u,columns = ["it", "B", "x"])
-    dfu.to_excel("Simplex_Bales0.xlsx", index = False)
-#    dfu.plot()
-#    plt.plot(uII)
-#    SimplexMethod(A, b, c, 500, 1)
+    A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
+    b = np.array([-10, -5])
+    c = np.array([9, 16, 7, -3, -1])
+    
+
+    x, u = SimplexMethod(A, b, c) # With Bland's rule
+    dfu = pd.DataFrame(u,columns = ["iteration", "Current Basis", "Current x", "Current cost value"])
+    dfu.to_excel("Simplex_prova.xlsx", index = False)
+    dfu.plot(x = 'iteration', grid = True, title = 'Simplex method')
+
