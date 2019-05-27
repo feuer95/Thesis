@@ -5,12 +5,12 @@ Created on Mon May 13 13:52:17 2019
 @author: Elena
 """
 import numpy as np
-import pandas as pd
 from SimplexMethodIIphases import SimplexMethod
-#from MehrotraMethod import mehrotra
-#from LPFMethod import longpath
-#from AffineMethod import affine
-
+from MehrotraMethod import mehrotra
+from LPFMethod import longpath
+from AffineMethod import affine
+import pandas as pd # Export to excel 
+import matplotlib.pyplot as plt # Print plot
 # Clean form of printed vectors
 #np.set_printoptions(precision=4, threshold=10, edgeitems=4, linewidth=120, suppress = True)
 
@@ -67,8 +67,25 @@ b = np.concatenate((S, b))
 #x2, y2 = affine(A, b, -c, c_form = 1)
 # found optimal value after 29 iterations
 
-#x3, y3 = longpath(A, b, -c, c_form = 1)
+#x3, y3, u3 = longpath(A, b, -c, c_form = 1)
 # found optimal value after 26 iterations
 
-x4 = SimplexMethod(A, b, -c, 500, rule = 0, c_form = 1)
+#x4 = SimplexMethod(A, b, -c, 500, rule = 0, c_form = 1)
 # Number of iterations: 43
+
+
+# Recall the interior point methods
+x_m, s_m, u_m = mehrotra(A, b, -c, c_form = 1)
+x_l, s_l, u_l = longpath(A, b, -c, c_form = 1)
+
+#Create a DataFrame for Mehrotra
+dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M'])
+
+#Create a DataFrame for LPF
+dfl = pd.DataFrame(u_l, columns = ["it_l", "g_l", "x_l"])
+
+# Plot in a box the convergence of g
+ax = plt.gca() # gca stands for 'get current axis'
+dfm.plot(x = 'it', y = 'g_M', color = 'b', grid = True, title = 'Forest_service_allocation', ax = ax)
+dfl.plot(x = 'it_l', y = 'g_l', color = 'g', grid = True, ax = ax)
+plt.show()

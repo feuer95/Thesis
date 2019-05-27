@@ -56,6 +56,7 @@ def mehrotra(A, b, c, c_form = 0, w = 0.005):
     
     it = 0
     u = []
+    u.append([it, g, x, s])
     while abs(g) > w:
         print("\n\tIteration: {}\n".format(it), end='')   
         # CHOLESKY for normal equation with matrix A* D^2 *A^{T}
@@ -132,7 +133,7 @@ def mehrotra(A, b, c, c_form = 0, w = 0.005):
         # Dual gap c^{T}*x - b^{T}*y = x*s
         z = np.dot(c,x)
         g = z - np.dot(y,b)
-        u.append([it, g, x])
+        u.append([it, g, x.copy(), s.copy()])
         print('CORRECTOR STEP:\nCurrent primal-dual point: \n x_k = ',x,'\n s_k = ',s,'\nlambda_k = ',y)
         print('Current g: {}\n'.format("%.3f"%g))        
         
@@ -172,7 +173,7 @@ if __name__ == "__main__":
     
     x, s, u = mehrotra(A, b, c)
     
-    dfu = pd.DataFrame(u, columns = ["it", "g", "x"])
+    dfu = pd.DataFrame(u, columns = ['it', 'g', 'x', 's'])
     dfu.to_excel("M.xlsx", index = False) 
     dfu.plot(x = 'it', y = 'g', c = 'species', colormap = 'viridis', grid = True, title = 'Mehrotra algorithm')
 

@@ -11,9 +11,21 @@ import pandas as pd # Export to excel
 import matplotlib.pyplot as plt # Print plot
  
 '''
-                                     ===
-                            Convergence of the dual gap
-                                     ===
+                                                  ===
+                            Convergence of the dual gap of the LPF and Mehrotra method
+                                                  ===
+
+Input data in canonical form: matrix A, vector b and c as np.array
+
+Implementation of the mehrotra(A,b,c c_form = 0, w = 0.005) 
+                      longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005)
+
+Output points x, s, table u
+
+Plot the DataFrame in graphic with both convergences.
+
+----->     PROBLEM IN EXAMPLE 5!!!!
+
 '''
 
 #%%
@@ -28,15 +40,16 @@ x_m, s_m, u_m = mehrotra(A, b, c)
 x_l, s_l, u_l = longpath(A, b, c)
 
 #Create a DataFrame for Mehrotra
-dfm = pd.DataFrame(u_m, columns = ['it_M', 'g_M', 'x_M'])
-dfm.to_excel("M1.xlsx", index = False) 
+dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M', 's_M'])
 
 #Create a DataFrame for LPF
-dfl = pd.DataFrame(u_l, columns = ["it_l", "g_l", "x_l"])
-dfl.to_excel("LPF.xlsx", index = False) 
+dfl = pd.DataFrame(u_l, columns = ['it', 'g_l', 'x_l', 's_l'])
 
-dfm.plot(x = 'it_M', y = 'g_M', color = 'b', grid = True, title = 'Mehrotra algorithm 1')
-dfl.plot(x = 'it_l', y = 'g_l', color = 'g', grid = True, title = 'LPF algorithm 1 ')
+# Plot in a box the convergence of g
+ax = plt.gca() # gca stands for 'get current axis'
+dfm.plot(x = 'it', y = 'g_M', color = 'b', grid = True, title = 'Example 1', ax = ax)
+dfl.plot(x = 'it', y = 'g_l', color = 'g', grid = True, ax = ax)
+plt.show()
 
 #%%
 
@@ -50,15 +63,16 @@ x_m, s_m, u_m = mehrotra(A, b, c)
 x_l, s_l, u_l = longpath(A, b, c)
 
 #Create a DataFrame for Mehrotra
-dfm = pd.DataFrame(u_m, columns = ['it_M', 'g_M', 'x_M'])
-dfm.to_excel("M1.xlsx", index = False) 
+dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M', 's_M'])
 
 #Create a DataFrame for LPF
-dfl = pd.DataFrame(u_l, columns = ["it_l", "g_l", "x_l"])
-dfl.to_excel("LPF.xlsx", index = False) 
+dfl = pd.DataFrame(u_l, columns = ['it', 'g_l', 'x_l', 's_l'])
 
-dfm.plot(x = 'it_M', y = 'g_M', color = 'b', grid = True, title = 'Mehrotra algorithm 2')
-dfl.plot(x = 'it_l', y = 'g_l', color = 'g', grid = True, title = 'LPF algorithm 2')
+# Plot in a box the convergence of g
+ax = plt.gca() # gca stands for 'get current axis'
+dfm.plot(x = 'it', y = 'g_M', color = 'b', grid = True, title = 'Example 2', ax = ax)
+dfl.plot(x = 'it', y = 'g_l', color = 'g', grid = True, ax = ax)
+plt.show()
 
 #%%
 
@@ -72,15 +86,16 @@ x_m, s_m, u_m = mehrotra(A, b, c)
 x_l, s_l, u_l = longpath(A, b, c)
 
 #Create a DataFrame for Mehrotra
-dfm = pd.DataFrame(u_m, columns = ['it_M', 'g_M', 'x_M'])
-dfm.to_excel("M1.xlsx", index = False) 
+dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M', 's_M'])
 
 #Create a DataFrame for LPF
-dfl = pd.DataFrame(u_l, columns = ["it_l", "g_l", "x_l"])
-dfl.to_excel("LPF.xlsx", index = False) 
+dfl = pd.DataFrame(u_l, columns = ['it', 'g_l', 'x_l', 's_l'])
 
-dfm.plot(x = 'it_M', y = 'g_M', color = 'b', grid = True, title = 'Mehrotra algorithm 3')
-dfl.plot(x = 'it_l', y = 'g_l', color = 'g', grid = True, title = 'LPF algorithm 3')
+# Plot in a box the convergence of g
+ax = plt.gca() # gca stands for 'get current axis'
+dfm.plot(x = 'it', y = 'g_M', color = 'b', grid = True, title = 'Example 3', ax = ax)
+dfl.plot(x = 'it', y = 'g_l', color = 'g', grid = True, ax = ax)
+plt.show()
 
 #%%
 
@@ -94,15 +109,16 @@ x_m, s_m, u_m = mehrotra(A, b, c)
 x_l, s_l, u_l = longpath(A, b, c)
 
 #Create a DataFrame for Mehrotra
-dfm = pd.DataFrame(u_m, columns = ['it_M', 'g_M', 'x_M'])
-dfm.to_excel("M1.xlsx", index = False) 
+dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M', 's_M'])
 
 #Create a DataFrame for LPF
-dfl = pd.DataFrame(u_l, columns = ["it_l", "g_l", "x_l"])
-dfl.to_excel("LPF.xlsx", index = False) 
+dfl = pd.DataFrame(u_l, columns = ['it', 'g_l', 'x_l', 's_l'])
 
-dfm.plot(x = 'it_M', y = 'g_M', color = 'b', grid = True, title = 'Mehrotra algorithm 4')
-dfl.plot(x = 'it_l', y = 'g_l', color = 'g', grid = True, title = 'LPF algorithm 4')
+# Plot in a box the convergence of g
+ax = plt.gca() # gca stands for 'get current axis'
+dfm.plot(x = 'it', y = 'g_M', color = 'b', grid = True, title = 'Example 4', ax = ax)
+dfl.plot(x = 'it', y = 'g_l', color = 'g', grid = True, ax = ax)
+plt.show()
 
 #%%
 
@@ -116,14 +132,15 @@ x_m, s_m, u_m = mehrotra(A, b, c)
 x_l, s_l, u_l = longpath(A, b, c)
 
 #Create a DataFrame for Mehrotra
-dfm = pd.DataFrame(u_m, columns = ['it_M', 'g_M', 'x_M'])
-dfm.to_excel("M1.xlsx", index = False) 
+dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M', 's_M'])
 
 #Create a DataFrame for LPF
-dfl = pd.DataFrame(u_l, columns = ["it_l", "g_l", "x_l"])
-dfl.to_excel("LPF.xlsx", index = False) 
+dfl = pd.DataFrame(u_l, columns = ['it', 'g_l', 'x_l', 's_l'])
 
-dfm.plot(x = 'it_M', y = 'g_M', color = 'b', grid = True, title = 'Mehrotra algorithm 5')
-dfl.plot(x = 'it_l', y = 'g_l', color = 'g', grid = True, title = 'LPF algorithm 5')
+# Plot in a box the convergence of g
+ax = plt.gca() # gca stands for 'get current axis'
+dfm.plot(x = 'it', y = 'g_M', color = 'b', grid = True, title = 'Example 5', ax = ax)
+dfl.plot(x = 'it', y = 'g_l', color = 'g', grid = True, ax = ax)
+plt.show()
 
 #%%

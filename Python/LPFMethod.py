@@ -10,18 +10,20 @@ from stdForm import stdForm # Function to extend LP in a standard form
 import numpy as np # To create vectors
 import pandas as pd # Export to excel 
 import random
+
 # Clean form of printed vectors
 np.set_printoptions(precision=4, threshold=10, edgeitems=4, linewidth=120, suppress = True)
 
 ''' LONG-PATH FOLLOWING METHOD '''
 
 """
+
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             neighborhood parameter gamma -> 10^{-3} by default
             c_form: canonical form -> 0 by default
 """
 
-def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005):
+def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005, max_iter = 300):
         
     print('\n\tCOMPUTATION OF LPF ALGORITHM')
     
@@ -69,10 +71,11 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
     
     # Compute the search direction solving the matricial system
     # Instead of solving the std system matrix it is uses AUGMENT SYSTEM with CHOL approach
-    it = 1
+    it = 0
     u = []
+    u.append([it, g, x, s])
     while abs(g) > w:
-        print("\tIteration: {}\n".format(it), end='')
+        print("\tIteration: {}\n".format(it+1), end='')
         sigma = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
         print("Centering parameter sigma:{}.\n".format("%10.3f"%sigma))
 
@@ -119,18 +122,19 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
         y += t*y1
         s += t*s1
         it += 1
+        if it == max_iter:
+            print("Iterations maxed out")
+            return x, s, u
         print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
         z = np.dot(c, x)
-        g = z - np.dot(y,b)
-        u.append([it, g, x])
+        g = z - np.dot(y, b)
+        u.append([it, g, x.copy(), s.copy()])
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
         
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
                 "Dual gap: {}\n".format("%10.6f"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
                 "Number of iteration: {}".format(it))
-    if it == 300:
-        raise TimeoutError("Iterations maxed out")
     return x, s, u
 
 
@@ -141,7 +145,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
 # Input data of canonical LP:
 if __name__ == "__main__":
     
-     # Example in cycle, need Bland's rule
+     # Example in cycle
      
 #    c = np.array([-0.75, 150, -0.02, 6])
 #    b = np.array([0, 0, 1])
@@ -149,19 +153,25 @@ if __name__ == "__main__":
 
     # Unlimited problem
     
-#    A = np.array([[1, -1],[-1, 1]])
-#    c = np.array([-1, -1])
-#    b = np.array([1, 1])
+    A = np.array([[1, -1],[-1, 1]])
+    c = np.array([-1, -1])
+    b = np.array([1, 1])
    
      # Example with b negative
     
-    A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
-    b = np.array([-10, -5])
-    c = np.array([9, 16, 7, -3, -1])
+#    A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
+#    b = np.array([-10, -5])
+#    c = np.array([9, 16, 7, -3, -1])
+     
+    # Input data
+#    A = np.array([[1, 1, 2],[2, 0, 1],[2, 1, 3]])
+#    c = np.array([-3, -2, -4])
+#    b = np.array([4, 1, 7])
+
     
     x, s, u = longpath(A, b, c)
     
-    dfu = pd.DataFrame(u, columns = ["it", "g", "x"])
+    dfu = pd.DataFrame(u, columns = ['it', 'g', 'x','s'])
     dfu.to_excel("LPF.xlsx", index = False) 
     dfu.plot(x = 'it',y = 'g', grid = True, title = 'LPF')
 
