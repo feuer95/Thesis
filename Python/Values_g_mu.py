@@ -6,13 +6,14 @@ Created on Mon May 27 15:58:58 2019
 """
 
 from LPFMethod import longpath # Recall the long-path following function 
+from MehrotraMethod import mehrotra
 import numpy as np # To create vectors
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # To crrreate graphics
 
 '''
                                                   ===
-                            Convergence of the dual gap of the LPF in the example 5
+                            Convergence of the dual gap of the LPF and Mehrotra methods
                                                   ===
 
 Input data in canonical form: matrix A, vector b and c as np.array
@@ -26,29 +27,30 @@ Check the behaviour of the duality measure mu for LPF method and Mehrotra method
     II. long-path followinfg method:
         a. Dataframe
         b. Construct list of mu
-        c. print graphic for dual gap and duality measure 
+        c. plot graphic for dual gap and duality measure 
     III. Merhotra's method
         a. Dataframe
         b. Construct list of mu
-        c. print graphic for dual gap and duality measure 
+        c. plot graphic for dual gap and duality measure 
 '''
 
 
 # Input data
-A = np.array([[3, 2], [0, 1]])
-b = np.array([4, 3])
-c = np.array([-1, -1])
+A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
+b = np.array([-10, -5])
+c = np.array([9, 16, 7, -3, -1])
+rA, cA = np.shape(A)
 
 #%%
 
 x, s, u_l = longpath(A, b, c)
 
-# creo lista mu
+# Construct list mu
 mu = []
 for i in range(len(u_l)):
-    mu.append(np.dot(u_l[i][2],u_l[i][3])/6)
+    mu.append(np.dot(u_l[i][2],u_l[i][3])/(rA+cA))
     
-# Create a dataframe and convert to excel           
+# Dataframe and convert to excel           
 dfl = pd.DataFrame(u_l, columns = ['it', 'Current g', 'Current x', 'Current s'])   
 dfl['mu'] = mu
 dfl.to_excel("LPF.xlsx", index = False) 
@@ -58,14 +60,16 @@ plt.figure()
 
 # Plot dual gap
 plt.subplot(2, 1, 1)
+plt.title('LPF method')
 plt.plot(dfl['it'], dfl['Current g'], color = 'g', marker = '.')
 plt.legend()
 plt.xlabel('iterations')
 plt.ylabel('current dual gap')
 plt.grid(b = True, which = 'both')
+
 # Plot dual measure
 plt.subplot(2, 1, 2)
-plt.plot(dfl['it'], dfl['mu'], color = 'r', marker = '.')
+plt.plot(dfl['it'], dfl['mu'], color = 'r', marker = '.', label = 'Current mu')
 plt.legend()
 plt.xlabel('iterations')
 plt.ylabel('current mu')
@@ -82,7 +86,7 @@ mu = []
 for i in range(len(u_l)):
     mu.append(np.dot(u_l[i][2],u_l[i][3])/6)
     
-# Create a dataframe and convert to excel           
+# Dataframe and convert to excel           
 dfl = pd.DataFrame(u_l, columns = ['it', 'Current g', 'Current x', 'Current s'])   
 dfl['mu'] = mu
 dfl.to_excel("LPF.xlsx", index = False) 
@@ -92,6 +96,7 @@ plt.figure()
 
 # Plot dual gap
 plt.subplot(2, 1, 1)
+plt.title('Mehrotra\'s method')
 plt.plot(dfl['it'], dfl['Current g'], color = 'g', marker = '.')
 plt.legend()
 plt.xlabel('iterations')
@@ -99,7 +104,7 @@ plt.ylabel('current dual gap')
 plt.grid(b = True, which = 'both')
 # Plot dual measure
 plt.subplot(2, 1, 2)
-plt.plot(dfl['it'], dfl['mu'], color = 'r', marker = '.')
+plt.plot(dfl['it'], dfl['mu'], color = 'r', marker = '.', label = 'Current mu')
 plt.legend()
 plt.xlabel('iterations')
 plt.ylabel('current mu')

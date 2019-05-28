@@ -9,6 +9,7 @@ from print_boxed import print_boxed # Print pretty info boxes
 from stdForm import stdForm # Function to extend LP in a standard form
 import numpy as np # To create vectors
 import pandas as pd # Export to excel 
+import matplotlib.pyplot as plt # Print plot
 import random
 
 # Clean form of printed vectors
@@ -153,9 +154,9 @@ if __name__ == "__main__":
 
     # Unlimited problem
     
-    A = np.array([[1, -1],[-1, 1]])
-    c = np.array([-1, -1])
-    b = np.array([1, 1])
+#    A = np.array([[1, -1],[-1, 1]])
+#    c = np.array([-1, -1])
+#    b = np.array([1, 1])
    
      # Example with b negative
     
@@ -163,15 +164,43 @@ if __name__ == "__main__":
 #    b = np.array([-10, -5])
 #    c = np.array([9, 16, 7, -3, -1])
      
-    # Input data
-#    A = np.array([[1, 1, 2],[2, 0, 1],[2, 1, 3]])
-#    c = np.array([-3, -2, -4])
-#    b = np.array([4, 1, 7])
-
+    # Input data that works
     
+    A = np.array([[1, 1, 2],[2, 0, 1],[2, 1, 3]])
+    c = np.array([-3, -2, -4])
+    b = np.array([4, 1, 7])
+
+    # creo lista mu
     x, s, u = longpath(A, b, c)
-    
-    dfu = pd.DataFrame(u, columns = ['it', 'g', 'x','s'])
+    mu = []
+    for i in range(len(u)):
+        mu.append(np.dot(u[i][2],u[i][3])/6)
+        
+    # Create a dataframe and convert to excel           
+    dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s'])   
+    dfu['mu'] = mu
     dfu.to_excel("LPF.xlsx", index = False) 
-    dfu.plot(x = 'it',y = 'g', grid = True, title = 'LPF')
+    
+    # Plot the graphic with dataframe elements
+    plt.figure()
+    plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.')
+    plt.grid(b = True, which = 'major')
+    plt.title('Dual gap LPF')
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

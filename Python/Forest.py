@@ -61,31 +61,31 @@ b = np.concatenate((S, b))
 
 """ run the methods """
 
-#x1, y1 = mehrotra(A, b, -c, c_form = 1)
-# found optimal value after 9 iterations
-
-#x2, y2 = affine(A, b, -c, c_form = 1)
-# found optimal value after 29 iterations
-
-#x3, y3, u3 = longpath(A, b, -c, c_form = 1)
-# found optimal value after 26 iterations
-
-#x4 = SimplexMethod(A, b, -c, 500, rule = 0, c_form = 1)
-# Number of iterations: 43
-
-
 # Recall the interior point methods
 x_m, s_m, u_m = mehrotra(A, b, -c, c_form = 1)
 x_l, s_l, u_l = longpath(A, b, -c, c_form = 1)
 
 #Create a DataFrame for Mehrotra
-dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M'])
+dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M', 's_M'])
 
 #Create a DataFrame for LPF
-dfl = pd.DataFrame(u_l, columns = ["it_l", "g_l", "x_l"])
+dfl = pd.DataFrame(u_l, columns = ["it_l", "g_l", "x_l", 's_l'])
 
-# Plot in a box the convergence of g
-ax = plt.gca() # gca stands for 'get current axis'
-dfm.plot(x = 'it', y = 'g_M', color = 'b', grid = True, title = 'Forest_service_allocation', ax = ax)
-dfl.plot(x = 'it_l', y = 'g_l', color = 'g', grid = True, ax = ax)
+plt.figure()
+plt.plot(dfm['it'], dfm['g_M'], label = 'Mehrotra')
+plt.plot(dfl['it_l'],dfl['g_l'], label = 'LPF')
+plt.legend()
+plt.title('Dual gap')
+plt.xlabel('iterations')
+plt.ylabel('dual gap')
+
+# Show the minor grid lines with very faint and almost transparent grey lines
+plt.minorticks_on()
+
+plt.grid(b = True, which = 'minor')
+plt.grid(b = True, which = 'major')
+
 plt.show()
+
+
+

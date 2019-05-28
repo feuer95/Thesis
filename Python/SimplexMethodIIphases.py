@@ -177,7 +177,7 @@ if __name__ == "__main__":
 #    b = np.array([0, 0, 1])
 #    A = np.array([[0.25, -60, -0.04, 9],[0.5, -90, -0.02, 3],[0, 0, 1, 0]])
 
-    # Unlimited problem
+    # Example Unlimited problem
     
 #    A = np.array([[1, -1],[-1, 1]])
 #    c = np.array([-1, -1])
@@ -189,9 +189,15 @@ if __name__ == "__main__":
     b = np.array([-10, -5])
     c = np.array([9, 16, 7, -3, -1])
     
-
+    # Recall simplex method
     x, u = SimplexMethod(A, b, c) # With Bland's rule
-    dfu = pd.DataFrame(u,columns = ["iteration", "Current Basis", "Current x", "Current cost value"])
+    
+    # Create a dataframe and convert to excel
+    dfu = pd.DataFrame(u, columns = ['it', 'Current Basis', 'Current x', 'Current cost value'])
     dfu.to_excel("Simplex_prova.xlsx", index = False)
-    dfu.plot(x = 'iteration', grid = True, title = 'Simplex method')
+    
+    # Plot the graphic with dataframe elements
+    plt.figure()
+    plt.plot(dfu['it'], dfu['Current cost value'], label = 'Cost value')
+    plt.grid(b = True, which = 'major')
 

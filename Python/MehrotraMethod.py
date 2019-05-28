@@ -8,6 +8,8 @@ from print_boxed import print_boxed # Print pretty info boxes
 from stdForm import stdForm # Function to extend LP in a standard form
 import numpy as np # To create vectors
 import pandas as pd # Export to excel 
+import matplotlib.pyplot as plt # Create graphic
+
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
@@ -173,7 +175,13 @@ if __name__ == "__main__":
     
     x, s, u = mehrotra(A, b, c)
     
-    dfu = pd.DataFrame(u, columns = ['it', 'g', 'x', 's'])
-    dfu.to_excel("M.xlsx", index = False) 
-    dfu.plot(x = 'it', y = 'g', c = 'species', colormap = 'viridis', grid = True, title = 'Mehrotra algorithm')
+    # Create a dataframe and convert to excel
+    dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s'])
+    dfu.to_excel("Mehrotra_prova.xlsx", index = False)
+    
+    # Plot the graphic with dataframe elements
+    plt.figure()
+    plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.')
+    plt.grid(b = True, which = 'major')
+    plt.title('Dual gap Mehrotra')
 

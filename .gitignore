@@ -4,6 +4,7 @@ __pycache__/
 # File
 *.csv
 *.db
+*.pdf
 Thesis.aux
 Thesis.log
 Thesis.pdf

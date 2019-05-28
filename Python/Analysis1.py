@@ -17,15 +17,14 @@ import matplotlib.pyplot as plt # Print plot
 
 Input data in canonical form: matrix A, vector b and c as np.array
 
-Implementation of the mehrotra(A,b,c c_form = 0, w = 0.005) 
+Implementation of the mehrotra(A, b, c, c_form = 0, w = 0.005) 
                       longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005)
 
 Output points x, s, table u
 
 Plot the DataFrame in graphic with both convergences.
 
------>     PROBLEM IN EXAMPLE 5!!!!
-
+-----> PROBLEM IN EXAMPLE 5!!
 '''
 
 #%%
@@ -40,15 +39,19 @@ x_m, s_m, u_m = mehrotra(A, b, c)
 x_l, s_l, u_l = longpath(A, b, c)
 
 #Create a DataFrame for Mehrotra
-dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M', 's_M'])
+dfm = pd.DataFrame(u_m, columns = ['it', 'gM', 'xM', 'sM'])
 
 #Create a DataFrame for LPF
-dfl = pd.DataFrame(u_l, columns = ['it', 'g_l', 'x_l', 's_l'])
+dfl = pd.DataFrame(u_l, columns = ['it', 'gl', 'xl', 'sl'])
 
-# Plot in a box the convergence of g
-ax = plt.gca() # gca stands for 'get current axis'
-dfm.plot(x = 'it', y = 'g_M', color = 'b', grid = True, title = 'Example 1', ax = ax)
-dfl.plot(x = 'it', y = 'g_l', color = 'g', grid = True, ax = ax)
+plt.figure()
+plt.plot(dfm['it'], dfm['gM'], color = 'b', marker = '.')
+plt.plot(dfl['it'], dfl['gl'], color = 'g', marker = '.')
+plt.title('Dual gap: example 1')
+plt.legend()
+plt.xlabel('iterations')
+plt.ylabel('current dual gap')
+plt.grid()
 plt.show()
 
 #%%
@@ -58,20 +61,20 @@ A = np.array([[1, 0],[0, 1],[1, 1],[4, 2]])
 c = np.array([-12, -9])
 b = np.array([1000, 1500, 1750, 4800])
 
-# Recall the interior point methods
-x_m, s_m, u_m = mehrotra(A, b, c)
-x_l, s_l, u_l = longpath(A, b, c)
-
 #Create a DataFrame for Mehrotra
-dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M', 's_M'])
+dfm = pd.DataFrame(u_m, columns = ['it', 'gM', 'xM', 'sM'])
 
 #Create a DataFrame for LPF
-dfl = pd.DataFrame(u_l, columns = ['it', 'g_l', 'x_l', 's_l'])
+dfl = pd.DataFrame(u_l, columns = ['it', 'gl', 'xl', 'sl'])
 
-# Plot in a box the convergence of g
-ax = plt.gca() # gca stands for 'get current axis'
-dfm.plot(x = 'it', y = 'g_M', color = 'b', grid = True, title = 'Example 2', ax = ax)
-dfl.plot(x = 'it', y = 'g_l', color = 'g', grid = True, ax = ax)
+plt.figure()
+plt.plot(dfm['it'], dfm['gM'], color = 'b', marker = '.')
+plt.plot(dfl['it'], dfl['gl'], color = 'g', marker = '.')
+plt.title('Dual gap: example 2')
+plt.legend()
+plt.xlabel('iterations')
+plt.ylabel('current dual gap')
+plt.grid()
 plt.show()
 
 #%%
@@ -91,11 +94,16 @@ dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M', 's_M'])
 #Create a DataFrame for LPF
 dfl = pd.DataFrame(u_l, columns = ['it', 'g_l', 'x_l', 's_l'])
 
-# Plot in a box the convergence of g
-ax = plt.gca() # gca stands for 'get current axis'
-dfm.plot(x = 'it', y = 'g_M', color = 'b', grid = True, title = 'Example 3', ax = ax)
-dfl.plot(x = 'it', y = 'g_l', color = 'g', grid = True, ax = ax)
+plt.figure()
+plt.plot(dfm['it'], dfm['gM'], color = 'b', marker = '.')
+plt.plot(dfl['it'], dfl['gl'], color = 'g', marker = '.')
+plt.title('Dual gap: example 3')
+plt.legend()
+plt.xlabel('iterations')
+plt.ylabel('current dual gap')
+plt.grid()
 plt.show()
+
 
 #%%
 
@@ -109,16 +117,21 @@ x_m, s_m, u_m = mehrotra(A, b, c)
 x_l, s_l, u_l = longpath(A, b, c)
 
 #Create a DataFrame for Mehrotra
-dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M', 's_M'])
+dfm = pd.DataFrame(u_m, columns = ['it', 'gM', 'xM', 'sM'])
 
 #Create a DataFrame for LPF
-dfl = pd.DataFrame(u_l, columns = ['it', 'g_l', 'x_l', 's_l'])
+dfl = pd.DataFrame(u_l, columns = ['it', 'gl', 'xl', 'sl'])
 
-# Plot in a box the convergence of g
-ax = plt.gca() # gca stands for 'get current axis'
-dfm.plot(x = 'it', y = 'g_M', color = 'b', grid = True, title = 'Example 4', ax = ax)
-dfl.plot(x = 'it', y = 'g_l', color = 'g', grid = True, ax = ax)
+plt.figure()
+plt.plot(dfm['it'], dfm['gM'], color = 'b', marker = '.')
+plt.plot(dfl['it'], dfl['gl'], color = 'g', marker = '.')
+plt.title('Dual gap: example 4')
+plt.legend()
+plt.xlabel('iterations')
+plt.ylabel('current dual gap')
+plt.grid()
 plt.show()
+
 
 #%%
 
@@ -132,15 +145,19 @@ x_m, s_m, u_m = mehrotra(A, b, c)
 x_l, s_l, u_l = longpath(A, b, c)
 
 #Create a DataFrame for Mehrotra
-dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M', 's_M'])
+dfm = pd.DataFrame(u_m, columns = ['it', 'gM', 'xM', 'sM'])
 
 #Create a DataFrame for LPF
-dfl = pd.DataFrame(u_l, columns = ['it', 'g_l', 'x_l', 's_l'])
+dfl = pd.DataFrame(u_l, columns = ['it', 'gl', 'xl', 'sl'])
 
-# Plot in a box the convergence of g
-ax = plt.gca() # gca stands for 'get current axis'
-dfm.plot(x = 'it', y = 'g_M', color = 'b', grid = True, title = 'Example 5', ax = ax)
-dfl.plot(x = 'it', y = 'g_l', color = 'g', grid = True, ax = ax)
+plt.figure()
+plt.plot(dfm['it'], dfm['gM'], color = 'b', marker = '.')
+plt.plot(dfl['it'], dfl['gl'], color = 'g', marker = '.')
+plt.title('Dual gap: example 5')
+plt.legend()
+plt.xlabel('iterations')
+plt.ylabel('current dual gap')
+plt.grid()
 plt.show()
 
 #%%
