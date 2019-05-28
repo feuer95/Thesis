@@ -35,22 +35,22 @@ Check the Feasibility of the vectors computed with LPF method and Mehrotra metho
 
 # Input data of canonical form
 # 1
-A = np.array([[3, 2], [0, 1]])
-b = np.array([4, 3])
-c = np.array([-1, -1])
+#A = np.array([[3, 2], [0, 1]])
+#b = np.array([4, 3])
+#c = np.array([-1, -1])
 #  2
-A = np.array([[1, 0],[0, 1],[1, 1],[4, 2]])
-c = np.array([-12, -9])
-b = np.array([1000, 1500, 1750, 4800])
+#A = np.array([[1, 0],[0, 1],[1, 1],[4, 2]])
+#c = np.array([-12, -9])
+#b = np.array([1000, 1500, 1750, 4800])
 # 3
-A = np.array([[1, 1, 2],[2, 0, 1],[2, 1, 3]])
-c = np.array([-3, -2, -4])
-b = np.array([4, 1, 7])
+#A = np.array([[1, 1, 2],[2, 0, 1],[2, 1, 3]])
+#c = np.array([-3, -2, -4])
+#b = np.array([4, 1, 7])
 # 4
-A = np.array([[2, 1],[2, 3]])
-c = np.array([-4, -5])
-b = np.array([32, 48])
-# 5
+#A = np.array([[2, 1],[2, 3]])
+#c = np.array([-4, -5])
+#b = np.array([32, 48])
+## 5
 A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
 b = np.array([-10, -5])
 c = np.array([9, 16, 7, -3, -1])
@@ -65,15 +65,20 @@ x, s, u_m = mehrotra(A, b, c)
 # Construct list feas
 feasl = []
 feasm = []
-A, c = stdForm(A, c)
+y = A.shape[1] # Truncate the vector x solution of stdForm
+
+
+# Cycle: t = b - A*x_k > 0
 
 for i in range(len(u_l)):
-    t = np.dot(A, u_l[i][2]) - b 
-    feasl.append(np.linalg.norm(t, np.inf))
+    t = b - np.dot(A, u_l[i][2][:y]) 
+    t = np.amin(t)
+    feasl.append(t.copy())
 
 for i in range(len(u_m)):
-    u = np.dot(A, u_m[i][2]) - b 
-    feasm.append(np.linalg.norm(t, np.inf))  
+    t = b - np.dot(A, u_m[i][2][:y]) 
+    t = np.amin(t)
+    feasm.append(t.copy())
     
 #Create a DataFrame for Mehrotra
 dfm = pd.DataFrame(u_m, columns = ['it', 'Current g', 'Current x', 'Current s'])
@@ -86,24 +91,47 @@ dfl['feas'] = feasl
 # Plot
 plt.figure()
 
-# Plot feasibility LPF
+# Plot feasibility P LPF
 plt.subplot(2, 1, 1)
-plt.title('Feasibility LPF')
-plt.plot(dfl['it'], dfl['feas'], color = 'g', marker = '.', label = '||Ax - b||')
+plt.title('Feasibility P LPF')
+plt.plot(dfl['it'], dfl['feas'], color = 'g', marker = '.', label = '|b - Ax|')
 plt.legend()
 plt.xlabel('iterations')
 plt.ylabel('Primal error')
 plt.grid(b = True, which = 'both')
 
-# Plot feasibility Mehrotra
+# Plot feasibility P Mehrotra
 plt.subplot(2, 1, 2)
-plt.title('Feasibility Mehrotra')
-plt.plot(dfm['it'], dfm['feas'], color = 'r', marker = '.', label = '||Ax - b||')
+plt.title('Feasibility P Mehrotra')
+plt.plot(dfm['it'], dfm['feas'], color = 'r', marker = '.', label = '|b - Ax|')
 plt.legend()
 plt.xlabel('iterations')
 plt.ylabel('Primal error')
-plt.yscale('symlog')
 plt.grid(b = True, which = 'both')
 
 plt.show()
 
+#%%
+
+# Plot
+plt.figure()
+
+# Plot feasibility P LPF
+plt.subplot(2, 1, 1)
+plt.title('Feasibility D LPF')
+#plt.plot(dfl['it'], dfl['Current s'], color = 'g', marker = '.', label = '|b - Ax|')
+plt.legend()
+plt.xlabel('iterations')
+plt.ylabel('Dual error')
+plt.grid(b = True, which = 'both')
+
+# Plot feasibility P Mehrotra
+plt.subplot(2, 1, 2)
+plt.title('Feasibility D Mehrotra')
+#plt.plot(dfm['it'], dfm['Current s'], color = 'r', marker = '.', label = '|b - Ax|')
+plt.legend()
+plt.xlabel('iterations')
+plt.ylabel('Dual error')
+plt.grid(b = True, which = 'both')
+
+plt.show()
