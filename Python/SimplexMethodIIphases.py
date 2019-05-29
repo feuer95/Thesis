@@ -121,7 +121,7 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
     z = np.dot(c, x)  # Value of obj. function
     u = []
     while it <= max_iter:  # Ensure procedure terminates (for the min reduced cost rule)
-        print("\t\nIteration: {}\nCurrent x: {} \nCurrent B: {}\n".format(it, x, B), end='')
+        print("\t\nIteration: {}\nCurrent x: {} \nCurrent B: {}\n".format(it, x, B), end = '')
         u.append([it, B.copy(), x, z.copy()]) # Update table
         lamda = c[B] * B_inv
         if rule == 0:  # Bland rule
@@ -177,7 +177,7 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
 # Input data of canonical LP:
 if __name__ == "__main__":
     
-    A, b, c = input_data(8)
+    A, b, c = input_data(10)
 
     # Run simplex method
     x, u = SimplexMethod(A, b, c) # With Bland's rule
@@ -195,4 +195,3 @@ if __name__ == "__main__":
     locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
     
     plt.grid(b = True, which = 'major')
-

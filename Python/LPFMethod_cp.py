@@ -15,10 +15,10 @@ from input_data import input_data
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
-''' LONG-PATH FOLLOWING METHOD _Modified_ '''
-
-"""
-
+'''                                 ====
+                      LONG-PATH FOLLOWING METHOD_ modified
+                                    ====
+                                    
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             neighborhood parameter gamma -> 10^{-3} (default 0.001)
             c_form: canonical form -> 0 (default 0)
@@ -26,8 +26,7 @@ Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             
 In this algorithm we control the centering parameter sigma in order to study
 the progress of the Newton's iteration
-
-"""
+'''
 
 def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp = 0.6, w = 0.005, max_iter = 300):
         
@@ -152,27 +151,28 @@ def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp =
 if __name__ == "__main__":
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(3)  
+    (A, b, c) = input_data(3) 
+    
     # Central parameter 
     cp1 = 0.5
    
     # list duality measure mu
     x, s, u = longpathC(A, b, c, cp = cp1)
-#    mu = []
-#    for i in range(len(u)):
-#        q = sum(A.shape)
-#        mu.append(np.dot(u[i][2],u[i][3])/q)
+    mu = []
+    for i in range(len(u)):
+        q = sum(A.shape)
+        mu.append(np.dot(u[i][2],u[i][3]))
 #        
 #    # Create a dataframe and convert to excel            
     dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s'])   
-#    dfu['mu'] = mu
-#    dfu.to_excel("LPF_cp.xlsx", index = False) 
+    dfu['mu'] = mu
+    dfu.to_excel("LPF_cp.xlsx", index = False) 
 #    
     # Plot the graphic with dataframe elements   
     plt.figure()
     plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.', color = 'g')
     plt.grid(b = True, which = 'major')
-    locs, labels = plt.xticks(np.arange(0,len(u) -1 , step = 1))    
+    locs, labels = plt.xticks(np.arange(0,len(u) , step = 1))    
     plt.title('Dual gap LPF with sigma{}'.format("%10.3f"%cp1))
     plt.ylabel('dual gap')
     plt.xlabel('iterations')

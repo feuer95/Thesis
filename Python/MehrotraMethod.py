@@ -15,12 +15,15 @@ from input_data import input_data
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 
-''' PREDICTOR-CORRECTOR MEHROTRA ALGORITHM '''
+'''                                 ====
+                      PREDICTOR-CORRECTOR MEHROTRA ALGORITHM 
+                                    ====
 
-"""
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             c_form: canonical form -> 0 by default
-"""
+            
+            
+'''
 
 def mehrotra(A, b, c, c_form = 0, w = 0.005):
     
@@ -167,8 +170,10 @@ if __name__ == "__main__":
     # Plot the graphic with dataframe elements
     plt.figure()
     plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.', color = 'g')
+    
     plt.grid(b = True, which = 'major')
     locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
+    
     plt.title('Dual gap Mehrotra')
     plt.ylabel('dual gap')
     plt.xlabel('iterations')

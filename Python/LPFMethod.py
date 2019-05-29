@@ -16,14 +16,14 @@ import random
 # Clean form of printed vectors
 np.set_printoptions(precision=4, threshold=10, edgeitems=4, linewidth=120, suppress = True)
 
-''' LONG-PATH FOLLOWING METHOD '''
-
-"""
-
+'''                                 ====
+                      LONG-PATH FOLLOWING METHOD
+                                    ====
+                                    
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             neighborhood parameter gamma -> 10^{-3} by default
             c_form: canonical form -> 0 by default
-"""
+'''
 
 def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005, max_iter = 300):
         
@@ -156,8 +156,10 @@ if __name__ == "__main__":
     # Plot the graphic with dataframe elements    
     plt.figure()
     plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.')
+    
     plt.grid(b = True, which = 'major')
     locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
+    
     plt.title('Dual gap LPF')
     plt.ylabel('dual gap')
     plt.xlabel('iterations')

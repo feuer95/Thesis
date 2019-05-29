@@ -7,9 +7,10 @@ Created on Wed May 29 07:53:54 2019
 
 import numpy as np
 
-''' = EXAMPLES = '''
+''' 
+                         = EXAMPLES = 
 
-"""
+
  We compute some examples of a LP problem in a canonical form:
 
              min { c^{T} x | A x <= b, x >= 0 }
@@ -20,7 +21,7 @@ import numpy as np
 
  All examples are labelled with a number, in order to be recalled easily in other editors
  
-"""
+'''
 
 def input_data(w):
     if w == 1:
@@ -51,7 +52,7 @@ def input_data(w):
         A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
         b = np.array([-10, -5])
         c = np.array([9, 16, 7, -3, -1])
-    if w == 8: # Expected output is c^{T} x* = -3 at x* = [2, 1, 0, 0, 0]
+    if w == 8: # Expected output is c^{T} x* = -3 at x* = [2, 1, 0, 0, 0] !!!!
         A = np.matrix([[1, 2],[2, -1],[0, 1]])
         c = np.array([-1, -1])
         b = np.array([4, 3, 1])
