@@ -11,6 +11,7 @@ import numpy as np # To create vectors
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # To crrreate graphics
 from stdForm import stdForm
+from input_data import input_data
 
 '''
                                                   ===
@@ -28,33 +29,13 @@ Check the Feasibility of the vectors computed with LPF method and Mehrotra metho
     II. Run the methods
     III. Construction of feasibility list for both met (A in std form)
     IV. Create Dataframe
-    V. Blot both solutions
+    V. Plot both solutions
 '''
 
 #%%
 
 # Input data of canonical form
-# 1
-#A = np.array([[3, 2], [0, 1]])
-#b = np.array([4, 3])
-#c = np.array([-1, -1])
-#  2
-#A = np.array([[1, 0],[0, 1],[1, 1],[4, 2]])
-#c = np.array([-12, -9])
-#b = np.array([1000, 1500, 1750, 4800])
-# 3
-#A = np.array([[1, 1, 2],[2, 0, 1],[2, 1, 3]])
-#c = np.array([-3, -2, -4])
-#b = np.array([4, 1, 7])
-# 4
-#A = np.array([[2, 1],[2, 3]])
-#c = np.array([-4, -5])
-#b = np.array([32, 48])
-## 5
-A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
-b = np.array([-10, -5])
-c = np.array([9, 16, 7, -3, -1])
-
+(A, b, c) = input_data(5)
 
 #%%
 
@@ -116,7 +97,7 @@ plt.show()
 # Plot
 plt.figure()
 
-# Plot feasibility P LPF
+# Plot feasibility D LPF
 plt.subplot(2, 1, 1)
 plt.title('Feasibility D LPF')
 #plt.plot(dfl['it'], dfl['Current s'], color = 'g', marker = '.', label = '|b - Ax|')
@@ -125,7 +106,7 @@ plt.xlabel('iterations')
 plt.ylabel('Dual error')
 plt.grid(b = True, which = 'both')
 
-# Plot feasibility P Mehrotra
+# Plot feasibility D Mehrotra
 plt.subplot(2, 1, 2)
 plt.title('Feasibility D Mehrotra')
 #plt.plot(dfm['it'], dfm['Current s'], color = 'r', marker = '.', label = '|b - Ax|')

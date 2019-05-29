@@ -5,23 +5,27 @@ Created on Tue Apr  9 11:31:52 2019
 
 @author: Elena
 """
-from print_boxed import print_boxed
-from stdForm import stdForm
-import numpy as np 
-import matplotlib.pyplot as plt
+from print_boxed import print_boxed # Print pretty boxes
+from stdForm import stdForm # Convert in standard form
+import numpy as np # Create vectors
+import matplotlib.pyplot as plt # Create graphics
 import pandas as pd # Export to excel 
+from input_data import input_data
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 
-'''' SIMPLEX METHOD II PHASES '''
+'''' _SIMPLEX METHOD II PHASES_  '''
 
 """
 Input data: np.arrays of matrix A, vector b, cost vector c of the model LP
             number maximum of iterations (default 500)
             rule: if Bland's rule -> 0 (default 0)
             c_form: if canonical form -> 0 (default 0)
+            
+Output: vector x* optimal vector
+        list u = [iterations, bases, vectors x, solutions c*x]
 """
     
 def SimplexMethod(A, b, c, max_iter = 500, rule = 0, c_form = 0):
@@ -68,7 +72,7 @@ def SimplexMethod(A, b, c, max_iter = 500, rule = 0, c_form = 0):
         
         # Compute the Algorithm of the extended LP 
                         
-        infoI, xI, BI, zI, itI, uI = fun(A_I, c_I, x_I, B, 1, max_iter, rule)     
+        infoI, xI, BI, zI, itI, uI = fun(A_I, c_I, x_I, B, 0, max_iter, rule)     
         assert infoI == 0
         
         # Two cases of the phase I: zI > 0: STOP. zI = 0: Phase II
@@ -88,7 +92,7 @@ def SimplexMethod(A, b, c, max_iter = 500, rule = 0, c_form = 0):
     else:
         x = np.concatenate((np.zeros(c_A-r_A), b))
         B = set(range(c_A-r_A,c_A))        
-        info, x, B, z, itII, u = fun(A, c, x, B, 1, max_iter, rule)
+        info, x, B, z, itII, u = fun(A, c, x, B, 0, max_iter, rule)
         
     # Print termination of phase II 
     
@@ -128,7 +132,7 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
                     optimum = False
                     break
         elif rule == 1: # Withou Bland's rule
-            m , s = min([(np.asscalar(c[q] - lamda * A[:, q]), q) for q in NB],key=(lambda tup: tup[0]))
+            m , s = min([(np.asscalar(c[q] - lamda * A[:, q]), q) for q in NB], key=(lambda tup: tup[0]))
 #           ^ c_s and position s
             optimum = (m >= 0) 
 #                true if the minimum of the cost vector is positive
@@ -147,7 +151,7 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
         
         if len(neg) == 0: # If d > 0
             info = 1            
-            return info, x, B, None, it, u  # Unlimited return
+            return info, x, B, None, it, u  # info = 1 if Unlimited return
         
         theta, r = min(neg, key=(lambda t: t[0]))  # Find r
         
@@ -155,13 +159,15 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
         z = z + theta * m       
         
         # Update inverse:
+        
         for i in set(range(r_A)) - {r}:
             B_inv[i, :] -= d[B[i]]/d[B[r]] * B_inv[r, :]
         B_inv[r, :] /= -d[B[r]]
+        
         NB = NB - {s} | {B[r]}  # Update non-basic index set
-        B[r] = s  # Update basic index list       
-        it += 1 # Update iteration
-    return 2, x, set(B), z, it, u
+        B[r] = s                # Update basic index list       
+        it += 1                 # Update iteration
+    return 2, x, set(B), z, it, u # info = 2 if max_iteration
 
 
 #%%ù
@@ -171,25 +177,9 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
 # Input data of canonical LP:
 if __name__ == "__main__":
     
-     # Example in cycle, need Bland's rule
-     
-#    c = np.array([-0.75, 150, -0.02, 6])
-#    b = np.array([0, 0, 1])
-#    A = np.array([[0.25, -60, -0.04, 9],[0.5, -90, -0.02, 3],[0, 0, 1, 0]])
+    A, b, c = input_data(8)
 
-    # Example Unlimited problem
-    
-#    A = np.array([[1, -1],[-1, 1]])
-#    c = np.array([-1, -1])
-#    b = np.array([1, 1])
-   
-     # Example with b negative
-    
-    A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
-    b = np.array([-10, -5])
-    c = np.array([9, 16, 7, -3, -1])
-    
-    # Recall simplex method
+    # Run simplex method
     x, u = SimplexMethod(A, b, c) # With Bland's rule
     
     # Create a dataframe and convert to excel
@@ -198,6 +188,11 @@ if __name__ == "__main__":
     
     # Plot the graphic with dataframe elements
     plt.figure()
-    plt.plot(dfu['it'], dfu['Current cost value'], label = 'Cost value')
+    plt.plot(dfu['it'], dfu['Current cost value'], marker = 'o', ls = 'None', label = 'Cost value')
+    plt.title('Cost value')
+    plt.ylabel('cost value')
+    plt.xlabel('iterations')
+    locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
+    
     plt.grid(b = True, which = 'major')
 

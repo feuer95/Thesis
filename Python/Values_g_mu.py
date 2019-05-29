@@ -9,7 +9,8 @@ from LPFMethod import longpath # Recall the long-path following function
 from MehrotraMethod import mehrotra
 import numpy as np # To create vectors
 import pandas as pd # Export to excel 
-import matplotlib.pyplot as plt # To crrreate graphics
+import matplotlib.pyplot as plt # To create graphics
+from input_data import input_data
 
 '''
                                                   ===
@@ -36,36 +37,34 @@ Check the behaviour of the duality measure mu for LPF method and Mehrotra method
 
 
 # Input data
-A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
-b = np.array([-10, -5])
-c = np.array([9, 16, 7, -3, -1])
-rA, cA = np.shape(A)
+(A, b, c) = input_data(5)
 
 #%%
+
 
 x, s, u_l = longpath(A, b, c)
 
 # Construct list mu
 mu = []
 for i in range(len(u_l)):
-    mu.append(np.dot(u_l[i][2],u_l[i][3])/(rA+cA))
+    mu.append(np.dot(u_l[i][2],u_l[i][3])/(sum(A.shape)))
     
 # Dataframe and convert to excel           
 dfl = pd.DataFrame(u_l, columns = ['it', 'Current g', 'Current x', 'Current s'])   
 dfl['mu'] = mu
-dfl.to_excel("LPF.xlsx", index = False) 
 
 # Plot
 plt.figure()
 
 # Plot dual gap
 plt.subplot(2, 1, 1)
-plt.title('LPF method')
 plt.plot(dfl['it'], dfl['Current g'], color = 'g', marker = '.')
 plt.legend()
+plt.title('LPF method')
 plt.xlabel('iterations')
 plt.ylabel('current dual gap')
 plt.grid(b = True, which = 'both')
+locs, labels = plt.xticks(np.arange(0, len(u_l), step = 1))
 
 # Plot dual measure
 plt.subplot(2, 1, 2)
@@ -74,22 +73,21 @@ plt.legend()
 plt.xlabel('iterations')
 plt.ylabel('current mu')
 plt.grid(b = True, which = 'both')
-
+locs, labels = plt.xticks(np.arange(0, len(u_l), step = 1))
 plt.show()
 
 #%%
 
-x, s, u_l = mehrotra(A, b, c)
+x, s, u_m = mehrotra(A, b, c)
 
 # creo lista mu
 mu = []
-for i in range(len(u_l)):
-    mu.append(np.dot(u_l[i][2],u_l[i][3])/6)
+for i in range(len(u_m)):
+    mu.append(np.dot(u_l[i][2],u_l[i][3])/sum(A.shape))
     
 # Dataframe and convert to excel           
-dfl = pd.DataFrame(u_l, columns = ['it', 'Current g', 'Current x', 'Current s'])   
+dfl = pd.DataFrame(u_m, columns = ['it', 'Current g', 'Current x', 'Current s'])   
 dfl['mu'] = mu
-dfl.to_excel("LPF.xlsx", index = False) 
 
 # Plot
 plt.figure()
@@ -102,6 +100,8 @@ plt.legend()
 plt.xlabel('iterations')
 plt.ylabel('current dual gap')
 plt.grid(b = True, which = 'both')
+locs, labels = plt.xticks(np.arange(0, len(u_m), step = 1))
+
 # Plot dual measure
 plt.subplot(2, 1, 2)
 plt.plot(dfl['it'], dfl['mu'], color = 'r', marker = '.', label = 'Current mu')
@@ -109,6 +109,6 @@ plt.legend()
 plt.xlabel('iterations')
 plt.ylabel('current mu')
 plt.grid(b = True, which = 'both')
-
+locs, labels = plt.xticks(np.arange(0, len(u_m), step = 1))
 plt.show()
 

@@ -10,6 +10,7 @@ from stdForm import stdForm # Function to extend LP in a standard form
 import numpy as np # To create vectors
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # Print plot
+from input_data import input_data
 import random
 
 # Clean form of printed vectors
@@ -139,68 +140,24 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
     return x, s, u
 
 
-#%%ù
+#%%
     
-"""Input data"""
-
-# Input data of canonical LP:
-if __name__ == "__main__":
+if __name__ == "__main__": 
     
-     # Example in cycle
-     
-#    c = np.array([-0.75, 150, -0.02, 6])
-#    b = np.array([0, 0, 1])
-#    A = np.array([[0.25, -60, -0.04, 9],[0.5, -90, -0.02, 3],[0, 0, 1, 0]])
-
-    # Unlimited problem
-    
-#    A = np.array([[1, -1],[-1, 1]])
-#    c = np.array([-1, -1])
-#    b = np.array([1, 1])
-   
-     # Example with b negative
-    
-#    A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
-#    b = np.array([-10, -5])
-#    c = np.array([9, 16, 7, -3, -1])
-     
-    # Input data that works
-    
-    A = np.array([[1, 1, 2],[2, 0, 1],[2, 1, 3]])
-    c = np.array([-3, -2, -4])
-    b = np.array([4, 1, 7])
-
-    # creo lista mu
-    x, s, u = longpath(A, b, c)
-    mu = []
-    for i in range(len(u)):
-        mu.append(np.dot(u[i][2],u[i][3])/6)
+    # Input data of canonical LP:
+    (A, b, c) = input_data(10)
         
-    # Create a dataframe and convert to excel           
-    dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s'])   
-    dfu['mu'] = mu
-    dfu.to_excel("LPF.xlsx", index = False) 
+    x, s, u = longpath(A, b, c)
     
-    # Plot the graphic with dataframe elements
+    # Create a dataframe and convert to excel        
+    dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s'])   
+#    dfu.to_excel("LPF.xlsx", index = False) 
+    
+    # Plot the graphic with dataframe elements    
     plt.figure()
     plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.')
     plt.grid(b = True, which = 'major')
+    locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
     plt.title('Dual gap LPF')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+    plt.ylabel('dual gap')
+    plt.xlabel('iterations')

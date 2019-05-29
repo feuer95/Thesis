@@ -9,6 +9,7 @@ from stdForm import stdForm # Function to extend LP in a standard form
 import numpy as np # To create vectors
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # Create graphic
+from input_data import input_data
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
@@ -155,33 +156,20 @@ def mehrotra(A, b, c, c_form = 0, w = 0.005):
 # Input data of canonical LP:
 if __name__ == "__main__":
     
-     # Example in cycle, need Bland's rule
-     
-#    c = np.array([-0.75, 150, -0.02, 6])
-#    b = np.array([0, 0, 1])
-#    A = np.array([[0.25, -60, -0.04, 9],[0.5, -90, -0.02, 3],[0, 0, 1, 0]])
-
-    # Unlimited problem
-    
-#    A = np.array([[1, -1],[-1, 1]])
-#    c = np.array([-1, -1])
-#    b = np.array([1, 1])
-   
-     # Example with b negative
-    
-    A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
-    b = np.array([-10, -5])
-    c = np.array([9, 16, 7, -3, -1])
+    # Input data of canonical LP:
+    (A, b, c) = input_data(10)
     
     x, s, u = mehrotra(A, b, c)
-    
-    # Create a dataframe and convert to excel
-    dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s'])
-    dfu.to_excel("Mehrotra_prova.xlsx", index = False)
+    # Create a dataframe and convert to excel           
+    dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s'])   
+#   dfu.to_excel("LPF.xlsx", index = False) 
     
     # Plot the graphic with dataframe elements
     plt.figure()
-    plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.')
+    plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.', color = 'g')
     plt.grid(b = True, which = 'major')
+    locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
     plt.title('Dual gap Mehrotra')
+    plt.ylabel('dual gap')
+    plt.xlabel('iterations')
 

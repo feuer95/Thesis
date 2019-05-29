@@ -10,18 +10,19 @@ from stdForm import stdForm # Function to extend LP in a standard form
 import numpy as np # To create vectors
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # Print plot
-import random
+from input_data import input_data
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
-''' LONG-PATH FOLLOWING METHOD Modified'''
+''' LONG-PATH FOLLOWING METHOD _Modified_ '''
 
 """
 
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
-            neighborhood parameter gamma -> 10^{-3} by default
-            c_form: canonical form -> 0 by default
+            neighborhood parameter gamma -> 10^{-3} (default 0.001)
+            c_form: canonical form -> 0 (default 0)
+            cp: centering parameter (default 0.6)
             
 In this algorithm we control the centering parameter sigma in order to study
 the progress of the Newton's iteration
@@ -147,65 +148,32 @@ def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp =
     
 """Input data"""
 
-# Input data of canonical LP:
+
 if __name__ == "__main__":
     
-     # Example in cycle
-     
-#    c = np.array([-0.75, 150, -0.02, 6])
-#    b = np.array([0, 0, 1])
-#    A = np.array([[0.25, -60, -0.04, 9],[0.5, -90, -0.02, 3],[0, 0, 1, 0]])
-
-    # Unlimited problem
-    
-#    A = np.array([[1, -1],[-1, 1]])
-#    c = np.array([-1, -1])
-#    b = np.array([1, 1])
+    # Input data of canonical LP:
+    (A, b, c) = input_data(3)  
+    # Central parameter 
+    cp1 = 0.5
    
-     # Example with b negative
-    
-#    A = np.array([[-1, 1, -1, 1, 1], [-1, -4, 1, 3, 1]])
-#    b = np.array([-10, -5])
-#    c = np.array([9, 16, 7, -3, -1])
-     
-    # Input data that works
-    
-    A = np.array([[1, 1, 2],[2, 0, 1],[2, 1, 3]])
-    c = np.array([-3, -2, -4])
-    b = np.array([4, 1, 7])
-    cp1 = 0.2
-    
-    # creo lista mu
+    # list duality measure mu
     x, s, u = longpathC(A, b, c, cp = cp1)
-    mu = []
-    for i in range(len(u)):
-        mu.append(np.dot(u[i][2],u[i][3])/6)
-        
-    # Create a dataframe and convert to excel           
+#    mu = []
+#    for i in range(len(u)):
+#        q = sum(A.shape)
+#        mu.append(np.dot(u[i][2],u[i][3])/q)
+#        
+#    # Create a dataframe and convert to excel            
     dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s'])   
-    dfu['mu'] = mu
-    dfu.to_excel("LPF.xlsx", index = False) 
-    
-    # Plot the graphic with dataframe elements
+#    dfu['mu'] = mu
+#    dfu.to_excel("LPF_cp.xlsx", index = False) 
+#    
+    # Plot the graphic with dataframe elements   
     plt.figure()
-    plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.')
+    plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.', color = 'g')
     plt.grid(b = True, which = 'major')
+    locs, labels = plt.xticks(np.arange(0,len(u) -1 , step = 1))    
     plt.title('Dual gap LPF with sigma{}'.format("%10.3f"%cp1))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+    plt.ylabel('dual gap')
+    plt.xlabel('iterations')
+    plt.show()    
