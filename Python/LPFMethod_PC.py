@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue May 28 18:26:06 2019
+Created on Fri May 31 15:10:16 2019
 
 @author: elena
 """
+
 from starting_point import sp # Function to find the initial infeasible point
 from print_boxed import print_boxed # Print pretty info boxes
 from stdForm import stdForm # Function to extend LP in a standard form
@@ -12,12 +13,13 @@ import pandas as pd # Export to excel
 import matplotlib.pyplot as plt # Print plot
 from input_data import input_data
 from term import term
+import random
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 '''                                 ====
-                      LONG-PATH FOLLOWING METHOD_ modified
+                      LONG-PATH FOLLOWING METHOD_ PC
                                     ====
                                     
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
@@ -60,7 +62,7 @@ def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp =
     """ Initial points """
     
     # Initial infeasible positive (x,y,s) and Initial gap g
-    (x,y,s) = sp(A, c, b)    
+    (x, y, s) = sp(A, c, b)    
     g = np.dot(c,x) - np.dot(y,b)
     
     print('\nInitial primal-dual point:\nx = {} \nlambda = {} \ns = {}'.format(x, y, s))    
@@ -81,36 +83,37 @@ def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp =
     tm = term(it)
     u = []
     u.append([it, g, x.copy(), s.copy()])
-#    sigma = random.uniform(s_min, s_max) Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
+    
     while tm > 10**(-8):
-        print("\tIteration: {}\n".format(it + 1), end = '')
+        print("\tIteration: {}\n".format(it), end = '')
+
+        cp = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
+   
         S_inv = np.linalg.inv(np.diag(s))           
         W1 = S_inv*np.diag(x)                       # W1 = D = S^(-1)*X    
         W2 = np.dot(A, W1)                          # W      A*S^(-1)*X
         W  = np.dot(W2, A.T)
         L = np.linalg.cholesky(W)                   # CHOLESKY for A* D^2 *A^T
         L_inv = np.linalg.inv(L)
-        
+    
         # RHS of the system
-        
+    
         rb = b - np.dot(A, x)
         rc = c - np.dot(A.T, y) - s
         rxs = - x*s + cp*(sum(x*s)/c_A)*np.ones(c_A)  # Newton step toward x*s = sigma*mi
-        
+    
         B = rb + np.dot(W2, rc) - np.dot(np.dot(A, S_inv), rxs) #RHS of normal equation form
         z = np.dot(L_inv, B)
-        
+    
         # SEARCH DIRECTION:
-        
+    
         y1 = np.dot(L_inv.T, z)
         s1 = rc - np.dot(A.T, y1)
         x1 = np.dot(S_inv, rxs) - np.dot(W1,s1)
         print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),x1.round(decimals = 3),s1.round(decimals = 3)))
-        
-        #%%
-        
+
         """ largest step length """
-        
+    
         # We find the maximum alpha s. t the next iteration is in N_gamma
         v = np.arange(0, 1.001, 0.0001)
         i = len(v)-1
@@ -121,12 +124,42 @@ def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp =
                 break
             else:
                 i -= 1
-        
+    
         # Increment the points and iteration
-        x += t*x1
-        y += t*y1
-        s += t*s1
+        x2 = x + t*x1
+        y2 = y + t*y1
+        s2 = s + t*s1
         it += 1
+        u.append([it, g, x2.copy(), s2.copy()])
+       
+        S_inv = np.linalg.inv(np.diag(s))           
+        W1 = S_inv*np.diag(x)                       # W1 = D = S^(-1)*X    
+        W2 = np.dot(A, W1)                          # W      A*S^(-1)*X
+        W  = np.dot(W2, A.T)
+        L = np.linalg.cholesky(W)                   # CHOLESKY for A* D^2 *A^T
+        L_inv = np.linalg.inv(L)
+    
+        # RHS of the system
+    
+        rb = b - np.dot(A, x)
+        rc = c - np.dot(A.T, y) - s
+        rxs = - x*s + (sum(x*s)/c_A)*np.ones(c_A)  # Newton step toward x*s = sigma*mi
+    
+        B = rb + np.dot(W2, rc) - np.dot(np.dot(A, S_inv), rxs) #RHS of normal equation form
+        z = np.dot(L_inv, B)
+    
+        # SEARCH DIRECTION:
+    
+        y1 = np.dot(L_inv.T, z)
+        s1 = rc - np.dot(A.T, y1)
+        x1 = np.dot(S_inv, rxs) - np.dot(W1,s1)
+        print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),x1.round(decimals = 3),s1.round(decimals = 3)))        
+        # Increment the points and iteration
+        x = x2 + x1
+        y = y2 + y1
+        s = s2 + s1
+        it += 1
+        
         if it == max_iter:
             print("Iterations maxed out")
             return x, s, u
@@ -159,10 +192,10 @@ def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp =
 if __name__ == "__main__":
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(10) 
+    (A, b, c) = input_data(9) 
     
     # Central parameter 
-    cp1 = 0.1
+    cp1 = 0.5
    
     # list duality measure mu
     x, s, u = longpathC(A, b, c, cp = cp1, max_iter = 50)

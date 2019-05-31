@@ -32,7 +32,7 @@ Plot the number of iterations in graphic.
 
 # Input data of canonical form of the example number p
 p = 3
-(A, b, c) = input_data(8)
+(A, b, c) = input_data(p)
 
 # Recall the interior point methods
 x_s, u_s = SimplexMethod(A, b, c)

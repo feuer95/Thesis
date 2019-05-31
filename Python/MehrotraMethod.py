@@ -10,6 +10,7 @@ import numpy as np # To create vectors
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # Create graphic
 from input_data import input_data
+from term import term 
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
@@ -61,9 +62,10 @@ def mehrotra(A, b, c, c_form = 0, w = 0.005):
     # and R = [rb, rc, - x_0*s_0]
     
     it = 0
+    tm = term(it)
     u = []
     u.append([it, g, x, s])
-    while abs(g) > w:
+    while tm > 10**(-8):
         print("\n\tIteration: {}\n".format(it), end='')   
         # CHOLESKY for normal equation with matrix A* D^2 *A^{T}
         S_inv = np.linalg.inv(np.diag(s))  # S^{-1}
@@ -139,6 +141,13 @@ def mehrotra(A, b, c, c_form = 0, w = 0.005):
         # Dual gap c^{T}*x - b^{T}*y = x*s
         z = np.dot(c,x)
         g = z - np.dot(y,b)
+                
+        # Termination elements
+        m = np.linalg.norm(rb)/(1 + np.linalg.norm(b))
+        n = np.linalg.norm(rc)/(1 + np.linalg.norm(c))
+        q = g/(1 + z)
+        tm = max(m, n, q) 
+
         u.append([it, g, x.copy(), s.copy()])
         print('CORRECTOR STEP:\nCurrent primal-dual point: \n x_k = ',x,'\n s_k = ',s,'\nlambda_k = ',y)
         print('Current g: {}\n'.format("%.3f"%g))        

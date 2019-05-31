@@ -37,7 +37,7 @@ def input_data(w):
         c = np.array([-4, -5])
         b = np.array([32, 48])
     if w == 4: #The problem is not feasible
-        A = np.matrix([[1, 1],[-1, -1]])
+        A = np.array([[1, 1],[-1, -1]])
         c = np.array([2, -3])
         b = np.array([8, -11])
     if w == 5: # Expected output is c^{T} x* = -8. 5 at x* = [0.5 3.5 0.  0.  0.  2.5] 
@@ -45,7 +45,7 @@ def input_data(w):
         c = np.array([-3, -2, -4])
         b = np.array([4, 1, 7])
     if w == 6: # Expected output is c^{T} x* = -25 at x* = [3, 0, 4, 0, 0]
-        A = np.matrix([[2, 0, -1, 2, -1], [-1, 3, 1, -1, 2]])
+        A = np.array([[2, 0, -1, 2, -1], [-1, 3, 1, -1, 2]])
         b = np.array([2, 1])
         c = np.array([-3, 1, -4, -1, -2])
     if w == 7: # Expected output is c^{T} x* = 85 at x* = [7.5, 0, 2.5, 0, 0]
@@ -53,7 +53,7 @@ def input_data(w):
         b = np.array([-10, -5])
         c = np.array([9, 16, 7, -3, -1])
     if w == 8: # Expected output is c^{T} x* = -3 at x* = [2, 1, 0, 0, 0] !!!!
-        A = np.matrix([[1, 2],[2, -1],[0, 1]])
+        A = np.array([[1, 2],[2, -1],[0, 1]])
         c = np.array([-1, -1])
         b = np.array([4, 3, 1])
     if w == 9: # Example Unlimited problem           

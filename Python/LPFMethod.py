@@ -11,6 +11,7 @@ import numpy as np # To create vectors
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # Print plot
 from input_data import input_data
+from term import term
 import random
 
 # Clean form of printed vectors
@@ -74,9 +75,10 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
     # Compute the search direction solving the matricial system
     # Instead of solving the std system matrix it is uses AUGMENT SYSTEM with CHOL approach
     it = 0
+    tm = term(it)
     u = []
     u.append([it, g, x, s])
-    while abs(g) > w:
+    while tm > 10**(-8):
         print("\tIteration: {}\n".format(it+1), end='')
         sigma = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
         print("Centering parameter sigma:{}.\n".format("%10.3f"%sigma))
@@ -130,7 +132,14 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
         print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
         z = np.dot(c, x)
         g = z - np.dot(y, b)
+                
+        # Termination elements
+        m = np.linalg.norm(rb)/(1 + np.linalg.norm(b))
+        n = np.linalg.norm(rc)/(1 + np.linalg.norm(c))
+        q = g/(1 + z)
+        tm = max(m, n, q) 
         u.append([it, g, x.copy(), s.copy()])
+
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
         
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +

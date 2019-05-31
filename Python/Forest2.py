@@ -66,4 +66,4 @@ b = np.concatenate((S,-S, b))
 #x6, y6 = longpath(A, b, -c, w = 50)
 # LinAlgError: Matrix is not positive definite
 
-SimplexMethod(A, b, -c, max_iter = 500)
+SimplexMethod(A, b, -c, max_iter = 500, rule = 0)

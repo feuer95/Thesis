@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue May 28 18:26:06 2019
+Created on Fri May 31 15:10:16 2019
 
 @author: elena
 """
+
 from starting_point import sp # Function to find the initial infeasible point
 from print_boxed import print_boxed # Print pretty info boxes
 from stdForm import stdForm # Function to extend LP in a standard form
@@ -12,12 +13,13 @@ import pandas as pd # Export to excel
 import matplotlib.pyplot as plt # Print plot
 from input_data import input_data
 from term import term
+import random
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 '''                                 ====
-                      LONG-PATH FOLLOWING METHOD_ modified
+                      LONG-PATH FOLLOWING METHOD_ PC
                                     ====
                                     
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
@@ -81,8 +83,24 @@ def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp =
     tm = term(it)
     u = []
     u.append([it, g, x.copy(), s.copy()])
-#    sigma = random.uniform(s_min, s_max) Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
+    
     while tm > 10**(-8):
+        if it % 2 == 0:
+            cp = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
+        # We find the maximum alpha s. t the next iteration is in N_gamma
+            v = np.arange(0, 1.001, 0.0001)
+            i = len(v)-1
+            while i >= 0:
+                if (E(v[i]) > 0).all():
+                    t = v[i]
+                    print('Largest step length:{}'.format("%10.3f"%t))
+                    break
+                else:
+                    i -= 1
+        if it % 2 == 1:
+            cp = 1
+            t = 1
+            
         print("\tIteration: {}\n".format(it + 1), end = '')
         S_inv = np.linalg.inv(np.diag(s))           
         W1 = S_inv*np.diag(x)                       # W1 = D = S^(-1)*X    
@@ -111,16 +129,6 @@ def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp =
         
         """ largest step length """
         
-        # We find the maximum alpha s. t the next iteration is in N_gamma
-        v = np.arange(0, 1.001, 0.0001)
-        i = len(v)-1
-        while i >= 0:
-            if (E(v[i]) > 0).all():
-                t = v[i]
-                print('Largest step length:{}'.format("%10.3f"%t))
-                break
-            else:
-                i -= 1
         
         # Increment the points and iteration
         x += t*x1
@@ -162,7 +170,7 @@ if __name__ == "__main__":
     (A, b, c) = input_data(10) 
     
     # Central parameter 
-    cp1 = 0.1
+    cp1 = 0.5
    
     # list duality measure mu
     x, s, u = longpathC(A, b, c, cp = cp1, max_iter = 50)
