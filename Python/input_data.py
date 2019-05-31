@@ -15,7 +15,7 @@ import numpy as np
 
              min { c^{T} x | A x <= b, x >= 0 }
 
- The input data are:
+ The problem data are:
      A matrix n x m with n < m
      b and c vectors respectively (n x 1) and (m x 1)
 

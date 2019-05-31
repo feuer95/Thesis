@@ -15,16 +15,17 @@ from term import term
 import random
 
 # Clean form of printed vectors
-np.set_printoptions(precision=4, threshold=10, edgeitems=4, linewidth=120, suppress = True)
+np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 '''                                 ====
-                      LONG-PATH FOLLOWING METHOD
+                      LONG-PATH FOLLOWING METHOD with sigma RANDOM
                                     ====
                                     
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
-            neighborhood parameter gamma -> 10^{-3} by default
+            neighborhood param gamma -> 10^{-3} by default
             c_form: canonical form -> 0 by default
 '''
+
 
 def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005, max_iter = 300):
         
@@ -44,7 +45,8 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
         
     # Construction in a standard form [A | I]
     if c_form == 0:
-        A, c = stdForm(A, c)    
+        A, c = stdForm(A, c)
+        
     r_A, c_A = A.shape
     E = lambda a: (s+a*s1)*(x+a*x1)-(gamma*np.dot((s+a*s1),(x+a*x1)))/c_A #Function E: set of values in N_(gamma)
     
@@ -74,6 +76,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
     
     # Compute the search direction solving the matricial system
     # Instead of solving the std system matrix it is uses AUGMENT SYSTEM with CHOL approach
+    
     it = 0
     tm = term(it)
     u = []
@@ -111,7 +114,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
         """ largest step length """
         
         # We find the maximum alpha s. t the next iteration is in N_gamma
-        v = np.arange(0, 1.001, 0.0001)
+        v = np.arange(0, 1.000, 0.0001)
         i = len(v)-1
         while i >= 0:
             if (E(v[i]) > 0).all():
@@ -132,14 +135,10 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
         print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
         z = np.dot(c, x)
         g = z - np.dot(y, b)
+        u.append([it, g, x.copy(), s.copy()])
                 
         # Termination elements
-        m = np.linalg.norm(rb)/(1 + np.linalg.norm(b))
-        n = np.linalg.norm(rc)/(1 + np.linalg.norm(c))
-        q = g/(1 + z)
-        tm = max(m, n, q) 
-        u.append([it, g, x.copy(), s.copy()])
-
+        tm = term(it, b, c, rb, rc, z, g)
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
         
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
@@ -154,7 +153,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
 if __name__ == "__main__": 
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(10)
+    (A, b, c) = input_data(3)
         
     x, s, u = longpath(A, b, c)
     

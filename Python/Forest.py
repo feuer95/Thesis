@@ -8,6 +8,7 @@ import numpy as np
 from SimplexMethodIIphases import SimplexMethod
 from MehrotraMethod import mehrotra
 from LPFMethod import longpath
+from LPFMethod_PC import longpathPC
 from AffineMethod import affine
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # Print plot
@@ -23,7 +24,6 @@ Find the MAXIMUM total NPV: the constraint set in standard form A x = b using th
     1. affine(A, b, c, c_form = 0, w = 0.005):
     2. mehrotra(A, b, c, c_form = 0, w = 0.005)
     3. longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005)
-    4. SimplexMethod(A, b, c, max_iter = 500, rule = 0, c_form = 0) 
     
     input data: A, b, c, c_form = 1, w = 0.005 default
 """
@@ -64,8 +64,8 @@ b = np.concatenate((S, b))
 # Recall the interior point methods
 x_m, s_m, u_m = mehrotra(A, b, -c, c_form = 1)
 x_l, s_l, u_l = longpath(A, b, -c, c_form = 1)
-
-#Create a DataFrame for Mehrotra
+x_l, s_l, u_l = longpathPC(A, b, -c, c_form = 1, max_iter = 4)
+# Create a DataFrame for Mehrotra
 dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M', 's_M'])
 
 #Create a DataFrame for LPF

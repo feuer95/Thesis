@@ -16,7 +16,7 @@ def print_boxed(msg: str) -> None:
     lines = msg.splitlines()
     max_len = max(len(line) for line in lines)
 
-    if max_len > 100:
+    if max_len > 200:
         raise ValueError("Overfull box")
 
     print('-' * (max_len + 4))

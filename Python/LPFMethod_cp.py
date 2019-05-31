@@ -135,10 +135,7 @@ def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp =
         g = z - np.dot(y, b)
         
         # Termination elements
-        m = np.linalg.norm(rb)/(1 + np.linalg.norm(b))
-        n = np.linalg.norm(rc)/(1 + np.linalg.norm(c))
-        q = g/(1 + z)
-        tm = max(m, n, q) 
+        tm = term(it, b, c, rb, rc, z, g)
         u.append([it, g, x.copy(), s.copy()])
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
         
@@ -162,7 +159,7 @@ if __name__ == "__main__":
     (A, b, c) = input_data(10) 
     
     # Central parameter 
-    cp1 = 0.1
+    cp1 = 0.5
    
     # list duality measure mu
     x, s, u = longpathC(A, b, c, cp = cp1, max_iter = 50)
@@ -181,7 +178,7 @@ if __name__ == "__main__":
     plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.', color = 'g')
     plt.grid(b = True, which = 'major')
     locs, labels = plt.xticks(np.arange(0,len(u) , step = 1))    
-    plt.title('Dual gap LPF with sigma{}'.format("%10.3f"%cp1))
+    plt.title('Dual gap LPF with sigma{}'.format("%10.2f"%cp1))
     plt.ylabel('dual gap')
     plt.xlabel('iterations')
     plt.show()    

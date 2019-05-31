@@ -12,5 +12,5 @@ def term(it, b = None, c = None, rb = None, rc = None, z = None, g = None):
     else:
         m = np.linalg.norm(rb)/(1 + np.linalg.norm(b))
         n = np.linalg.norm(rc)/(1 + np.linalg.norm(c))
-        q = np.linalg.norm(g)/(1 + np.linalg.norm(g))
-    return min(m, n, q)   
+        q = g/(1 + abs(z))
+    return max(m, n, q)   

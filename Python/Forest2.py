@@ -15,19 +15,17 @@ from AffineMethod import affine
 np.set_printoptions(precision=4, threshold=10, edgeitems=4, linewidth=120, suppress = True)
 
 
-''' FOREST_SERVICE_ALLOCATION '''
+''' 
+                                 FOREST_SERVICE_ALLOCATION 
 
-"""
-Find the MAXIMUM total NPV: the constraint set in canonical form A x = b using the methods:
+
+Find the MAXIMUM total NPV: the constraint set in canonical form A x = b using:
     
-    1. affine(A, b, c, c_form = 0, w = 0.005):
-    2. mehrotra(A, b, c, c_form = 0, w = 0.005)
-    3. longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005)
     4. SimplexMethod(A, b, c, max_iter = 500, rule = 0, c_form = 0) 
     
     input data: A, b, c ( c_form = 0, w = 0.005 default )
-"""
 
+'''
 print('\n\tsecond TEST ON FOREST SERVICE ALLOCATION\n')
 
 """ import & construct input data """
@@ -66,4 +64,4 @@ b = np.concatenate((S,-S, b))
 #x6, y6 = longpath(A, b, -c, w = 50)
 # LinAlgError: Matrix is not positive definite
 
-SimplexMethod(A, b, -c, max_iter = 500, rule = 0)
+x, u = SimplexMethod(A, b, -c, max_iter = 500, rule = 0)
