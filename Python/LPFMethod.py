@@ -11,7 +11,7 @@ import numpy as np # To create vectors
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # Print plot
 from input_data import input_data
-from term import term
+from term import term # Compute the conditions of termination
 import random
 
 # Clean form of printed vectors
@@ -82,6 +82,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
     u = []
     u.append([it, g, x, s])
     while tm > 10**(-8):
+        
         print("\tIteration: {}\n".format(it+1), end='')
         sigma = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
         print("Centering parameter sigma:{}.\n".format("%10.3f"%sigma))
@@ -153,7 +154,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
 if __name__ == "__main__": 
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(3)
+    (A, b, c) = input_data(2)
         
     x, s, u = longpath(A, b, c)
     
@@ -171,3 +172,11 @@ if __name__ == "__main__":
     plt.title('Dual gap LPF')
     plt.ylabel('dual gap')
     plt.xlabel('iterations')
+        
+    # Construct list mu
+    mu = []
+    for i in range(len(u)):
+        mu.append(u[i][2]*u[i][3])
+    
+    # Dataframe dfl of the list u_l            
+    dfu['mu'] = mu
