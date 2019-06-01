@@ -26,7 +26,7 @@ Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             
 '''
 
-def mehrotra(A, b, c, c_form = 0, w = 0.005):
+def mehrotra(A, b, c, c_form = 0, w = 10**(-8)):
     
     print('\n\tCOMPUTATION OF MEHROTRA ALGORITHM\n')
     

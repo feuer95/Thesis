@@ -171,7 +171,7 @@ if __name__ == "__main__":
     
 
     # list duality measure mu
-    x, s, u = longpathPC(A, b, c, max_iter = 50)
+    x, s, u = longpathPC(A, b, c)
     mu = []
     for i in range(len(u)):
         q = sum(A.shape)

@@ -12,8 +12,10 @@ from LPFMethod_PC import longpathPC
 from AffineMethod import affine
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # Print plot
+from cent_meas import cent_meas
+
 # Clean form of printed vectors
-#np.set_printoptions(precision=4, threshold=10, edgeitems=4, linewidth=120, suppress = True)
+np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 
 ''' FOREST_SERVICE_ALLOCATION '''
@@ -64,27 +66,10 @@ b = np.concatenate((S, b))
 # Recall the interior point methods
 x_m, s_m, u_m = mehrotra(A, b, -c, c_form = 1)
 x_l, s_l, u_l = longpath(A, b, -c, c_form = 1)
-x_l, s_l, u_l = longpathPC(A, b, -c, c_form = 1, max_iter = 4)
-# Create a DataFrame for Mehrotra
-dfm = pd.DataFrame(u_m, columns = ['it', 'g_M', 'x_M', 's_M'])
+#x_l, s_l, u_l = longpathPC(A, b, -c, c_form = 1, max_iter = 4)
 
-#Create a DataFrame for LPF
-dfl = pd.DataFrame(u_l, columns = ["it_l", "g_l", "x_l", 's_l'])
-
-plt.figure()
-plt.plot(dfm['it'], dfm['g_M'], label = 'Mehrotra')
-plt.plot(dfl['it_l'],dfl['g_l'], label = 'LPF')
-plt.legend()
-plt.title('Dual gap')
-plt.xlabel('iterations')
-plt.ylabel('dual gap')
-
-# Show the minor grid lines with very faint and almost transparent grey lines
-plt.minorticks_on()
-
-plt.grid(b = True, which = 'minor')
-plt.grid(b = True, which = 'major')
-
+cent_meas(x_m, u_m, label = ' Mehrotra')
+cent_meas(x_l, u_l, label = ' LPF')
 plt.show()
 
 

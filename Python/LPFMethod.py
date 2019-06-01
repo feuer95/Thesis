@@ -8,8 +8,7 @@ from starting_point import sp # Function to find the initial infeasible point
 from print_boxed import print_boxed # Print pretty info boxes
 from stdForm import stdForm # Function to extend LP in a standard form
 import numpy as np # To create vectors
-import pandas as pd # Export to excel 
-import matplotlib.pyplot as plt # Print plot
+from cent_meas import cent_meas
 from input_data import input_data
 from term import term # Compute the conditions of termination
 import random
@@ -158,25 +157,4 @@ if __name__ == "__main__":
         
     x, s, u = longpath(A, b, c)
     
-    # Create a dataframe and convert to excel        
-    dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s'])   
-#    dfu.to_excel("LPF.xlsx", index = False) 
-    
-    # Plot the graphic with dataframe elements    
-    plt.figure()
-    plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.')
-    
-    plt.grid(b = True, which = 'major')
-    locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
-    
-    plt.title('Dual gap LPF')
-    plt.ylabel('dual gap')
-    plt.xlabel('iterations')
-        
-    # Construct list mu
-    mu = []
-    for i in range(len(u)):
-        mu.append(u[i][2]*u[i][3])
-    
-    # Dataframe dfl of the list u_l            
-    dfu['mu'] = mu
+    cent_meas(x, u)
