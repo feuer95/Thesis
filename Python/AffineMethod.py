@@ -7,14 +7,13 @@ Created on Mon Apr 29 13:49:50 2019
 from stdForm import stdForm # Standard form transform
 from print_boxed import print_boxed # Print pretty info box
 from starting_point import sp # Find initial infeasible points
-import pandas as pd # Export to excel 
-import matplotlib.pyplot as plt # Print plot
 from input_data import input_data
 from term import term # Compute the conditions of termination
 import numpy as np
+from cent_meas import cent_meas # Plot dual gap and centering measure
 
 # Clean form of printed vectors
-np.set_printoptions(precision=4, threshold=20, edgeitems=4, linewidth=120, suppress = True)
+np.set_printoptions(precision = 4, threshold = 20, edgeitems = 4, linewidth = 120, suppress = True)
 
 
 '''                           ===
@@ -25,7 +24,7 @@ Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             c_form: canonical form -> default 0
             w = tollerance -> default 10^(-8)
 '''
-def affine(A, b, c, c_form = 0, w = 0.005, max_iter = 500):
+def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         
     print('\n\tCOMPUTATION OF PRIMAL-DUAL AFFINE SCALING ALGORITHM')
     
@@ -71,7 +70,7 @@ def affine(A, b, c, c_form = 0, w = 0.005, max_iter = 500):
     it = 0
     tm = term(it)
     u = []
-    u.append([it, g, x, s])
+    u.append([it, g, x.copy(), s.copy()])
     while tm > w:
         
         print("\tIteration: {}\n".format(it))
@@ -137,31 +136,7 @@ def affine(A, b, c, c_form = 0, w = 0.005, max_iter = 500):
 if __name__ == "__main__": 
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(2)
+    (A, b, c) = input_data(10)
         
     x, s, u = affine(A, b, c)
-    
-    # Create a dataframe and convert to excel        
-    dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s'])   
-#    dfu.to_excel("LPF.xlsx", index = False) 
-    
-    # Plot the graphic with dataframe elements    
-    plt.figure()
-    plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.')
-    
-    plt.grid(b = True, which = 'major')
-    locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
-    
-    plt.title('Dual gap Affine scaling')
-    plt.ylabel('dual gap')
-    plt.xlabel('iterations')
-    
-    # Construct list mu
-    mu = []
-    for i in range(len(u)):
-        mu.append(u[i][2]*u[i][3])
-    
-    # Dataframe dfl of the list u_l            
-    dfu['mu'] = mu
-
-
+    cent_meas(x, u)
