@@ -1179,10 +1179,48 @@ The affine-scaling method, based on pure Newton's steps, sets the central parame
 even if it makes significant progress, it also tends to worsen the centrality measure (condition of having all pairwise products $x_{i}s_{i}$ equal). It follows that the step length $\alpha_{k}$ is the maximum value such that the next points remain in the feasible set. We will see that we often can take only a small
 step along the search direction before violating the condition; hence, the affine scaling direction, often does not allow us to make much progress toward a solution.\\ 
 The long-path following method doesn't create a sequence that moves strongly to the solution, indeed, computes the search direction with $\sigma_{k}$ between two fixed limits $\sigma_{\text{min}}$ and $\sigma_{\text{max}}$, in order to improve the centrality measure. The lower bound $\sigma_{\text{min}}$ ensures that each search direction start by moving off the boundary of $\mathcal{N}_{-\infty}(\gamma)$ and into the interior of the neighborhood. Unit steps along the search direction takes the next point outside the neighborhood, since the error of approximating the nonlinear KKT system by the linear equations becomes more pronounced as $\alpha$ increases. Then, it selects $\alpha_{k}$ as large a possible subject to the next point remains $\mathcal{N}_{-\infty}(\gamma)$. The restriction of $\sigma_{k}\in(0,1)$ achieves the twin goals of improving centrality and reducing the duality measure into a single step.\\
-Alternatively, the predictor-corrector methods consists on two types of steps: the predictor step, which start in the inner neighborhood and moves along the affine-scaling direction to the boundary of the outer neighborhood. Between these predictor steps, the algorithm takes corrector steps, computing $\sigma = 1$ and $\alpha= 1$, in order to come back inside the inner neighborhood to prepare for the next predictor corrector step. The Mehrotra's algorithm chooses the centering parameter adaptively: first calculates the affine-scaling direction, then assesses its usefulness as a search direction. If this direction yields a large reduction in $\mu$ without violating the positivity condition $(x, s)> 0$, the algorithm concludes that littele centering in needed, so it chooses $\sigma_{k}$ close to zero and calculates a centered search direction with small value. Otherwise, it enforces a larger amount of centering by choosing $\sigma_{k}$ close to 1. As we see in the description of the MEhrotra's algortihm, the computation of the centered direction and the corrector step are combined, so adaptive centering does not add further to the cost of each iteration. 
+Alternatively, the predictor-corrector methods consists on two types of steps: the predictor step, which start in the inner neighborhood and moves along the affine-scaling direction to the boundary of the outer neighborhood. Between these predictor steps, the algorithm takes corrector steps, computing $\sigma = 1$ and $\alpha= 1$, in order to come back inside the inner neighborhood to prepare for the next predictor corrector step. The Mehrotra's algorithm chooses the centering parameter adaptively: first calculates the affine-scaling direction, then assesses its usefulness as a search direction. If this direction yields a large reduction in $\mu$ without violating the positivity condition $(x, s)> 0$, the algorithm concludes that littele centering in needed, so it chooses $\sigma_{k}$ close to zero and calculates a centered search direction with small value. Otherwise, it enforces a larger amount of centering by choosing $\sigma_{k}$ close to 1. As we see in the description of the Mehrotra's algortihm, the computation of the centered direction and the corrector step are combined, so adaptive centering does not add further to the cost of each iteration. 
 \section*{Initialization and termination}
-In the discussion of the affine-scaling and longh-path following methods, it is assumed the starting point $(x_{0}. \lambda_{0}, s_{0})$ is feasible respect to the linear equations (2.4) and (2.5). However, most implementations work with an infeasible starting pointand infeasible iterations, like Mehrotra's method. 
-Choice of starting point is an important practical issue with a significant effect on the robustness of the algorithm
+In the discussion of the interior point methods, it is assumed the starting point $(x_{0}. \lambda_{0}, s_{0})$ is feasible respect to the linear equations (2.4) and (2.5).\\
+ The complexity of obtaining such an initial point is the same as that of solving the
+linear program itself. However, most implementations work with an infeasible starting point and infeasible iterations, like Mehrotra's method. 
+The choice of starting point is an important practical issue with a significant effect on the robustness of the algorithm. A popular heuristic for finding $(x_{0}. \lambda_{0}, s_{0})$ starts by calculating $(\tilde{x}, \tilde{\lambda}, \tilde{s})$ as solution of two least-squares problems:
+\begin{align*}
+\min \lVert x \rVert ^{2} &\text{ subject to }Ax = b\\
+	 min\limits_{(\lambda,s)} \lVert s \rVert ^{2} &\text{ subject to } A^{T}\lambda +s = c
+\end{align*}
+That is, $\tilde{x}$ and $\tilde{s}$ are the vectors of least norm that are in the feasible set and they are computed using the following formulas:
+\begin{equation*}
+\tilde{x} = A^{T}(AA^{T})^{-1}b,\;\;\;\tilde{\lambda}=(AA^{T})^{-1}Ac, \tilde{x} = c- A^{T}\tilde{\lambda}
+\end{equation*}
+In general, $\tilde{x}$ and $\tilde{s}$ are not positive, so we we define
+\begin{equation*}
+\delta_{x} = \max(-(3/2)\min\limits_{i}\tilde{x}_{i},0),\;\;\; \delta_{s} = \max(-(3/2)\min\limits_{i}\tilde{s}_{i},0),
+\end{equation*}
+and compute the positive vectors $\hat{x}= \tilde{x}+\delta_{x}e$ and $\hat{s}= \tilde{s}+\delta_{s}e$ where e is the unit vector. To ensure that the initial points $x^{0}$ and $s^{0}$ are not too close to zero, we add two more scalars defined as follow:
+\begin{align*}
+2\tilde{\delta}_{x}= \frac{\hat{x}^{T}\hat{s}}{e^{T}\hat{s}},\;\;\;2\tilde{\delta}_{s} = \frac{\hat{x}^{T}\hat{s}}{e^{T}\hat{x}}
+\end{align*}
+The starting point is then defined as 
+\begin{align*}
+(x^{0}, \lambda^{0}, s^{0}) = (\tilde{x}+\delta e,\tilde{\lambda},\tilde{s}+\delta e)
+\end{align*}
+There is an algorithm, termed \textit{Homogeneous Self-Dual Algorithm} (HSD) that overcomes to the difficulties mentioned above.\cite{XY}\\
+A LP is said \textit{self-dual} if the dual of the problem is equivalent to the primal. The advantage of self-duality is that we can apply a primal-dual interior-point algorithm to solve the self-dual problem without doubling the dimension of the linear system solved at each iteration.\\
+The algorithm HSD is based on the construction of a homogeneous and self-dual linear programming problem in such a way the point $x=1, \lambda = 0, \tau= 1,z=1,\theta= 1$ is feasible. The primal LP is
+\begin{alignat*}{3}
+\min&            &      & & (n+1)\theta&\\
+\text{subject to }&&Ax&-b\tau&+\bar{b}\theta&=0,\\
+-&A^{T}\lambda& &+c\tau&-\bar{c}\theta&=0,\\
+&b^{T}\lambda&-c^{T}x& &+\bar{z}\theta&\geq0,\\
+-&\bar{b}\lambda&+\bar{c}^{T}x&-\bar{z}\tau&&=-(n+1),\\
+\lambda \text{ free, }x\geq0,\tau\geq0, \;\theta \text{ free,} 
+\end{alignat*}  
+where
+\begin{equation*}
+\bar{b} = b -Ae,\;\; \bar{c}=c-e,\;\;\bar{z}=c^{T}e+e.
+\end{equation*}
+The vectors $\bar{b}$,$\bar{c}$ and $\bar{z}$ are chosen so that the system associated to the LP is feasible: for example $(x,\lambda, \tau,\theta)=(e^{T},0,e^{T},e^{T})$ with $e$ unit vector. We now relate optimal solutions to HSD to those for LP. Let us state, without proof, that the HSD problem has an optimal solution and its optimal solution set is bounded. \cite{LNP}
 \section*{Centering measure}
 Now we examinate the behaviour of the sequence computed by the IPM algorithms respect to the path $\mathcal{C}$, at which all the pairwise products are $x_{i}s_{i}$ are identical to $\mu$. To value this deviation from $\mathcal{C}$, we compare the pairwise products with their average value $\mu = x^{T}s/n$ using a scaled norm defined by
 \begin{equation}
@@ -1191,7 +1229,7 @@ Now we examinate the behaviour of the sequence computed by the IPM algorithms re
 The problem data are ten little scale LP problems formulated in canonical form. The codes implemented are the algorithm in previously described: affine-scaling, long-path following and Mehrtotra's algorithms. It is also implemented a variation of the long-path following method, in which the centering paramenter is $\sigma_{k}=\sigma$ for all $k$, instead chosen in a random way.
 
 
-
+\chapter{Applications}
 \subsection*{Forest service allocation} 
 The first model we illustrate is the \textit{Forest service allocation}. It is part of model class in which the main issue is how to divide or allocate a valuable resource among competing needs and the resource may be for example land, capital, time or fuel. We will see how U.S Forest Service has used this model to address the sensitive task of managing 191 million acres of national forestland \cite{(Natural)}.\\
 The Forest Service is one of the major Federal land managing agencies. It has been part of the Department of Agricolture since 1905 and over the past 10 years significant administrative and legal challenges have plagued national forest management \cite{ForSer}. Resource simulation models are the principal technologies used for estimating ecological and enviromental responses to activities. These models try to qualify relationships among resources and results of management actions. Simulations such as timber growth-and-yeld models and sediment yield models often examine consequences of management activities for a singele resource. The regional diversity of forest resources has led to many unique, local models rather than universal models. The Forest Service, in 1979, designed FORPLAN as its principal tool for national forest: it is al linear programming system, used to analyze the temporal aspects of the forest output. FORPLAN was chosen because it addressed two key issues in forest plnning: cost efficiency and an allowable timber sale quantity. Besides, these models have been used by each national forest structure with input that represent their problem. This is a strengh of LP. \\
@@ -1277,6 +1315,8 @@ As allocation models split a resource, blending models combine them. Various app
 Mathematical Programming}, Springer-Verlag, New York, pp. 131-158, (1986).
 \bibitem{SP} Carl-Henrik Westerberg, B. Bjorklund, E. Hultman, \emph{ An application of Mixed Integer Programming in a Swedish Steel Mill}, Interfaces, pp. 39-43, (1977).
 \bibitem{ForSer} \emph{"Forest Service planning : accommodating uses, producing outputs, and sustaining ecosystems"}, Congress of the United States-Office of technology assessment. 
+\bibitem{KY}Xiaojie Xu, Yinyu Ye, \emph{"A generalized homogeneous and self-dual algorithm for linear programming"}, Operations Research Letters, 17, pp: 181-190, (1995)
+\bibitem{LNP}Luenberger David G., Yinyu Ye, \emph{"Linear and Nonlinear Programming"}, Springer Science+Business Media,, 3, pp: 136-140, (2008).
 \end{thebibliography}
 
 
