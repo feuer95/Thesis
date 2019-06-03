@@ -7,23 +7,22 @@ Created on Wed May 22 09:14:03 2019
 import numpy as np
 import pandas as pd
 from SimplexMethodIIphases import SimplexMethod
-from MehrotraMethod import mehrotra
-from LPFMethod import longpath
-from AffineMethod import affine
+from stdForm import stdForm
+from scipy.optimize import linprog
 
 # Clean form of printed vectors
-np.set_printoptions(precision=4, threshold=10, edgeitems=4, linewidth=120, suppress = True)
+np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 
 ''' 
                                  FOREST_SERVICE_ALLOCATION 
 
 
-Find the MAXIMUM total NPV: the constraint set in canonical form A x = b using:
+Find the MAXIMUM total NPV: the constraint set in canonical form A x < b using:
     
     4. SimplexMethod(A, b, c, max_iter = 500, rule = 0, c_form = 0) 
     
-    input data: A, b, c ( c_form = 0, w = 0.005 default )
+    input data: A, b, c
 
 '''
 print('\n\tsecond TEST ON FOREST SERVICE ALLOCATION\n')
@@ -50,18 +49,9 @@ b = np.array([-40000, -5, -70])
 b = np.concatenate((S,-S, b))
 
 
-""" run the methods """
+""" run the Simplex method """
 
-#x5, y5 = mehrotra(A, b, -c, w = 0.05)
-# found optimal value after 9 iterations
+x, u = SimplexMethod(A, b, -c, max_iter = 30, rule = 0, c_form = 0)
 
-#x6, y6 = affine(A, b, -c, w = 0.05)
-# LinAlgError: Matrix is not positive definite
-
-#x6, y6 = affine(A, b, -c, w = 0.5)
-# found optimal value after 26 iterations with tollerance 0.5
-
-#x6, y6 = longpath(A, b, -c, w = 50)
-# LinAlgError: Matrix is not positive definite
-
-x, u = SimplexMethod(A, b, -c, max_iter = 500, rule = 0)
+A, c = stdForm(A, c)
+linprog(c, A_eq = A, b_eq = b)

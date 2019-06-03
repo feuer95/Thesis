@@ -159,35 +159,14 @@ def longpathPC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, max
     return x, s, u
 
 
-#%%ù
+#%%
     
-"""Input data"""
-
-
-if __name__ == "__main__":
+if __name__ == "__main__": 
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(2) 
-    
-
-    # list duality measure mu
+    (A, b, c) = input_data(10)
+        
     x, s, u = longpathPC(A, b, c)
-    mu = []
-    for i in range(len(u)):
-        q = sum(A.shape)
-        mu.append((u[i][2]*u[i][3]))
-#        
-#    # Create a dataframe and convert to excel            
-    dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s'])   
-    dfu['mu'] = mu
-    dfu.to_excel("LPF_cp.xlsx", index = False) 
-#    
-    # Plot the graphic with dataframe elements   
-    plt.figure()
-    plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.', color = 'g')
-    plt.grid(b = True, which = 'major')
-    locs, labels = plt.xticks(np.arange(0,len(u) , step = 1))    
-    plt.title('Dual gap LPF')
-    plt.ylabel('dual gap')
-    plt.xlabel('iterations')
+    
+    cent_meas(x, u, 'LPF')
     plt.show()    

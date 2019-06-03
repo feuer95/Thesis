@@ -102,8 +102,8 @@
 
 \vskip 1.7cm
 
-\noindent Thesis supervisor: Prof.ssa Paola Lamberti
-\hfill  {Candidate: Elena Scotto }\\
+\noindent Relatore: Prof.ssa Paola Lamberti
+\hfill  {Candidato: Elena Scotto }\\
 
 
 
@@ -112,7 +112,7 @@
 \vskip 2.7cm
 
 
-\centerline{2018/2019}
+\centerline{Anno accademico 2018/2019}
 
 \tableofcontents
 
@@ -120,38 +120,43 @@
 %
 % CAPITOLO 0
 \chapter*{Abstract}
-This thesis discusses the Simplex method and the Interior-Point methods (IPM) for linear programming.\\
+The concept of optimization is now well rooted as a principle underlying the analysis
+of many complex decision or allocation problems: Linear programming (LP) is one of the simplest ways to perform optimization.
+This thesis discusses the Simplex method and the Interior-Point methods (IPM).
+The aim is to show that the significant difference between them is reflected not only on the theoretical background but also in the practical implementation and to point out the powerful of the IPMs, owing to their vast applicability.\\
 %These algorithms
 %are finite and . 
-First of all, it is given a brief description of these methods: the simplex method, that is known to be very efficient practically, and the primal-dual interior-point
-methods. Then, we outline a comprehensive convergence analysis of two important IPM: the primal-dual affine scaling method and the long-step path-following method. \\
-After having presented a basic theoretical framework, the main goal is to exhibit a comparison of these competitors, testing them on some real models.
-In conclusion, it is illustrated the efficacy of the algorithms used for solving large scale linear programs: in this research we obtain an optimal solution of an isogeometric shape optimization problem.\\
-The aim is to show that the significant difference between interior point and simplex methods is reflected not only on the theoretical background but also in the practical implementation and to point out the powerful of the IPMs, owing to their vast applicability. 
+First, it is given a brief description of these methods,
+%: the simplex method, that is known to be very efficient practically, and the primal-dual %interior-point
+methods. 
+then, we outline a comprehensive convergence analysis of three important IPM: the primal-dual affine scaling, the long-step path-following and the Mehrotra's method. \\
+After introducing a basic theoretical framework, we exhibit a comparison of these competitors, testing them on some real models.
+It is also illustrated the performance of the algorithms used for solving large scale linear programs: in this research we obtain an optimal solution of an isogeometric shape optimization problem.\\
+
 %\addcontentsline{toc}{chapter}{Abstract}  % se non si vuole numerare l'introduzione, ma farla comparire nell'indice
 
 
 \chapter{Introduction to the linear programming}
 Optimization is a fundamental tool for understanding nature, science, engineering, economics and mathematics: a large number of real world problems can be treated as optimization problems, in which the goal is to select values that maximize or minimize a given \textit{objective function}, subject to certain \textit{constraints}.\\ The process of identifying objective, variables and constrains for a given problem is knows as \textit{modeling}. Construction of an appropriate model is the first step and, once it is formulated, an optimization algorithm can be used to find its solution. There is a collection of algorithms, each of them is tailored to a particular type of optimization problem. Linear Programming problem (LP) remains one of the most well-studied optimization problems: it consists in maximizing or minimizing a linear function over a certain domain, defined by a set of linear constraints.\\
-Linear programming has been dominant paradigm in optimization since Dantzig's development of the simplex method in the 1940s. Regarding the theoretical complexity of this method, it has proved that the expected number of iterations in the solution of a linear problem is polynomial. Furthermore, the worst case complexity has exponential behavior. It has been observed that the simplex algorithm performs sufficiently well in practice, especially on small or medium sized LPs, but its performance is not satisfactory in large-scale LPs. This weakness of simplex algorithm due to the stalling and cycling problem.[\textit{Non è ancora certo uno studio a larga scala su un problema di ottimizzazione della forma.}]\\
-Many anti-cycling pivoting rules have been introduced in the past.
+Linear programming has been dominant paradigm in optimization since Dantzig's development of the simplex method in the 1940s. Regarding the theoretical complexity of this method, it has proved that the expected number of iterations in the solution of a linear problem is polynomial. Furthermore, the worst case complexity has exponential behavior. It has been observed that the simplex algorithm performs sufficiently well in practice, especially on small or medium sized LPs, but its performance is not satisfactory in large-scale LPs. This weakness of simplex algorithm due to the stalling and cycling problem but many anti-cycling pivoting rules have been introduced in the past.\\
 Since Dantzig's initial contribution, researchers have made many efforts in order to enhance the performance of simplex algorithm. In the 1980s the monopoly of the simplex algorithm in the solution of the LP has been challenged. Interior point methods were the result of subsequent research and their performance has been more than satisfactory compared to the simplex algorithm. The main idea of IPMs is that the computation of the optimal solution can be achieved by moving inside the feasible region, defined by the constraints. \\
 %The next research step was the attempt to combine the simplex algorithm and IPMs in order to enhance the computational behavior of software packages~\cite{2}. \\ 
 The thesis is organized as follow:
-an introductory section summarizes the basic theory of the linear programming. In the chapter 2 we delineate the simplex method. The chapter 3 is dedicated to the primal-dual interior point methods, taking particular attention to the affine-scaling and the long-path following methods. It is also defined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\After a theoretical convergence analysis, the implementation illustrates the numerical results that we obtained for the considered physical problems and a comparison is performed.
-Concluding, in the last chapter we give an overview of the work realized in this thesis and
-suggest possible next steps. 
+an introductory section summarizes the basic theory of the linear programming. In the chapter 2 we delineate the simplex method. The chapter 3 is dedicated to the primal-dual interior point methods, taking particular attention to the affine-scaling and the long-path following methods. It is also examined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\After a theoretical convergence analysis, the implementation illustrates the numerical results that we obtained for the considered physical problems and a comparison is performed.
+Concluding, in the last chapter we give an overview of the work realized in this thesis and suggest possible next steps. 
 
 (\textit{La mia proposta è quella di testare i metodi del punto interno su un problema a larga scala di ottimizzazione della forma (SO), illustrando così la varietà delle applicazioni degli IPM})
 %
 % CAPITOLO 1
 \chapter{Basic theory}
-
-In this first chapter it is presented the standard formulations of a linear programming problem and it is given a brief overview of the LP theory. 
+We begin with a formulation of deterministic LP models, where it is reasonable to assume all problem data to be known with certainty and an overview of the LP theory. 
 \section{First definitions}
-A linear programming problem has a linear objective function and linear constraints that consist of equalities and inequalities.\\
-The feasible set satisfying the constraints is a polytope, a convex and connected set with polygonal faces. We say that the linear program is \textit{infeasible} if the feasible set is empty and \textit{unbounded} if the objective function is unbounded below on the feasible region.\\
-In general, any linear program can be formulated in the following \textit{standard form}:
+The variables in optimization models represent the decisions to be taken and the constraints specify the restrictions and the interactions that limit the variable values.
+To complete the model, we need the objective functions that quantify the decision consquences to be maximezd or minimized. \\
+Since 1950, generations of workers in management, economics, finance and engineerng have been trained in the techniques of formulating linear models that,
+as the name implies, are characterized by linear objective function and constraints formulated with linear equalities or linear inequalities.
+Then, the feasible set satisfying the constraints is a polytope, i.e. a convex and connected set with polygonal faces. We say that the LP is \textit{infeasible} if the feasible set is empty and \textit{unbounded} if the objective function, minimization function for istance, is unbounded below on the feasible region.\\
+In general, we have the following \textit{standard form}:
 \begin{alignat*}{1}\label{eq:stdform}
 \text{minimize\;}\; &c_1 x_1 + c_2 x_2+ ... c_m x_m\\[2mm]
 \text{subject\;to\;} &a_{11} x_1 + a_{12} x_2+ ... +a_{1m}x_m = b_1\\
@@ -162,7 +167,7 @@ In general, any linear program can be formulated in the following \textit{standa
  \end{alignat*}
 
 
-where the $b_{i}$, $c_{i}$ \text{and} $a_{ij}$ are fixed real costants.\\ In more compact vector notation, this standard problem becomes 
+where the $b_{j}$, $c_{i}$ \text{and} $a_{ij}$ are fixed real costants, with $i \in\{1,...,m\}$ and $j\in\{1,...,m\}$.\\ In a more compact notation, using vectors, the standard problem can be written as
 \begin{equation}\label{Prim}
  \begin{split}
 \min\; &c^{T}x\\
@@ -171,27 +176,30 @@ where the $b_{i}$, $c_{i}$ \text{and} $a_{ij}$ are fixed real costants.\\ In mor
 \end{equation}
 
 with $x$ an \textit{m}-dimensional column, $c^
-{T}$ an \textit{m}-dimensional row vector, \textit{A} an $n \times m$ matrix, and \textit{b} an \textit{n}-dimensional column vector.\\
-In the case the constraints set is determined entirely by linear inequalites $Ax \leq b$, hence in a \textit{canonical form}, the problem may be alternatively expressed as:
+{T}$ an \textit{m}-dimensional vector of decision variables, \textit{A} an $n \times m$ matrix, and \textit{b} an \textit{n}-dimensional column vector(Kilkki, 1968).\\
+In the case the constraints set is determined entirely by linear inequalites $Ax \leq b$, which in the literature (see \cite{W}) is said to be a \textit{canonical form}, the problem may be alternatively expressed as:
 \begin{alignat*}{3}
 \text{minimize\;}&c_1 x_1 + c_2 x_2+ ...+c_m x_m&&&\\[2mm]
 \text{subject\;to\;}&a_{11} x_1 +a_{12}x_2 + ... +a_{1m}x_m +y_{1}&&&= b_1\\
 		   	&a_{21}x_1+a_{22}x_2+ ... +a_{2m}x_m&+y_{2}&&= b_2\\
 &&\;\;\;\vdots&&\\
 &a_{n1}x_1+a_{n2}x_2+ ... +a_{nm}x_m+&&&y_{n}=b_n\\
-\text{and} \;& x_{i} \geq 0;\;\; y_{j} \geq 0; \text{\;\;for }i \in\left\lbrace 1,...,m\right\rbrace&\text{ and }j&\in&\left\lbrace 1,...,n\right\rbrace.
+\text{and} \;& x_{i} \geq 0;\;\; y_{j} \geq 0; \text{\;\;for }i = 1,...,m&\text{ and }j&=&1,...,n.
 \end{alignat*}
-The new positive variables $\mathit{y_{i}}$, introduced to convert the inequalities, are called \textit{slack variables} and the problem takes the standard form with $n+m$ unknowns variables \begin{itshape}$x_{i}, y_{i}.$\end{itshape}\\ The $n\times(m+n)$ matrix that now describes the linear equality constraints assumes the form $\left[\begin{matrix}A\;\vert\; I\;\end{matrix}\right]$.\\
-Considering the system of equalities (2.1) and selecting a set of \textit{n} linearly independent columns from the \textit{m} columns of  $A$, we create a $n \times n$ matrix denoted  by $A_{B}$ and called \textit{basis matrix}. This matrix is nonsingular and we may uniquely solve the equation $A_{B}x_{B} = b$. \\
+The new positive variables $\mathit{y_{i}}$, $i \in {1, ..., n}$ introduced to convert the inequalities into identies, are called \textit{slack variables} and the problem has the standard form with $n+m$ unknowns variables \begin{itshape}$x_{i}, y_{j},i \in {1, ..., m}$ and $j \in {1, ..., n}.$\end{itshape}\\ The new matrix that now describes the linear equality constraints assumes the form $\left[\begin{matrix}A\;\vert\; I\;\end{matrix}\right]$, with $A$ the $n \times m$ matrix of the original canonical LP and the identity matrix $I$ associated to the slack variables, that has dimension $n \times (n + m)$.\\
+Considering the system of equalities (\ref{Prim}) we can select a set of \textit{n} linearly independent columns from the \textit{m} columns of  $A$ and create a $n \times n$ matrix, denoted  by $A_{B}$ and called \textit{basis matrix}. This matrix is nonsingular and we may uniquely solve the equation $A_{B}x_{B} = b$. \\
 Recalling $x =\left(x_{B},0_{[m-n]}\right)$, we obtain a solution of the original equality system. This led to the following definition:
 \begin{defn}
 	The solution $x$ defined above is called \textit{basic solution} with respect to the basis B, it is \textit{feasible} if $x_{B}\geq 0$. \\The components of $x$ associated with columns of B are called \textit{basic variables}. Instead the components associated to $N  = \left\lbrace 1...m\right\rbrace  \backslash B$ are \textit{nonbasic variables}.\\
 	A basis B is \textit{degenerate} if $x_{i}= 0$ for some $i\in B$.
 	A LP is said to be \textit{degenerate} if has at least one degenerate basis.
 \end{defn}
-If the $n \times m$ matrix $A$ has $n \leq m$ and the $n$ rows are linear indipendent, then there is at least one basic solution and, accordingly, one solution of the standard problem. Certainly, when we have a canonical form problem, then the extended $n \times (n+m)$ matrix [A | I ] satisfies this statement.
-
-Another important issue is the fundamental theorem of linear programming, that is the primary importance for basic feasible solutions.\\ (The method to prove the theorem is in many respects as important as the result itself, since it represents the beginning of the development of the simplex
+If the $n \times m$ matrix $A$ has $n \leq m$ and the $n$ rows are linear indipendent, then there is at least one basic solution and, accordingly, one solution of the standard problem. Certainly, when we have a canonical form problem, then the extended $n \times (n+m)$ matrix [A | I ] with slack variables satisfies this property. In the code a preoprocessing phase is applied to the user-supplied data to remove some redudancies from the given constraints and eliminate some of the variables.\\
+Now we want to outline the importance of basic feasible solutions in solving linear
+programming problems.
+Throw the following theorem we state that it is necessary only to consider basic feasible
+variables when seeking an optimal solution because the optimal
+value is always achieved at such a solution.\\ (The method to prove the theorem is in many respects as important as the result itself, since it represents the beginning of the development of the simplex
 method.)
 \begin{thm}[\textbf{Fundamental theorem of liner programming}] \ \\
 Given a linear program in standard form where A is an $n \times m$ matrix of rank $n$
@@ -200,39 +208,39 @@ Given a linear program in standard form where A is an $n \times m$ matrix of ran
 \item if there is an optimal feasible solution, there is an optimal basic feasible solution.
 \end{enumerate}
 \end{thm}
-The theorem shows that we can only consider basic feasible solutions when seeking an optimal solution, because the optimal value is always achieved at such points.
-Thus, it describes a peculiar feature of the linear programming: it reduces the task of solving a linear problem to that of searching over basic feasible solutions. Since for a problem having $m$ variables and $n$ constraints there are at most ${m}\choose{n}$ basic solutions (corresponding to the number of ways of selecting m of n columns), there are only a finite number of possibilities. 
 
-\subsection*{A geometric viewpoint}
-The linear programming problem is simple to state and visualize. The set of the linear constraints defines  \textit{polyhedron}, that constitutes the \textit{feasible region} and the \textit{vertices} of this polyhedron are the points that do not lie on a stright line between two other points in the set. Algebraically, the vertices of the feasible set $\mathcal{P}=\lbrace x\; |\; Ax = b , x \geq0\rbrace$ are exactly the basic feasible points.\\ According to the Fundamental theorem, we can restrict our attention to the vertices of this polyhedron and it implies that we can explore only at most  ${m}\choose{n}$ points. 
-\begin{ex}
-The feasible set of a standard form linear programming problem is defined by the following constraints:
-\begin{alignat*}{3}
--x_{1}+&x_{2}-x_{3}&\;&\;&= 0\\
- x_{1}+&\;&+x_{4}\;&\;&= 2\\
- &x_{2}&\;&+x_{5}&= 3\\
-x \geq 0&\;&\;&\;&\\
-\end{alignat*}
-\end{ex}
- [\textit{con una illustrazione grafica del poliedro si mostra l'insieme dei vertici presi in considerazione e candidati punti ottimali}]
+Thus, it describes a peculiar feature of the linear programming: reducing the task of solving a linear problem to searching over basic feasible solutions. Since for a problem having $m$ variables and $n$ constraints there are at most ${m}\choose{n}$ basic solutions (corresponding to the number of ways of selecting m of n columns), there are only a finite number of possibilities. 
 
-\section{Optimality and duality}
-Optimality conditions for the LP can be derived from the theory of the constrained optimization related to a general non linear problem NLP, defined as follow:
+\subsection*{A geometric approach}
+The linear programming problem is simple to state and visualize. In fact, very simple graphic techniques have enough power to tiny models [such as Two Crude formulation- da sviluppare]. They also yield helpful intuition about properties and soultion methods for model of more realistic size.\\ The set of the linear constraints defines  \textit{polytope}, that constitutes the \textit{feasible region} and the \textit{vertices} are the points that do not lie on a stright line between two other points in the set. Algebraically, the vertices of the feasible set $\mathcal{P}=\lbrace x\; |\; Ax = b , x \geq0\rbrace$ are exactly the basic feasible points.\\ According to the Fundamental theorem, we can restrict our attention to the vertices of this polyhedron and it implies that we can explore only at most  ${m}\choose{n}$ points. 
+%\begin{ex}
+%The feasible set of a standard form linear programming problem is defined by the following constraints:
+%\begin{alignat*}{3}
+%-x_{1}+&x_{2}-x_{3}&\;&\;&= 0\\
+%x_{1}+&\;&+x_{4}\;&\;&= 2\\
+%&x_{2}&\;&+x_{5}&= 3\\
+%x \geq 0&\;&\;&\;&\\
+%\end{alignat*}
+%\end{ex}
+%[\textit{con una illustrazione grafica del poliedro si mostra l'insieme dei vertici presi in considerazione e candidati punti ottimali}]
 
-\begin{equation}
+\section{Optimality and duality in LP}
+In this section we introduce the optimality and duality theory and investigate the important relationship between primal and dual LP, that provide LP algorithm strategies.\\ 
+Optimality conditions for the LP can be derived from the theory of the constrained optimization related to a general non linear problem (NLP), defined as follow:
+
+\begin{equation}\label{NLP}
 \min f(x)\text{\;subject\;to\;}\begin{cases} c_{i}(x) = 0 &i \in \mathcal{E}\\ c_{i}(x)\leq 0 &i\in \mathcal{I}\end{cases}
 \end{equation}
 \\
-where $f$ and $c_{i}$ are smooth, real-valued functions on subset of $\mathbb{R}^{n}$, and $\mathcal{E}$ and $\mathcal{I}$ are two finite sets of indices.\\ We recall only the first-order conditions, that are needed to explain the duality results for the linear case.\\
-As a preliminary to stating the necessary conditions, we define the \textit{Lagrangian function} for the general problem formulated above 
-\begin{equation*}
-\mathcal{L}\left(x,\lambda\right)=f(x)-\sum_{i\in\mathcal{E}\cup\mathcal{I}}\lambda_{i}c_{i}(x)
-\end{equation*}
-
-and the \textit{LICQ conditions}:
+where $f$ and $c_{i}$ are smooth, real-valued functions defined on subset of $\mathbb{R}^{n}$ and $\mathcal{E}$ and $\mathcal{I}$ are two finite sets of indices in $\mathbb{N}$.\\Let us recall only the first-order conditions, that are essential to explain the duality results for the linear case.\\
+In order to state the necessary conditions, the points should satisfy specific regular conditions, defined below:
 \begin{defn}
 	Given a point x, $\mathcal{A}(x)= \mathcal{E}\cup\left\lbrace i\in\mathcal{I}\;|\;c_{i}(x) =0\right\rbrace$ is called active set and we say that the linear independence constraint qualification, $LICQ$, holds if the set of active constraint gradients $\left\lbrace \nabla c_{i}(x),,i\in\mathcal{A}(x)\right\rbrace$ is linear indipendent.
 \end{defn}
+We define the \textit{Lagrangian function} for the general problem \ref{NLP} 
+\begin{equation*}
+\mathcal{L}\left(x,\lambda\right)=f(x)-\sum_{i\in\mathcal{E}\cup\mathcal{I}}\lambda_{i}c_{i}(x)
+\end{equation*}
 The necessary conditions, defined in the following theorem, are called \textit{first-order conditions} because they are concerned with properties of the gradients of the objective and constraint functions.
 \begin{thm}
 Suppose that $x^{*}$ is a local solution of (1.1), that f and $c_{i}$ are continuously differentiable, and the LICQ holds at $x^{*}$. Then there is a Lagrange multiplier vector $\lambda^{*}$, such that 
@@ -1172,15 +1180,21 @@ even if it makes significant progress, it also tends to worsen the centrality me
 step along the search direction before violating the condition; hence, the affine scaling direction, often does not allow us to make much progress toward a solution.\\ 
 The long-path following method doesn't create a sequence that moves strongly to the solution, indeed, computes the search direction with $\sigma_{k}$ between two fixed limits $\sigma_{\text{min}}$ and $\sigma_{\text{max}}$, in order to improve the centrality measure. The lower bound $\sigma_{\text{min}}$ ensures that each search direction start by moving off the boundary of $\mathcal{N}_{-\infty}(\gamma)$ and into the interior of the neighborhood. Unit steps along the search direction takes the next point outside the neighborhood, since the error of approximating the nonlinear KKT system by the linear equations becomes more pronounced as $\alpha$ increases. Then, it selects $\alpha_{k}$ as large a possible subject to the next point remains $\mathcal{N}_{-\infty}(\gamma)$. The restriction of $\sigma_{k}\in(0,1)$ achieves the twin goals of improving centrality and reducing the duality measure into a single step.\\
 Alternatively, the predictor-corrector methods consists on two types of steps: the predictor step, which start in the inner neighborhood and moves along the affine-scaling direction to the boundary of the outer neighborhood. Between these predictor steps, the algorithm takes corrector steps, computing $\sigma = 1$ and $\alpha= 1$, in order to come back inside the inner neighborhood to prepare for the next predictor corrector step. The Mehrotra's algorithm chooses the centering parameter adaptively: first calculates the affine-scaling direction, then assesses its usefulness as a search direction. If this direction yields a large reduction in $\mu$ without violating the positivity condition $(x, s)> 0$, the algorithm concludes that littele centering in needed, so it chooses $\sigma_{k}$ close to zero and calculates a centered search direction with small value. Otherwise, it enforces a larger amount of centering by choosing $\sigma_{k}$ close to 1. As we see in the description of the MEhrotra's algortihm, the computation of the centered direction and the corrector step are combined, so adaptive centering does not add further to the cost of each iteration. 
+\section*{Initialization and termination}
+In the discussion of the affine-scaling and longh-path following methods, it is assumed the starting point $(x_{0}. \lambda_{0}, s_{0})$ is feasible respect to the linear equations (2.4) and (2.5). However, most implementations work with an infeasible starting pointand infeasible iterations, like Mehrotra's method. 
+Choice of starting point is an important practical issue with a significant effect on the robustness of the algorithm
 \section*{Centering measure}
 Now we examinate the behaviour of the sequence computed by the IPM algorithms respect to the path $\mathcal{C}$, at which all the pairwise products are $x_{i}s_{i}$ are identical to $\mu$. To value this deviation from $\mathcal{C}$, we compare the pairwise products with their average value $\mu = x^{T}s/n$ using a scaled norm defined by
 \begin{equation}
 \frac{1}{\mu}\lVert XSe - \mu e \rVert
 \end{equation}
-The problem data are ten little scale LP problems formulated in canonical form. The codes implemented are the algorithm in previously described: affine-scaling, long-path following and Mehrtotra's algorithms. It is also implemented a variation of the long-path following method, in which the centering paramenter iis $\sigma_{k}=\sigma$ foer all $k$.
+The problem data are ten little scale LP problems formulated in canonical form. The codes implemented are the algorithm in previously described: affine-scaling, long-path following and Mehrtotra's algorithms. It is also implemented a variation of the long-path following method, in which the centering paramenter is $\sigma_{k}=\sigma$ for all $k$, instead chosen in a random way.
+
+
+
 \subsection*{Forest service allocation} 
-The first model we illustrate is the \textit{Forest service allocation}. This example is part of allocation models class: the main issue is how to divide or allocate a valuable resource among competing needs and the resource may be for example land, capital, time or fuel.\\
-The U.S Forest Service has used this model to address the sensitive task of managing 191 million acres of national forestland \cite{(Natural)}. The Forest Service must trade off timber, grazing, recreational, environmental, national preservation, and other demands of forestland\\
+The first model we illustrate is the \textit{Forest service allocation}. It is part of model class in which the main issue is how to divide or allocate a valuable resource among competing needs and the resource may be for example land, capital, time or fuel. We will see how U.S Forest Service has used this model to address the sensitive task of managing 191 million acres of national forestland \cite{(Natural)}.\\
+The Forest Service is one of the major Federal land managing agencies. It has been part of the Department of Agricolture since 1905 and over the past 10 years significant administrative and legal challenges have plagued national forest management \cite{ForSer}. Resource simulation models are the principal technologies used for estimating ecological and enviromental responses to activities. These models try to qualify relationships among resources and results of management actions. Simulations such as timber growth-and-yeld models and sediment yield models often examine consequences of management activities for a singele resource. The regional diversity of forest resources has led to many unique, local models rather than universal models. The Forest Service, in 1979, designed FORPLAN as its principal tool for national forest: it is al linear programming system, used to analyze the temporal aspects of the forest output. FORPLAN was chosen because it addressed two key issues in forest plnning: cost efficiency and an allowable timber sale quantity. Besides, these models have been used by each national forest structure with input that represent their problem. This is a strengh of LP. \\
 The models of a forest begin  by dividing land into homogeneous analysis area, then several prescriptions or land management policies are then proposed and evaluated for each. \\The optimization seeks the best possible allocation of land in the analysis areas to particular prescriptions, subject to forest-wide restrictions on land use.
 We model, hypotetically, 788 thousand acre Wagonho National Forest, that is assumed to have 7 analysis areas, each subject to 3 different prescriptions. The first prescription encourages timbering, the second grazing and the third preserves the land as wilderness. Then we indices the variables as well:
 \begin{itemize}
@@ -1261,7 +1275,8 @@ As allocation models split a resource, blending models combine them. Various app
 	\bibitem{(Natural)} B. Kent, B. B. Bare, R. C. Field, G. A. Bradley, \textit{Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN}, OR, 39, (1991), pp: 13-27.
 \bibitem{meg} N. Megiddo, \emph{ Pathways to the optimal set in linear programming, in Progress in
 Mathematical Programming}, Springer-Verlag, New York, pp. 131-158, (1986).
-\bibitem{SP} Carl-Henrik Westerberg, B. Bjorklund, E. Hultman, \emph{ An application of Mixed Integer Programming in a Swedish Steel Mill}, Interfaces, pp. 39-43, (1977). 
+\bibitem{SP} Carl-Henrik Westerberg, B. Bjorklund, E. Hultman, \emph{ An application of Mixed Integer Programming in a Swedish Steel Mill}, Interfaces, pp. 39-43, (1977).
+\bibitem{ForSer} \emph{"Forest Service planning : accommodating uses, producing outputs, and sustaining ecosystems"}, Congress of the United States-Office of technology assessment. 
 \end{thebibliography}
 
 

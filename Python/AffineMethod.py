@@ -23,6 +23,10 @@ np.set_printoptions(precision = 4, threshold = 20, edgeitems = 4, linewidth = 12
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             c_form: canonical form -> default 0
             w = tollerance -> default 10^(-8)
+            
+Output data: x: primal solution
+             s: dual solution
+             u: list: iteration, dual gas, Current x, Current s
 '''
 def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         
@@ -119,8 +123,7 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
 
         it += 1
         if it == max_iter:
-            raise TimeoutError("Iterations maxed out")
-            
+            raise TimeoutError("Iterations maxed out") 
 
         print('Current point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
@@ -139,4 +142,5 @@ if __name__ == "__main__":
     (A, b, c) = input_data(10)
         
     x, s, u = affine(A, b, c)
-    cent_meas(x, u)
+    
+    cent_meas(x, u, 'Affine 10')

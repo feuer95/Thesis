@@ -8,8 +8,9 @@ import numpy as np
 from SimplexMethodIIphases import SimplexMethod
 from MehrotraMethod import mehrotra
 from LPFMethod import longpath
+from LPFMethod_cp import longpathC
 from LPFMethod_PC import longpathPC
-from AffineMethod import affine
+from AffineMethod import affine # Import primal-dual affine-scaling method
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # Print plot
 from cent_meas import cent_meas
@@ -18,17 +19,19 @@ from cent_meas import cent_meas
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 
-''' FOREST_SERVICE_ALLOCATION '''
+'''                     ===
+            FOREST_SERVICE_ALLOCATION 
+                        ===
 
-"""
 Find the MAXIMUM total NPV: the constraint set in standard form A x = b using the methods:
     
-    1. affine(A, b, c, c_form = 0, w = 0.005):
-    2. mehrotra(A, b, c, c_form = 0, w = 0.005)
-    3. longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005)
+    1. affine(A, b, -c, c_form = 1)
+    2. mehrotra(A, b, -c, c_form = 1) 
+    3. longpath(A, b, -c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005)
     
     input data: A, b, c, c_form = 1, w = 0.005 default
-"""
+
+'''
 
 print('\n\tfirst TEST ON FOREST SERVICE ALLOCATION\n')
 
@@ -36,12 +39,12 @@ print('\n\tfirst TEST ON FOREST SERVICE ALLOCATION\n')
 
 excel_file = 'Forest.xlsx'
 r = pd.read_excel('Forest.xlsx')
-c = np.array(r['p'])
+c = np.array(r['p'])  # Cost vector of maximum problem
 T = np.array(-r['t'])
 G = np.array(-r['g'])
 W = np.array(-r['w'])/788
 
-# Construct A
+# Construct A in a standard form -> c_form = 1 in the input function
 B = np.zeros((7,21))
 for i in range(7):
     B[i,i*3:(i+1)*3] = np.ones(3)
@@ -64,12 +67,24 @@ b = np.concatenate((S, b))
 """ run the methods """
 
 # Recall the interior point methods
-x_m, s_m, u_m = mehrotra(A, b, -c, c_form = 1)
-x_l, s_l, u_l = longpath(A, b, -c, c_form = 1)
-#x_l, s_l, u_l = longpathPC(A, b, -c, c_form = 1, max_iter = 4)
+# Plot dual gap e centering measure
 
-cent_meas(x_m, u_m, label = ' Mehrotra')
-cent_meas(x_l, u_l, label = ' LPF')
+#x_a, s_a , u_a = affine(A, b, -c, c_form = 1)
+#cent_meas(x_a, u_a, label = 'Affine')
+
+#x_m, s_m, u_m = mehrotra(A, b, -c, c_form = 1)
+#cent_meas(x_m, u_m, label = 'Mehrotra')
+
+x_l, s_l, u_l = longpath(A, b, -c, c_form = 1)
+cent_meas(x_l, u_l, label = 'LPF')
+
+#cp = 0.2
+#x_c, s_c, u_c = longpathC(A, b, -c, c_form = 1, cp = cp)
+#cent_meas(x_c, u_c, label = 'LPF with cp {}'.format(cp))
+
+
+#x_pc, s_pc, u_pc = longpathPC(A, b, -c, c_form = 1)
+#cent_meas(x_pc, u_pc, label = 'LPF PC')
 plt.show()
 
 

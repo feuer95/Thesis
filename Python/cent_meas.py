@@ -8,6 +8,13 @@ import pandas as pd # Export to excel
 import matplotlib.pyplot as plt # Print plot
 import numpy as np
 
+'''
+                        ===
+                Plot centering measure and dual gap
+                        ===
+'''
+
+
 def cent_meas(x, u, label):
     # Create a dataframe and convert to excel        
     dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s'])   
@@ -31,12 +38,11 @@ def cent_meas(x, u, label):
     
     # Plot the graphic with dataframe elements    
     plt.figure()
-    plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.')
+    plt.plot(dfu['it'], dfu['Current g'], label = 'Dual gap', marker = '.')
     plt.plot(dfu['it'], dfu['cd'], label = 'Centering measure', marker = '.')
     plt.grid(b = True, which = 'major')
     locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
     
-    plt.title('Dual gap & Cenetring measure'+label)
-    plt.ylabel('dual gap')
+    plt.title('Dual gap & Cenetring measure '+label)
     plt.xlabel('iterations')
     plt.legend()

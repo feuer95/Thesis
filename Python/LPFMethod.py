@@ -8,7 +8,7 @@ from starting_point import sp # Function to find the initial infeasible point
 from print_boxed import print_boxed # Print pretty info boxes
 from stdForm import stdForm # Function to extend LP in a standard form
 import numpy as np # To create vectors
-from cent_meas import cent_meas
+
 from input_data import input_data
 from term import term # Compute the conditions of termination
 import random
@@ -20,13 +20,14 @@ np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 12
                       LONG-PATH FOLLOWING METHOD with sigma RANDOM
                                     ====
                                     
-Input data: np.arrays of matrix A, cost vector c, vector b of the LP
-            neighborhood param gamma -> 10^{-3} by default
-            c_form: canonical form -> 0 by default
+Input data: np.arrays: A, cost vector c, vector b of the LP
+            neighborhood param gamma     (10^{-3} by default)
+            c_form: canonical form       (0 by default)
+
+For the step equation: normal equations
 '''
 
-
-def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005, max_iter = 300):
+def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_iter = 500):
         
     print('\n\tCOMPUTATION OF LPF ALGORITHM')
     
@@ -58,7 +59,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
     """ Initial points """
     
     # Initial infeasible positive (x,y,s) and Initial gap g
-    (x,y,s) = sp(A, c, b)    
+    (x, y, s) = sp(A, c, b)    
     g = np.dot(c,x) - np.dot(y,b)
     
     print('\nInitial primal-dual point:\nx = {} \nlambda = {} \ns = {}'.format(x, y, s))    
@@ -74,13 +75,13 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
     """ search vector direction """
     
     # Compute the search direction solving the matricial system
-    # Instead of solving the std system matrix it is uses AUGMENT SYSTEM with CHOL approach
+    # NORMAL EQUATIONS with CHOL approach
     
     it = 0
     tm = term(it)
     u = []
     u.append([it, g, x, s])
-    while tm > 10**(-8):
+    while tm > w:
         
         print("\tIteration: {}\n".format(it+1), end='')
         sigma = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
@@ -107,7 +108,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
         y1 = np.dot(L_inv.T, z)
         s1 = rc - np.dot(A.T, y1)
         x1 = np.dot(S_inv, rxs) - np.dot(W1,s1)
-        print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),x1.round(decimals = 3),s1.round(decimals = 3)))
+        print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),y1.round(decimals = 3),s1.round(decimals = 3)))
         
         #%%
         
@@ -153,8 +154,8 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0
 if __name__ == "__main__": 
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(2)
+    (A, b, c) = input_data(10)
         
     x, s, u = longpath(A, b, c)
     
-    cent_meas(x, u)
+    cent_meas(x, u, 'LPF')

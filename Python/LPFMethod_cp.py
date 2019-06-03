@@ -11,6 +11,7 @@ import numpy as np # To create vectors
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # Print plot
 from input_data import input_data
+from cent_meas import cent_meas
 from term import term
 
 # Clean form of printed vectors
@@ -112,7 +113,7 @@ def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp =
         """ largest step length """
         
         # We find the maximum alpha s. t the next iteration is in N_gamma
-        v = np.arange(0, 1.001, 0.0001)
+        v = np.arange(0, 0.999, 0.0001)
         i = len(v)-1
         while i >= 0:
             if (E(v[i]) > 0).all():
@@ -156,29 +157,12 @@ def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp =
 if __name__ == "__main__":
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(10) 
+    (A, b, c) = input_data(1) 
     
     # Central parameter 
-    cp1 = 0.5
+    cp1 = 0.9
+    x, s, u = longpathC(A, b, c, cp = cp1, max_iter = 4)
+        
+    cent_meas(x, u, ' LPF_cp')
    
-    # list duality measure mu
-    x, s, u = longpathC(A, b, c, cp = cp1, max_iter = 50)
-    mu = []
-    for i in range(len(u)):
-        q = sum(A.shape)
-        mu.append((u[i][2]*u[i][3]))
-#        
-#    # Create a dataframe and convert to excel            
-    dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s'])   
-    dfu['mu'] = mu
-    dfu.to_excel("LPF_cp.xlsx", index = False) 
-#    
-    # Plot the graphic with dataframe elements   
-    plt.figure()
-    plt.plot(dfu['it'], dfu['Current g'], label = 'Cost value', marker = '.', color = 'g')
-    plt.grid(b = True, which = 'major')
-    locs, labels = plt.xticks(np.arange(0,len(u) , step = 1))    
-    plt.title('Dual gap LPF with sigma{}'.format("%10.2f"%cp1))
-    plt.ylabel('dual gap')
-    plt.xlabel('iterations')
-    plt.show()    
+    

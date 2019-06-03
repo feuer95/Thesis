@@ -19,10 +19,10 @@ np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 12
 '''' _SIMPLEX METHOD II PHASES_  '''
 
 """
-Input data: np.arrays of matrix A, vector b, cost vector c of the model LP
-            number maximum of iterations (default 500)
-            rule: if Bland's rule -> 0 (default 0)
-            c_form: if canonical form -> 0 (default 0)
+Input data: np.arrays: A, vector b, cost vector c of the model LP
+            maximum no of iterations          (default 500)
+            rule: if Bland's rule             (default 0)
+            c_form: if canonical form         (default 0)
             
 Output: vector x* optimal vector
         list u = [iterations, bases, vectors x, solutions c*x]
@@ -39,7 +39,7 @@ def SimplexMethod(A, b, c, max_iter = 500, rule = 0, c_form = 0):
     if c_form == 0:
         (A, c) = stdForm(A, c)   
     A = np.asmatrix(A)    
-    r_A, c_A = np.shape(A)
+    r_A, c_A = A.shape
 
     """ Check full rank matrix """
     
@@ -177,7 +177,7 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
 # Input data of canonical LP:
 if __name__ == "__main__":
     
-    A, b, c = input_data(2)
+    A, b, c = input_data(10)
 
     # Run simplex method
     x, u = SimplexMethod(A, b, c) # With Bland's rule

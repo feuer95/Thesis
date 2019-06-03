@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 """
-Created on Thu Apr 18 16:52:35 2019
+Created on Mon Jun  3 18:34:13 2019
 
-@author: Elena
+@author: elena
 """
 from starting_point import sp # Function to find the initial infeasible point
 from print_boxed import print_boxed # Print pretty info boxes
@@ -22,12 +23,12 @@ np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 12
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             c_form: canonical form -> 0 by default
             
-            
+Augmented system           
 '''
 
-def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
+def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
     
-    print('\n\tCOMPUTATION OF MEHROTRA ALGORITHM\n')
+    print('\n\tCOMPUTATION OF MEHROTRA ALGORITHMwith Augmented system\n')
     
     if not (isinstance(A, np.ndarray) or isinstance(b, np.ndarray) or isinstance(c, np.ndarray)):
         raise Exception('Inputs must be a numpy arrays')
@@ -66,13 +67,12 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
     u.append([it, g, x, s])
     while tm > w:
         print("\n\tIteration: {}\n".format(it), end='')   
-        # CHOLESKY for normal equation with matrix A* D^2 *A^{T}
-        S_inv = np.linalg.inv(np.diag(s))  # S^{-1}
-        W1 = np.dot(S_inv, np.diag(x))     # W1 = D = S^(-1)*X    
-        W2 = np.dot(A, W1)                 # W2      A*S^(-1)*X
-        W  = np.dot(W2, A.T)
-        L = np.linalg.cholesky(W) 
-        L_inv = np.linalg.inv(L)
+
+        X_inv = np.linalg.inv(np.diag(x))           
+        W1 = X_inv*np.diag(s)                       # W1 = D = X^(-1)*S   
+        T = np.concatenate((np.zeros((r_A,r_A)), A), axis = 1)
+        U = np.concatenate((A.T,-W1), axis = 1)
+        V = np.concatenate((T,U), axis = 0)
         
         # RHS of the system, including the minus
         
@@ -80,13 +80,13 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         rc = c - np.dot(A.T, y) - s
         rxs = - x*s
         
-        B = rb + np.dot(W2, rc) - np.dot(np.dot(A, S_inv), rxs) #RHS of normal equation form
-        z = np.dot(L_inv, B)
-        
-        # SEARCH DIRECTION:
-        y1 = np.dot(L_inv.T, z)
-        s1 = rc - np.dot(A.T, y1)
-        x1 = np.dot(S_inv, rxs) - np.dot(W1, s1)
+        r = np.hstack((rb, rc - np.dot(X_inv,rxs)))        
+        o = np.linalg.solve(V,r)
+       
+        # SEARCH DIRECTION:        
+        y1 = o[:r_A]
+        x1 = o[r_A:c_A + r_A]
+        s1 = np.dot(X_inv, rxs) - np.dot(W1, x1)
         print("\nPREDICTOR STEP:\nAffine direction:\n({}, {}, {})\n".format(x1, y1, s1))
         
         #%%
@@ -110,15 +110,15 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         # SECOND SEARCH DIRECTION
         Rxs = - x1*s1 + Sigma*mi*np.ones((c_A)) # RHS of the New system, including minus
         
-        Rb = - np.dot(np.dot(A,S_inv), Rxs) # RHS of New normal equation form
-        z = np.dot(L_inv, Rb)
-        
-        # SEARCH DIRECTION:
-        y2 = np.dot(L_inv.T, z)
-        s2 = - np.dot(A.T, y2)
-        x2 = np.dot(S_inv, Rxs) - np.dot(W1, s2)
+        r = np.hstack((np.zeros(r_A), - np.dot(X_inv,Rxs)))        
+        o = np.linalg.solve(V, r)
+       
+        # SEARCH DIRECTION:        
+        y2 = o[:r_A]
+        x2 = o[r_A:c_A+r_A]
+        s2 = np.dot(X_inv, rxs) - np.dot(W1, x1)
         print("\nPREDICTOR STEP:\nAffine direction:\n({}, {}, {})\n".format(x2, y2, s2))
- 
+
         #%%
         
         """ Corrector step: compute (x_k+1, lambda_k+1, s_k+1) """
@@ -145,13 +145,14 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         # Dual gap c^{T}*x - b^{T}*y = x*s
         z = np.dot(c,x)
         g = z - np.dot(y,b)
-                
-        # Termination elements
-        tm = term(it, b, c, rb, rc, z, g)
-        print('Dual next gap: {}.\n'.format("%10.3f"%g))
 
         u.append([it, g, x.copy(), s.copy()])
-        print('CORRECTOR STEP:\nCurrent primal-dual point: \n x_k = ',x,'\n s_k = ',s,'\nl_k = ',y)
+                        
+        # Termination elements
+        tm = term(it, b, c, rb, rc, z, g)
+        print('Tollerance: {}.\n'.format("%10.3f"%tm))
+
+        print('CORRECTOR STEP:\nCurrent primal-dual point: \n x_k = ',x,'\n s_k = ',s,'\nlambda_k = ',y)
         print('Current g: {}\n'.format("%.3f"%g))        
         
     print_boxed("Found optimal solution of the standard problem at\n x* = {}.\n\n".format(x) +
@@ -171,7 +172,7 @@ if __name__ == "__main__":
     # Input data of canonical LP:
     (A, b, c) = input_data(2)
     
-    xp, s, u = mehrotra(A, b, c, max_iter = 7)
+    xp, s, u = mehrotra2(A, b, c, max_iter = 70)
     
-    cent_meas(xp, u, ' Mehrotra')
+    cent_meas(xp, u, ' Mehrotra with augmunted system')
 
