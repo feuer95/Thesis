@@ -5,9 +5,18 @@ Created on Mon Jun  3 12:33:14 2019
 @author: elena
 """
 import numpy as np
-import pandas as pd
-from SimplexMethodIIphases import SimplexMethod
-from stdForm import stdForm
+from MehrotraMethod import mehrotra
+from MehrotraMethod2 import mehrotra2
+from LPFMethod import longpath
+from longpath2 import longpath2
+from LPFMethod_cp import longpathC
+from LPFMethod_PC import longpathPC
+from AffineMethod import affine 
+
+import pandas as pd # Export to excel 
+import matplotlib.pyplot as plt # Print plot
+from cent_meas import cent_meas
+
 from scipy.optimize import linprog
 
 # Clean form of printed vectors
@@ -33,7 +42,11 @@ excel_file = 'Swedish_steel.xlsx'
 r = pd.read_excel('Swedish_steel.xlsx')
 q = r.as_matrix()
 q = np.asarray(q)
+
+# Input data in canonical form
 A = q[:,0:7]
 b = q[:,7]
 c = np.array([16, 10, 8, 9, 48, 60, 53])
-x, u = SimplexMethod(A, b, c) # With Bland's rule
+#x, u = SimplexMethod(A, b, c) # With Bland's rule
+
+x, s, u = mehrotra2(A, b, c)

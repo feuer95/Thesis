@@ -4,14 +4,14 @@ Created on Mon Apr 29 13:49:50 2019
 
 @author: Elena
 """
-from starting_point import sp # Function to find the initial infeasible point
-from print_boxed import print_boxed # Print pretty info boxes
-from stdForm import stdForm # Function to extend LP in a standard form
-import numpy as np # To create vectors
-
-from input_data import input_data
-from term import term # Compute the conditions of termination
-import random
+from starting_point import sp         # Find the initial infeasible point
+from print_boxed import print_boxed   # Print pretty info boxes
+from stdForm import stdForm           # Extend LP in a standard form
+import numpy as np                    # Create vectors
+from input_data import input_data     # Data problems
+from term import term                 # Compute the conditions of termination
+import random 
+from cent_meas import cent_meas
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
@@ -24,18 +24,12 @@ Input data: np.arrays: A, cost vector c, vector b of the LP
             neighborhood param gamma     (10^{-3} by default)
             c_form: canonical form       (0 by default)
 
-For the step equation: normal equations
+For the search direction: compute normal equations
 '''
 
 def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_iter = 500):
         
-    print('\n\tCOMPUTATION OF LPF ALGORITHM')
-    
-    # Algorithm in 4 steps:  
-    # 0..Input error checking
-    # 1..Find the initial point with Mehrotra's method 
-    # 2..obtain the search direction,
-    # 3..find the largest step          
+    print('\n\tCOMPUTATION OF LPF ALGORITHM')       
         
     """ Input error checking """
         
@@ -84,8 +78,8 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 1
     while tm > w:
         
         print("\tIteration: {}\n".format(it+1), end='')
-        sigma = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
-        print("Centering parameter sigma:{}.\n".format("%10.3f"%sigma))
+        cp = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
+        print("Centering parameter sigma:{}.\n".format("%10.3f"%cp))
 
         S_inv = np.linalg.inv(np.diag(s))           
         W1 = S_inv*np.diag(x)                       # W1 = D = S^(-1)*X    
@@ -98,7 +92,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 1
         
         rb = b - np.dot(A, x)
         rc = c - np.dot(A.T, y) - s
-        rxs = - x*s + sigma*(sum(x*s)/c_A)*np.ones(c_A)  # Newton step toward x*s = sigma*mi
+        rxs = - x*s + cp*(sum(x*s)/c_A)*np.ones(c_A)  # Newton step toward x*s = sigma*mi
         
         B = rb + np.dot(W2, rc) - np.dot(np.dot(A, S_inv), rxs) #RHS of normal equation form
         z = np.dot(L_inv, B)

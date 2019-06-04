@@ -17,25 +17,25 @@ import random
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 '''                                 ====
-                      LONG-PATH FOLLOWING METHOD with sigma RANDOM
+                LONG-PATH FOLLOWING METHOD with sigma RANDOM
                                     ====
                                     
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
-            neighborhood param gamma -> 10^{-3} by default
-            c_form: canonical form -> 0 by default
+            neighborhood param gamma    (10^{-3} by default)
+            c_form: canonical form      (0 by default)
+            range of sigma random:      ([s_min = 0.1, s_max = 0.9] by default)
+            max_it:                     (500 by default) 
+            
+The system is computed with augmented system
+
+Output data: x, s, u
 '''
 
 
-def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005, max_iter = 500):
+def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005, max_it = 500):
         
     print('\n\tCOMPUTATION OF LPF ALGORITHM')
     
-    # Algorithm in 4 steps:  
-    # 0..Input error checking
-    # 1..Find the initial point with Mehrotra's method 
-    # 2..obtain the search direction,
-    # 3..find the largest step          
-        
     """ Input error checking """
         
     if not (isinstance(A, np.ndarray) or isinstance(b, np.ndarray) or isinstance(c, np.ndarray)):
@@ -82,10 +82,11 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
     u.append([it, g, x, s])
     while tm > 10**(-8):
         
-        print("\tIteration: {}\n".format(it+1), end='')
+        print("\tIteration: {}\n".format(it+1))
         sigma = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
         print("Centering parameter sigma:{}.\n".format("%10.3f"%sigma))
 
+        # solve search direction with AUGMENTED SYSTEM
         X_inv = np.linalg.inv(np.diag(x))           
         W1 = X_inv*np.diag(s)                       # W1 = D = X^(-1)*S   
         T = np.concatenate((np.zeros((r_A,r_A)), A), axis = 1)
@@ -99,7 +100,6 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
         r = np.hstack((rb, -np.dot(X_inv,rxs)))        
         o = np.linalg.solve(V,r)
        
-        # SEARCH DIRECTION:        
         y1 = o[:r_A]
         x1 = o[r_A:c_A+r_A]
         s1 = np.dot(X_inv, rxs) - np.dot(W1, x1)
@@ -125,7 +125,7 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
         y += t*y1
         s += t*s1
         it += 1
-        if it == max_iter:
+        if it == max_it:
             print("Iterations maxed out")
             return x, s, u
         print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
@@ -151,6 +151,6 @@ if __name__ == "__main__":
     # Input data of canonical LP:
     (A, b, c) = input_data(1)
         
-    x, s, u = longpath2(A, b, c, max_iter = 500)
+    x, s, u = longpath2(A, b, c)
     
     cent_meas(x, u, 'LPF')

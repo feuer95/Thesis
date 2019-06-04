@@ -1,0 +1,15 @@
+# LIST OF IMPLEMENTATIONS:
+
+*from LPFMethod import longpath: long-step path-following method with sigma RANDOM. System computed with NORMAL EQUATIONS 
+
+*from longpath2 import longpath2:  long-step path-following method with sigma RANDOM. System computed with AUGMENTED SYSTEM (BAD)
+
+*from LPFMethod_PC import longpathPC:long-step path-following method Predictor-corrector. System computed with AUGMENTED SYSTEM (BAD in the last input data)
+
+*from AffineMethod import affine:
+
+*from Simplex_dwn import simplex: il codice scaricato 
+
+*from MehrotraMethod import mehrotra: metodo con NORMAL EQUATIONS
+
+*from MehrotraMethod2 import mehotra2: metodo con AUGMENTED SYSTEM 

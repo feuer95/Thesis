@@ -177,7 +177,7 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
 # Input data of canonical LP:
 if __name__ == "__main__":
     
-    A, b, c = input_data(10)
+    A, b, c = input_data(9)
 
     # Run simplex method
     x, u = SimplexMethod(A, b, c) # With Bland's rule

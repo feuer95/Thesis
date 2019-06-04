@@ -5,12 +5,13 @@ Created on Mon May 13 13:52:17 2019
 @author: Elena
 """
 import numpy as np
-from SimplexMethodIIphases import SimplexMethod
+
 from MehrotraMethod import mehrotra
 from LPFMethod import longpath
+from longpath2 import longpath2
 from LPFMethod_cp import longpathC
 from LPFMethod_PC import longpathPC
-from AffineMethod import affine # Import primal-dual affine-scaling method
+from AffineMethod import affine 
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # Print plot
 from cent_meas import cent_meas
@@ -29,7 +30,7 @@ Find the MAXIMUM total NPV: the constraint set in standard form A x = b using th
     2. mehrotra(A, b, -c, c_form = 1) 
     3. longpath(A, b, -c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005)
     
-    input data: A, b, c, c_form = 1, w = 0.005 default
+    input data: A, b, c, c_form = 1, w = 10^{-8} default
 
 '''
 
@@ -53,6 +54,8 @@ r_Y, c_Y = Y.shape
 r_B, c_B = B.shape 
 AI = np.concatenate((B, np.zeros((r_B,r_Y))), axis = 1)  
 AII = np.concatenate((Y, np.identity(r_Y)), axis = 1)
+
+#%%
 A = np.concatenate((AI, AII), axis = 0)
 
 # Concatenate c
@@ -63,6 +66,8 @@ S = np.asarray(r['s'])
 S = S[np.logical_not(np.isnan(S))]
 b = np.array([-40000, -5, -70])
 b = np.concatenate((S, b))
+
+#%%
 
 """ run the methods """
 
@@ -75,17 +80,17 @@ b = np.concatenate((S, b))
 #x_m, s_m, u_m = mehrotra(A, b, -c, c_form = 1)
 #cent_meas(x_m, u_m, label = 'Mehrotra')
 
-x_l, s_l, u_l = longpath(A, b, -c, c_form = 1)
-cent_meas(x_l, u_l, label = 'LPF')
+#x_l, s_l, u_l = longpath(A, b, -c, c_form = 1)
+#cent_meas(x_l, u_l, label = 'LPF')
 
-#cp = 0.2
-#x_c, s_c, u_c = longpathC(A, b, -c, c_form = 1, cp = cp)
-#cent_meas(x_c, u_c, label = 'LPF with cp {}'.format(cp))
-
-
-#x_pc, s_pc, u_pc = longpathPC(A, b, -c, c_form = 1)
-#cent_meas(x_pc, u_pc, label = 'LPF PC')
-plt.show()
+cp = 0.2
+x_c, s_c, u_c = longpathC(A, b, -c, c_form = 1, cp = cp)
+cent_meas(x_c, u_c, label = 'LPF with cp {}'.format(cp))
+#
+#
+x_pc, s_pc, u_pc = longpathPC(A, b, -c, c_form = 1)
+cent_meas(x_pc, u_pc, label = 'LPF PC')
+#plt.show()
 
 
 

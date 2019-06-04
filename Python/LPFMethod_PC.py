@@ -9,8 +9,7 @@ from starting_point import sp # Function to find the initial infeasible point
 from print_boxed import print_boxed # Print pretty info boxes
 from stdForm import stdForm # Function to extend LP in a standard form
 import numpy as np # To create vectors
-import pandas as pd # Export to excel 
-import matplotlib.pyplot as plt # Print plot
+from cent_meas import cent_meas
 from input_data import input_data
 from term import term
 import random
@@ -19,27 +18,24 @@ import random
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 '''                                 ====
-                      LONG-PATH FOLLOWING METHOD_PC
+                      LONG-PATH FOLLOWING METHOD_ Predictor Correctos
                                     ====
                                     
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
-            neighborhood parameter gamma -> 10^{-3} (default 0.001)
-            c_form: canonical form -> 0 (default 0)
-            cp: centering parameter (default 0.6)
+            neighborhood parameter gamma (default 0.001)
+            c_form: canonical form       (default 0)
+            w: tollerance                (default 10**(-8))
+            max_it: maximum no of iterations (default 300)
             
-In this algorithm we control the centering parameter sigma in order to study
-the progress of the Newton's iteration
+Output data: vector x primal solution
+             vector s solution
+             u: list [it, gap, x, s]
+            
 '''
 
-def longpathPC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, max_iter = 100):
+def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_iter = 300):
         
-    print('\n\tCOMPUTATION OF LPF ALGORITHM')
-    
-    # Algorithm in 4 steps:  
-    # 0..Input error checking
-    # 1..Find the initial point with Mehrotra's method 
-    # 2..obtain the search direction,
-    # 3..find the largest step          
+    print('\n\tLPF predictor-corrector')       
         
     """ Input error checking """
         
@@ -51,7 +47,7 @@ def longpathPC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, max
     if c_form == 0:
         A, c = stdForm(A, c)    
     r_A, c_A = A.shape
-    E = lambda a: (s+a*s1)*(x+a*x1)-(gamma*np.dot((s+a*s1),(x+a*x1)))/c_A #Function E: set of values in N_(gamma)
+    E = lambda a: (s+a*s1)*(x+a*x1)-(2*gamma*np.dot((s+a*s1),(x+a*x1)))/c_A #Function E: set of values in N_(gamma)
     
     """ Check full rank matrix """
     
@@ -63,110 +59,116 @@ def longpathPC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, max
     
     # Initial infeasible positive (x,y,s) and Initial gap g
     (x, y, s) = sp(A, c, b)    
-    z = np.dot(c,x)
-    g = z - np.dot(y,b)
+    g = np.dot(c,x ) - np.dot(y, b)
     
     print('\nInitial primal-dual point:\nx = {} \nlambda = {} \ns = {}'.format(x, y, s))    
     print('Dual initial gap: {}.\n'.format("%10.3f"%g))      
     
-    # Check if (x, y, s) in neighborhood N_inf:    
+    # Check if (x, y, s) in neighborhood N_inf:
+    
     if (x*s > gamma*np.dot(x,s)/c_A).all():
         print("Initial point is in N_inf(gamma), gamma = {}\n".format("%10.6f"%gamma))
         
     #%%
         
     """ search vector direction """
-    
-    # Compute the search direction solving the matricial system
-    # Instead of solving the std system matrix it is uses AUGMENT SYSTEM with CHOL approach
+
     it = 0
+    # tollerance = inf
     tm = term(it)
     u = []
     u.append([it, g, x.copy(), s.copy()])
     
-    while tm > 10**(-8):       
-        print("\tIteration: {}\n".format(it), end = '')
-        S_inv = np.linalg.inv(np.diag(s))           
-        W1 = S_inv*np.diag(x)                       # W1 = D = S^(-1)*X    
-        W2 = np.dot(A, W1)                          # W      A*S^(-1)*X
-        W  = np.dot(W2, A.T)
-        L = np.linalg.cholesky(W)                   # CHOLESKY for A* D^2 *A^T
-        L_inv = np.linalg.inv(L)
     
-        # RHS of the system
-        rb = b - np.dot(A, x)
-        rc = c - np.dot(A.T, y) - s
-        
+    while tm > w:
+        # *predictor step: sigma = 0 to reduce mu*
         if it % 2 == 0:
-            cp = 0.1 #random.uniform(s_min, s_max)  Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
-            rxs = - x*s + cp*(sum(x*s)/c_A)*np.ones(c_A)  # Newton step toward x*s = sigma*mi
-            B = rb + np.dot(W2, rc) - np.dot(np.dot(A, S_inv), rxs) #RHS of normal equation form
-            z = np.dot(L_inv, B)
-    
-            # SEARCH DIRECTION:  
-            y1 = np.dot(L_inv.T, z)
-            s1 = rc - np.dot(A.T, y1)
-            x1 = np.dot(S_inv, rxs) - np.dot(W1,s1)
-            print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),x1.round(decimals = 3),s1.round(decimals = 3)))
-
-            """ largest step length """
-    
-            # We find the maximum alpha s. t the next iteration is in N_gamma
-            v = np.arange(0, 0.9999, 0.0001)
-            i = len(v) - 1
-            while i >= 0:
+           # Choose cp 0 and compute the direction with augmented system
+           (x1, y1, s1, rb, rc) = augm(A, b, c, x, y, s, 0) 
+           
+            # Find the maximum alpha s.t the next iteration is in N_gamma
+           v = np.arange(0, 1.0000, 0.0001)
+           i = len(v)-1
+           while i >= 0:
                 if (E(v[i]) > 0).all():
                     t = v[i]
                     print('Largest step length:{}'.format("%10.3f"%t))
                     break
                 else:
                     i -= 1
-            print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
-            
+           # Exit:direction t
+        
+        # *corrector step: improve centrality*
         elif it % 2 == 1:
-            cp = 1
+            # Choose centering parameter 1 and compute the direction
+            (x1, y1, s1, rb, rc) = augm(A, b, c, x, y, s, 1) 
             t = 1
-            rxs = - x*s + cp*(sum(x*s)/c_A)*np.ones(c_A)  # Newton step toward x*s = sigma*mi
-    
-            B = rb + np.dot(W2, rc) - np.dot(np.dot(A, S_inv), rxs) #RHS of normal equation form
-            z = np.dot(L_inv, B)
-    
-            # SEARCH DIRECTION:
-    
-            y1 = np.dot(L_inv.T, z)
-            s1 = rc - np.dot(A.T, y1)
-            x1 = np.dot(S_inv, rxs) - np.dot(W1,s1)
-            print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),x1.round(decimals = 3),s1.round(decimals = 3)))
+        print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),x1.round(decimals = 3),s1.round(decimals = 3)))
+
+
+        """ largest step length """        
         
         # Increment the points and iteration
         x += t*x1
         y += t*y1
         s += t*s1
         it += 1
-        print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
-        z = np.dot(c, x)
-        g = z - np.dot(y, b)
-        u.append([it, g, x.copy(), s.copy()])
-        tm = term(it, b, c, rb, rc, z, g)
         
         if it == max_iter:
             print("Iterations maxed out")
             return x, s, u
+        print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
+        
+        z = np.dot(c, x)
+        g = z - np.dot(y, b)
+                
+        # Termination elements
+        tm = term(it, b, c, rb, rc, z, g)
+        
+        u.append([it, g, x.copy(), s.copy()])
+        print('Dual next gap: {}.\n'.format("%10.3f"%g))
+        
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
                 "Dual gap: {}\n".format("%10.6f"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
-                "Number of iteration: {}".format(it))  
+                "Number of iteration: {}".format(it))
+    
     return x, s, u
 
 
 #%%
     
-if __name__ == "__main__": 
+def augm(A, b, c, x, y, s, cp):
+
+    r_A, c_A = A.shape
+
+    X_inv = np.linalg.inv(np.diag(x))           
+    W1 = X_inv*np.diag(s)                       # W1 = X^(-1)*S   
+    T = np.concatenate((np.zeros((r_A,r_A)), A), axis = 1)
+    U = np.concatenate((A.T,-W1), axis = 1)
+    V = np.concatenate((T,U), axis = 0)
+    
+    # RHS of the linear system with minus
+    rb = b - np.dot(A, x)
+    rc = c - np.dot(A.T, y) - s
+    rxs = - x*s + cp*(sum(x*s)/c_A)*np.ones(c_A)  # Newton step toward x*s = sigma*mi
+    
+    r = np.hstack((rb, rc - np.dot(X_inv,rxs)))        
+    o = np.linalg.solve(V,r)
+            # SEARCH DIRECTION:        
+    y1 = o[:r_A]
+    x1 = o[r_A:c_A + r_A]
+    s1 = np.dot(X_inv, rxs) - np.dot(W1, x1)
+    return x1, y1, s1, rb, rc
+    
+"""Input data"""
+
+
+if __name__ == "__main__":
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(10)
-        
+    (A, b, c) = input_data(8)   
+
     x, s, u = longpathPC(A, b, c)
-    
-    cent_meas(x, u, 'LPF')
-    plt.show()    
+          
+    cent_meas(x, u, 'LPF Predictor corrector')
