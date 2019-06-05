@@ -8,7 +8,11 @@
 
 *from AffineMethod import affine: System computer with NORMAL EQUATIONS
 
+*from AffineMethod import affine2: System with AUGMENTED SYSTEM (BAD)
+
 *from Simplex_dwn import simplex: il codice scaricato 
+
+*from SimplexMethodIIphases import SimplexMethod
 
 *from MehrotraMethod import mehrotra: metodo con NORMAL EQUATIONS
 

@@ -19,7 +19,7 @@ Output: vector x, lambda, s infeasible points
 (See Mehrotra's paper)
 """
 
-def sp(A,c,b) -> (np.array, np.array, np.array):
+def sp(A, c, b) -> (np.array, np.array, np.array):
     
     r_A, c_A = A.shape
 

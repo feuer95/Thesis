@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Apr 29 13:49:50 2019
+Created on Wed Jun  5 16:32:34 2019
 
-@author: Elena
+@author: elena
+
 """
 from stdForm import stdForm # Standard form transform
 from print_boxed import print_boxed # Print pretty info box
@@ -29,7 +30,7 @@ Output data: x: primal solution
              u: list: iteration, dual gas, Current x, Current s, Feasibility x, Feasibility s
 '''
 
-def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
+def affine2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         
     print('\n\tCOMPUTATION OF PRIMAL-DUAL AFFINE SCALING ALGORITHM')
     
@@ -75,26 +76,24 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
     while tm > w:
         
         print("\tIteration: {}\n".format(it))
-        S_inv = np.linalg.inv(np.diag(s))           
-        W1 = S_inv*np.diag(x)                       # W1 = D = S^(-1)*X    
-        W2 = np.dot(A, W1)                          # W      A*S^(-1)*X
-        W  = np.dot(W2, A.T)
-        L = np.linalg.cholesky(W)                   # CHOLESKY for A* D^2 *A^T
-        L_inv = np.linalg.inv(L) 
+        # solve search direction with AUGMENTED SYSTEM
+        X_inv = np.linalg.inv(np.diag(x))           
+        W1 = X_inv*np.diag(s)                       # W1 = D = X^(-1)*S   
+        T = np.concatenate((np.zeros((r_A,r_A)), A), axis = 1)
+        U = np.concatenate((A.T, -W1), axis = 1)
+        V = np.concatenate((T, U), axis = 0)
         
-        # RHS of the system        
-        rb = b - np.dot(A, x)
-        rc = c - np.dot(A.T, y) - s
-        rxs = - x*s  # Newton step toward x*s = 0
+        rb = b -np.dot(A, x)
+        rc = c -np.dot(A.T, y) -s
+        rxs = -x*s  # Newton step toward x*s 
         
-        B = rb + np.dot(W2, rc) - np.dot(np.dot(A, S_inv), rxs) #RHS of normal equation form
-        z = np.dot(L_inv, B)
-        
-        # SEARCH DIRECTION:        
-        y1 = np.dot(L_inv.T, z)
-        s1 = rc - np.dot(A.T, y1)
-        x1 = np.dot(S_inv, rxs) - np.dot(W1,s1)
-        print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),y1.round(decimals = 3),s1.round(decimals = 3)))
+        r = np.hstack((rb, -np.dot(X_inv,rxs)))        
+        o = np.linalg.solve(V,r)
+       
+        y1 = o[:r_A]
+        x1 = o[r_A:c_A+r_A]
+        s1 = np.dot(X_inv, rxs) - np.dot(W1, x1)
+        print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3), y1.round(decimals = 3),s1.round(decimals = 3)))
         
         #%%
         
@@ -138,6 +137,6 @@ if __name__ == "__main__":
     # Input data of canonical LP:
     (A, b, c) = input_data(10)
         
-    x, s, u = affine(A, b, c)
+    x, s, u = affine2(A, b, c)
     
-    ua = cent_meas(x, u, 'Affine 1')
+#    ua = cent_meas(x, u, 'Affine 2')

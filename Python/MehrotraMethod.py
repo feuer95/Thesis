@@ -169,9 +169,9 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
 if __name__ == "__main__":
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(2)
+    (A, b, c) = input_data(10)
     
-    xp, s, u = mehrotra(A, b, c, max_iter = 7)
+    xp, s, u = mehrotra(A, b, c)
     
     cent_meas(xp, u, ' Mehrotra')
 

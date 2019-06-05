@@ -21,7 +21,9 @@ np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 12
                                     ====
 
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
-            c_form: canonical form -> 0 by default
+            c_form: canonical form  (0 by default)
+            tollerance:             (10^-8 by default)
+            max_iter:               (500 by default)   
             
 Augmented system           
 '''
@@ -64,7 +66,7 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
     it = 0
     tm = term(it)
     u = []
-    u.append([it, g, x, s])
+    u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
     while tm > w:
         print("\n\tIteration: {}\n".format(it), end='')   
 
@@ -146,7 +148,7 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         z = np.dot(c,x)
         g = z - np.dot(y,b)
 
-        u.append([it, g, x.copy(), s.copy()])
+        u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()]) 
                         
         # Termination elements
         tm = term(it, b, c, rb, rc, z, g)
@@ -170,9 +172,9 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
 if __name__ == "__main__":
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(2)
+    (A, b, c) = input_data(10)
     
-    xp, s, u = mehrotra2(A, b, c, max_iter = 70)
+    x, s, u = mehrotra2(A, b, c)
     
-    cent_meas(xp, u, ' Mehrotra with augmunted system')
+    cent_meas(x, u, ' Mehrotra with augmunted system')
 

@@ -40,7 +40,7 @@ W = np.array(-r['w'])/788
 B = np.zeros((7,21))
 for i in range(7):
     B[i,i*3:(i+1)*3] = np.ones(3)
-A = np.vstack((B,-B,T,G,W)) # inequality constraints
+A = np.vstack((B, -B, T, G, W)) # inequality constraints
 
 # Vector b
 S = np.asarray(r['s'])
@@ -54,4 +54,4 @@ b = np.concatenate((S,-S, b))
 #x, u = SimplexMethod(A, b, -c, rule = 0, c_form = 0)
 
 A, c = stdForm(A, c)
-linprog(c, method = 'simplex', A_eq = A, b_eq = b)
+x = linprog(c, method = 'simplex', A_eq = A, b_eq = b)

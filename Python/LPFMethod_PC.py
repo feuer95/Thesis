@@ -80,56 +80,52 @@ def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w
     u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
    
     while tm > w:
-        # *predictor step: sigma = 0 to reduce mu*
-        if it % 2 == 0:
-           # Choose cp 0 and compute the direction with augmented system
-           (x1, y1, s1, rb, rc) = augm(A, b, c, x, y, s, 0) 
-           
-            # Find the maximum alpha s.t the next iteration is in N_gamma
-           v = np.arange(0, 1.0000, 0.0001)
-           i = len(v)-1
-           while i >= 0:
-                if (E(v[i]) > 0).all():
-                    t = v[i]
-                    print('Largest step length:{}'.format("%10.3f"%t))
-                    break
-                else:
-                    i -= 1
-           # Exit:direction t
-        
-        # *corrector step: improve centrality*
-        elif it % 2 == 1:
-            # Choose centering parameter 1 and compute the direction
-            (x1, y1, s1, rb, rc) = augm(A, b, c, x, y, s, 1) 
-            t = 1
-        print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),x1.round(decimals = 3),s1.round(decimals = 3)))
-
-        """ largest step length """        
-        
-        # Increment the points and iteration
-        x += t*x1
-        y += t*y1
-        s += t*s1
-        it += 1
-        
-        if it == max_iter:
-            print("Iterations maxed out")
-            return x, s, u
-        print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
-        
-        z = np.dot(c, x)
-        g = z - np.dot(y, b)
-                
-        # Termination elements
-        tm = term(it, b, c, rb, rc, z, g)
-        
-        u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()]) 
-        print('Dual next gap: {}.\n'.format("%10.3f"%g))
-        
+       # *predictor step: sigma = 0 to reduce mu*
+       # Choose cp 0 and compute the direction with augmented system
+       (x1, y1, s1, rb, rc) = augm(A, b, c, x, y, s, 0) 
+       
+       # Find the maximum alpha s.t the next iteration is in N_gamma
+       v = np.arange(0, 1.0000, 0.0001)
+       i = len(v)-1
+       while i >= 0:
+        if (E(v[i]) > 0).all():
+            t = v[i]
+            print('Largest step length:{}'.format("%10.3f"%t))
+            break
+        else:
+            i -= 1
+       mi = np.dot(x,s)/c_A # Duality measure
+       mi_af = np.dot(x + t*x1,s + t*s1)/c_A # Average value of the incremented vectors
+       Sigma = (mi_af/mi)**3
+    
+       (x1, y1, s1, rb, rc) = augm(A, b, c, x, y, s, Sigma) 
+       print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),x1.round(decimals = 3),s1.round(decimals = 3)))
+    
+       """ largest step length """        
+    
+       # Increment the points and iteration
+       x += t*x1
+       y += t*y1
+       s += t*s1
+       it += 1
+    
+       if it == max_iter:
+        print("Iterations maxed out")
+        return x, s, u
+       print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
+    
+       z = np.dot(c, x)
+       g = z - np.dot(y, b)
+            
+       # Termination elements
+       tm = term(it, b, c, rb, rc, z, g)
+       u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()]) 
+       print('Dual next gap: {}.\n'.format("%10.3f"%g))
+    
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
-                "Dual gap: {}\n".format("%10.6f"%g) +
-                "Optimal cost: {}\n".format("%10.3f"%z) +
-                "Number of iteration: {}".format(it))
+            "Dual gap: {}\n".format("%10.6f"%g) +
+            "Optimal cost: {}\n".format("%10.3f"%z) +
+            "Number of iteration: {}".format(it))
     
     return x, s, u
 

@@ -74,14 +74,17 @@ b = np.concatenate((S, b))
 # Recall the interior point methods
 # Plot dual gap e centering measure
 
-#x_a, s_a , u_a = affine(A, b, -c, c_form = 1)
-#dfu = cent_meas(x_a, u_a, label = 'Affine')
+x_a, s_a , u_a = affine(A, b, -c, c_form = 1)
+dfu = cent_meas(x_a, u_a, label = 'Affine')
 
-#x_m, s_m, u_m = mehrotra(A, b, -c, c_form = 1)
-#dfm = cent_meas(x_m, u_m, label = 'Mehrotra')
+x_m, s_m, u_m = mehrotra(A, b, -c, c_form = 1)
+dfm = cent_meas(x_m, u_m, label = 'Mehrotra')
 
-#x_l, s_l, u_l = longpath(A, b, -c, c_form = 1)
-#dful = cent_meas(x_l, u_l, label = 'LPF')
+x_l, s_l, u_l = longpath(A, b, -c, c_form = 1)
+dful = cent_meas(x_l, u_l, label = 'LPF')
+
+x_m, s_m, u_m = mehrotra2(A, b, -c, c_form = 1)
+dfm = cent_meas(x_m, u_m, label = 'Mehrotra')
 
 #cp = 0.8
 #x_c, s_c, u_c = longpathC(A, b, -c, c_form = 1, cp = cp)

@@ -223,6 +223,3 @@ def trunc(x: float) -> float:
     """
     return x if abs(x) >= epsilon else 0
 
-A, c = stdForm(A, c)
-A = np.asmatrix(A)
-simplex(A, b, c)

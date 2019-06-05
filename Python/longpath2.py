@@ -149,7 +149,7 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
 if __name__ == "__main__": 
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(0)
+    (A, b, c) = input_data(10)
         
     x, s, u = longpath2(A, b, c)
     
