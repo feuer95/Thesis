@@ -23,8 +23,10 @@ from scipy.optimize import linprog
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 
-''' 
-                                 FOREST_SERVICE_ALLOCATION 
+'''                                  ===
+                                SWEDISH-STEEL
+                                     ===
+                                  
 
 
 Find the MAXIMUM total NPV: the constraint set in canonical form A x < b using:
@@ -47,6 +49,7 @@ q = np.asarray(q)
 A = q[:,0:7]
 b = q[:,7]
 c = np.array([16, 10, 8, 9, 48, 60, 53])
-#x, u = SimplexMethod(A, b, c) # With Bland's rule
 
-x, s, u = mehrotra2(A, b, c)
+
+#x, u = SimplexMethod(A, b, c) # With Bland's rule
+#x, s, u = mehrotra2(A, b, c)

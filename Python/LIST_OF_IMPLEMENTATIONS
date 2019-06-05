@@ -6,7 +6,7 @@
 
 *from LPFMethod_PC import longpathPC:long-step path-following method Predictor-corrector. System computed with AUGMENTED SYSTEM (BAD in the last input data)
 
-*from AffineMethod import affine:
+*from AffineMethod import affine: System computer with NORMAL EQUATIONS
 
 *from Simplex_dwn import simplex: il codice scaricato 
 

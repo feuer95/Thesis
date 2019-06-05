@@ -63,7 +63,7 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
     it = 0
     tm = term(it)
     u = []
-    u.append([it, g, x, s])
+    u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
     while tm > w:
         print("\n\tIteration: {}\n".format(it), end='')   
         # CHOLESKY for normal equation with matrix A* D^2 *A^{T}
@@ -150,7 +150,7 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         tm = term(it, b, c, rb, rc, z, g)
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
 
-        u.append([it, g, x.copy(), s.copy()])
+        u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()])
         print('CORRECTOR STEP:\nCurrent primal-dual point: \n x_k = ',x,'\n s_k = ',s,'\nl_k = ',y)
         print('Current g: {}\n'.format("%.3f"%g))        
         

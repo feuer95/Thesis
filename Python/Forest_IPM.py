@@ -75,22 +75,18 @@ b = np.concatenate((S, b))
 # Plot dual gap e centering measure
 
 #x_a, s_a , u_a = affine(A, b, -c, c_form = 1)
-#cent_meas(x_a, u_a, label = 'Affine')
+#dfu = cent_meas(x_a, u_a, label = 'Affine')
 
 #x_m, s_m, u_m = mehrotra(A, b, -c, c_form = 1)
-#cent_meas(x_m, u_m, label = 'Mehrotra')
+#dfm = cent_meas(x_m, u_m, label = 'Mehrotra')
 
 #x_l, s_l, u_l = longpath(A, b, -c, c_form = 1)
-#cent_meas(x_l, u_l, label = 'LPF')
+#dful = cent_meas(x_l, u_l, label = 'LPF')
 
-cp = 0.2
-x_c, s_c, u_c = longpathC(A, b, -c, c_form = 1, cp = cp)
-cent_meas(x_c, u_c, label = 'LPF with cp {}'.format(cp))
-#
-#
+#cp = 0.8
+#x_c, s_c, u_c = longpathC(A, b, -c, c_form = 1, cp = cp)
+#dfc = cent_meas(x_c, u_c, label = 'LPF with cp {}'.format(cp))
+
 x_pc, s_pc, u_pc = longpathPC(A, b, -c, c_form = 1)
 cent_meas(x_pc, u_pc, label = 'LPF PC')
 #plt.show()
-
-
-

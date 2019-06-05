@@ -32,13 +32,7 @@ the progress of the Newton's iteration
 
 def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp = 0.6, w = 0.005, max_iter = 300):
         
-    print('\n\tCOMPUTATION OF LPF ALGORITHM')
-    
-    # Algorithm in 4 steps:  
-    # 0..Input error checking
-    # 1..Find the initial point with Mehrotra's method 
-    # 2..obtain the search direction,
-    # 3..find the largest step          
+    print('\n\tCOMPUTATION OF LPF ALGORITHM')   
         
     """ Input error checking """
         
@@ -81,7 +75,7 @@ def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp =
     it = 0
     tm = term(it)
     u = []
-    u.append([it, g, x.copy(), s.copy()])
+    u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
 #    sigma = random.uniform(s_min, s_max) Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
     while tm > 10**(-8):
         print("\tIteration: {}\n".format(it + 1), end = '')
@@ -137,7 +131,7 @@ def longpathC(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, cp =
         
         # Termination elements
         tm = term(it, b, c, rb, rc, z, g)
-        u.append([it, g, x.copy(), s.copy()])
+        u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()]) 
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
         
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
@@ -161,7 +155,7 @@ if __name__ == "__main__":
     
     # Central parameter 
     cp1 = 0.9
-    x, s, u = longpathC(A, b, c, cp = cp1, max_iter = 4)
+    x, s, u = longpathC(A, b, c, cp = cp1)
         
     cent_meas(x, u, ' LPF_cp')
    

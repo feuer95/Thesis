@@ -77,9 +77,8 @@ def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w
     # tollerance = inf
     tm = term(it)
     u = []
-    u.append([it, g, x.copy(), s.copy()])
-    
-    
+    u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
+   
     while tm > w:
         # *predictor step: sigma = 0 to reduce mu*
         if it % 2 == 0:
@@ -105,7 +104,6 @@ def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w
             t = 1
         print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),x1.round(decimals = 3),s1.round(decimals = 3)))
 
-
         """ largest step length """        
         
         # Increment the points and iteration
@@ -125,7 +123,7 @@ def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w
         # Termination elements
         tm = term(it, b, c, rb, rc, z, g)
         
-        u.append([it, g, x.copy(), s.copy()])
+        u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()]) 
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
         
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
@@ -160,14 +158,14 @@ def augm(A, b, c, x, y, s, cp):
     x1 = o[r_A:c_A + r_A]
     s1 = np.dot(X_inv, rxs) - np.dot(W1, x1)
     return x1, y1, s1, rb, rc
-    
-"""Input data"""
 
+#%%    
+"""Input data"""
 
 if __name__ == "__main__":
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(8)   
+    (A, b, c) = input_data(10)   
 
     x, s, u = longpathPC(A, b, c)
           

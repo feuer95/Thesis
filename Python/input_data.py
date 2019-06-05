@@ -7,8 +7,7 @@ Created on Wed May 29 07:53:54 2019
 
 import numpy as np
 
-''' 
-                         = EXAMPLES = 
+'''                         = EXAMPLES = 
 
 
  We compute some examples of a LP problem in a canonical form:
@@ -24,6 +23,11 @@ import numpy as np
 '''
 
 def input_data(w):
+    if w == 0:
+        A = np.array([[1, 2.5]])
+        b = np.array([3])
+        c = np.array([-1, -1])
+
     if w == 1:
         A = np.array([[3, 2], [0, 1]])
         b = np.array([4, 3])
@@ -64,5 +68,9 @@ def input_data(w):
        A = np.array([[0.25, -60, -0.04, 9],[0.5, -90, -0.02, 3],[0, 0, 1, 0]])
        c = np.array([-0.75, 150, -0.02, 6])
        b = np.array([0, 0, 1])
+    if w == 11: # Example in cycle, need Bland's rule            
+       A = np.array([[1, 1],[3, 1],[0, 1]])
+       c = np.array([-2, -1])
+       b = np.array([5, 9, 4])
     return A, b, c
 

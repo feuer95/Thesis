@@ -79,7 +79,7 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
     it = 0
     tm = term(it)
     u = []
-    u.append([it, g, x, s])
+    u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
     while tm > 10**(-8):
         
         print("\tIteration: {}\n".format(it+1))
@@ -131,7 +131,7 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
         print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
         z = np.dot(c, x)
         g = z - np.dot(y, b)
-        u.append([it, g, x.copy(), s.copy()])
+        u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()])
                 
         # Termination elements
         tm = term(it, b, c, rb, rc, z, g)
@@ -149,7 +149,7 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
 if __name__ == "__main__": 
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(1)
+    (A, b, c) = input_data(0)
         
     x, s, u = longpath2(A, b, c)
     

@@ -26,7 +26,7 @@ Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             
 Output data: x: primal solution
              s: dual solution
-             u: list: iteration, dual gas, Current x, Current s
+             u: list: iteration, dual gas, Current x, Current s, Feasibility x, Feasibility s
 '''
 def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         
@@ -66,15 +66,11 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
    #%%
         
     """ search vector direction """
-    
-    # Compute the search direction solving the matricial system with sigma = 0
-    # Instead of solving the std system matrix it is uses AUGMENT SYSTEM 
-    # with CHOL approach
-    
+       
     it = 0
     tm = term(it)
     u = []
-    u.append([it, g, x.copy(), s.copy()])
+    u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
     while tm > w:
         
         print("\tIteration: {}\n".format(it))
@@ -116,7 +112,7 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         
         z = np.dot(c, x) # Current optimal solution
         g = z - np.dot(y, b) 
-        u.append([it, g, x.copy(), s.copy()])
+        u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()])       
                 
         # Termination elements
         tm = term(it, b, c, rb, rc, z, g)
@@ -139,8 +135,8 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
 if __name__ == "__main__": 
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(10)
+    (A, b, c) = input_data(0)
         
     x, s, u = affine(A, b, c)
     
-    cent_meas(x, u, 'Affine 10')
+    ua = cent_meas(x, u, 'Affine 10')

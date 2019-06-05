@@ -10,14 +10,14 @@ import numpy as np
 
 '''
                         ===
-                Plot centering measure and dual gap
+      Plot centering measure and dual gap
                         ===
 '''
 
 
 def cent_meas(x, u, label):
     # Create a dataframe and convert to excel        
-    dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s'])   
+    dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s', 'Primal Feasibility', 'Dual Feasibility'])   
 
     # Construct list mu
     mu = []
@@ -35,14 +35,23 @@ def cent_meas(x, u, label):
 
     # Dataframe with centering deviation
     dfu['cd'] = cm
+        
+    pf = []
+    for i in range(len(u)):
+        r = max(u[i][4])
+        pf.append('%.5f'% r)
+
+    # Dataframe with centering deviation
+    dfu['pf'] = pf
     
     # Plot the graphic with dataframe elements    
     plt.figure()
     plt.plot(dfu['it'], dfu['Current g'], label = 'Dual gap', marker = '.')
-    plt.plot(dfu['it'], dfu['cd'], label = 'Centering measure', marker = '.')
+    plt.plot(dfu['it'], dfu['cd'], label = 'Centering deviation', marker = '.')
     plt.grid(b = True, which = 'major')
     locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
     
     plt.title('Dual gap & Cenetring measure '+label)
     plt.xlabel('iterations')
     plt.legend()
+    return dfu
