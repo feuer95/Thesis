@@ -28,7 +28,7 @@ Output: vector x* optimal vector
         list u = [iterations, bases, vectors x, solutions c*x]
 """
     
-def SimplexMethod(A, b, c, max_iter = 500, rule = 0, c_form = 0):
+def SimplexMethod(A, b, c, max_it = 500, rule = 0, c_form = 0):
     
     """ Error checking """
         
@@ -67,15 +67,15 @@ def SimplexMethod(A, b, c, max_iter = 500, rule = 0, c_form = 0):
         b = np.abs(b)                
         A_I = np.matrix(np.concatenate((A, np.identity(r_A)), axis = 1))
         c_I = np.concatenate((np.zeros(c_A), np.ones(r_A)))  
-        x_I = np.concatenate((np.zeros(c_A),b))  
+        x_I = np.concatenate((np.zeros(c_A), b))  
         B = set(range(c_A, c_A + r_A)) 
         
         # Compute the Algorithm of the extended LP 
                         
-        infoI, xI, BI, zI, itI, uI = fun(A_I, c_I, x_I, B, 0, max_iter, rule)     
+        infoI, xI, BI, zI, itI, uI = fun(A_I, c_I, x_I, B, 0, max_it, rule)     
         assert infoI == 0
         
-        # Two cases of the phase I: zI > 0: STOP. zI = 0: Phase II
+#         Two cases of the phase I: zI > 0: STOP. zI = 0: Phase II
         
         if zI > 0:
            print('The problem is not feasible.\n{} iterations in phase I.'.format(itI))           
@@ -85,34 +85,34 @@ def SimplexMethod(A, b, c, max_iter = 500, rule = 0, c_form = 0):
         else: # Get initial BFS for original problem (without artificial vars.)
             xI = xI[:c_A]
             print("Found initial BFS at x: {}.\n\tStart phase II\n".format(xI))        
-            info, x, B, z, itII, u = fun(A, c, xI, BI, itI + 1, max_iter, rule)
+            info, x, B, z, itII, u = fun(A, c, xI, BI, itI + 1, max_it, rule)
             u = uI + u
     # If b is positive phase II with B = [n+1,..., n+m]
     
     else:
         x = np.concatenate((np.zeros(c_A-r_A), b))
         B = set(range(c_A-r_A,c_A))        
-        info, x, B, z, itII, u = fun(A, c, x, B, 0, max_iter, rule)
+        info, x, B, z, itII, u = fun(A, c, x, B, 0, max_it, rule)
         
     # Print termination of phase II 
     
     if info == 0:
         print_boxed("Found optimal solution at x* =\n{}\n\n".format(x) +
-                    "Basis indexes: {}\n".format(B) +
-                    "Nonbasis indexes: {}\n".format(set(range(c_A)) - B) +
+#                    "Basis indexes: {}\n".format(B) +
+#                    "Nonbasis indexes: {}\n".format(set(range(c_A)) - B) +
                     "Optimal cost: {}\n".format(z.round(decimals = 3))+
                     "Number of iterations: {}.".format(itII))
     elif info == 1:
         print("\nUnlimited problem.")
     elif info == 2:
-        print('The problem is not solved after {} iterations.'.format(max_iter))
+        print('The problem is not solved after {} iterations.'.format(max_it))
     
     return x, u
     
 
 """Algorithm"""
     
-def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.array, list):
+def fun(A, c, x, B, it, max_it, rule) -> (float, np.array, set, float, np.array, list):
     
     r_A, c_A = np.shape(A)
     B, NB = list(B), set(range(c_A)) - B  # Basic /nonbasic index lists
@@ -120,7 +120,7 @@ def fun(A, c, x, B, it, max_iter, rule) -> (float, np.array, set, float, np.arra
     B_inv = np.linalg.inv(A[:, B])
     z = np.dot(c, x)  # Value of obj. function
     u = []
-    while it <= max_iter:  # Ensure procedure terminates (for the min reduced cost rule)
+    while it <= max_it:  # Ensure procedure terminates (for the min reduced cost rule)
         print("\t\nIteration: {}\nCurrent x: {} \nCurrent B: {}\n".format(it, x, B), end = '')
         u.append([it, B.copy(), x, z.copy()]) # Update table
         lamda = c[B] * B_inv

@@ -7,6 +7,7 @@ Created on Mon May 13 13:52:17 2019
 import numpy as np
 
 from MehrotraMethod import mehrotra
+from MehrotraMethod2 import mehrotra2
 from LPFMethod import longpath
 from longpath2 import longpath2
 from LPFMethod_cp import longpathC
@@ -15,7 +16,7 @@ from AffineMethod import affine
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # Print plot
 from cent_meas import cent_meas
-
+from SimplexMethodIIphases import SimplexMethod
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
@@ -36,7 +37,7 @@ Find the MAXIMUM total NPV: the constraint set in standard form A x = b using th
 
 print('\n\tfirst TEST ON FOREST SERVICE ALLOCATION\n')
 
-""" import & construct input data """
+""" import & construct input data in standard form"""
 
 excel_file = 'Forest.xlsx'
 r = pd.read_excel('Forest.xlsx')
@@ -73,23 +74,26 @@ b = np.concatenate((S, b))
 
 # Recall the interior point methods
 # Plot dual gap e centering measure
-
-x_a, s_a , u_a = affine(A, b, -c, c_form = 1)
-dfu = cent_meas(x_a, u_a, label = 'Affine')
-
-x_m, s_m, u_m = mehrotra(A, b, -c, c_form = 1)
-dfm = cent_meas(x_m, u_m, label = 'Mehrotra')
-
-x_l, s_l, u_l = longpath(A, b, -c, c_form = 1)
-dful = cent_meas(x_l, u_l, label = 'LPF')
-
-x_m, s_m, u_m = mehrotra2(A, b, -c, c_form = 1)
-dfm = cent_meas(x_m, u_m, label = 'Mehrotra')
+#
+#x_a, s_a , u_a = affine(A, b, -c, c_form = 1)
+#dfu = cent_meas(x_a, u_a, label = 'Affine') # 29 it
+#
+#x_m, s_m, u_m = mehrotra(A, b, -c, c_form = 1)
+#dfm = cent_meas(x_m, u_m, label = 'Mehrotra') # 9 iterations
+#
+#x_l, s_l, u_l = longpath(A, b, -c, c_form = 1)
+#dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) # 21 iterations
+#
+#x_m, s_m, u_m = mehrotra2(A, b, -c, c_form = 1)
+#dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # 37 iterations
 
 #cp = 0.8
 #x_c, s_c, u_c = longpathC(A, b, -c, c_form = 1, cp = cp)
 #dfc = cent_meas(x_c, u_c, label = 'LPF with cp {}'.format(cp))
+#
+#x_pc, s_pc, u_pc = longpathPC(A, b, -c, c_form = 1)
+#cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 18 iterations
+#
+#P1, u = SimplexMethod(A, b, -c, rule = 0, c_form = 1) # 45 iterations
 
-x_pc, s_pc, u_pc = longpathPC(A, b, -c, c_form = 1)
-cent_meas(x_pc, u_pc, label = 'LPF PC')
 #plt.show()

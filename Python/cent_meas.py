@@ -15,7 +15,7 @@ import numpy as np
 '''
 
 
-def cent_meas(x, u, label):
+def cent_meas(x, u, label, plot = 1):
     # Create a dataframe and convert to excel        
     dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s', 'Primal Feasibility', 'Dual Feasibility'])   
 
@@ -44,14 +44,15 @@ def cent_meas(x, u, label):
     # Dataframe with centering deviation
     dfu['pf'] = pf
     
-    # Plot the graphic with dataframe elements    
-    plt.figure()
-    plt.plot(dfu['it'], dfu['Current g'], label = 'Dual gap', marker = '.')
-    plt.plot(dfu['it'], dfu['cd'], label = 'Centering deviation', marker = '.')
-    plt.grid(b = True, which = 'major')
-    locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
-    
-    plt.title('Dual gap & Centering measure '+label)
-    plt.xlabel('iterations')
-    plt.legend()
+    # Plot the graphic with dataframe elements   
+    if plot == 0:
+        plt.figure()
+        plt.plot(dfu['it'], dfu['Current g'], label = 'Dual gap', marker = '.')
+        plt.plot(dfu['it'], dfu['cd'], label = 'Centering deviation', marker = '.')
+        plt.grid(b = True, which = 'major')
+        locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
+        
+        plt.title('Dual gap & Centering measure '+label)
+        plt.xlabel('iterations')
+        plt.legend()
     return dfu

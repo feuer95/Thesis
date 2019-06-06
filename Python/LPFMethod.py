@@ -27,7 +27,7 @@ Input data: np.arrays: A, cost vector c, vector b of the LP
 For the search direction: compute normal equations
 '''
 
-def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_iter = 500):
+def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_it = 500):
         
     print('\n\tCOMPUTATION OF LPF ALGORITHM')       
         
@@ -124,7 +124,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 1
         y += t*y1
         s += t*s1
         it += 1
-        if it == max_iter:
+        if it == max_it:
             print("Iterations maxed out")
             return x, s, u
         print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))

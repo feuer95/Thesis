@@ -25,7 +25,7 @@ np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 12
 #for the standard primal problem
 
 
-def InitFeas(A: np.matrix):
+def InitFeas(A, b):
     
     r_A, c_A = np.shape(A)
     
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     (A, b, c) = input_data(10)
     r_A, c_A = A.shape
     (AI, cI) = stdForm(A, c)
-    (AP, cP) = InitFeas(AI)
+    (AP, cP) = InitFeas(AI, b)
     
     x, u  = SimplexMethod(AP, b, cP)
     x = x[:c_A + r_A]

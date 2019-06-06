@@ -51,7 +51,6 @@ b = np.concatenate((S,-S, b))
 
 """ run the Simplex method """
 
-#x, u = SimplexMethod(A, b, -c, rule = 0, c_form = 0)
-
+#x, u = SimplexMethod(A, b, -c, rule = 0)
 A, c = stdForm(A, c)
-x = linprog(c, method = 'simplex', A_eq = A, b_eq = b)
+x = linprog(-c, method = 'simplex', A_eq = A, b_eq = b)

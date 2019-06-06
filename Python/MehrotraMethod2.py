@@ -73,8 +73,8 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         X_inv = np.linalg.inv(np.diag(x))           
         W1 = X_inv*np.diag(s)                       # W1 = D = X^(-1)*S   
         T = np.concatenate((np.zeros((r_A,r_A)), A), axis = 1)
-        U = np.concatenate((A.T,-W1), axis = 1)
-        V = np.concatenate((T,U), axis = 0)
+        U = np.concatenate((A.T, -W1), axis = 1)
+        V = np.concatenate((T, U), axis = 0)
         
         # RHS of the system, including the minus
         
