@@ -5,6 +5,7 @@ Simplex implementation.
 
 import numpy as np
 from stdForm import stdForm
+from input_data import input_data
 from numpy.linalg import inv  # Matrix inverse
 from numpy.matlib import matrix  # Matrix data type
 
@@ -223,3 +224,7 @@ def trunc(x: float) -> float:
     """
     return x if abs(x) >= epsilon else 0
 
+#(A, b, c) = input_data(3)
+#(A, c) = stdForm(A, c)
+#A = np.asmatrix(A)
+#x = simplex(A, b, c)

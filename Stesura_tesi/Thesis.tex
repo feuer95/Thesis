@@ -1273,9 +1273,10 @@ AD^{2}A^{T}\Delta\lambda &= -r_{b}+A(-S^{-1}Xr_{c}+ x - \sigma\mu S^{-1}e),\\
 \end{align*}
 with $r_{b} = Ax - b$ and $r_{c}= A^{T}\lambda +s = c$.\\
 \\
-This form often is called the \textit{normal equations} form and a direct sparse Cholesky algorithm is applied to factor the matrix $AD^{2}A^{T}$. In the implementations both forms are performed: ill conditioning is often observed during the final
+This form often is called the \textit{normal equations} form and a direct sparse Cholesky algorithm is applied to factor the matrix $AD^{2}A^{T}$. \\In the implementations both forms are performed: ill conditioning is often observed during the final
 steps of the long-path following algorithm with the second system, when the elements of the diagonal weighting
 matrix $D^{2}$ takes on both huge and tiny values.
+
 \chapter{Applications}
 \subsection*{Forest service allocation} 
 The first model we illustrate is the \textit{Forest service allocation}. It is part of model class in which the main issue is how to divide or allocate a valuable resource among competing needs and the resource may be for example land, capital, time or fuel. We will see how U.S Forest Service has used this model to address the sensitive task of managing 191 million acres of national forestland \cite{(Natural)}.\\
