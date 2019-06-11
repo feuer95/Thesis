@@ -113,12 +113,13 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         
         z = np.dot(c, x) # Current optimal solution
         g = z - np.dot(y, b) 
+        it += 1
         u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()])       
                 
         # Termination elements
         tm = term(it, b, c, rb, rc, z, g)
 
-        it += 1
+        
         if it == max_iter:
             raise TimeoutError("Iterations maxed out") 
 
@@ -136,8 +137,9 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
 if __name__ == "__main__": 
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(10)
+    example = 1
+    (A, b, c) = input_data(example)
         
     x, s, u = affine(A, b, c)
     
-    ua = cent_meas(x, u, 'Affine 1')
+    ua = cent_meas(x, u, 'Affine ', plot = 0)

@@ -22,7 +22,7 @@ The functions implemented are: 1. simplex(A: matrix, b: np.array, c: np.array, r
                      
 '''
 #           Recall input data
-(A, b, c) = input_data(10)
+(A, b, c) = input_data(1)
 
 x2 = SimplexMethod(A, b, c)
 x3 = linprog(c, method = 'simplex', A_ub = A, b_ub = b)                           

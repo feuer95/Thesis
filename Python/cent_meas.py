@@ -41,7 +41,7 @@ def cent_meas(x, u, label, plot = 1):
         r = max(u[i][4])
         pf.append('%.5f'% r)
 
-    # Dataframe with centering deviation
+    # Dataframe with feasibility
     dfu['pf'] = pf
     
     # Plot the graphic with dataframe elements   

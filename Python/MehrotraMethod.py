@@ -20,9 +20,14 @@ np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 12
                                     ====
 
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
-            c_form: canonical form -> 0 by default
+            c_form: canonical form -> default 0
+            w = tollerance -> default 10^(-8)
             
-            
+Output data: x: primal solution
+             s: dual solution
+             u: list: iteration, dual gas, Current x, Current s, Feasibility x, Feasibility s
+
+Matricial system computed with normal equations
 '''
 
 def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
@@ -169,9 +174,10 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
 if __name__ == "__main__":
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(10)
+    (A, b, c) = input_data(1)
     
     xp, s, u = mehrotra(A, b, c)
     
-    cent_meas(xp, u, ' Mehrotra')
+    # Datatframe with plot: dual gap and centering deviation
+    dm = cent_meas(xp, u, ' Mehrotra', plot = 0) 
 

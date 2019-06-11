@@ -106,7 +106,6 @@ def SimplexMethod(A, b, c, max_it = 500, rule = 0, c_form = 0):
         print("\nUnlimited problem.")
     elif info == 2:
         print('The problem is not solved after {} iterations.'.format(max_it))
-    
     return x, u
     
 

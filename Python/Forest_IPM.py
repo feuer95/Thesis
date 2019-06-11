@@ -5,14 +5,16 @@ Created on Mon May 13 13:52:17 2019
 @author: Elena
 """
 import numpy as np
+from AffineMethod import affine 
 
 from MehrotraMethod import mehrotra
 from MehrotraMethod2 import mehrotra2
+
 from LPFMethod import longpath
-from longpath2 import longpath2
+from LPFMethod2 import longpath2
 from LPFMethod_cp import longpathC
 from LPFMethod_PC import longpathPC
-from AffineMethod import affine 
+
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # Print plot
 from cent_meas import cent_meas
@@ -88,11 +90,11 @@ b = np.concatenate((S, b))
 #dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # 37 iterations
 
 #cp = 0.8
-#x_c, s_c, u_c = longpathC(A, b, -c, c_form = 1, cp = cp)
-#dfc = cent_meas(x_c, u_c, label = 'LPF with cp {}'.format(cp))
+#x_c, s_c, u_c = longpath2(A, b, -c, c_form = 1)
+#dfc = cent_meas(x_c, u_c, label = 'LPF2')
 #
 #x_pc, s_pc, u_pc = longpathPC(A, b, -c, c_form = 1)
-#cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 18 iterations
+#cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 19 iterations
 #
 #P1, u = SimplexMethod(A, b, -c, rule = 0, c_form = 1) # 45 iterations
 

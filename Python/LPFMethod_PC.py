@@ -12,13 +12,12 @@ import numpy as np # To create vectors
 from cent_meas import cent_meas
 from input_data import input_data
 from term import term
-import random
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 '''                                 ====
-                      LONG-PATH FOLLOWING METHOD_ Predictor Correctos
+                      LONG-PATH FOLLOWING METHOD_ Predictor Corrector
                                     ====
                                     
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
@@ -149,6 +148,7 @@ def augm(A, b, c, x, y, s, cp):
     
     r = np.hstack((rb, rc - np.dot(X_inv,rxs)))        
     o = np.linalg.solve(V,r)
+    
             # SEARCH DIRECTION:        
     y1 = o[:r_A]
     x1 = o[r_A:c_A + r_A]
@@ -165,4 +165,4 @@ if __name__ == "__main__":
 
     x, s, u = longpathPC(A, b, c)
           
-    cent_meas(x, u, 'LPF Predictor corrector')
+    ul = cent_meas(x, u, 'LPF Predictor corrector', plot = 0)
