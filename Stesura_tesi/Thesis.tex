@@ -212,7 +212,7 @@ Given a linear program in standard form where A is an $n \times m$ matrix of ran
 Thus, it describes a peculiar feature of the linear programming: reducing the task of solving a linear problem to searching over basic feasible solutions. Since for a problem having $m$ variables and $n$ constraints there are at most ${m}\choose{n}$ basic solutions (corresponding to the number of ways of selecting m of n columns), there are only a finite number of possibilities. 
 
 \subsection*{A geometric approach}
-The linear programming problem is simple to state and visualize. In fact, very simple graphic techniques have enough power to tiny models [such as Two Crude formulation- da sviluppare]. They also yield helpful intuition about properties and soultion methods for model of more realistic size.\\ The set of the linear constraints defines  \textit{polytope}, that constitutes the \textit{feasible region} and the \textit{vertices} are the points that do not lie on a stright line between two other points in the set. Algebraically, the vertices of the feasible set $\mathcal{P}=\lbrace x\; |\; Ax = b , x \geq0\rbrace$ are exactly the basic feasible points.\\ According to the Fundamental theorem, we can restrict our attention to the vertices of this polyhedron and it implies that we can explore only at most  ${m}\choose{n}$ points. 
+The linear programming problem is simple to state and visualize. In fact, very simple graphic techniques have enough power to tiny models [such as Two Crude formulation- da sviluppare]. They also yield helpful intuition about properties and soultion methods for model of more realistic size.\\ The set of the linear constraints defines  \textit{polytope}, that constitutes the \textit{feasible region} and the \textit{vertices} are the points that do not lie on a stright line between two other points in the set. Algebraically, the vertices of the feasible set $\mathcal{P}=\lbrace x\; |\; Ax = b , x \geq0\rbrace$ are exactly the basic feasible points.\\ According to the Fundamental theorem, we can restrict our attention to the vertices of this polytope and it implies that we can explore only at most  ${m}\choose{n}$ points. 
 %\begin{ex}
 %The feasible set of a standard form linear programming problem is defined by the following constraints:
 %\begin{alignat*}{3}
@@ -260,8 +260,8 @@ These equalites are called \textit{Karush-Kuhn-Tucker} conditions, or \textit{KK
 \end{equation}
 Now we illustrate the first-order necessary conditions: let us assume that the matrix $A\in\mathbb{R}^{n,m}$, the vectors $b\in\mathbb{R}^{n}$ and $c\in\mathbb{R}^{m}$ construct a standard LP. A vector $x^{*}$ is a solution if and only if exist Lagrange multipliers $\lambda^{*},\;s^{*}$ such that the primal-dual solution $\left( x^{*},\lambda^{*},s^{*}\right)\in\mathbb{R}^{n}\times\mathbb{R}^{m}\times\mathbb{R}^{n}$ satisfies these conditions, 
 \begin{align}
-A^{T}\lambda+s&=c,\\ \label{DP}
-Ax&=b,\\ \label{PP}
+A^{T}\lambda+s&=c,\\ \label{DF}
+Ax&=b,\\ \label{PF}
 x&\geq 0,\\
 s&\geq 0,\\
 x_{i}s_{i}&=0,\; for\;i= 1,2,...,m. \label{CC}
@@ -275,8 +275,8 @@ We conclude that the KKT conditions are both necessary and sufficient for optima
 \begin{equation*}
 	c^{T}x^{*}=\left(A^{T}\lambda^{*}+s^{*}\right)^{T}x^{*}=\left(Ax^{*}\right)^{T}\lambda^{*}=b^{T}\lambda^{*}.
 \end{equation*}
-With this equality, we can formulate the \textit{dual problem} of (2.1)
-\begin{equation}
+With this equality, we can formulate the \textit{dual problem} of \ref{Prim}
+\begin{equation}\label{Dual}
 \begin{split}
 &\text{maximize\;} b^{T}\lambda\\
 &\text{subject\;to\;}A^{T}\lambda \leq c
@@ -400,7 +400,7 @@ The computational procedure is the following:
 		\State Update $\bar{x}_{B} = x_{B}-d\bar{x}_{r}$
 		\State $\;\;\;\;\;\;\;\;\;\;\;\;\bar{x}_{N} = (0,...,0_{[s-1]},\bar{x}_{r},0_{[s+1]},...,0)$
 		\State Update sets: $\bar{B} = B \ B[t] + \{s\}$ and $\bar{N} = N - \{s\} + B[t]$	
-		\End
+		\EndIf
 	\end{algorithmic}
 \end{algorithm}
 \\
@@ -510,9 +510,6 @@ Instead without the rule, after 18 iterations the simplex method returns to the 
 \end{center}
 \end{ex} 
 
-\section{The revised method}
-If the matrix A has far fewer rows than column, ($n$ is much smaller than $m$), the implementation $A_{B}^{-1}A_{N}$ requires useless memory. The revised simplex method is a scheme reduces this big amount of calculations, replacing only one column of the old matrix $A_{B}$ by the new column from $A_{N}$.\\
-
  \section{The dual simplex method}
 %Leke~\cite{Lem} developed the dual simplex method in 1954 but it was not found to be an alternative to the primal simplex method for nearly 40 years. This changed in
 %due to the contributions of Forrest and Goldfarb.
@@ -522,8 +519,8 @@ After discussing the Karush-Kuhn-Tucker optimality conditions for linear program
 
 
 \chapter{Interior point methods}
-In the 60 years of research since the introduction of the simplex method, this algorithm has been carefully optimized to perform extremely well in practice. However, a problem arose in the 1970s: it turns out that we cannot guarantee that it will work well on all possible linear programs~\cite{3}.
-This problem led to the introduction of the interior point methods for solving linear programs, which is the argument of this chapter.\\The interior point methods is a family of algorithms solving linear programs which come along with an efficient performance guarantee. They share common features that distinguish them from the simplex method. Each interior point iteration is expensive to compute but can make significant progress toward the solution, while the simplex method usually requires a larger number of inexpensive iterations. Geometrically, the simplex method works around the boundary of the feasible polytope, testing a sequence of vertices in turn until it finds the optimal one. Instead, interior point methods approach the boundary of the feasible set only in the region, but they never actually lie on the boundary of the feasible set.\\
+In the 60 years of research since the introduction of the simplex method, this algorithm has been carefully optimized to perform extremely well in practice. However, a problem arose in the 1970s: it turns out that we cannot guarantee that it will work well on all possible linear programs ~\cite{3}.
+This problem led to the introduction of the interior point methods for solving LP, which is the argument of this chapter.\\The interior point methods is a family of algorithms solving linear programs which come along with an efficient performance guarantee. They share common features that distinguish them from the simplex method. Each interior point iteration is expensive to compute but can make significant progress toward the solution, while the simplex method usually requires a larger number of inexpensive iterations. Geometrically, the simplex method works around the boundary of the feasible polytope, testing a sequence of vertices in turn until it finds the optimal one. Instead, interior point methods approach the boundary of the feasible set only in the region, but they never actually lie on the boundary of the feasible set.\\
 The first commercial interior point method for linear programming was N. Karmarkar's  \textit{projective transformation} procedure \cite{Kar} and developments have continued to these days. 
 %The new algorithms can be divided in two main classes, \textit{affine-scaling} and \textit{projective-scaling} algorithms.
 %The first ones are easy to describe but hard to analyze, in fact they have very simple, geometrically descriptions, but they don't have a strong convergence theory behind.
@@ -539,30 +536,45 @@ An overview of the details of the first two interior-point algorithms are given 
 \newpage
 \section{Introduction to primal-dual methods}
 We consider the linear programming problem formulated in a standard form. \\
-Following a fundamentally different approach from the simplex method, the interior-point methods avoid the boundary of the polytope until optimality, and focus on the KKT conditions, solving the primal and dual LP currently.
+Following a fundamentally different approach from the simplex method, the interior-point methods avoid the boundary of the polytope until optimality and focus on the KKT conditions, solving the primal and dual LP currently.\\
 Primal and dual variables  $x^{k}$ and $s^{k}$ , that are required to be nonnegative at the solution, are kept strictly positive at each iteration and this property is the origin of the term \textit{interior point}.\\
-The primal-dual methods find primal-dual solutions $(x^{*},\lambda^{*},s^{*})$ by applying variants of Newton's method to the three equality conditions \ref{(Cost)}, \ref{SF}, \ref{CC}, and modifying the search directions and the step lengths so that the inequality $(x,s)>0$ is satisfied.\\
+The primal-dual methods find primal-dual solutions $(x^{*},\lambda^{*},s^{*})$ by applying variants of Newton's method to the three optimatility conditions \ref{DF}, \ref{PF}, \ref{CC}, and modifying the search directions and the step lengths so that the inequality $(x,s)>0$ is satisfied.\\
  Let restate the optimality conditions by a mapping $\mathit{F}$ from $\mathbb{R}^{2n+m}$ to $\mathbb{R}^{2n+m}$:
 \begin{center}\label{F}
 	$\mathit{F}(x,\lambda,s)= \begin{bmatrix}
 	A^{T}\lambda+s-c \\Ax-b \\XSe
 	\end{bmatrix}=0$, with $(x,s)\geq0.$
 \end{center}
-where $X = diag(x_{1}, x_{2},...,)$ and $S = diag(s_{1}, s_{2},...,)$.\\ Note that $\mathit{F}$ is linear in the first two equations and mildly nonlinear in the last equation. \\ All primal-dual methods generate iterates $(x^{k},\lambda^{k},s^{k})$ with\\
+where $X = diag(x_{1}, x_{2},...,)$ and $S = diag(s_{1}, s_{2},...,)$.\\ Note that $\mathit{F}$ is linear in the first two equations and mildly nonlinear in the last equation. \\ All primal-dual methods generate iterates $(x^{k},\lambda^{k},s^{k})$ with $x^{k}$ and $s^{k}$ strictly positive.\\
 If we define the primal-dual \textit{feasible set} $\mathcal{F}$ and \textit{strictly feasible set} $\mathcal{F}^{o}$ by
 \begin{align*}
-\mathcal{F} = \left\lbrace(x,\lambda,s)\;|\;Ax = b, A^{T}\lambda+s =c,\;(x,s)\geq0\right\rbrace \\
-\mathcal{F}^{o} = \left\lbrace(x,\lambda,s)\;|\;Ax = b, A^{T}\lambda+s =c,\;(x,s)>0\right\rbrace 
+\mathcal{F} = \left\lbrace(x,\lambda,s)\;|\;Ax = b, A^{T}\lambda+s =c,\;(x,s)\geq0\right\rbrace, \\
+\mathcal{F}^{o} = \left\lbrace(x,\lambda,s)\;|\;Ax = b, A^{T}\lambda+s =c,\;(x,s)>0\right\rbrace, 
 \end{align*}
-
 the strict feasibility condition can be written concisely as $(x,\lambda,s)\in\mathcal{F}^{o}$.\\
-However, many LP have \textit{no} strictly feasible points, that is $\mathcal{F}^{o}=\emptyset$, although hey still may be feasible $(\mathcal{F}=0)$ and still my have finite optimal solutions.
+However, some LP have \textit{no} strictly feasible points, that is $\mathcal{F}^{o}=\emptyset$, although hey still may be feasible $(\mathcal{F}=0)$ and still may have finite optimal solutions.
 \begin{ex}
 	\begin{equation*}
-	\min\limits_{x\in\mathbb{R}^{3}} x_{1} \text{subject to }x_{1} + x_{3} = 0, x\geq0
+	\min\limits_{x\in\mathbb{R}^{3}} x_{1} \text{ subject to }x_{1} + x_{3} = 0, x\geq0
 	\end{equation*}
+
+and its dual is 
+	\begin{equation*}
+\max\limits_{\lambda\in\mathbb{R}^{3}, s\in\mathbb{R}^{3}} 0 \text{ subject to } \begin{bmatrix}1\\0\\1\end{bmatrix}\lambda+\begin{bmatrix}
+s_{1}\\s_{2}\\s_{3}
+\end{bmatrix}=\begin{bmatrix}1\\0\\0\end{bmatrix}, s\geq0 
+\end{equation*}
+Any feasible primal-dual vector $(x, \lambda, s)\in\mathcal{F}$ has $x_{1}= x_{2}= s_{2}= 0$, so $\mathcal{F}^{o}=\emptyset$. The optimal objective function value for this problem is 0, and the primal-dual solutionn set is defined by
+\begin{center}
+$x^{*} = \begin{bmatrix}
+0\\x^{*}_{2}\\ 0
+\end{bmatrix}$ and $s^{*}=\begin{bmatrix}
+1-\lambda^{*}\\0\\-\lambda^{*}
+\end{bmatrix}$,  
+\end{center}
+where $x^{*}$ and $\lambda^{*}$ are any numberes for which $x_{2}^{*}\geq0$ and $\lambda^{*}\leq0$.
 \end{ex}
-Although many primal-dual algorithms require a strictly feasible starting point...
+\\
 The Newton's method forms a linear model for $\mathit{F}$ around the current point and obtains the search direction $(\Delta x,\Delta \lambda,\Delta s)$ by solving the following system of linear equations:
 \begin{center}
 	$\mathit{J}(x,\lambda,s)\begin{bmatrix}
@@ -585,11 +597,12 @@ A full step along this direction usually is not permissible, since it would viol
 \begin{equation*}
 	(x,\lambda,s) +\alpha (\Delta x,\Delta \lambda,\Delta s)
 \end{equation*} 
-for some line search parameter $\alpha \in (0,1]$. \\We maintain positivity conditions of $(x,s)$ at all iterates for two reasons. First, vectors that solve $\mathit{F}$ that have negative components are of no interest in terms of solving the primal and dual problems (2.1) and (2.10). Second, when the matrix $A$ has linearly indipendent rows, the Jacobian $J$ is guaranteed to be nonsingular whenever $x>0$ and $s>0$ hold, and so the solution is guaranteed.
+for some line search parameter $\alpha \in (0,1]$. \\We maintain positivity conditions of $(x,s)$ at all iterates for two reasons. First, vectors that solve $\mathit{F}$ that have negative components are of no interest in terms of solving the primal and dual problems \ref{Prim} and \ref{Dual}. Second, when the matrix $A$ has linearly indipendent rows, the Jacobian $J$ is guaranteed to be nonsingular whenever $x>0$ and $s>0$ hold, and so the solution is guaranteed.
 
 \section{Affine-scaling method}
 
-The simplest primal-dual approach is to apply Newton's method directly to the function $F$, using a step length $\alpha_{k}$ of less than one in order to have $(x^{k+1},\lambda^{k+1},s^{k+1})\in \mathcal{F}^{o}$. There are different ways to do this, and the resulting algorithms are called \textit{primal-dual affine-scaling methods}.\\ 
+The simplest primal-dual approach is to apply Newton's method directly to the function $F$, using a step length $\alpha_{k}$ of less than one in order to have $(x^{k+1},\lambda^{k+1},s^{k+1})\in \mathcal{F}^{o}$. There are different ways to do this, and the resulting algorithms are called \textit{primal-dual affine-scaling methods}, which was proposed for linear programming by Monteiro,
+Adler and Resende \cite{MARE}.\\ 
  The general primal-dual affine-scaling algorithm takes the following form:
 \begin{tabbing}
 	\textbf{Given} $(x^{o}, \lambda^{o}, s^{o})\in\mathcal{F}^{o}$ \\
@@ -612,8 +625,7 @@ The simplest primal-dual approach is to apply Newton's method directly to the fu
 	\textbf{end}
 \end{tabbing}
 (\textit{Questo metodo è analizzato solo dal punto di vista teorico. Dal punto di vista applicativo verranno messi a confronto: metodo del simplesso, metodo LPF e algoritmo di Mehrotra})
-
-
+\\
 The solution of this system $\left(\Delta x^{k},\Delta\lambda^{k},\Delta s^{k}\right)$ has either $\Delta x_{i}^{k}<0$ or $\Delta s_{i}^{k}<0$, or both because $x^{k}>0$ and $s^{k}>0$ and $s^{k}_{i}\Delta x^{k}_{i} + x^{k}_{i}\Delta s^{k}_{i} = - x^{k}_{i}s^{k}_{i}$, by the last block row of this system.\\
 Then, we need to choose $\alpha_{k}$ such that
 \begin{align*}
@@ -640,7 +652,7 @@ x&\geq 0\\
 s&\geq 0\\
 x_{i}s_{i}&= \tau,\; \text{for}\;i= 1,2,...,n.\label{(Tao)}
 \end{align} 
-The conditions (5) are also the optimality conditions for  logarithmic-barrier formulation of the original problem:
+The conditions above are also the optimality conditions for the logarithmic-barrier formulation of the original problem:
 \begin{equation}
 \begin{split}
 \text{minimize\;} &c^{T}x + \tau\sum_{i=0}^{n}\ln{x_{i}}\\
@@ -651,13 +663,18 @@ In fact, the KKT conditions for this problem, with Lagrange multiplier $\lambda$
 \begin{equation*}
 c_{i} - \dfrac{\tau}{x_{i}} - A^{T}_{i}\lambda,\; \text{for}\;i = 1,2,...,n.
 \end{equation*}  
-Since the objective function is strictly convex, these conditions are sufficient as well as necessary for optimality. Besides, defining $s_{i} = \dfrac{\tau}{x_{i}}$, we recover the last KKT equation.
+Since the objective function is strictly convex, these conditions are sufficient as well as necessary for optimality. Besides, defining $s_{i} = \dfrac{\tau}{x_{i}}$, we recover the last KKT equation: it requires that the pairwise products $x_{i}s_{i}$ have the same value for all indices $i$.
 \\
 \\
 Let $(x(\tau), \lambda(\tau), s(\tau))$ be on the primal-dual path $\mathcal{C}$, then the non negative dual gap assumes this value: $c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x=\tau$.\\
 Then, the dual gap provides a measure of closeness to optimality. It is clear that as $\tau\to0$ the duality gap goes to zero, and hence both $x(\tau)$ and
  $(\lambda(\tau), s(\tau))$ approach to optimality for the primal and dual, respectively. The central path guides us to a solution along a route that maintains positivity of the $x$ and $s$ components and decreases the pairwise products $x_{i}s_{i},\;i = 1,2,...,n$ to zero at the same rate.\\
-Most primal-dual methods define $\tau$ as the average value of the point $(x_{1}s_{1},x_{2}s_{2}...,x_{n}s_{n})$. Precisely, they compute the Newton step toward a point $(x_{k}, \lambda_{k},s_{k})$ such that $x_{i}s_{i}=\sigma\mu$, where $\mu$ is the \textit{duality measure} and $\sigma\in[0,1]$ is the \textit{centering parameter}. The general path-following algorithm is:
+ Path-following methods follow $\mathcal{C}$ in the direction of deccreasing $\tau$ to the solution set but they do not neceessarily stay exactly on $\mathcal{C}$ or even particularly close to it. They compute the target value $\tau = \sigma \mu$, where $\sigma = [0,1]$ is called \textit{centering parameter} and $\mu$ the \textit{duality measure}, defined by
+  \begin{equation*}
+ \mu = \frac{1}{n}\sum_{i=1}^{n} x_{i}s_{i} = \frac{x^{T}s}{n}.
+ \end{equation*}.
+ A path-following algorithm explicity restricts the iterates to a neighborhood of the central path $\mathcal{C}$: if $\sigma = 1$, the equations define a \textit{centering direction}, a Newton step toward the point $(x_{\sigma\mu},\lambda_{\sigma\mu}, s_{\sigma\mu})\in\mathcal{C}$, if $\sigma = 0$ then we have the \textit{affine-scaling method}.\\  
+The general path-following algorithm is:
 \begin{tabbing}
 \textbf{Given} $(x^{o}, \lambda^{o}, s^{o})$ with $(x^{o}, s^{o})>0$;\\
 \textbf{for} \= $k = 0, 1, 2,...$ \\
@@ -678,11 +695,11 @@ Most primal-dual methods define $\tau$ as the average value of the point $(x_{1}
 	\> Choosing $\alpha_{k}$ so that $(x^{k+1}, s^{k+1})>0$ \\
 	\textbf{end}
 \end{tabbing}
-A path-following algorithm explicity restricts the iterates to a neighborhood of the central path $\mathcal{C}$: if $\sigma = 1$, the equations define a \textit{centering direction}, a Newton step toward the point $(x_{\sigma\mu},\lambda_{\sigma\mu}, s_{\sigma\mu})\in\mathcal{C}$, if $\sigma = 0$ then we have the \textit{affine-scaling method}.\\ Many algorithms use intermediate values of $\sigma$ in $(0,1)$ to trade off between the twin goals of reducing $\mu$ nd improving centrality. The neighborhood excludes points $(x, s) $ that are too close to the boundary of the nonegative orthant. Therefore, search directions calculated from any point in the neighborhood make at least minimal progress toward the solution set.
+ Many algorithms use intermediate values of $\sigma$ in $(0,1)$ to trade off between the twin goals of reducing $\mu$ and improving centrality. The neighborhood excludes points $(x, s) $ that are too close to the boundary of the nonegative orthant. Therefore, search directions calculated from any point in the neighborhood make at least minimal progress toward the solution set.
  We define the two most interesting neighborhoods of the central path as given
 by Mizuno et al~\cite{5}:\\
 \begin{equation*}
-\mathcal{N}_{2}(\theta) =\{(x, \lambda,s)\in\mathcal{F}^{o} \;|\;\lVert XSe - \mu e \rVert \leq \theta \mu \}, \text{\;for some\;} \theta \in [0,1)
+\mathcal{N}_{2}(\theta) =\{(x, \lambda,s)\in\mathcal{F}^{o} \;|\;\lVert XSe - \mu e \rVert \leq \theta \mu \}, \text{\;for some\;} \theta \in [0,1),
 \end{equation*} 
 \begin{equation*}
 \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\in\mathcal{F}^{o} \;|\; x_{i}s_{i} \geq \gamma \mu \}, \text{\;for some\;} \gamma \in [0,1),
@@ -751,8 +768,8 @@ Mehrotra's contribution was to combine the work developed by Montiero, Adles and
 Mehrotra's method incorporates these algorithmic devices that contribute to its practical success, including the use of different step lengths for the primal and dual variables and a heuristic choice of the step lengths that is designed to speed the asymptotic convergence.\\
 It generates sequence of infeasible iterates $(x^{k},\lambda^{k},s^{k})$ for which $(x^{k},s^{k})>0$. The search direction at each iteration consists of three components:
 \begin{enumerate}
-	\item an affine-scaling "predictor" direction.
-	\item a centering term whose size is governed by the adaptively chosen centering parameter $\sigma$.
+	\item an affine-scaling "predictor" direction,
+	\item a centering term whose size is governed by the adaptively chosen centering parameter $\sigma$,
 	\item a "corrector" direction that attempts to compensate for some of the nonlinearity in the affine-scaling direction.
 	\end{enumerate}
 The first two components, the affine-scaling step and the centering term, combine to generate the standard infeasible-interior-point step from the generic equations. However, the affine-scaling component is calculated before the centering component. By arranging the computations in this way, we gain a key advantage: the ability to choose the centering parameter $\sigma$ adaptively rather then a priori, as in the algorithm LPF.\\
@@ -777,13 +794,13 @@ To measure the efficacy of the affine-scaling direction, we define $\mu_{\text{a
 \begin{equation*}
 	\mu_{\text{aff}}= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n
 \end{equation*}
-If $\mu_{\text{aff}}\ll\mu$, the affine-scaling direction is a good search direction that permits significant progress to be made in reducing $\mu$, so we choose the centering parameter close to 0. If $\mu_{\text{aff}}$ is just a little smaller than $\mu$, we choose $\sigma$ closer to 1. This choice has the effect of moving us closer  to the central path $\mathcal{C}$, so that the algorithm is in a better position to achieve a substantial decrease in $\mu$ on the next iteration.\\
+If $\mu_{\text{aff}}\ll\mu$, the affine-scaling direction is a good search direction that permits significant progress to be made in reducing $\mu$, so we choose the centering parameter $\sigma$ close to 0. If $\mu_{\text{aff}}$ is just a little smaller than $\mu$, we choose $\sigma$ closer to 1. This choice has the effect of moving us closer  to the central path $\mathcal{C}$, so that the algorithm is in a better position to achieve a substantial decrease in $\mu$ on the next iteration.\\
 Mehrotra \cite{MER} suggests the following heuristic, which has proved to be effective in exhaustive computational testing:
 \begin{equation*}
 \sigma = \bigg(\frac{\mu_{\text{aff}}}{\mu}\bigg)^{3}.
 \end{equation*}
-The centering step component is computed solving a linear system with the same coefficient matrix as in \ref{(A)} and right-hand side $(0, 0,\sigma\mu e)$: actually it is combined with the corrector step, as we see later.\\
-Then, to motivate the corrector step, we see how the $i$th pairwise product $x_{i}s_{i}$ is affected by a full step in the affine-scaling direction:
+The centering step component is computed solving a linear system with the same coefficient matrix as in \ref{(A)} but the right-hand side equal to $[0, 0,\sigma\mu e]$: actually it is combined with the corrector step, as we see later.\\
+To motivate the corrector step, we see how the $i$th pairwise product $x_{i}s_{i}$ is affected by a full step in the affine-scaling direction:
 \begin{equation*}
 (x_{i}+\Delta x_{i}^{\text{aff}})(s_{i}+\Delta s_{i}^{\text{aff}})= x_{i}s_{i}+ x_{i}\Delta s_{i}^{\text{aff}}+s_{i}\Delta x_{i}^{\text{aff}}+\Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{aff}} =\Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{aff}}.
 \end{equation*}
@@ -822,35 +839,34 @@ We obtain the combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \
 \end{equation}
 Although we need to solve at each iteration two linear systems instead of one, the marginal cost is not great because the systems have the same coeffifient matrix and then we need only modify the right-hand side. Having described the essential elements of Mehrotra'a approach, the algorithm is structured as following:
 \begin{algorithm}
-	\caption{Predictor-corrector Mehrotra algorithm}
-	\begin{algorithmic}[1]		
- 		\State Given: $(x^{0}, \lambda^{0}, s^{0}) > 0$
-		\For{$k = 1,\dots$}
-		\State set $(x,\lambda,s)=(x^{k},\lambda^{k},s^{k})$ and solve \ref{(A)} for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;
-		\State calculate $\alpha_{\text{aff}}^{\text{pri}}$, $\alpha_{\text{aff}}^{\text{dual}}$ and $\mu_{\text{aff}}$
-		\State set sentering parameter to $\sigma = (\mu_{\text{aff}}/{\mu})^{3}$
-		\State solve \ref{(C)} for $(x^{cc},\lambda^{cc},s^{cc})$
-		\State compute search direction and step to boundary from:
-		\State $\;\;\;\;\;\;\;(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})=(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+(\Delta x^{cc},\Delta  \lambda^{cc},\Delta s^{cc})$;
-		\State $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{pri}}=\arg\max\{\alpha\geq0\;|\;x^{k} +\alpha\Delta x^{k}\geq 0\}$
-		\State $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{dual}}=\arg\max\{\alpha\geq0\;|\;s^{k} +\alpha\Delta s^{k}\geq 0\}$\\
-		\State set $\alpha_{k}^{\text{pri}}=\min(0.99\ast\alpha_{\text{max}}^{\text{pri}},1)$ and $\alpha_{k}^{\text{dual}}=\min(0.99\ast\alpha_{\text{max}}^{\text{dual}},1)$;
-		\State set
-		\State$\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;x^{k+1} = x^{k} + \alpha_{k}^{\text{pri}}\Delta x^{k}$;
-		\State$\;\;\;\;\;\;(\lambda^{k+1},s^{k+1}) = (\lambda^{k},s^{k}) + \alpha_{k}^{\text{dual}}\Delta (\lambda^{k},\Delta s^{k})$;		
-		\EndFor
-	\end{algorithmic}
+\caption{Predictor-corrector Mehrotra algorithm}
+\begin{algorithmic}[1]		
+\State Given: $(x^{0}, \lambda^{0}, s^{0}) > 0$
+\For{$k = 1,\dots$}
+	\State set $(x,\lambda,s)=(x^{k},\lambda^{k},s^{k})$ and solve \ref{(A)} for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;
+	\State calculate $\alpha_{\text{aff}}^{\text{pri}}$, $\alpha_{\text{aff}}^{\text{dual}}$ and $\mu_{\text{aff}}$
+	\State set centering parameter to $\sigma = (\mu_{\text{aff}}/{\mu})^{3}$
+	\State solve \ref{(C)} for $(x^{cc},\lambda^{cc},s^{cc})$
+	\State compute search direction and step to boundary from:
+	\State $\;\;\;\;\;\;\;(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})=(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+(\Delta x^{cc},\Delta  \lambda^{cc},\Delta s^{cc})$;
+	\State $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{pri}}=\arg\max\{\alpha\geq0\;|\;x^{k} +\alpha\Delta x^{k}\geq 0\}$
+	\State $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{dual}}=\arg\max\{\alpha\geq0\;|\;s^{k} +\alpha\Delta s^{k}\geq 0\}$\\
+	\State set $\alpha_{k}^{\text{pri}}=\min(0.99\ast\alpha_{\text{max}}^{\text{pri}},1)$ and $\alpha_{k}^{\text{dual}}=\min(0.99\ast\alpha_{\text{max}}^{\text{dual}},1)$;
+	\State set
+	\State$\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;x^{k+1} = x^{k} + \alpha_{k}^{\text{pri}}\Delta x^{k}$;
+	\State$\;\;\;\;\;\;(\lambda^{k+1},s^{k+1}) = (\lambda^{k},s^{k}) + \alpha_{k}^{\text{dual}}\Delta (\lambda^{k},\Delta s^{k})$;		
+\End
+\end{algorithmic}
 \end{algorithm}\\
-\textit{ Capitolo da completare, proponendo due metodi di inizializzazione}
-
+Let us consider the following LP 
 %\lstinputlisting[language=py,caption=applicationContext.py]{Forest.py}
 \chapter{Convergence analysis}
-In this section it is delineated a complete convergence analysis, using important theoretical results.
+In this section it is delineated a complete convergence analysis, using important theoretical results. 
 \subsection*{Affine-scaling method convergence}
-We examine the asymptotic behavior of this method, that is of significant theoretical interest, recalling the matricial system.\\
-\begin{equation}\label{(Q)}
+We examine the asymptotic behavior of this method, that is of significant theoretical interest.  For $(x, \lambda, s)\in\mathcal{F}^{o}$ the affine-scaling direction $(x, \Delta \lambda, \Delta s)$ satisfies the following matricial system:\\
+\begin{equation}\label{5.1}
 \begin{bmatrix}
-0&A^{T}&I \\A&0&0\\X&0&S
+0&A^{T}&I \\A&0&0\\S&0&X
 \end{bmatrix}\begin{bmatrix}
 \Delta x\\\Delta\lambda \\\Delta s
 \end{bmatrix}=-\begin{bmatrix}
@@ -863,20 +879,20 @@ Suppose that $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$ and that the aff
 \begin{equation*}
 	\lVert \Delta x_{\mathcal{B}} \rVert \leq C \mu \text{\;and\;} \lVert \Delta s_\mathcal{B} \rVert \leq C \mu,
 \end{equation*}
-with the set $\mathcal{B}$ defined previously in (2.11). 
+with the set $\mathcal{B}$ defined previously. 
 \end{lem}
 \begin{proof}
-	Let us define the positive diagonal matrix $D = X^{1/2}S^{-1/2}$. Multiplying the last block row of (5.2) by $(XS)^{-1/2}$, we obtain 
+	Let us define the positive diagonal matrix $D = X^{1/2}S^{-1/2}$. Multiplying the last block row of \ref{5.1} by $(XS)^{-1/2}$, we obtain 
 	\begin{equation*}
 	D^{-1}\Delta x + D \Delta s = -(XS)^{1/2}e.
 	\end{equation*}
 	Taking inner products of both sides of this expression, we have
 		\begin{equation*}
-	\lVert D^{-1}\Delta x \rVert^{2} + 2\Delta x^{T}\Delta s+ \lVert D^{-1}\Delta s \rVert^{2}= \lVert(XS)^{1/2}e\rVert^{2}= x^{T}s= n\mu.
+	\lVert D^{-1}\Delta x \rVert^{2} + 2\Delta x^{T}\Delta s+ \lVert D\Delta s \rVert^{2}= \lVert(XS)^{1/2}e\rVert^{2}= x^{T}s= n\mu.
 	\end{equation*}
 	Because $\Delta x^{T}\Delta s= 0$ and the other two terms are positive, we can write
 	\begin{equation*}
-	\lVert D^{-1}\Delta x\rVert^{2}\leq n\mu, \;\;\lVert D^{-1}\Delta s\rVert^{2}\leq n\mu
+	\lVert D^{-1}\Delta x\rVert^{2}\leq n\mu, \;\;\lVert D\Delta s\rVert^{2}\leq n\mu.
 	\end{equation*}
 	Since $D_{i,i}= \sqrt{x_{i}/s_{i}}$, we have for any $i$ that
 	\begin{equation*}
@@ -901,18 +917,18 @@ Now we show that $\lVert \Delta x_{\mathcal{B}}\rVert$ and $\lVert \Delta s_{\ma
 \end{lem}
 In the next lemma $A_{\mathcal{B}}$, $A_{\mathcal{N}}$,$D_{\mathcal{B}}$ and $D_{\mathcal{N}}$ denote a column partition of the matrices respectively $A$ and $D$, according to the sets $\mathcal{B}$ and $\mathcal{N}$.
 \begin{lem}
-	Suppose that the assumption of the lemma (5.2) hold. Then
+	Suppose that the assumption of the lemma \ref{(T)} hold. Then
 	\begin{enumerate}
 		\item $u = \Delta x_{B}$ is the unique solution of the following convex quadratic problem
 		\begin{align} \label{(U)}
-			\min\limits_{u}\frac{1}{2}\lVert D_{\mathcal{B}}^{-1}u\rVert^{2} \text{subject to }A_{\mathcal{B}u} = -A_{\mathcal{N}}\Delta x_{\mathcal{N}}
+			\min\limits_{u}\frac{1}{2}\lVert D_{\mathcal{B}}^{-1}u\rVert^{2} \text{subject to }A_{\mathcal{B}}u = -A_{\mathcal{N}}\Delta x_{\mathcal{N}}
 		\end{align}
 			\item $(v, \pi) = (\Delta s_{N}, \Delta \lambda)$ is a solution of the convex quadratic problem
 	\begin{align}
 		\min\limits_{(v, \pi)}\frac{1}{2}\lVert D_{\mathcal{N}}v\rVert^{2} \text{ subject to } &A_{\mathcal{B}u} = -A_{\mathcal{N}}\Delta x_{\mathcal{N}}\\
 		&A_{\mathcal{N}^{T}\pi}+ v =0		 
 	\end{align}
-		With the unicity of $\Delta s_{\mathcal{N}}$
+		The $\Delta s_{\mathcal{N}}$ component is unique.
 	\end{enumerate} 
 \end{lem} 
 \begin{proof}
@@ -1340,8 +1356,7 @@ As allocation models split a resource, blending models combine them. Various app
 \chapter{Conclusion}
 
 \begin{thebibliography}{9}
-	
-	\bibitem{W}Wright J. Stephen, Nocedal Jorge,\emph{\;Numerical Optimization}, Springer Science+Business Media, (2006).
+	\bibitem{MARE} Adler I., Monteiro R. D. C., Resende M. G. C., \emph{A polynomial-time primal-dual affine scaling algorithm for linear and convex quadratic programming and its power serier extension}, Math. of OR, 15: pp. 191-214, (1990).
 	\bibitem{1}Dantzig, G. B.,\emph{\;Linear Programming and Extensions}, Princeton, University Press, Princeton, NJ, (1963).
 	\bibitem{2} Andersen E. D, and Ye Y.,  \textit{Combining interior-point and pivoting algorithms for Linear Programming}, 1996.
 	\bibitem{Lem} Lemke, . The dual method of solving the linear programming problem. Nav. Res. Log. Q, C.E 1954
@@ -1355,9 +1370,9 @@ As allocation models split a resource, blending models combine them. Various app
 	\bibitem {LP} Vanderbei J. Robert, \emph{\;Linear programming:
 		Foundations and Extensions}. Dept. of Operations Research and Financial Engineering
 	Princeton University, Springer Science+ Business Media, 2001.
-	\bibitem{MARE} R. D. C. Monteiro, I. Adler, and M. G. C. Resende, \emph{A polynomial-time primal-dual affine scaling algorithm for linear and convex quadratic programming and its power serier extension}, Math. of OR, 15, pp. 191-214, (1990).
-	\bibitem{LMS} I. J. Lustig, E. Marsten, D. F. Shanno, \emph{Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, pp. 191-222, (1991).
-	\bibitem{MER} S. Mehrotra, \emph{ On the implementation of a primal-dual interior point method. } SIAM, 2 (1992), pp. 575-601.
+
+	\bibitem{LMS} Lustig I. J., Marsten E., Shanno D. F., \emph{ Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, pp. 191-222, (1991).
+	\bibitem{MER} Mehrotra S., \emph{ On the implementation of a primal-dual interior point method. } SIAM, 2 (1992), pp. 575-601.
 	\bibitem{(Natural)} B. Kent, B. B. Bare, R. C. Field, G. A. Bradley, \textit{Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN}, OR, 39, (1991), pp: 13-27.
 \bibitem{meg} N. Megiddo, \emph{ Pathways to the optimal set in linear programming, in Progress in
 Mathematical Programming}, Springer-Verlag, New York, pp. 131-158, (1986).
@@ -1365,6 +1380,8 @@ Mathematical Programming}, Springer-Verlag, New York, pp. 131-158, (1986).
 \bibitem{ForSer} \emph{"Forest Service planning : accommodating uses, producing outputs, and sustaining ecosystems"}, Congress of the United States-Office of technology assessment. 
 \bibitem{XY}Xiaojie Xu, Yinyu Ye, \emph{"A generalized homogeneous and self-dual algorithm for linear programming"}, Operations Research Letters, 17, pp: 181-190, (1995)
 \bibitem{LNP}Luenberger David G., Yinyu Ye, \emph{"Linear and Nonlinear Programming"}, Springer Science+Business Media,, 3, pp: 136-140, (2008).
+\bibitem{W}Nocedal J., Wright J. S., \emph{\;Numerical Optimization}, Springer Science+Business Media, (2006).
+
 \end{thebibliography}
 
 

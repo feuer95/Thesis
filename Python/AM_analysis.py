@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Apr 29 13:49:50 2019
+Created on Wed Jun 12 13:01:03 2019
 
-@author: Elena
+@author: elena
 """
+import pandas as pd                     # Export to excel 
 from stdForm import stdForm             # Standard form transform
 from print_boxed import print_boxed     # Print pretty info box
 from starting_point import sp           # Find initial infeasible points
@@ -11,13 +12,14 @@ from input_data import input_data       # Problem data
 from term import term                   # Compute the conditions of termination
 import numpy as np                      # Vectors
 from cent_meas import cent_meas         # Plot dual gap and centering measure
+import matplotlib.pyplot as plt         # Print plot
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 20, edgeitems = 4, linewidth = 120, suppress = True)
 
 
 '''                           ===
-                     AFFINE-SCALING METHOD
+                     AFFINE-SCALING METHOD: convergence analysis
                               ===
 
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
@@ -26,7 +28,8 @@ Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             
 Output data: x: primal solution
              s: dual solution
-             u: list: iteration, dual gas, Current x, Current s, Feasibility x, Feasibility s
+             u: list: iteration, x, s
+             v: list: x1, s1
 '''
 
 def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
@@ -67,14 +70,10 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
    #%%
         
     """ Search vector direction """
-    
-    
-    it = 0 # Num of iterations
-    tm = term(it) # Tollerance in the for cycle
-    # Construct list of info elements
-    u = []
-    u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
-    
+       
+    it = 0
+    tm = term(it)
+    v = []
     while tm > w:
         
         print("\tIteration: {}\n".format(it))
@@ -93,10 +92,13 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         B = rb + np.dot(W2, rc) - np.dot(np.dot(A, S_inv), rxs) #RHS of normal equation form
         z = np.dot(L_inv, B)
         
-        # SEARCH DIRECTION:        
+        # SEARCH DIRECTION:  
+        
         y1 = np.dot(L_inv.T, z)
         s1 = rc - np.dot(A.T, y1)
         x1 = np.dot(S_inv, rxs) - np.dot(W1,s1)
+        q = np.concatenate((x1, s1))
+        v.append([(np.linalg.norm(q)), 10*(sum(x*s)/c_A)])
         print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),y1.round(decimals = 3),s1.round(decimals = 3)))
         
         #%%
@@ -108,23 +110,22 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         n = min([(-s[i] / s1[i], i) for i in range(c_A) if s1[i] < 0], default = [1])[0] 
         T = (0.9)*min(m, n) 
 
-           
         # INCREMENT of the vectors and iterations
+        
         x += min(T,1)*x1
         y += min(T,1)*y1
         s += min(T,1)*s1
-        
-        z = np.dot(c, x) # Current optimal solution
-        g = z - np.dot(y, b) 
         it += 1
-        u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()])       
-                
-        # Termination elements
-        tm = term(it, b, c, rb, rc, z, g)
-      
         if it == max_iter:
-            raise TimeoutError("Iterations maxed out") 
+           raise TimeoutError("Iterations maxed out") 
 
+        z = np.dot(c, x)                   # Current optimal solution
+        g = z - np.dot(y, b) 
+        
+        u.append([it, x.copy(), s.copy()]) # Update info       
+                
+        tm = term(it, b, c, rb, rc, z, g)  # Tollerance
+      
         print('Current point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
         
@@ -132,7 +133,7 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
                 "Dual gap: {}\n".format("%10.6f"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
                 "Number of iterations: {}".format(it))
-    return x, s, u
+    return x, s, u, v
 
 #%%
     
@@ -140,10 +141,13 @@ if __name__ == "__main__":
     
     # Input data of canonical LP:
     
-    example = 15
-    
+    example = 12
     (A, b, c) = input_data(example)
         
-    x, s, u = affine(A, b, c)
+    x, s, u, v = affine(A, b, c)
     
-    aa = cent_meas(x, u, 'Affine', plot = 0)
+    plt.figure()
+    
+    v = pd.DataFrame(v)
+    plt.plot(v)
+    plt.grid(b = True, which = 'major')

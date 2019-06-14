@@ -52,7 +52,8 @@ def cent_meas(x, u, label, plot = 1):
         plt.grid(b = True, which = 'major')
         locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
         
-        plt.title('Dual gap & Centering measure '+label)
+        plt.title('Dual gap & Centering measure '+ label)
         plt.xlabel('iterations')
         plt.legend()
+        
     return dfu

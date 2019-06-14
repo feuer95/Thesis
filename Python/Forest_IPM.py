@@ -96,6 +96,6 @@ b = np.concatenate((S, b))
 #x_pc, s_pc, u_pc = longpathPC(A, b, -c, c_form = 1)
 #cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 19 iterations
 #
-#P1, u = SimplexMethod(A, b, -c, rule = 0, c_form = 1) # 45 iterations
+P1, u = SimplexMethod(A, b, -c, rule = 0, c_form = 1) # 45 iterations
 
 #plt.show()

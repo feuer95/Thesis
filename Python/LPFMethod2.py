@@ -32,9 +32,9 @@ Output data: x, s, u
 '''
 
 
-def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005, max_it = 500):
+def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_it = 500):
         
-    print('\n\tCOMPUTATION OF LPF ALGORITHM')
+    print('\n\tCOMPUTATION OF LPF ALGORITHM with augmented system')
     
     """ Input error checking """
         
@@ -80,31 +80,34 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
     tm = term(it)
     u = []
     u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
-    while tm > 10**(-8):
+    while tm > w:
         
         print("\tIteration: {}\n".format(it+1))
-        sigma = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
-        print("Centering parameter sigma:{}.\n".format("%10.3f"%sigma))
+#        cp = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
+        cp = 0.5
+        print("Centering parameter sigma:{}.\n".format("%10.3f"%cp))
 
         # solve search direction with AUGMENTED SYSTEM
+        # W1 = X^(-1)*S  
+        
         X_inv = np.linalg.inv(np.diag(x))           
-        W1 = X_inv*np.diag(s)                       # W1 = D = X^(-1)*S   
+        W1 = X_inv*np.diag(s)                  
         T = np.concatenate((np.zeros((r_A,r_A)), A), axis = 1)
-        U = np.concatenate((A.T,-W1), axis = 1)
-        V = np.concatenate((T,U), axis = 0)
+        U = np.concatenate((A.T, -W1), axis = 1)
+        V = np.concatenate((T, U), axis = 0)
         
         rb = b - np.dot(A, x)
         rc = c - np.dot(A.T, y) - s
-        rxs = - x*s + sigma*(sum(x*s)/c_A)*np.ones(c_A)  # Newton step toward x*s = sigma*mi
-        
-        r = np.hstack((rb, -np.dot(X_inv,rxs)))        
+        rxs = - x*s + cp*(sum(x*s)/c_A)*np.ones(c_A)  # Newton step toward x*s = sigma*mi
+        X_inv = np.linalg.inv(np.diag(x))
+        r = np.hstack((rb, -np.dot(X_inv, rxs)))        
         o = np.linalg.solve(V,r)
        
         y1 = o[:r_A]
-        x1 = o[r_A:c_A+r_A]
+        x1 = o[r_A:c_A + r_A]      
         s1 = np.dot(X_inv, rxs) - np.dot(W1, x1)
         print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3), y1.round(decimals = 3),s1.round(decimals = 3)))
-        
+
         #%%
         
         """ largest step length """
@@ -124,15 +127,16 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
         x += t*x1
         y += t*y1
         s += t*s1
-        it += 1
-        if it == max_it:
-            print("Iterations maxed out")
-            return x, s, u
         print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
         z = np.dot(c, x)
         g = z - np.dot(y, b)
         u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()])
-                
+        
+        it += 1
+        if it == max_it:
+            print("Iterations maxed out")
+            return x, s, u
+               
         # Termination elements
         tm = term(it, b, c, rb, rc, z, g)
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
@@ -151,6 +155,6 @@ if __name__ == "__main__":
     # Input data of canonical LP:
     (A, b, c) = input_data(0)
         
-    x, s, u = longpath2(A, b, c)
+    x, s, u = longpath2(A, b, c, max_it = 14)
     
     ul = cent_meas(x, u, 'LPF2')

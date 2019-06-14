@@ -75,6 +75,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 1
     tm = term(it)
     u = []
     u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
+    sig = []
     while tm > w:
         
         print("\tIteration: {}\n".format(it+1), end='')
@@ -101,7 +102,7 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 1
         
         y1 = np.dot(L_inv.T, z)
         s1 = rc - np.dot(A.T, y1)
-        x1 = np.dot(S_inv, rxs) - np.dot(W1,s1)
+        x1 = np.dot(S_inv, rxs) - np.dot(W1, s1)
         print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),y1.round(decimals = 3),s1.round(decimals = 3)))
         
         #%%
@@ -126,12 +127,13 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 1
         it += 1
         if it == max_it:
             print("Iterations maxed out")
-            return x, s, u
+            return x, y, s, u
         print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))
         z = np.dot(c, x)
         g = z - np.dot(y, b)
         u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()])
-                
+        sig.append([cp])        
+        
         # Termination elements
         tm = term(it, b, c, rb, rc, z, g)
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
@@ -148,9 +150,9 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 1
 if __name__ == "__main__": 
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(1)
+    
+    (A, b, c) = input_data(0)
         
     x, s, u = longpath(A, b, c)
     
-    dfm = cent_meas(x, u, 'LPF', plot = 0 )
-    dfm.to_excel("LPF_polyhedron.xlsx", index = False)
+    dfm = cent_meas(x, u, 'LPF', plot = 0)

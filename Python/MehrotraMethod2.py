@@ -69,7 +69,8 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
     it = 0
     tm = term(it)
     u = []
-    u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
+    u.append([it, g, x, s, b - np.dot(A, x), c - np.dot(A.T, y) - s])
+    sig = []
     while tm > w:
         print("\n\tIteration: {}\n".format(it), end='')   
 
@@ -152,7 +153,7 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         g = z - np.dot(y,b)
 
         u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()]) 
-                        
+        sig.append([Sigma])               
         # Termination elements
         tm = term(it, b, c, rb, rc, z, g)
         print('Tollerance: {}.\n'.format("%10.3f"%tm))
@@ -164,7 +165,7 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
                 "Dual gap: {}\n".format("%10.6f"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
                 "Number of iteration: {}".format(it))
-    return x, s, u 
+    return x, s, u, sig 
      
 
 #%%ù
@@ -175,9 +176,9 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
 if __name__ == "__main__":
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(1)
+    (A, b, c) = input_data(0)
     
-    x, s, u = mehrotra2(A, b, c)
+    x, s, u, sig = mehrotra2(A, b, c)
     
-    cent_meas(x, u, ' Mehrotra with augmunted system')
+    dm = cent_meas(x, u, 'Mehrotra with augmented system', plot = 0)
 

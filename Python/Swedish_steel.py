@@ -26,7 +26,7 @@ from cent_meas import cent_meas
 
 
 # Clean form of printed vectors
-np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
+#np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 
 '''                                  ===
@@ -75,6 +75,9 @@ b2 = q[:,7]
 (A3, c3) = stdForm(A2, c2)
 # With A2, b2, c2 the IPM find a non positive definite matrix, they fork only with pc algorithms 
 
+# La soluzione deve essere 
+# u = np.array([75, 90.91, 672.28, 137.31, 13.59, 0, 10.91])
+
 #%%
 
 """ run the methods """
@@ -103,14 +106,17 @@ b2 = q[:,7]
 #x_pc, s_pc, u_pc = longpathPC(A, b, c, c_form = 1)
 #cfl = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 15 iterations
 
-# Recall for Simplex method
-
 #x_a, s_a , u_a = longpathPC(A, b, c)
 #dfu = cent_meas(x_a, u_a, label = 'LPF PC') # E l'unico ipm che funzione con canonical form 
 
-#P, u = SimplexMethod(A3, b2, c3, rule = 0, c_form = 1)
-#P, u = SimplexMethod(A2, b2, c2, c_form = 1, rule = 0)
-#x = linprog(c, method = 'simplex', A_eq = A, b_eq = b) # Exact solution
-#x = linprog(c2, method = 'simplex', A_ub = A2, b_ub = b2) # Exact solution
+# Recall the simplex method
+
+P, u = SimplexMethod(A, b, c, rule = 0, c_form = 1)
+P, u = SimplexMethod(A2, b2, c2, rule = 0)
+
+u2 = np.array([75, 13, 717.503, 177.555, 16.084, 0.857, 0])
+
+x = linprog(c, method = 'simplex', A_eq = A, b_eq = b) # Exact solution
+x = linprog(c2, method = 'simplex', A_ub = A2, b_ub = b2) # Exact solution
 
 #plt.show()

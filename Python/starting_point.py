@@ -38,10 +38,10 @@ def sp(A, c, b) -> (np.array, np.array, np.array):
        s += (-3/2)*ds*np.ones(c_A)
     
     # Second update 
-    Dx = np.dot(x,s)/sum(s)
-    Ds = np.dot(x,s)/sum(x)
-    
-    x += 2*Dx*np.ones(c_A) 
-    s += 2*Ds*np.ones(c_A)
+    if not np.dot(x,s) == 0: 
+        Dx = np.dot(x,s)/sum(s)
+        Ds = np.dot(x,s)/sum(x)
+        x += 2*Dx*np.ones(c_A) 
+        s += 2*Ds*np.ones(c_A)
     return x,y,s
  

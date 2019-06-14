@@ -1,23 +1,24 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Apr 29 13:49:50 2019
+Created on Wed Jun 12 13:01:03 2019
 
-@author: Elena
+@author: elena
 """
+import pandas as pd                     # Export to excel 
+import matplotlib.pyplot as plt         # Print plot
 from stdForm import stdForm             # Standard form transform
 from print_boxed import print_boxed     # Print pretty info box
 from starting_point import sp           # Find initial infeasible points
 from input_data import input_data       # Problem data
 from term import term                   # Compute the conditions of termination
 import numpy as np                      # Vectors
-from cent_meas import cent_meas         # Plot dual gap and centering measure
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 20, edgeitems = 4, linewidth = 120, suppress = True)
 
 
 '''                           ===
-                     AFFINE-SCALING METHOD
+                     AFFINE-SCALING METHOD: convergence analysis
                               ===
 
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
@@ -26,10 +27,11 @@ Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             
 Output data: x: primal solution
              s: dual solution
-             u: list: iteration, dual gas, Current x, Current s, Feasibility x, Feasibility s
+             u: list: iteration, x, s
+             v: list: x1, s1
 '''
 
-def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
+def aff_an(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         
     print('\n\tCOMPUTATION OF PRIMAL-DUAL AFFINE SCALING ALGORITHM')
     
@@ -67,16 +69,13 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
    #%%
         
     """ Search vector direction """
-    
-    
-    it = 0 # Num of iterations
-    tm = term(it) # Tollerance in the for cycle
-    # Construct list of info elements
+       
+    it = 0
+    tm = term(it)
     u = []
-    u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
-    
+    v = []
     while tm > w:
-        
+        u.append(sum(x.copy()* s.copy())/c_A) 
         print("\tIteration: {}\n".format(it))
         S_inv = np.linalg.inv(np.diag(s))           
         W1 = S_inv*np.diag(x)                       # W1 = D = S^(-1)*X    
@@ -97,6 +96,8 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         y1 = np.dot(L_inv.T, z)
         s1 = rc - np.dot(A.T, y1)
         x1 = np.dot(S_inv, rxs) - np.dot(W1,s1)
+        q1 = np.concatenate((x1, s1))
+        v.append(np.linalg.norm(q1))
         print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),y1.round(decimals = 3),s1.round(decimals = 3)))
         
         #%%
@@ -114,10 +115,11 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         y += min(T,1)*y1
         s += min(T,1)*s1
         
+        
         z = np.dot(c, x) # Current optimal solution
         g = z - np.dot(y, b) 
         it += 1
-        u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()])       
+              
                 
         # Termination elements
         tm = term(it, b, c, rb, rc, z, g)
@@ -132,18 +134,31 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
                 "Dual gap: {}\n".format("%10.6f"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
                 "Number of iterations: {}".format(it))
-    return x, s, u
+    return x, s, u, v
 
 #%%
     
 if __name__ == "__main__": 
     
     # Input data of canonical LP:
-    
-    example = 15
+    example = 10
     
     (A, b, c) = input_data(example)
-        
-    x, s, u = affine(A, b, c)
+
+    # u: current points - v: current increment 
+    x, s, u, v = aff_an(A, b, c)
     
-    aa = cent_meas(x, u, 'Affine', plot = 0)
+    # In dataframe
+    plt.figure()
+    plt.plot(u, label = 'Current duality measure')
+    plt.plot(v, label = 'Current increment')
+    plt.legend()
+    w = pd.DataFrame(v, u)
+    w.to_excel("aff_an.xlsx", index = False)
+    
+    t = np.zeros(len(u))
+    for i in range(len(u)):
+        t[i] = v[i]/u[i]
+    print(t)
+    
+    plt.plot(t)

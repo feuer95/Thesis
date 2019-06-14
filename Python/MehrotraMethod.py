@@ -69,6 +69,7 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
     tm = term(it)
     u = []
     u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
+    sig = []
     while tm > w:
         print("\n\tIteration: {}\n".format(it), end='')   
         # CHOLESKY for normal equation with matrix A* D^2 *A^{T}
@@ -110,7 +111,7 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         # Set the centering parameter to Sigma = (mi_aff/mi)^{3}   
         mi = np.dot(x,s)/c_A # Duality measure
         mi_af = np.dot(x + alfa1*x1,s + alfa2*s1)/c_A # Average value of the incremented vectors
-        Sigma = (mi_af/mi)**3
+        Sigma = (mi_af/mi)**(3)
         
         # SECOND SEARCH DIRECTION
         Rxs = - x1*s1 + Sigma*mi*np.ones((c_A)) # RHS of the New system, including minus
@@ -156,14 +157,15 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
 
         u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()])
-        print('CORRECTOR STEP:\nCurrent primal-dual point: \n x_k = ',x,'\n s_k = ',s,'\nl_k = ',y)
+        sig.append([Sigma, mi_af, mi]) 
+        print('CORRECTOR STEP:\nCurrent primal-dual point: \n x = ',x,'\nlambda = ',y,'\n s = ',s)
         print('Current g: {}\n'.format("%.3f"%g))        
         
     print_boxed("Found optimal solution of the standard problem at\n x* = {}.\n\n".format(x) +
                 "Dual gap: {}\n".format("%10.6f"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
                 "Number of iteration: {}".format(it))
-    return x, s, u 
+    return x, y, s, u, sig 
      
 
 #%%ù
@@ -174,10 +176,10 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
 if __name__ == "__main__":
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(1)
+    (A, b, c) = input_data(0)
     
-    xp, s, u = mehrotra(A, b, c)
+    xm, ym, sm, um, sig = mehrotra(A, b, c)
     
     # Datatframe with plot: dual gap and centering deviation
-    dm = cent_meas(xp, u, ' Mehrotra', plot = 0) 
+    dm = cent_meas(xm, um, ' Mehrotra', plot = 0)
 

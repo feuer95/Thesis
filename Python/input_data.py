@@ -24,10 +24,9 @@ import numpy as np
 
 def input_data(w):
     if w == 0:
-        A = np.array([[1, 2.5]])
-        b = np.array([3])
-        c = np.array([-1, -1])
-
+        A = np.array([[1, 1]])
+        b = np.array([1])
+        c = np.array([-2, 0])
     if w == 1:
         A = np.array([[3, 2], [0, 1]])
         b = np.array([4, 3])
@@ -72,5 +71,25 @@ def input_data(w):
        A = np.array([[1, 1],[3, 1],[0, 1]])
        c = np.array([-2, -1])
        b = np.array([5, 9, 4])
+    if w == 12:
+       A = np.array([[2, 3, 1],[4, 1, 2],[3, 4, 2]])
+       c = np.array([-5, -4, -3])
+       b = np.array([5, 11, 8])
+    if w == 13:
+       A = np.array([[-1, 3],[1, 1],[2, -1]])
+       c = np.array([-3, -2])
+       b = np.array([12, 8, 10])
+    if w == 14: # x* = [3. 0. 0. 2. 0.]. optimal cost -9
+       A = np.array([[1, 2, 3],[2, 2, 1]])
+       b = np.array([5, 6])
+       c = np.array([-3, 4, 5])
+    if w == 15:
+       A = np.array([[2, -1, 4],[1, 1, 2], [-2, 1, -1]])
+       b = np.array([4, 5, -1])
+       c = np.array([5, 3, 0])
+    if w == 16: #  x* = [0.2 0.  1.6 0.  0.  4. ]. c* = -5.4
+       A = np.array([[2, 1, 1],[1, 2, 3], [2, 2, 1]])
+       b = np.array([2, 5, 6])
+       c = np.array([-3, -1, -3])       
     return A, b, c
 
