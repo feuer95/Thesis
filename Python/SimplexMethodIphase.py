@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
+Created on Tue Jun 18 15:25:40 2019
 
-Created on Tue Apr  9 11:31:52 2019
-
-@author: Elena
+@author: elena
 """
+
 from print_boxed import print_boxed # Print pretty boxes
 from stdForm import stdForm # Convert in standard form
 import numpy as np # Create vectors
@@ -16,7 +16,7 @@ from input_data import input_data
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 
-'''' _SIMPLEX METHOD II PHASES_  '''
+'''' _SIMPLEX METHOD II PHASES_ for swedish steel '''
 
 """
 Input data: np.arrays: A, vector b, cost vector c of the model LP
@@ -28,7 +28,7 @@ Output: vector x* optimal vector
         list u = [iterations, bases, vectors x, solutions c*x]
 """
     
-def SimplexMethod(A, b, c, max_it = 500, rule = 0, c_form = 0):
+def SimplexMethodI(A, b, c, max_it = 500, rule = 0, c_form = 0):
     
     """ Error checking """
         
@@ -47,52 +47,12 @@ def SimplexMethod(A, b, c, max_it = 500, rule = 0, c_form = 0):
     if not np.linalg.matrix_rank(A) == r_A:        
         A = A[[i for i in range(r_A) if not np.array_equal(np.linalg.qr(A)[1][i, :], np.zeros(c_A))], :]
         r_A = A.shape[0]  # Update no. of rows                                                       
-    
-    print('\n\tCOMPUTATION OF SIMPLEX ALGORITHM')
-    if rule == 0:
-        print('\twith the Bland\'s rule:\n')
-    else:
-        print('\t without the Bland\'s rule:\n')
-    
-    """ IIphases simplex method """
-
-    # If b negative then I phase simplex fun with input data A_I, x_I, c_I
-    # The solution x_I is the initial point for II phase.
-     
-    if sum(b < 0) > 0:# Phase I variables:
-        print('Vector b < 0:\n\tStart phase I\n')
-        
-        # Change sign of constraints
-        A[[i for i in range(r_A) if b[i] < 0]] *= -1  
-        b = np.abs(b)                
-        A_I = np.matrix(np.concatenate((A, np.identity(r_A)), axis = 1))
-        c_I = np.concatenate((np.zeros(c_A), np.ones(r_A)))  
-        x_I = np.concatenate((np.zeros(c_A), b))  
-        B = set(range(c_A, c_A + r_A)) 
-        
-        # Compute the Algorithm of the extended LP 
-                        
-        infoI, xI, BI, zI, itI, uI = fun(A_I, c_I, x_I, B, 0, max_it, rule)     
-        assert infoI == 0
-        
-#         Two cases of the phase I: zI > 0: STOP. zI = 0: Phase II
-        
-        if zI > 0:
-           print('The problem is not feasible.\n{} iterations in phase I.'.format(itI))           
-           print_boxed('Optimal cost in phase I: {}\n'.format(zI))
-           return xI, uI
-       
-        else: # Get initial BFS for original problem (without artificial vars.)
-            xI = xI[:c_A]
-            print("Found initial BFS at x: {}.\n\tStart phase II\n".format(xI))        
-            info, x, B, z, itII, u = fun(A, c, xI, BI, itI + 1, max_it, rule)
-            u = uI + u
-    # If b is positive phase II with B = [n+1,..., n+m]
-    
-    else:
-        x = np.concatenate((np.zeros(c_A-r_A), b))
-        B = set(range(c_A-r_A,c_A))        
-        info, x, B, z, itII, u = fun(A, c, x, B, 0, max_it, rule)
+    B = {0, 1, 2, 3, 4, 6, 7, 10, 12, 14, 16} 
+    D = list(B)
+    x = np.zeros(c_A)
+    x[D] = np.linalg.solve(A[:, D], b)
+              
+    info, x, B, z, itII, u = fun(A, c, x, B, 0, max_it, rule)
         
     # Print termination of phase II 
     
@@ -114,15 +74,14 @@ def SimplexMethod(A, b, c, max_it = 500, rule = 0, c_form = 0):
 def fun(A, c, x, B, it, max_it, rule) -> (float, np.array, set, float, np.array, list):
     
     r_A, c_A = np.shape(A)
-    B, NB = list(B), set(range(c_A)) - B  # Basic /nonbasic index lists
-    
+    B, NB = list(B), set(range(c_A)) - B  # Basic /nonbasic index lists    
     B_inv = np.linalg.inv(A[:, B])
     z = np.dot(c, x)  # Value of obj. function
     u = []
     while it <= max_it:  # Ensure procedure terminates (for the min reduced cost rule)
         print("\t\nIteration: {}\nCurrent x: {} \nCurrent B: {}\n".format(it, x, B), end = '')
         u.append([it, B.copy(), x, z.copy()]) # Update table
-        lamda = c[B] * B_inv
+        lamda = np.dot(c[B], B_inv)
         if rule == 0:  # Bland rule
             optimum = True
             for s in NB: # New reduced cost
@@ -167,30 +126,3 @@ def fun(A, c, x, B, it, max_it, rule) -> (float, np.array, set, float, np.array,
         B[r] = s                # Update basic index list       
         it += 1                 # Update iteration
     return 2, x, set(B), z, it, u # info = 2 if max_iteration
-
-
-#%%
-    
-"""Input data"""
-
-# Input data of canonical LP:
-if __name__ == "__main__":
-    
-    A, b, c = input_data(22)
-
-    # Run simplex method
-    x, u = SimplexMethod(A, b, c) # With Bland's rule
-    
-    # Create a dataframe and convert to excel
-#    dfu = pd.DataFrame(u, columns = ['it', 'Current Basis', 'Current x', 'Current cost value'])
-#    dfu.to_excel("Simplex_polyhedron.xlsx", index = False)
-#    
-#    # Plot the graphic with dataframe elements
-#    plt.figure()
-#    plt.plot(dfu['it'], dfu['Current cost value'], marker = 'o', ls = 'None', label = 'Cost value')
-#    plt.title('Cost value')
-#    plt.ylabel('cost value')
-#    plt.xlabel('iterations')
-#    locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
-#    
-#    plt.grid(b = True, which = 'major')

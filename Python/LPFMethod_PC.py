@@ -168,7 +168,7 @@ def augm(A, b, c, x, y, s, cp):
 if __name__ == "__main__":
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(0)   
+    (A, b, c) = input_data(16)   
 
     x, s, u = longpathPC(A, b, c)
           

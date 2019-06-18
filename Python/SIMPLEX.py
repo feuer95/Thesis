@@ -22,10 +22,10 @@ The functions implemented are: 1. simplex(A: matrix, b: np.array, c: np.array, r
                      
 '''
 #           Recall input data
-(A, b, c) = input_data(15)
+(A, b, c) = input_data(20)
 
 x2 = SimplexMethod(A, b, c)
-x3 = linprog(c, method = 'simplex', A_eq = A, b_eq = b)                           
+#x3 = linprog(c, method = 'simplex', A_eq = A, b_eq = b)                           
 
 # Same solution: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 

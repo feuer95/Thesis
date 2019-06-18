@@ -151,8 +151,8 @@ if __name__ == "__main__":
     
     # Input data of canonical LP:
     
-    (A, b, c) = input_data(0)
+    (A, b, c) = input_data(22)
         
     x, s, u = longpath(A, b, c)
     
-    dfm = cent_meas(x, u, 'LPF', plot = 0)
+    dfm = cent_meas(x, u, 'LPF', plot = 1)

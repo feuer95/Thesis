@@ -134,16 +134,14 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
                 "Number of iterations: {}".format(it))
     return x, s, u
 
-#%%
+#%
     
 if __name__ == "__main__": 
     
     # Input data of canonical LP:
     
-    example = 15
-    
-    (A, b, c) = input_data(example)
+    (A, b, c) = input_data(20)
         
     x, s, u = affine(A, b, c)
     
-    aa = cent_meas(x, u, 'Affine', plot = 0)
+    aa = cent_meas(x, u, 'Affine', plot = 1)

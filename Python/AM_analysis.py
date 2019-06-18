@@ -13,13 +13,14 @@ from term import term                   # Compute the conditions of termination
 import numpy as np                      # Vectors
 from cent_meas import cent_meas         # Plot dual gap and centering measure
 import matplotlib.pyplot as plt         # Print plot
+import statistics                       # Mean 
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 20, edgeitems = 4, linewidth = 120, suppress = True)
 
 
 '''                           ===
-                     AFFINE-SCALING METHOD: convergence analysis
+                 AFFINE-SCALING METHOD: convergence analysis
                               ===
 
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
@@ -34,7 +35,7 @@ Output data: x: primal solution
 
 def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         
-    print('\n\tCOMPUTATION OF PRIMAL-DUAL AFFINE SCALING ALGORITHM')
+    print('\n\tCOMPUTATION OF PRIMAL-DUAL AFFINE-SCALING ALGORITHM')
     
     # Algorithm in 4 steps:  
     # 0..Input error checking
@@ -74,6 +75,7 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
     it = 0
     tm = term(it)
     v = []
+    u = []
     while tm > w:
         
         print("\tIteration: {}\n".format(it))
@@ -98,7 +100,7 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         s1 = rc - np.dot(A.T, y1)
         x1 = np.dot(S_inv, rxs) - np.dot(W1,s1)
         q = np.concatenate((x1, s1))
-        v.append([(np.linalg.norm(q)), 10*(sum(x*s)/c_A)])
+        v.append(np.linalg.norm(q)/(sum(x*s)/c_A))
         print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),y1.round(decimals = 3),s1.round(decimals = 3)))
         
         #%%
@@ -135,19 +137,30 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
                 "Number of iterations: {}".format(it))
     return x, s, u, v
 
+
 #%%
     
-if __name__ == "__main__": 
+# Compute the table w of the convergence rate:
     
-    # Input data of canonical LP:
-    
-    example = 12
-    (A, b, c) = input_data(example)
+w = []
+
+
+for example in range(24):
+    if not example in [4, 15, 18, 20]:
         
-    x, s, u, v = affine(A, b, c)
+        (A, b, c) = input_data(example)
     
-    plt.figure()
+        x, s, u, v = affine(A, b, c)
     
-    v = pd.DataFrame(v)
-    plt.plot(v)
-    plt.grid(b = True, which = 'major')
+        q = statistics.mean(v)
+    
+        w.append([example, "%10.3f"%q])
+
+w = pd.DataFrame(w, columns = ['Example','Convergence rate: K'])
+w.to_excel("AM_analysis.xlsx", index = False)        
+    
+#    plt.figure()
+#    
+#    
+#    plt.plot(v)
+#    plt.grid(b = True, which = 'major')

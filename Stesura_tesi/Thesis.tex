@@ -599,11 +599,12 @@ A full step along this direction usually is not permissible, since it would viol
 \end{equation*} 
 for some line search parameter $\alpha \in (0,1]$. \\We maintain positivity conditions of $(x,s)$ at all iterates for two reasons. First, vectors that solve $\mathit{F}$ that have negative components are of no interest in terms of solving the primal and dual problems \ref{Prim} and \ref{Dual}. Second, when the matrix $A$ has linearly indipendent rows, the Jacobian $J$ is guaranteed to be nonsingular whenever $x>0$ and $s>0$ hold, and so the solution is guaranteed.
 
-\section{Affine-scaling method}
+\section{Primal-dual affine-scaling method}
 
-The simplest primal-dual approach is to apply Newton's method directly to the function $F$, using a step length $\alpha_{k}$ of less than one in order to have $(x^{k+1},\lambda^{k+1},s^{k+1})\in \mathcal{F}^{o}$. There are different ways to do this, and the resulting algorithms are called \textit{primal-dual affine-scaling methods}, which was proposed for linear programming by Monteiro,
+The simplest primal-dual approach is to apply Newton's method directly to the function $F$, using a step length $\alpha_{k}$ of less than one in order to have $(x^{k+1},\lambda^{k+1},s^{k+1})\in \mathcal{F}^{o}$. There are different ways to do this and the resulting algorithms are called \textit{primal-dual affine-scaling methods}, for short Affine-scaling methods, which were proposed for linear programming by Monteiro,
 Adler and Resende \cite{MARE}.\\ 
- The general primal-dual affine-scaling algorithm takes the following form:
+ The general primal-dual affine-scaling algorithm takes the following form:\\
+\\ \textbf{Primal dual affine scaling  algorithm}
 \begin{tabbing}
 	\textbf{Given} $(x^{o}, \lambda^{o}, s^{o})\in\mathcal{F}^{o}$ \\
 	\textbf{for} \= $k = 0, 1, 2,...$ \\
@@ -620,11 +621,12 @@ Adler and Resende \cite{MARE}.\\
 \end{equation}
 \begin{tabbing}
 	\\
-	\textbf{Set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$\\
-	\> choosing $\alpha_{k}$ so that $(x^{k+1},\lambda^{k+1}, s^{k+1})\in\mathcal{F}^{o}$ \\
+	\textbf{Set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$
+	\\
+	\> chose $\alpha_{k}$ so that $(x^{k+1},\lambda^{k+1}, s^{k+1})\in\mathcal{F}^{o}$ \\
 	\textbf{end}
 \end{tabbing}
-(\textit{Questo metodo è analizzato solo dal punto di vista teorico. Dal punto di vista applicativo verranno messi a confronto: metodo del simplesso, metodo LPF e algoritmo di Mehrotra})
+\\
 \\
 The solution of this system $\left(\Delta x^{k},\Delta\lambda^{k},\Delta s^{k}\right)$ has either $\Delta x_{i}^{k}<0$ or $\Delta s_{i}^{k}<0$, or both because $x^{k}>0$ and $s^{k}>0$ and $s^{k}_{i}\Delta x^{k}_{i} + x^{k}_{i}\Delta s^{k}_{i} = - x^{k}_{i}s^{k}_{i}$, by the last block row of this system.\\
 Then, we need to choose $\alpha_{k}$ such that
@@ -640,7 +642,7 @@ and the largest value of $\alpha_{k}$ that satisfies these inequalities is compu
 We can step back from this maximum value, and prevent each $x_{i}$ and $s_{i}$ from being too close to zero, by defining $\alpha_{k} = min\left(1,\eta_{k}*\alpha_{max}\right)$, with $\eta_{k}$ usually $0.999$.\\
 We then define the new iterate $(x^{k},\lambda^{k},s^{k}) +\alpha^{k} (\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})$.\\
 This approach is called \textit{primal-dual affine scaling} and often does not allow us to make much progress toward a solution. Even though, the search direction steps are used to find the predictor directions in the predictor-corrector algorithms, explained in the next pages. 
-Most primal-dual methods use less aggressive Newton search direction, making a perturbation of the system $F$, and they are presented in the next section.
+Most primal-dual methods use less aggressive Newton search direction, making a perturbation of the system $F$ and they are presented in the next section.
 
 \section{Path-following methods}
 
@@ -691,8 +693,8 @@ The general path-following algorithm is:
 \end{equation}
 \begin{tabbing}
 	\\
-	\textbf{Set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$\\
-	\> Choosing $\alpha_{k}$ so that $(x^{k+1}, s^{k+1})>0$ \\
+	\=set $(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$;\\
+	\> choose $\alpha_{k}$ so that $(x^{k+1}, s^{k+1})>0$ \\
 	\textbf{end}
 \end{tabbing}
  Many algorithms use intermediate values of $\sigma$ in $(0,1)$ to trade off between the twin goals of reducing $\mu$ and improving centrality. The neighborhood excludes points $(x, s) $ that are too close to the boundary of the nonegative orthant. Therefore, search directions calculated from any point in the neighborhood make at least minimal progress toward the solution set.
@@ -761,11 +763,12 @@ x_{i}&\geq C_{1}\gamma \;\; (i \in\mathcal{B}).\\
 ~\cite{Wright} pag. 101
 \end{proof}
 \newpage
-\section{Mehrotra's method}
-Most interior-point software written since 1990s have been based on Mehrotra's predictor-corrector algorithm.\\
+\section{Predictor-corrector algorithms}
+
+Most interior-point software written since 1990s have been based on Mehrotra's predictor-corrector algorithm (MPC).\\
 Since Karmarkar's landmark paper \cite{Kar}, IPMs became one of the most active research area that produced a large amount of research results. Moreover, several powerful methods have been developed: predictor-corrector methods are among the most efficient and most implementations are based on a variant of Mehrotra's algorithm. \\
-Mehrotra's contribution was to combine the work developed by Montiero, Adles and Resende \cite{MARE} and the infeasible-interior-point path-following approach implemented by Lustig, Marsten and Shanno \cite{LMS}.\\ 
-Mehrotra's method incorporates these algorithmic devices that contribute to its practical success, including the use of different step lengths for the primal and dual variables and a heuristic choice of the step lengths that is designed to speed the asymptotic convergence.\\
+The Mehrotra's contribution was to combine the work developed by Montiero, Adles and Resende \cite{MARE} and the infeasible-interior-point path-following approach implemented by Lustig, Marsten and Shanno \cite{LMS}.\\ 
+The method incorporates these algorithmic devices that contribute to its practical success, including the use of different step lengths for the primal and dual variables and a heuristic choice of the step lengths that is designed to speed the asymptotic convergence.\\
 It generates sequence of infeasible iterates $(x^{k},\lambda^{k},s^{k})$ for which $(x^{k},s^{k})>0$. The search direction at each iteration consists of three components:
 \begin{enumerate}
 	\item an affine-scaling "predictor" direction,
@@ -786,10 +789,10 @@ A^{T}\lambda+s-c\\Ax-b\\XSe
 \end{bmatrix}.
 \end{equation}
 Now we find the step lengths to the boundary along this direction, performing separate calculations for the primal and dual components as follow
-\begin{align*}
-\alpha_{\text{aff}}^{\text{pri}}=\arg\max\{\alpha\in[0,1]\;|\;x +\alpha\Delta x^{\text{aff}}\geq 0\}\\
+\begin{align}\label{Qw}
+\alpha_{\text{aff}}^{\text{pri}}=\arg\max\{\alpha\in[0,1]\;|\;x +\alpha\Delta x^{\text{aff}}\geq 0\} \\
 \alpha_{\text{aff}}^{\text{dual}}=\arg\max\{\alpha\in[0,1]\;|\;s +\alpha\Delta s^{\text{aff}}\geq 0\}
-\end{align*}
+\end{align}
 To measure the efficacy of the affine-scaling direction, we define $\mu_{\text{aff}}$ as the hypothetical value of $\mu$ resulting from a full step to the boundary, that is,
 \begin{equation*}
 	\mu_{\text{aff}}= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n
@@ -838,32 +841,37 @@ We obtain the combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \
 \end{bmatrix}.
 \end{equation}
 Although we need to solve at each iteration two linear systems instead of one, the marginal cost is not great because the systems have the same coeffifient matrix and then we need only modify the right-hand side. Having described the essential elements of Mehrotra'a approach, the algorithm is structured as following:
-\begin{algorithm}
-\caption{Predictor-corrector Mehrotra algorithm}
-\begin{algorithmic}[1]		
-\State Given: $(x^{0}, \lambda^{0}, s^{0}) > 0$
-\For{$k = 1,\dots$}
-	\State set $(x,\lambda,s)=(x^{k},\lambda^{k},s^{k})$ and solve \ref{(A)} for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;
-	\State calculate $\alpha_{\text{aff}}^{\text{pri}}$, $\alpha_{\text{aff}}^{\text{dual}}$ and $\mu_{\text{aff}}$
-	\State set centering parameter to $\sigma = (\mu_{\text{aff}}/{\mu})^{3}$
-	\State solve \ref{(C)} for $(x^{cc},\lambda^{cc},s^{cc})$
-	\State compute search direction and step to boundary from:
-	\State $\;\;\;\;\;\;\;(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})=(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+(\Delta x^{cc},\Delta  \lambda^{cc},\Delta s^{cc})$;
-	\State $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{pri}}=\arg\max\{\alpha\geq0\;|\;x^{k} +\alpha\Delta x^{k}\geq 0\}$
-	\State $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{dual}}=\arg\max\{\alpha\geq0\;|\;s^{k} +\alpha\Delta s^{k}\geq 0\}$\\
-	\State set $\alpha_{k}^{\text{pri}}=\min(0.99\ast\alpha_{\text{max}}^{\text{pri}},1)$ and $\alpha_{k}^{\text{dual}}=\min(0.99\ast\alpha_{\text{max}}^{\text{dual}},1)$;
-	\State set
-	\State$\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;x^{k+1} = x^{k} + \alpha_{k}^{\text{pri}}\Delta x^{k}$;
-	\State$\;\;\;\;\;\;(\lambda^{k+1},s^{k+1}) = (\lambda^{k},s^{k}) + \alpha_{k}^{\text{dual}}\Delta (\lambda^{k},\Delta s^{k})$;		
-\End
-\end{algorithmic}
-\end{algorithm}\\
-Let us consider the following LP 
+\newpage
+\\
+\textbf{Mehrotra's algorithm}
+\begin{tabbing}
+	\textbf{Given} $(x^{o}, \lambda^{o}, s^{o})> 0$; \\
+	\textbf{for} \= $k = 0, 1, 2,...$ \\
+	\> solve \ref{(A)} for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;\\
+	\> calculate $\alpha_{\text{aff}}^{\text{pri}}$, $\alpha_{\text{aff}}^{\text{dual}}$ and $\mu_{\text{aff}}$ as in \ref{Qw};\\
+	\> set centering parameter to $\sigma = (\mu_{\text{aff}}/\mu)^{3}$; \\
+	\> solve \ref{(C)} for $(x^{cc},\lambda^{cc},s^{cc})$;\\
+	\> compute the search direction and step to boundary from: \\
+	\< \\
+	\> $\;\;\;\;\;\;\;(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})=(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+(\Delta x^{cc},\Delta  \lambda^{cc},\Delta s^{cc})$;\\
+	\> $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{pri}}=\arg\max\{\alpha\geq0\;|\;x^{k} +\alpha\Delta x^{k}\geq 0\}$,\\
+	\> $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{dual}}=\arg\max\{\alpha\geq0\;|\;s^{k} +\alpha\Delta s^{k}\geq 0\}$,\\
+	\>\\
+	\> set $\alpha_{k}^{\text{pri}}=\min(0.99\ast\alpha_{\text{max}}^{\text{pri}},1)$ and $\alpha_{k}^{\text{dual}}=\min(0.99\ast\alpha_{\text{max}}^{\text{dual}},1)$;\\
+	\> set\\
+	\> $\;\;\;\;\;\;\;x^{k+1} = x^{k} + \alpha_{k}^{\text{pri}}\Delta x^{k}$;\\
+	\>$\;\;\;\;\;\;\;(\lambda^{k+1},s^{k+1}) = (\lambda^{k},s^{k}) + \alpha_{k}^{\text{dual}}\Delta (\lambda^{k},\Delta s^{k})$;\\
+\textbf{end}
+\end{tabbing}
+
+
+
+ 
 %\lstinputlisting[language=py,caption=applicationContext.py]{Forest.py}
 \chapter{Convergence analysis}
 In this section it is delineated a complete convergence analysis, using important theoretical results. 
 \subsection*{Affine-scaling method convergence}
-We examine the asymptotic behavior of this method, that is of significant theoretical interest.  For $(x, \lambda, s)\in\mathcal{F}^{o}$ the affine-scaling direction $(x, \Delta \lambda, \Delta s)$ satisfies the following matricial system:\\
+We examine the asymptotic behavior of this method, that is of significant theoretical interest.  For $(x, \lambda, s)\in\mathcal{F}^{o}$ the affine-scaling direction $(\Delta x, \Delta \lambda, \Delta s)$ satisfies the following matricial system:\\
 \begin{equation}\label{5.1}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\S&0&X
@@ -872,7 +880,8 @@ We examine the asymptotic behavior of this method, that is of significant theore
 \end{bmatrix}=-\begin{bmatrix}
 0\\0\\XSe
 \end{bmatrix}.
-\end{equation}\\	
+\end{equation}\\
+	
  We first obtain a bound of the direction vector $(\Delta x,\Delta \lambda, \Delta s)$ for the feasibility case: more precisely we assume that $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$.
 \begin{lem}
 Suppose that $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$ and that the affine-scaling direction $(\Delta x,\Delta \lambda, \Delta s)$ is calculated. Then there is a costant $C$ such that
@@ -912,10 +921,10 @@ Now we show that $\lVert \Delta x_{\mathcal{B}}\rVert$ and $\lVert \Delta s_{\ma
 \begin{lem} \label{(T)}
 	Let the matrix $H\in\mathbb{R}^{p,q}$ be given. Then there exists a nonnegative constant $\bar{C}$ depending only on $H$ with the following property: for any vector $h\in Range(H)$ and any nonsingular diagonal matrix $\Sigma$, the unique solution $\bar{w}$ of the problem
 	\begin{align*}
-	\min\limits_{w}\frac{1}{2}\lVert\Sigma\rVert^{2} \text{\;subject to\;} Hw = h\\\text{satisfies\;} \lVert\bar{w}\rVert\leq \bar{C}\lVert h\rVert.
+	\min\limits_{w}\frac{1}{2}\lVert\Sigma w\rVert^{2} \text{\;subject to\;} Hw = h\\\text{satisfies\;} \lVert\bar{w}\rVert\leq \bar{C}\lVert h\rVert.
 	\end{align*}
 \end{lem}
-In the next lemma $A_{\mathcal{B}}$, $A_{\mathcal{N}}$,$D_{\mathcal{B}}$ and $D_{\mathcal{N}}$ denote a column partition of the matrices respectively $A$ and $D$, according to the sets $\mathcal{B}$ and $\mathcal{N}$.
+The next lemma is due essentially to Adler and Montiero \cite{ADL}. $A_{\mathcal{B}}$,  Let us denote $A_{\mathcal{N}}$, $D_{\mathcal{B}}$ and $D_{\mathcal{N}}$ a column partition of the matrices respectively $A$ and $D$, according to the sets $\mathcal{B}$ and $\mathcal{N}$.
 \begin{lem}
 	Suppose that the assumption of the lemma \ref{(T)} hold. Then
 	\begin{enumerate}
@@ -988,14 +997,40 @@ In the next lemma $A_{\mathcal{B}}$, $A_{\mathcal{N}}$,$D_{\mathcal{B}}$ and $D_
 	\end{equation}
 	The result follows when we define K$\;=\bar{K} \lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert C$.
 \end{proof}
-A result similar to the Theorem~\ref{(Z)} holds for steps of an infeasible interior-point algorithm. See~\cite{Wright}.
-
-\subsection*{Analysis of LPF method}
+\newpage
+This result applies specifically to the algorithm \textbf{Primal dual affine scaling  algorithm} defined in chapter 4, but a result similar to the Theorem~\ref{(Z)} holds for steps of an infeasible interior-point algorithm \cite{Wright}.\\ The implementation realized in this research computes the starting point, which is infeasible, with an heuristic technique \cite{MER}: hence we estimate $(\Delta x, \Delta s)$ in the infeasible case.
+\begin{center}
+\begin{array}{ | l | l | }
+	\hline
+	\text{LP problem} & \text{Constant K} \\ \hline
+	0 &      2.006 \\ \hline
+	1 &      5.537 \\ \hline
+	2 &      0.736 \\ \hline
+	3 &      3.152 \\ \hline
+	5 &      4.025 \\ \hline
+	6 &      7.115 \\ \hline
+	7 &      3.358 \\ \hline
+	8 &      7.208 \\ \hline
+	9 &      3.246 \\ \hline
+	10 &   1805.964 \\ \hline
+	11 &      5.712 \\ \hline
+	12 &      9.208 \\ \hline
+	13 &     14.010 \\ \hline
+	14 &      1.532 \\ \hline
+	16 &      3.146 \\ \hline
+	17 &      6.714 \\ \hline
+	19 &     36.431 \\ \hline
+	21 &     24.663 \\ \hline
+	22 &   1237.766 \\ \hline
+	23 &      4.223 \\ \hline
+\end{array}
+\end{center}
+\subsection*{LPF method convergence}
 
 \begin{lem}\label{lem1}
 	Let u and v be any two vectors in $\mathbb{R}^{n}$ with $u^{T}v \geq 0$. Then, 
 \begin{align*}
-\lVert UVe \rVert_{2}\leq 2^{-3/2}\lVert u + v \rVert^{2}_{2}\\
+\lVert UVe \rVert_{2}\leq 2^{-3/2}\lVert u + v \rVert^{2}_{2},\\
 \end{align*}
 with $U = diag(u_{1}, u_{2}, ..., u_{n})$ and $V = diag(v_{1}, v_{2}, ..., v_{n})$. 
 \end{lem}
@@ -1115,7 +1150,7 @@ that guarantees
 \end{equation*}	
 \end{proof}
 
-\subsection*{MPC analysis}
+\subsection*{Analysis of MPC}
 In order to study the perform of the Mehrotra's algorithm, we introduce the trajectory-following methods from ODEs. These one define a trajectory from the current point, we say $(x,\lambda,s)$, to the solution set $\Omega$. There are infinitely many trajectories to choose from, but in this casse is obtained from a linear scaling of the function \ref{F}.\\ Denoting this trajectory by $\mathcal{H}$ and parametrizing it by $\tau\in[0,1)$, we find that each point $(x_{\tau},\lambda_{\tau},s_{\tau})\in\mathcal{H}$ is a solution of the following nonlinear system:
 \begin{equation}\label{T}
 	\begin{bmatrix}
@@ -1168,25 +1203,13 @@ A^{T}\lambda+s-c \\Ax-b \\XSe
 \end{bmatrix},(x,s)\geq0.
 \end{equation}
 The tangent to this trajectory is the affine-scaling direction, as for $\mathcal{H}$, but the curvature can be identified with the combined centering-corrector step rather than the corrector component alone. The trajectory $\mathcal{H}_{\sigma}$ tends to bulge more toward the central path than $\mathcal{H}$. Despite the closer relationship between $\mathcal{H}_{\sigma}$  and MPC algorithm, we can not qualify it as a second-order trajectory-following algorithm because it still searches along a linear direction rather than a quadratic path.  
-\section{Initialization and termination} 
 
-There are several important issues concerning interior-point algorithms
-for linear programs.\\The first one involves the initialization. All the theory explained above assumes that the initial point is strictly feasible, in order to show  a comprehensive convergence analysis. Even though, the most pratical algorithm does not require starting from  feasible initial-points. The search direction needs to be modified so that it moves closer to feasibility as well as to
-centrality: in (5.1) the right hand side $F(x, \lambda, s)\neq0$. The implementation of the LFP method, computed and analyzed in this research, takes the ones-vector as initial point. [\textit{sviluppero` una descrizione e un'analisi al variare del punto iniziale dell'algoritmo implementato}]
-\\
- The second limit involves termination. Unlike the simplex method,
-which terminates with an exact solution, interior-point algorithms are continuous
-optimization algorithms that generate a sequence of strictly feasible points $(x^{k}, \lambda^{k},s^{k})$ converging to
-an optimal solution. If the data of a particular problem are integral or rational, then, after the worst-case time bound, an exact solution can be
-rounded from the latest approximate solution. But under
-the real number computation model we can not apply this argument.\\ 
-
-[\textit{Dscrivero' il metodo di Ye, che converte l'iterata $(x^{k}, \lambda^{k},s^{k})$, sufficientemente vicina alla soluzione, alla soluzione esatta}]
 \chapter{Sensitivity analysis}
 With the simplex method and interior point metods we can compute optimal solution to linear models, but this does not suffice because the constant parameters from which they are derived, such items as costs, profits, supplies, demands, are almost neveer known certainty at the time the model is solved.\\
 In this chapter we study the effects of changing the input variables with some perturbations.\\ The aim is to formulate a comparison between the simplex and IPM sensitivity and remark the sensitivity information inside the \textit{slack variables}.
-\chapter{Pratical implementations}
-In this chapter it is developed a comprehensive analysis of the results obtained by some practical implementations. It is presented three LP problems: the forest service allocation,...\\
+\chapter{Implementation issues}
+There are several important issues concerning interior-point algorithms
+for linear programs.\\
 \section*{Geometric viewpoint}
 Now we outline the geometric viewpoint of the simplex method and the primal-dual methods.\\
 We already stated that the simplex method generates a sequence of basic feasible primal points of the solution set; hence, it creates a path along the boundary of the polytope, checking the cost value at each vertex.\\Instead, the primal-dual interior point methods approach the solution through the interior of the feasible polytope, generating the central path $\mathcal{C}$, rather than working around the boundary.\\ Path-following method follow $\mathcal{C}$ in the direction of decreasing $\tau$ in (4.7) ; ideed, they do not necessarily stay exactly on the path but within a loose and well-defined neighoborhood of $\mathcal{C}$ while steadily reducing the duality measure $\mu$ to zero. Each search direction is computed with a Newton's step toward a point for which the duality measure $\tau$ is equal to or smaller than the current duality measure $\mu$, as we know $\tau=\sigma\mu$. 
@@ -1197,13 +1220,13 @@ step along the search direction before violating the condition; hence, the affin
 The long-path following method doesn't create a sequence that moves strongly to the solution, indeed, computes the search direction with $\sigma_{k}$ between two fixed limits $\sigma_{\text{min}}$ and $\sigma_{\text{max}}$, in order to improve the centrality measure. The lower bound $\sigma_{\text{min}}$ ensures that each search direction start by moving off the boundary of $\mathcal{N}_{-\infty}(\gamma)$ and into the interior of the neighborhood. Unit steps along the search direction takes the next point outside the neighborhood, since the error of approximating the nonlinear KKT system by the linear equations becomes more pronounced as $\alpha$ increases. Then, it selects $\alpha_{k}$ as large a possible subject to the next point remains $\mathcal{N}_{-\infty}(\gamma)$. The restriction of $\sigma_{k}\in(0,1)$ achieves the twin goals of improving centrality and reducing the duality measure into a single step.\\
 Alternatively, the predictor-corrector methods consists on two types of steps. The predictor step, which start in the inner neighborhood and moves along the affine-scaling direction to the boundary of the outer neighborhood. Between these predictor steps, the algorithm takes corrector steps, computing $\sigma = 1$ and $\alpha= 1$, in order to come back inside the inner neighborhood to prepare for the next predictor corrector step. The Mehrotra's algorithm chooses the centering parameter adaptively: first calculates the affine-scaling direction, then assesses its usefulness as a search direction. If this direction yields a large reduction in $\mu$ without violating the positivity condition $(x, s)> 0$, the algorithm concludes that littele centering in needed, so it chooses $\sigma_{k}$ close to zero and calculates a centered search direction with small value. Otherwise, it enforces a larger amount of centering by choosing $\sigma_{k}$ close to 1. As we see in the description of the Mehrotra's algortihm, the computation of the centered direction and the corrector step are combined, so adaptive centering does not add further to the cost of each iteration. 
 \section*{Initialization and termination}
-In the discussion of the interior point methods, it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})$ is feasible respect to the linear equations \ref{DP} and \ref{PP}.\\
+In the discussion of the interior point methods, it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})$ is feasible respect to the linear equations \ref{DF} and \ref{PF}.\\
  The complexity of obtaining such an initial point is the same as that of solving the
 linear program itself. However, most implementations work with an infeasible starting point and infeasible iterations, like Mehrotra's method.\\
 The choice of starting point is an important practical issue with a significant effect on the robustness of the algorithm. A popular heuristic for finding $(x^{0}, \lambda^{0}, s^{0})$ starts by calculating $(\tilde{x}, \tilde{\lambda}, \tilde{s})$ as solution of two least-squares problems:
 \begin{align*}
 \min \lVert x \rVert ^{2} &\text{ subject to }Ax = b\\
-	 min\limits_{(\lambda,s)} \lVert s \rVert ^{2} &\text{ subject to } A^{T}\lambda +s = c
+	 \min\limits_{(\lambda,s)} \lVert s \rVert ^{2} &\text{ subject to } A^{T}\lambda +s = c
 \end{align*}
 That is, $\tilde{x}$ and $\tilde{s}$ are the vectors of least norm that are in the feasible set and they are computed using the following formulas:
 \begin{equation*}
@@ -1219,24 +1242,22 @@ and compute the positive vectors $\hat{x}= \tilde{x}+\delta_{x}e$ and $\hat{s}= 
 \end{align*}
 The starting point is then defined as 
 \begin{align*}
-(x^{0}, \lambda^{0}, s^{0}) = (\tilde{x}+\delta e,\tilde{\lambda},\tilde{s}+\delta e)
+(x^{0}, \lambda^{0}, s^{0}) = (\tilde{x}+\delta e,\tilde{\lambda},\tilde{s}+\delta e).
 \end{align*}
+\\
 We call a LP \textit{self-dual} if the dual of the problem is equivalent to the primal. The advantage of self-duality is that we can apply a primal-dual interior-point algorithm to solve the self-dual problem without doubling the dimension of the linear system solved at each iteration.\\
 For example the algorithm termed \textit{Homogeneous Self-Dual Algorithm} (HSD) is based on the construction of a homogeneous and self-dual linear programming problem in such a way the point $x=1, \lambda = 0, \tau= 1,z=1,\theta= 1$ is feasible. This produces a problem with a bounded optimal
 region, with a known strictly feasible starting point.
-
-\begin{alignat*}{4}
-&\min&&&&(n+1)\theta&\\
-&\text{subject to }&&Ax&-b\tau&+\bar{b}\theta=0,\\
-&&-A^{T}\lambda&&+c\tau&-\bar{c}\theta\geq0,\\\label{Ss}
-&&b^{T}\lambda&-c^{T}x&&+\bar{z}\theta\geq0,\\\label{Kk}
-&&-\bar{b}\lambda&+\bar{c}^{T}x&-\bar{z}\tau&=-(n+1),\\
-&\lambda\text{ free, }x\geq0,\tau\geq0, \;\theta \text{ free,} 
-\end{alignat*}
-where
 \begin{equation*}
-\bar{b} = b -Ae,\;\; \bar{c}=c-e,\;\;\bar{z}=c^{T}e+e.
+\begin{alignat*}{2}
+\min&&&(n+1)\theta&\\
+\text{subject to}&&Ax&-b\tau&+\bar{b}\theta=0,\\
+&-A^{T}\lambda&&+c\tau&-\bar{c}\theta\geq0,\\\label{Ss}
+&b^{T}\lambda&-c^{T}x&&+\bar{z}\theta\geq0,\\\label{Kk}
+&-\bar{b}\lambda&+\bar{c}^{T}x&-\bar{z}\tau&=-(n+1),\\
+\lambda\text{ free, }x\geq0,\tau\geq0, \;\theta \text{ free,} \end{alignat*}
 \end{equation*}
+where  $\bar{b} = b -Ae,\;\; \bar{c}=c-e,\;\;\bar{z}=c^{T}e+e$.\\
 The vectors $\bar{b}$, $\bar{c}$ and $\bar{z}$ represent the infeasibility of the initial primal point, dual
 point, and primal-dual gap, respectively. They are chosen so that the system is
 feasible: for example $(x,\lambda, \tau,\theta)=(e^{T},0,e^{T},e^{T})$ with $e$ unit vector. We now relate optimal solutions to HSD to those for LP. Let us state, without proof, that the HSD problem has an optimal solution and its optimal solution set is bounded. \cite{LNP}
@@ -1257,12 +1278,13 @@ each iteration, but HSD uses fewer iterations than IIP.
 
 
 
-\section*{Centering measure}
+\section*{The centering measure}
 Now we examinate the behaviour of the sequence computed by the IPM algorithms respect to the path $\mathcal{C}$, at which all the pairwise products are $x_{i}s_{i}$ are identical to $\mu$. To value this deviation from $\mathcal{C}$, we compare the pairwise products with their average value $\mu = x^{T}s/n$ using a scaled norm defined by. 
 \begin{equation}
-\frac{1}{\mu}\lVert XSe - \mu e \rVert
+\frac{1}{\mu}\lVert XSe - \mu e \rVert_{2}
 \end{equation}
 The problem data are ten little scale LP problems formulated in canonical form. The codes implemented are the algorithm in previously described: affine-scaling, long-path following and Mehrtotra's algorithms. It is also implemented a variation of the long-path following method, in which the centering paramenter is $\sigma_{k}=\sigma$ for all $k$, instead chosen in a random way.
+\newpage
 \section*{The coefficient matrix}
 Most of the computational effort in implementations of primal-dual methods is taken up in solving linear systems of the form (\ref{P}). The
 coefficient matrix in these systems is usually large and sparse, since the constraint
@@ -1294,6 +1316,7 @@ steps of the long-path following algorithm with the second system, when the elem
 matrix $D^{2}$ takes on both huge and tiny values.
 
 \chapter{Applications}
+In this chapter it is developed a comprehensive analysis of the results obtained by some practical implementations. It is presented three LP problems: the forest service allocation,...\\
 \subsection*{Forest service allocation} 
 The first model we illustrate is the \textit{Forest service allocation}. It is part of model class in which the main issue is how to divide or allocate a valuable resource among competing needs and the resource may be for example land, capital, time or fuel. We will see how U.S Forest Service has used this model to address the sensitive task of managing 191 million acres of national forestland \cite{(Natural)}.\\
 The Forest Service is one of the major Federal land managing agencies. It has been part of the Department of Agricolture since 1905 and over the past 10 years significant administrative and legal challenges have plagued national forest management \cite{ForSer}. Resource simulation models are the principal technologies used for estimating ecological and enviromental responses to activities. These models try to qualify relationships among resources and results of management actions. Simulations such as timber growth-and-yeld models and sediment yield models often examine consequences of management activities for a singele resource. The regional diversity of forest resources has led to many unique, local models rather than universal models. The Forest Service, in 1979, designed FORPLAN as its principal tool for national forest: it is al linear programming system, used to analyze the temporal aspects of the forest output. FORPLAN was chosen because it addressed two key issues in forest plnning: cost efficiency and an allowable timber sale quantity. Besides, these models have been used by each national forest structure with input that represent their problem. This is a strengh of LP. \\
@@ -1357,9 +1380,12 @@ As allocation models split a resource, blending models combine them. Various app
 
 \begin{thebibliography}{9}
 	\bibitem{MARE} Adler I., Monteiro R. D. C., Resende M. G. C., \emph{A polynomial-time primal-dual affine scaling algorithm for linear and convex quadratic programming and its power serier extension}, Math. of OR, 15: pp. 191-214, (1990).
+	\bibitem{ADL} Adler I., Monteiro R. D. C., \emph{Limiting behaviour of the affine scaling continuous trajectories for linear programming problems}, Mathematical Programming, pp. 29-51, (1991).
 	\bibitem{1}Dantzig, G. B.,\emph{\;Linear Programming and Extensions}, Princeton, University Press, Princeton, NJ, (1963).
 	\bibitem{2} Andersen E. D, and Ye Y.,  \textit{Combining interior-point and pivoting algorithms for Linear Programming}, 1996.
-	\bibitem{Lem} Lemke, . The dual method of solving the linear programming problem. Nav. Res. Log. Q, C.E 1954
+	\bibitem{Lem} Lemke, . \textit{ The dual method of solving the linear programming problem.} Nav. Res. Log. Q, C.E (1954).
+		\bibitem{LMS} Lustig I. J., Marsten E., Shanno D. F., \emph{ Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, pp. 191-222, (1991).
+	\bibitem{MER} Mehrotra S., \emph{ On the implementation of a primal-dual interior point method. } SIAM J on Optimization, 2, pp: 575-601 (1992).
 	\bibitem{3}Victor Klee and George J. Minty.\emph{ How good is the simplex algorithm? Technical report}, Washington University Department of Mathematics, 1970.
 	\bibitem{Kar} N. K. Karmarkar,\emph{ A new polynomial-time algorithm for linear programming}, Combinatorica, (1984).
 	\bibitem{5} S. Mizuno, M.J. Todd, and Y. Ye,\emph{\;On adaptive-step primal-dual interior-point algorithms for linear programming}, Math. of OR, vol. 18, pp. 964-981, (1993). 
@@ -1371,8 +1397,8 @@ As allocation models split a resource, blending models combine them. Various app
 		Foundations and Extensions}. Dept. of Operations Research and Financial Engineering
 	Princeton University, Springer Science+ Business Media, 2001.
 
-	\bibitem{LMS} Lustig I. J., Marsten E., Shanno D. F., \emph{ Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, pp. 191-222, (1991).
-	\bibitem{MER} Mehrotra S., \emph{ On the implementation of a primal-dual interior point method. } SIAM, 2 (1992), pp. 575-601.
+
+
 	\bibitem{(Natural)} B. Kent, B. B. Bare, R. C. Field, G. A. Bradley, \textit{Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN}, OR, 39, (1991), pp: 13-27.
 \bibitem{meg} N. Megiddo, \emph{ Pathways to the optimal set in linear programming, in Progress in
 Mathematical Programming}, Springer-Verlag, New York, pp. 131-158, (1986).

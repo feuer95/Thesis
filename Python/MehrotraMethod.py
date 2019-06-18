@@ -165,7 +165,7 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
                 "Dual gap: {}\n".format("%10.6f"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
                 "Number of iteration: {}".format(it))
-    return x, y, s, u, sig 
+    return x, s, u
      
 
 #%%ù
@@ -176,9 +176,9 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
 if __name__ == "__main__":
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(0)
+    (A, b, c) = input_data(18)
     
-    xm, ym, sm, um, sig = mehrotra(A, b, c)
+    xm, sm, um = mehrotra(A, b, c)
     
     # Datatframe with plot: dual gap and centering deviation
     dm = cent_meas(xm, um, ' Mehrotra', plot = 0)

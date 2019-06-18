@@ -16,6 +16,7 @@ from longpath2 import longpath2
 from LPFMethod_cp import longpathC
 from LPFMethod_PC import longpathPC
 
+from SimplexMethodIphase import SimplexMethodI # For swedish steel with known basis
 from SimplexMethodIIphases import SimplexMethod
 from scipy.optimize import linprog
 
@@ -107,16 +108,22 @@ b2 = q[:,7]
 #cfl = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 15 iterations
 
 #x_a, s_a , u_a = longpathPC(A, b, c)
-#dfu = cent_meas(x_a, u_a, label = 'LPF PC') # E l'unico ipm che funzione con canonical form 
+#dfu = cent_meas(x_a, u_a, label = 'LPF PC') # E l'unico ipm che funziona con canonical form 
 
-# Recall the simplex method
+' Recall the simplex method 
 
-P, u = SimplexMethod(A, b, c, rule = 0, c_form = 1)
-P, u = SimplexMethod(A2, b2, c2, rule = 0)
+P, u = SimplexMethod(A, b, c, rule = 0, c_form = 1) # 17 it
+#        Start phase II
+#Iteration: 12
+#Current x: [ 75.  250.  568.   80.5 ...  24.    0.    0.    0. ] 
 
-u2 = np.array([75, 13, 717.503, 177.555, 16.084, 0.857, 0])
+P2, u2 = SimplexMethodI(A, b, c, rule = 0, c_form = 1) # 0 it
 
-x = linprog(c, method = 'simplex', A_eq = A, b_eq = b) # Exact solution
-x = linprog(c2, method = 'simplex', A_ub = A2, b_ub = b2) # Exact solution
+#P, u = SimplexMethod(A2, b2, c2, rule = 0)
+#
+#u2 = np.array([75, 13, 717.503, 177.555, 16.084, 0.857, 0])
+#
+#x = linprog(c, method = 'simplex', A_eq = A, b_eq = b) # Exact solution
+#x = linprog(c2, method = 'simplex', A_ub = A2, b_ub = b2) # Exact solution
 
 #plt.show()

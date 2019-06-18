@@ -165,7 +165,7 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
                 "Dual gap: {}\n".format("%10.6f"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
                 "Number of iteration: {}".format(it))
-    return x, s, u, sig 
+    return x, s, u
      
 
 #%%ù
@@ -176,9 +176,9 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
 if __name__ == "__main__":
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(0)
+    (A, b, c) = input_data(1)
     
-    x, s, u, sig = mehrotra2(A, b, c)
+    x, s, u = mehrotra2(A, b, c)
     
     dm = cent_meas(x, u, 'Mehrotra with augmented system', plot = 0)
 
