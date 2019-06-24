@@ -12,7 +12,7 @@ from MehrotraMethod import mehrotra
 from MehrotraMethod2 import mehrotra2
 
 from LPFMethod import longpath
-from longpath2 import longpath2
+from LPFMethod2 import longpath2
 from LPFMethod_cp import longpathC
 from LPFMethod_PC import longpathPC
 
@@ -85,39 +85,39 @@ b2 = q[:,7]
 
 # Recall the interior point methods
 
-#x_a, s_a , u_a = affine(A, b, c, c_form = 1)
-#dfu = cent_meas(x_a, u_a, label = 'Affine', plot = 0) # 17 it
+x_a, s_a , u_a = affine(A, b, c, c_form = 1)
+dfu = cent_meas(x_a, u_a, label = 'Affine', plot = 0) # 17 it
 #
-#x_m, s_m, u_m = mehrotra(A, b, c, c_form = 1)
-#dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # it 8
+x_m, s_m, u_m = mehrotra(A, b, c, c_form = 1)
+dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # it 8
 #
-#x_l, s_l, u_l = longpath(A, b, c, c_form = 1)
+#x_l, y_l, s_l, u_l = longpath(A, b, c, c_form = 1, max_it = 2)
 #dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) # 27 it 
 #
-#x_l, s_l, u_l = longpath2(A, b, c, max_it = 1000, c_form = 1)
-#dful = cent_meas(x_l, u_l, label = 'LPF') # BAD
+#x_l, s_l, u_l = longpath2(A, b, c, c_form = 1)
+#dful = cent_meas(x_l, u_l, label = 'LPF') # 28 it
 #
 #x_m, s_m, u_m = mehrotra2(A, b, c, c_form = 1)
-#dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # 33 iterations
+#dfm = cent_meas(x_m, u_m, label = 'Mehrotra2', plot = 0) # 8 iterations
 #
 #cp = 0.8
 #x_c, s_c, u_c = longpathC(A, b, c, cp = cp) # BAD
 #dfc = cent_meas(x_c, u_c, label = 'LPF with cp {}'.format(cp))
 #
-#x_pc, s_pc, u_pc = longpathPC(A, b, c, c_form = 1)
-#cfl = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 15 iterations
+x_pc, s_pc, u_pc = longpathPC(A, b, c, c_form = 1)
+cfl = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 15 iterations
 
 #x_a, s_a , u_a = longpathPC(A, b, c)
 #dfu = cent_meas(x_a, u_a, label = 'LPF PC') # E l'unico ipm che funziona con canonical form 
 
-' Recall the simplex method 
+" Recall the simplex method "
 
-P, u = SimplexMethod(A, b, c, rule = 0, c_form = 1) # 17 it
+#P, u = SimplexMethod(A, b, c, rule = 0, c_form = 1) # 17 it
 #        Start phase II
 #Iteration: 12
 #Current x: [ 75.  250.  568.   80.5 ...  24.    0.    0.    0. ] 
 
-P2, u2 = SimplexMethodI(A, b, c, rule = 0, c_form = 1) # 0 it
+#P2, u2 = SimplexMethodI(A, b, c, rule = 0, c_form = 1) # 0 it
 
 #P, u = SimplexMethod(A2, b2, c2, rule = 0)
 #

@@ -82,16 +82,15 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
     u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
     while tm > w:
         
-        print("\tIteration: {}\n".format(it+1))
-#        cp = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
-        cp = 0.5
-        print("Centering parameter sigma:{}.\n".format("%10.3f"%cp))
+        print("\tIteration: {}".format(it+1))
+        cp = random.uniform(s_min, s_max) # Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
+        print("Centering parameter cp:{}.\n".format("%10.3f"% cp))
 
         # solve search direction with AUGMENTED SYSTEM
-        # W1 = X^(-1)*S  
+          
         
         X_inv = np.linalg.inv(np.diag(x))           
-        W1 = X_inv*np.diag(s)                  
+        W1 = X_inv*np.diag(s)          # W1 = X^(-1)*S        
         T = np.concatenate((np.zeros((r_A,r_A)), A), axis = 1)
         U = np.concatenate((A.T, -W1), axis = 1)
         V = np.concatenate((T, U), axis = 0)
@@ -99,8 +98,8 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
         rb = b - np.dot(A, x)
         rc = c - np.dot(A.T, y) - s
         rxs = - x*s + cp*(sum(x*s)/c_A)*np.ones(c_A)  # Newton step toward x*s = sigma*mi
-        X_inv = np.linalg.inv(np.diag(x))
-        r = np.hstack((rb, -np.dot(X_inv, rxs)))        
+
+        r = np.hstack((rb, rc - np.dot(X_inv, rxs)))        
         o = np.linalg.solve(V,r)
        
         y1 = o[:r_A]
@@ -152,10 +151,10 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
     
 if __name__ == "__main__": 
     
-    # Input data of canonical LP:
+#     Input data of canonical LP:
     
-    (A, b, c) = input_data(23)
+    (A, b, c) = input_data(18)
         
-    x, s, u = longpath2(A, b, c)
+    x, s, u = longpath2(A, b, c, max_it = 19)
     
     ul = cent_meas(x, u, 'LPF2')

@@ -89,13 +89,12 @@ b = np.concatenate((S, b))
 #x_m, s_m, u_m = mehrotra2(A, b, -c, c_form = 1)
 #dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # 37 iterations
 
-#cp = 0.8
-#x_c, s_c, u_c = longpath2(A, b, -c, c_form = 1)
+x_c, s_c, u_c = longpath2(A, b, -c, c_form = 1) # 30 it
 #dfc = cent_meas(x_c, u_c, label = 'LPF2')
 #
 #x_pc, s_pc, u_pc = longpathPC(A, b, -c, c_form = 1)
 #cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 19 iterations
 #
-P1, u = SimplexMethod(A, b, -c, rule = 0, c_form = 1) # 45 iterations
+#P1, u = SimplexMethod(A, b, -c, rule = 0, c_form = 1) # 45 iterations
 
 #plt.show()

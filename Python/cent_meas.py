@@ -10,41 +10,56 @@ import numpy as np
 
 '''
                         ===
-      Plot centering measure and dual gap
+      PLOT CENTERING MEASURE AND DUAL GAP
+      
+Input data: x -> optimal solution x 
+            u -> list created in the algorithm u = [it, g, x, s, rb, rc]
+            label -> Name of th tested algorithm
+            plot -> by default 1 (NO PLOT)
                         ===
 '''
 
 
 def cent_meas(x, u, label, plot = 1):
-    # Create a dataframe and convert to excel        
+    
+    
+    """ Dataframe """
+
+    # Create a dataframe     
     dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s', 'Primal Feasibility', 'Dual Feasibility'])   
 
-    # Construct list mu
+    # Construct list mu: at each iteration a vector [x1*s1, xi * si, ...]
     mu = []
     for i in range(len(u)):
         mu.append(u[i][2]*u[i][3])
     
-    # Dataframe dfu of the list mu            
-    dfu['mu'] = mu
+    dfu['mu'] = mu # Dataframe with mu   
 
+    # Construct list cm: at each iteration the norm || [x1*s1, xi * si, ...] || (centering deviation)
     cm = []
     for i in range(len(u)):
         r = sum(mu[i])/len(mu[i])
         s = mu[i] - r*np.ones(len(x))
         cm.append(np.linalg.norm(s))
-
-    # Dataframe with centering deviation
-    dfu['cd'] = cm
+  
+    dfu['cd'] = cm # Dataframe with centering deviation
         
     pf = []
     for i in range(len(u)):
         r = max(u[i][4])
         pf.append('%.5f'% r)
 
-    # Dataframe with feasibility
-    dfu['pf'] = pf
+    dfu['pf'] = pf # Dataframe with feasibility
     
-    # Plot the graphic with dataframe elements   
+    # Convergence rate    
+    pr = []
+    for i in range(len(u)-1):
+        r = abs(max(u[i][4]))
+        s = abs(max(u[i+1][4]))
+        pr.append('%.5f'% np.divide(s,r))
+    
+    """ Plot the graphic with dataframe elements """   
+    
     if plot == 0:
         plt.figure()
         plt.plot(dfu['it'], dfu['Current g'], label = 'Dual gap', marker = '.')
@@ -52,8 +67,8 @@ def cent_meas(x, u, label, plot = 1):
         plt.grid(b = True, which = 'major')
         locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
         
-        plt.title('Dual gap & Centering measure '+ label)
+        plt.title('Dual gap & Centering deviation '+ label)
         plt.xlabel('iterations')
+        plt.yscale('log')
         plt.legend()
-        
-    return dfu
+    return dfu, pr

@@ -31,7 +31,7 @@ Output data: x: primal solution
 Augmented system           
 '''
 
-def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
+def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_it = 500):
     
     print('\n\tCOMPUTATION OF MEHROTRA ALGORITHMwith Augmented system\n')
     
@@ -75,7 +75,7 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         print("\n\tIteration: {}\n".format(it), end='')   
 
         X_inv = np.linalg.inv(np.diag(x))           
-        W1 = X_inv*np.diag(s)                       # W1 = D = X^(-1)*S   
+        W1 = X_inv*np.diag(s)                       # W1 = X^(-1)*S   
         T = np.concatenate((np.zeros((r_A,r_A)), A), axis = 1)
         U = np.concatenate((A.T, -W1), axis = 1)
         V = np.concatenate((T, U), axis = 0)
@@ -89,7 +89,7 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         r = np.hstack((rb, rc - np.dot(X_inv,rxs)))        
         o = np.linalg.solve(V,r)
        
-        # SEARCH DIRECTION:        
+        # SEARCH DIRECTION affine:        
         y1 = o[:r_A]
         x1 = o[r_A:c_A + r_A]
         s1 = np.dot(X_inv, rxs) - np.dot(W1, x1)
@@ -111,7 +111,7 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         # Set the centering parameter to Sigma = (mi_aff/mi)^{3}   
         mi = np.dot(x,s)/c_A # Duality measure
         mi_af = np.dot(x + alfa1*x1,s + alfa2*s1)/c_A # Average value of the incremented vectors
-        Sigma = (mi_af/mi)**3
+        Sigma = (mi_af/mi)**(3)
         
         # SECOND SEARCH DIRECTION
         Rxs = - x1*s1 + Sigma*mi*np.ones((c_A)) # RHS of the New system, including minus
@@ -119,11 +119,11 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         r = np.hstack((np.zeros(r_A), - np.dot(X_inv,Rxs)))        
         o = np.linalg.solve(V, r)
        
-        # SEARCH DIRECTION:        
+        # SEARCH DIRECTION centering-corrector:        
         y2 = o[:r_A]
         x2 = o[r_A:c_A+r_A]
-        s2 = np.dot(X_inv, rxs) - np.dot(W1, x1)
-        print("\nPREDICTOR STEP:\nAffine direction:\n({}, {}, {})\n".format(x2, y2, s2))
+        s2 = np.dot(X_inv, Rxs) - np.dot(W1, x2)
+        print("\nPREDICTOR STEP:\nCC direction:\n({}, {}, {})\n".format(x2, y2, s2))
 
         #%%
         
@@ -144,13 +144,14 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         y += Alfa2*y2
         s += Alfa2*s2
         it += 1
-        if it == max_iter:
+        if it == max_it:
            return x, s, u 
            raise TimeoutError("Iterations maxed out")
 
         # Dual gap c^{T}*x - b^{T}*y = x*s
         z = np.dot(c,x)
-        g = z - np.dot(y,b)
+        g = np.dot(x,s) 
+        g1 = z - np.dot(y,b)
 
         u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()]) 
         sig.append([Sigma])               
@@ -158,8 +159,8 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         tm = term(it, b, c, rb, rc, z, g)
         print('Tollerance: {}.\n'.format("%10.3f"%tm))
 
-        print('CORRECTOR STEP:\nCurrent primal-dual point: \n x_k = ',x,'\n s_k = ',s,'\nlambda_k = ',y)
-        print('Current g: {}\n'.format("%.3f"%g))        
+        print('CORRECTOR STEP:\nCurrent primal-dual point: \n x = ',x,'\nlambda = ',y,'\n s = ',s)
+        print('Current g: {}\nCurrent g1: {}\n'.format("%.3f"%g,"%.3f"%g1))        
         
     print_boxed("Found optimal solution of the standard problem at\n x* = {}.\n\n".format(x) +
                 "Dual gap: {}\n".format("%10.6f"%g) +
@@ -176,9 +177,10 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
 if __name__ == "__main__":
     
     # Input data of canonical LP:
-    (A, b, c) = input_data(1)
+    (A, b, c) = input_data(23)
     
     x, s, u = mehrotra2(A, b, c)
     
-    dm = cent_meas(x, u, 'Mehrotra with augmented system', plot = 0)
+    dm, up = cent_meas(x, u, 'Mehrotra with augmented system', plot = 0)
 
+    print(max(up))

@@ -16,7 +16,7 @@ from input_data import input_data
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 
-'''' _SIMPLEX METHOD II PHASES_  '''
+''' _ PRAMETRIC SELF-DUAL SIMPLEX METHOD _ '''
 
 """
 Input data: np.arrays: A, vector b, cost vector c of the model LP
@@ -114,31 +114,57 @@ def SimplexMethod(A, b, c, max_it = 500, rule = 0, c_form = 0):
 def fun(A, c, x, B, it, max_it, rule) -> (float, np.array, set, float, np.array, list):
     
     r_A, c_A = np.shape(A)
-    B, NB = list(B), set(range(c_A)) - B  # Basic /nonbasic index lists
-    
+    B, NB = list(B), set(range(c_A)) - B  # Basic /nonbasic index lists    
     B_inv = np.linalg.inv(A[:, B])
+    An = A[:, list(NB)]
     z = np.dot(c, x)  # Value of obj. function
-    u = []
+    u = []    
+    Z = np.ones(c_A-r_A)
+    z = -c[:c_A-r_A]
+    X = np.zeros(c_A)
+    X[B] = np.ones(r_A)
+    
     while it <= max_it:  # Ensure procedure terminates (for the min reduced cost rule)
+        
         print("\t\nIteration: {}\nCurrent x: {} \nCurrent B: {}\n".format(it, x, B), end = '')
         u.append([it, B.copy(), x, z.copy()]) # Update table
-        lamda = c[B] * B_inv
-        if rule == 0:  # Bland's rule
-            optimum = True
-            for s in NB: # New reduced cost
-                m = np.asscalar(c[s] - np.dot(lamda, A[:, s]))
-                if m < 0: # Find d < 0
-                    optimum = False
-                    break
-        elif rule == 1: # Withou Bland's rule
-            m , s = min([(np.asscalar(c[q] - lamda * A[:, q]), q) for q in NB], key=(lambda tup: tup[0]))
-#           ^ c_s and position s
-            optimum = (m >= 0) 
-#                true if the minimum of the cost vector is positive
-        if optimum:
+        neg1 = [(-x[B[i]] / X[B[i]]) for i in range(r_A) if X[B[i]] > 0]
+        neg2 = [(-z[i] / Z[i]) for i in range(c_A - r_A) if Z[i] > 0]
+        star = min(neg1 + neg2)
+        z += star*Z
+        x += star*X
+        if star >= 0:
             info = 0
             return info, x, set(B), z, it, u
+        else:
+            xx = np.zeros(c_A)
+            zz = np.zeros(len(z))
+            for l1 in range(r_A):
+                if x[B[l1]] == 0: 
+                   # Find l1                
+                   v = -An.T*B_inv[:,l1]
+                   neg = [(z[i] / v[i], i) for i in list(NB) if v[i] > 0]
+                   t, k = min(neg, key=(lambda t: t[0]))
+                   
+                   for i in range(r_A):    
+                       xx[B[i]] = np.asscalar(B_inv[i,:]*An[:, l1])
+                   break
+               
+            for k1 in range(len(z)):           
+                if z[k1] == 0:
+                   # Find k1 in NB
+                   v = B_inv*An[:, k1]
+                   neg = [(x[B[i]] / v[i], i) for i in B if v[i] > 0]
+                   t, l = min(neg, key=(lambda t: t[0]))
+                   
+                   for i in range(c_A - r_A): 
+                       zz[i] = np.asscalar(-An.T[i,:]*B_inv[:,l])
+                   break
             
+        # Update the current points and cost vectors
+            
+        
+        
         """Feasible basic direction"""
         d = np.zeros(c_A) 
 #       ^ vector that increments x_B and x_NB: here c_A is m + n because A is in standard form
@@ -146,7 +172,7 @@ def fun(A, c, x, B, it, max_it, rule) -> (float, np.array, set, float, np.array,
         for i in range(r_A):
             d[B[i]] = np.asscalar(-B_inv[i, :] * A[:, s]) #solve B*d = A_s -> -B^-1*A_s
         d[s] = 1
-        neg = [(-x[B[i]] / d[B[i]], i) for i in range(r_A) if d[B[i]] < 0]
+       
         
         if len(neg) == 0: # If d > 0
             info = 1            
@@ -182,8 +208,8 @@ if __name__ == "__main__":
     x, u = SimplexMethod(A, b, c, rule = 0) # With Bland's rule
     
     # Create a dataframe and convert to excel
-    dfu = pd.DataFrame(u, columns = ['it', 'Current Basis', 'Current x', 'Current cost value'])
-    dfu.to_excel("Simplex_Minty2.xlsx", index = False)
+#    dfu = pd.DataFrame(u, columns = ['it', 'Current Basis', 'Current x', 'Current cost value'])
+#    dfu.to_excel("Simplex_Minty2.xlsx", index = False)
 #    
 #    # Plot the graphic with dataframe elements
 #    plt.figure()

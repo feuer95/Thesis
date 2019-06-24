@@ -39,25 +39,20 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
     # 2..obtain the search direction
     # 3..find the largest step   
         
-    """ Input error checking """
+    """ Input error checking & construction in a standard form """
         
     if not (isinstance(A, np.ndarray) or isinstance(b, np.ndarray) or isinstance(c, np.ndarray)):
        raise Exception('Inputs must be a numpy arrays')
         
-    # Construction in a standard form [A | I]
     if c_form == 0:
         A, c = stdForm(A, c)    
     r_A, c_A = A.shape
-    
-    """ Check full rank matrix """
-    
-    if not np.linalg.matrix_rank(A) == r_A: # Remove ld rows:
+    if not np.linalg.matrix_rank(A) == r_A: # Check full rank matrix:Remove ld rows:
         A = A[[i for i in range(r_A) if not np.array_equal(np.linalg.qr(A)[1][i, :], np.zeros(c_A))], :]
         r_A = A.shape[0]  # Update no. of rows
-
-    """ Initial points """
     
-    # Initial infeasible positive (x,y,s) and initial gap g
+    """ Initial points: Initial infeasible positive (x,y,s) and initial gap g """
+    
     (x, y, s) = sp(A, c, b)    
     g = np.dot(c, x) - np.dot(y, b)
     
@@ -68,16 +63,18 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         
     """ Search vector direction """
     
+    it = 0        # Num of iterations
+    tm = term(it) # Tollerance in the cycle
     
-    it = 0 # Num of iterations
-    tm = term(it) # Tollerance in the for cycle
-    # Construct list of info elements
-    u = []
+    u = [] # Construct list of info elements 
     u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
     
     while tm > w:
         
         print("\tIteration: {}\n".format(it))
+        
+        """ Pure Newton's method with with normal equations: find the direction vector (y1, s1, x1)"""
+        
         S_inv = np.linalg.inv(np.diag(s))           
         W1 = S_inv*np.diag(x)                       # W1 = D = S^(-1)*X    
         W2 = np.dot(A, W1)                          # W      A*S^(-1)*X
@@ -97,25 +94,22 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         y1 = np.dot(L_inv.T, z)
         s1 = rc - np.dot(A.T, y1)
         x1 = np.dot(S_inv, rxs) - np.dot(W1,s1)
+        
         print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),y1.round(decimals = 3),s1.round(decimals = 3)))
         
-        #%%
-        
-        """ largest step length """
+        """ Compute the largest step length & increment of the points and the iteration"""
         
         # Largest step length T such that (x, s) + T (x1, s1) is positive
         m = min([(-x[i] / x1[i], i) for i in range(c_A) if x1[i] < 0], default = [1])[0] 
         n = min([(-s[i] / s1[i], i) for i in range(c_A) if s1[i] < 0], default = [1])[0] 
         T = (0.9)*min(m, n) 
 
-           
-        # INCREMENT of the vectors and iterations
-        x += min(T,1)*x1
-        y += min(T,1)*y1
-        s += min(T,1)*s1
-        
-        z = np.dot(c, x) # Current optimal solution
-        g = z - np.dot(y, b) 
+        # Update step
+        x += min(T,1)*x1            # Current x
+        y += min(T,1)*y1            # Current y
+        s += min(T,1)*s1            # Current s   
+        z = np.dot(c, x)            # Current optimal solution
+        g = z - np.dot(y, b)        # Current gap 
         it += 1
         u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()])       
                 
@@ -128,20 +122,25 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         print('Current point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))
         print('Dual next gap: {}.\n'.format("%10.3f"%g))
         
+#%%
+        
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n".format(x) +
                 "Dual gap: {}\n".format("%10.6f"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
                 "Number of iterations: {}".format(it))
     return x, s, u
 
-#%
-    
+
+
+#%%
+'''                           ===
+            PRIMAL-DUAL AFFINE-SCALING METHOD test
+                              ===
+'''
 if __name__ == "__main__": 
     
-    # Input data of canonical LP:
-    
-    (A, b, c) = input_data(20)
+    (A, b, c) = input_data(0)
         
     x, s, u = affine(A, b, c)
     
-    aa = cent_meas(x, u, 'Affine', plot = 1)
+    aa, up = cent_meas(x, u, 'Affine', plot = 0)
