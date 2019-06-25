@@ -155,6 +155,6 @@ if __name__ == "__main__":
     
     (A, b, c) = input_data(18)
         
-    x, s, u = longpath2(A, b, c, max_it = 19)
+    x, s, u = longpath2(A, b, c)
     
     ul = cent_meas(x, u, 'LPF2')

@@ -185,7 +185,7 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500):
 if __name__ == "__main__":
     
 
-    (A, b, c) = input_data(1)
+#    (A, b, c) = input_data(1)
     
     xm, sm, um = mehrotra(A, b, c)
     

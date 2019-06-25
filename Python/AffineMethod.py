@@ -29,7 +29,7 @@ Output data: x: primal solution
              u: list: iteration, dual gas, Current x, Current s, Feasibility x, Feasibility s
 '''
 
-def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
+def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500):
         
     print('\n\tCOMPUTATION OF PRIMAL-DUAL AFFINE SCALING ALGORITHM')
     
@@ -116,7 +116,7 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_iter = 500):
         # Termination elements
         tm = term(it, b, c, rb, rc, z, g)
       
-        if it == max_iter:
+        if it == max_it:
             raise TimeoutError("Iterations maxed out") 
 
         print('Current point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))
@@ -141,6 +141,6 @@ if __name__ == "__main__":
     
     (A, b, c) = input_data(0)
         
-    x, s, u = affine(A, b, c)
+    x, s, u = affine(A, b, c, max_it = 1000)
     
     aa, up = cent_meas(x, u, 'Affine', plot = 0)

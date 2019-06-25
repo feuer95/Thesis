@@ -85,8 +85,8 @@ b2 = q[:,7]
 
 # Recall the interior point methods
 
-x_a, s_a , u_a = affine(A, b, c, c_form = 1)
-dfu = cent_meas(x_a, u_a, label = 'Affine', plot = 0) # 17 it
+#x_a, s_a , u_a = affine(A, b, c, c_form = 1)
+#dfu = cent_meas(x_a, u_a, label = 'Affine', plot = 0) # 17 it
 #
 x_m, s_m, u_m = mehrotra(A, b, c, c_form = 1)
 dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # it 8
@@ -104,9 +104,9 @@ dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # it 8
 #x_c, s_c, u_c = longpathC(A, b, c, cp = cp) # BAD
 #dfc = cent_meas(x_c, u_c, label = 'LPF with cp {}'.format(cp))
 #
-x_pc, s_pc, u_pc = longpathPC(A, b, c, c_form = 1)
-cfl = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 15 iterations
-
+#x_pc, s_pc, u_pc = longpathPC(A, b, c, c_form = 1)
+#cfl = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 15 iterations
+#
 #x_a, s_a , u_a = longpathPC(A, b, c)
 #dfu = cent_meas(x_a, u_a, label = 'LPF PC') # E l'unico ipm che funziona con canonical form 
 
@@ -123,7 +123,7 @@ cfl = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 15 iterations
 #
 #u2 = np.array([75, 13, 717.503, 177.555, 16.084, 0.857, 0])
 #
-#x = linprog(c, method = 'simplex', A_eq = A, b_eq = b) # Exact solution
+x = linprog(c, method = 'simplex', A_eq = A, b_eq = b) # Exact solution
 #x = linprog(c2, method = 'simplex', A_ub = A2, b_ub = b2) # Exact solution
 
 #plt.show()

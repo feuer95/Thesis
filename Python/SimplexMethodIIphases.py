@@ -183,7 +183,7 @@ if __name__ == "__main__":
     
     # Create a dataframe and convert to excel
     dfu = pd.DataFrame(u, columns = ['it', 'Current Basis', 'Current x', 'Current cost value'])
-    dfu.to_excel("Simplex_Minty2.xlsx", index = False)
+#    dfu.to_excel("Simplex_Minty2.xlsx", index = False)
 #    
 #    # Plot the graphic with dataframe elements
 #    plt.figure()
