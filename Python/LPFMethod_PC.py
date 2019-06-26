@@ -165,12 +165,12 @@ def augm(A, b, c, x, y, s, cp):
 '''
 if __name__ == "__main__":
     
-    # Input data of canonical LP:
+    
 #    (A, b, c) = input_data(23)   
 
     x, s, u = longpathPC(A, b, c)
           
-    ul, up = cent_meas(x, u, 'LPF Predictor corrector', plot = 0)
+    ul = cent_meas(x, u, 'LPF Predictor corrector', plot = 0)
 
 
     

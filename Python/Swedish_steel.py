@@ -25,9 +25,8 @@ import matplotlib.pyplot as plt # Print plot
 from cent_meas import cent_meas
 
 
-
 # Clean form of printed vectors
-#np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
+np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 
 '''                                  ===
@@ -39,14 +38,15 @@ Find the MAXIMUM total NPV: canonical form A x < b and compute:
     SimplexMethod(A, b, c, max_iter = 500, rule = 0, c_form = 0) 
     input data: A, b, c
                                   
-Find the MAXIMUM total NPV: standard form A_{i} x < b ^ A_{j} x + 0 = b_{j} 
+Find the MAXIMUM total NPV: standard form A_{i} x     < b_{i}
+                                          A_{j} x + 0 = b_{j} 
                             and compute:
     
     longpath and mehrotra (A, b, c, max_iter = 500, c_form = 1) 
     input data: A2, b2, c2
 
 '''
-print('\n\tsecond TEST ON SWEDISH STEEL EXAMPLE MODEL\n')
+print('\n\tTEST ON SWEDISH STEEL EXAMPLE MODEL\n')
 
 """ import & construct input data for IPM """
 
@@ -81,12 +81,12 @@ b2 = q[:,7]
 
 #%%
 
-""" run the methods """
+""" Interior point methods test """
 
 # Recall the interior point methods
 
-#x_a, s_a , u_a = affine(A, b, c, c_form = 1)
-#dfu = cent_meas(x_a, u_a, label = 'Affine', plot = 0) # 17 it
+x_a, s_a , u_a = affine(A, b, c, c_form = 1)
+dfu = cent_meas(x_a, u_a, label = 'Affine', plot = 0) # 17 it
 #
 x_m, s_m, u_m = mehrotra(A, b, c, c_form = 1)
 dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # it 8
@@ -94,8 +94,8 @@ dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # it 8
 #x_l, y_l, s_l, u_l = longpath(A, b, c, c_form = 1, max_it = 2)
 #dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) # 27 it 
 #
-#x_l, s_l, u_l = longpath2(A, b, c, c_form = 1)
-#dful = cent_meas(x_l, u_l, label = 'LPF') # 28 it
+x_l, s_l, u_l = longpath2(A, b, c, c_form = 1)
+dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) # 28 it
 #
 #x_m, s_m, u_m = mehrotra2(A, b, c, c_form = 1)
 #dfm = cent_meas(x_m, u_m, label = 'Mehrotra2', plot = 0) # 8 iterations
@@ -123,7 +123,7 @@ dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # it 8
 #
 #u2 = np.array([75, 13, 717.503, 177.555, 16.084, 0.857, 0])
 #
-x = linprog(c, method = 'simplex', A_eq = A, b_eq = b) # Exact solution
+#x = linprog(c, method = 'simplex', A_eq = A, b_eq = b) # Exact solution
 #x = linprog(c2, method = 'simplex', A_ub = A2, b_ub = b2) # Exact solution
 
 #plt.show()

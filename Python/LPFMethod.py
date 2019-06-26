@@ -10,15 +10,15 @@ from stdForm import stdForm           # Extend LP in a standard form
 import numpy as np                    # Create vectors
 from input_data import input_data     # Data problems
 from term import term                 # Compute the conditions of termination
-import random 
 from cent_meas import cent_meas
+import math
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
-'''                                 ====
-                      LONG-PATH FOLLOWING METHOD with sigma RANDOM
-                                    ====
+'''                                  ====
+                      LONG-PATH FOLLOWING METHOD A
+                                     ====
                                     
 Input data: np.arrays: A, cost vector c, vector b of the LP
             neighborhood param gamma     (10^{-3} by default)
@@ -76,7 +76,6 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 1
     u = [] # Construct list of info elements 
     u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
     
-    sig = []
     while tm > w:
         
         print("\tIteration: {}\n".format(it), end='')
@@ -84,31 +83,31 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 1
         """ Modified Newton's method with with normal equations: find the direction vector (y1, s1, x1)"""
         ''' Compute the search direction solving the matricial system NORMAL EQUATIONS with CHOL approach '''     
         
-        cp = 0.8 #random.uniform(s_min, s_max) Choose centering parameter SIGMA_k in [sigma_min , sigma_max]
+        cp = 1 - 0.5/math.sqrt(c_A)
         print("Centering parameter sigma:{}.\n".format("%10.3f"%cp))
-
-        S_inv = np.linalg.inv(np.diag(s))           
-        W1 = S_inv*np.diag(x)                       # W1 = D = S^(-1)*X    
-        W2 = np.dot(A, W1)                          # W      A*S^(-1)*X
-        W  = np.dot(W2, A.T)
-        L = np.linalg.cholesky(W)                   # CHOLESKY for A* D^2 *A^T
         
-        # RHS of the system
+        # solve search direction with AUGMENTED SYSTEM
+              
+        X_inv = np.linalg.inv(np.diag(x))           
+        W1 = X_inv*np.diag(s)          # W1 = X^(-1)*S        
+        T = np.concatenate((np.zeros((r_A,r_A)), A), axis = 1)
+        U = np.concatenate((A.T, -W1), axis = 1)
+        V = np.concatenate((T, U), axis = 0)
+        
         rb = b - np.dot(A, x)
         rc = c - np.dot(A.T, y) - s
         rxs = - x*s + cp*(sum(x*s)/c_A)*np.ones(c_A)  # Newton step toward x*s = sigma*mi
+
+        r = np.hstack((rb, rc - np.dot(X_inv, rxs)))        
+        o = np.linalg.solve(V,r)
+       
+        y1 = o[:r_A]
+        x1 = o[r_A:c_A + r_A]      
+        s1 = np.dot(X_inv, rxs) - np.dot(W1, x1)
+        print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3), y1.round(decimals = 3),s1.round(decimals = 3)))
         
-        B = rb + np.dot(W2, rc) - np.dot(np.dot(A, S_inv), rxs) #RHS of normal equation form
-        z = np.linalg.solve(L, B)
-        
-        # SEARCH DIRECTION:
-        y1 = np.linalg.solve(L.T, z)
-        s1 = rc - np.dot(A.T, y1)
-        x1 = np.dot(S_inv, rxs) - np.dot(W1, s1)
-        print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),y1.round(decimals = 3),s1.round(decimals = 3)))
- 
         """ Compute the largest step length & increment of the points and the iteration"""
-        
+
         # We find the maximum alpha s. t the next iteration is in N_gamma
         v = np.arange(0, 1.000, 0.0001)
         i = len(v)-1
@@ -157,8 +156,8 @@ if __name__ == "__main__":
     
     # Input data of canonical LP:
     
-#    (A, b, c) = input_data(2)
-        
+    (A, b, c) = input_data(23)
+      
     x, s, u = longpath(A, b, c)
     
     dfm = cent_meas(x, u, 'LPF', plot = 0)

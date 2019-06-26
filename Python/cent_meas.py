@@ -22,7 +22,6 @@ Input data: x -> optimal solution x
 
 def cent_meas(x, u, label, plot = 1):
     
-    
     """ Dataframe """
 
     # Create a dataframe     
@@ -41,7 +40,7 @@ def cent_meas(x, u, label, plot = 1):
         r = sum(mu[i])/len(mu[i])
         s = mu[i] - r*np.ones(len(x))
         cm.append(np.linalg.norm(s))
-  
+        
     dfu['cd'] = cm # Dataframe with centering deviation
         
     pf = []
@@ -52,11 +51,11 @@ def cent_meas(x, u, label, plot = 1):
     dfu['pf'] = pf # Dataframe with feasibility
     
     # Convergence rate    
-    pr = []
-    for i in range(len(u)-1):
-        r = abs(max(u[i][4]))
-        s = abs(max(u[i+1][4]))
-        pr.append('%.5f'% np.divide(s,r))
+#    pr = []
+#    for i in range(len(u)-1):
+#        r = abs(max(u[i][4]))
+#        s = abs(max(u[i+1][4]))
+#        pr.append('%.5f'% np.divide(s,r))
     
     """ Plot the graphic with dataframe elements """   
     
@@ -71,4 +70,4 @@ def cent_meas(x, u, label, plot = 1):
         plt.xlabel('iterations')
         plt.yscale('log')
         plt.legend()
-    return dfu, pr
+    return dfu

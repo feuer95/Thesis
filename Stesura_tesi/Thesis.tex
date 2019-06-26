@@ -14,6 +14,7 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{statrep}
+\usepackage{setspace}
 \usepackage{emptypage}
 \usepackage{newlfont}
 \usepackage{algpseudocode} 
@@ -151,7 +152,6 @@ To complete the model, we need the objective functions that quantify the decisio
 
 \section{Linear programming: basic notions}
 
- \\
 Since 1950, generations of workers in management, economics, finance and engineerng have been trained in the techniques of formulating linear models that,
 as the name implies, are characterized by linear objective function and constraints formulated with linear equalities or linear inequalities.
 Then, the feasible set satisfying the constraints is a polytope, i.e. a convex and connected set with polygonal faces. We say that the LP is \textit{infeasible} if the feasible set is empty and \textit{unbounded} if the objective function, minimization function for istance, is unbounded below on the feasible region.\\
@@ -410,8 +410,7 @@ We have covered most of the mechanics of taking a single step of the simplex met
 	\>\> Update sets: $\bar{B} = B \backslash \{r\} + \{s\}$ and $\bar{N} = N \backslash \{s\} + \{r\}$;\\
 	\textbf{end}
 \end{tabbing}
-\\
-\\
+
 Summarizing, the simplex algorithm moves from basic feasible solution to another one and it moves from one vertex to an adjacent one, for which the basis $B$ differs inexactly one component. Each iteration begins by checking the sign of the coefficients of the objective function $\widetilde{c}$ on non-basic variables: if none is negative, then the current basic solution is optimal. \\
 As we see, it is required a basic feasible staring point $x$ and a corresponding initial basis $B \in \left\{ 1,2,..., m \right\}$ with $|B|=n$ such that $A_{B}$ is non singular, $A_{B}^{-1}b=x_{B} \geq 0$ and $x_{N}=0$.\\
 A basic feasible solution is immediately available for some LP.\\ For example, in problems with constraints in canonical form and with $b > 0$, a basic feasible point corresponding to the standard form is provided by the slack variables: $x =\left(0_{[m]},b\right)$, that satisfies .\\Sometimes the problem of finding an initial point and a basis may itself nontrivial but the \textit{two-phase} method deals with this difficulty. The idea is to add artificial variables in order to give a basic feasible initial point for a second phase in which we can extract easily the solution of the original problem.\\
@@ -797,8 +796,9 @@ In this research it will be proposed the \textit{long-step path-following algori
 	\caption{Long-path following algorithm}
 	\begin{algorithmic}[1]		
 		\State Given: $\gamma, \sigma_{min}, \sigma_{max}$ and $(x^{o}, \lambda^{o}, s^{o})\in\mathcal{N}_{-\infty}(\gamma)$ with $(x^{o}, s^{o})>0$;
+		\State Choose $\sigma_{k}\in[\sigma_{min},\sigma_{max}]$; 
 	\For{$k = 1,\dots$}
-		\State Choose $\sigma_{k}\in[\sigma_{min},\sigma_{max}]$ and solve
+		\State Solve
 		\State $\begin{bmatrix}
 			0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
 			\end{bmatrix}\begin{bmatrix}
@@ -807,7 +807,7 @@ In this research it will be proposed the \textit{long-step path-following algori
 			0\\0\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
 			\end{bmatrix}$
 		\State $(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$
-		\State choose the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)$	
+		\State choose the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)$\\
 \textbf{end}
 	\end{algorithmic}
 \end{algorithm}\\
@@ -828,9 +828,25 @@ x_{i}&\geq C_{1}\gamma \;\; (i \in\mathcal{B}).\\
 \begin{proof}
 ~\cite{Wright} pag. 101
 \end{proof}
+In the general framework \textbf{Algorithm 1} we have not specified how the centering parameter $\sigma_{k}$ is choosen, as different interior-point algorithms use a peculiar method to select $\sigma_{k}$\\. The
+method of compute  $\sigma_{k}$ distinguishes different path-following algorithms.\\
+In the research we present a predictor-corrector algorithm based on Mehrotra's method, in which the centering parameter is choosen adaptively.\\
+Now we see two heuristic choices of the centering parameter $\sigma_{k}$, with $k$ the current iteration of the algorithm; the first one decreases at each iteration and the second one is fixed: 
+\begin{equation}
+\begin{split}
+\sigma_{k_{1}} &= \min\{0.1, 100\mu_{k} \},\\
+\sigma_{k_{2}} &= 1 -\frac{0.5}{\sqrt{n}}
+\end{split}
+\end{equation}
+with $\mu_{k}$ the duality measure of the current primal-dual point and $n$ is the number of entries of $x$ and $s$. 
+Analyzing the graphic \ref{fig:float} we state that the \textbf{Algorithm 1} with the first choice of $\sigma_{k}$ requires a less number of iterations and less time storage to find a LP solution.\\
+\begin{figure}
+\begin{center}
+\includegraphics[width=9 cm]{timeLPF12}\caption{Log plot time storage} \label{fig:float}
+\end{center}
+\end{figure}
 \newpage
 \section{Predictor-corrector algorithms}
-
 Most interior-point software written since 1990s have been based on Mehrotra's predictor-corrector algorithm (MPC).\\
 Since Karmarkar's landmark paper \cite{Kar}, IPMs became one of the most active research area that produced a large amount of research results. Moreover, several powerful methods have been developed: predictor-corrector methods are among the most efficient and most implementations are based on a variant of Mehrotra's algorithm. \\
 The Mehrotra's contribution was to combine the work developed by Montiero, Adles and Resende \cite{MARE} and the infeasible-interior-point path-following approach implemented by Lustig, Marsten and Shanno \cite{LMS}.\\ 
@@ -843,7 +859,7 @@ It generates sequence of infeasible iterates $(x^{k},\lambda^{k},s^{k})$ for whi
 	\end{enumerate}
 The first two components, the affine-scaling step and the centering term, combine to generate the standard infeasible-interior-point step from the generic equations. However, the affine-scaling component is calculated before the centering component. By arranging the computations in this way, we gain a key advantage: the ability to choose the centering parameter $\sigma$ adaptively rather then a priori, as in the algorithm LPF.\\
 If the affine-scaling direction makes good progress in reducing the duality measure $\mu$ while remaining inside the positive orthant defined by $(x,s)>0$, we conclude that little centering is needed, so we choose $\sigma$ close to 1.
-\subsection*{The algorithm}
+\subsection*{Mehrotra's algorithm}
 Given a point $(x, \lambda, s)$ with $(x, s)> 0$, we compute the affine-scaling direction:
 \begin{equation}\label{(A)}
 \begin{bmatrix}
@@ -907,8 +923,8 @@ We obtain the combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \
 \end{bmatrix}.
 \end{equation}
 Although we need to solve at each iteration two linear systems instead of one, the marginal cost is not great because the systems have the same coeffifient matrix and then we need only modify the right-hand side. Having described the essential elements of Mehrotra'a approach, the algorithm is structured as following:
-\newpage
-\\
+
+
 \textbf{Mehrotra's algorithm}
 \begin{tabbing}
 	\textbf{Given} $(x^{o}, \lambda^{o}, s^{o})> 0$; \\
@@ -929,7 +945,8 @@ Although we need to solve at each iteration two linear systems instead of one, t
 	\>$\;\;\;\;\;\;\;(\lambda^{k+1},s^{k+1}) = (\lambda^{k},s^{k}) + \alpha_{k}^{\text{dual}}\Delta (\lambda^{k},\Delta s^{k})$;\\
 \textbf{end}
 \end{tabbing}
-In this section it is proposed a long-path following method in which the centering parameter $\sigma$ is computed adaptively, equal to \ref{CP}.\\
+\subsection*{A predictor-corrector LPF method}
+In this research it is proposed a predictor-corrector long-path following method (PC-LPF) in which the centering parameter $\sigma$ is computed adaptively, equal to \ref{CP}.\\
 This predictor-corrector algorithm below is a definite improvement over the long-path following algorithm because of the adaptivity that is buil into the choice of the predictor step.
 The values of the step lengths and the centering parameter are performed in order to guarantee that the next iteration $(x^{k}, \lambda^{k}, s^{k})$ is in $\mathcal{N}_{-\infty}(\gamma)$:
 \begin{align}\label{QWw}
@@ -940,7 +957,7 @@ To measure the efficacy of the affine-scaling direction, we define $\mu_{\text{a
 \mu_{\text{aff}}= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n
 \end{equation*}
 \\
-\textbf{A predictor-corrector LPF algorithm}
+\textbf{PC-LPF algorithm}
 \begin{tabbing}
 	\textbf{Given} $(x^{o}, \lambda^{o}, s^{o})> 0$; \\
 	\textbf{for} \= $k = 0, 1, 2,...$ \\
@@ -954,7 +971,7 @@ To measure the efficacy of the affine-scaling direction, we define $\mu_{\text{a
  
 %\lstinputlisting[language=py,caption=applicationContext.py]{Forest.py}
 \chapter{Convergence analysis}
-In this section it is delineated a complete convergence analysis, using important theoretical results. 
+In this section it is delineated a complete convergence analysis important theoretical results. 
 \section{Affine-scaling method convergence}
 We examine the asymptotic behavior of this method, that is of significant theoretical interest.  For $(x, \lambda, s)\in\mathcal{F}^{o}$ the affine-scaling direction $(\Delta x, \Delta \lambda, \Delta s)$ satisfies the following matricial system:\\
 \begin{equation}\label{5.1}
@@ -1292,29 +1309,16 @@ The tangent to this trajectory is the affine-scaling direction, as for $\mathcal
 The algorithms studied generate a sequence of improving primal-dual points $(x^{k},\lambda^{k}, s^{k})$ to the exact solution and in this section we describe the convergence rate of each of them. \\
 The codes implemented in this research solve linear programming problems with a starting infeasible point, as we will delineate in the chapter 7. Then, we can determine the order of convergence checking the convergence to the feasible set $\mathcal{F}$, hence to the exact solution.\\
 We define the residual function $r$ that converts the vector sequence into a real number sequence.
-\chapter{Sensitivity analysis}
-With the simplex method and interior point metods we can compute optimal solution to linear models, but this does not suffice because the constant parameters from which they are derived, such items as costs, profits, supplies, demands, are almost neveer known certainty at the time the model is solved.\\
-In this chapter we study the effects of changing the input variables with some perturbations.\\ The aim is to formulate a comparison between the simplex and IPM sensitivity and remark the sensitivity information inside the \textit{slack variables}.
-\chapter{Implementation issues}
-There are several important issues concerning interior-point algorithms
-for linear programs.\\
-\section*{Geometric viewpoint}
-Now we outline the geometric viewpoint of the simplex method and the primal-dual methods.\\
-We already stated that the simplex method generates a sequence of basic feasible primal points of the solution set; hence, it creates a path along the boundary of the polytope, checking the cost value at each vertex.\\Instead, the primal-dual interior point methods approach the solution through the interior of the feasible polytope, generating the central path $\mathcal{C}$, rather than working around the boundary.\\ Path-following method follow $\mathcal{C}$ in the direction of decreasing $\tau$ in (4.7) ; ideed, they do not necessarily stay exactly on the path but within a loose and well-defined neighoborhood of $\mathcal{C}$ while steadily reducing the duality measure $\mu$ to zero. Each search direction is computed with a Newton's step toward a point for which the duality measure $\tau$ is equal to or smaller than the current duality measure $\mu$, as we know $\tau=\sigma\mu$. 
-The affine-scaling method, based on pure Newton's steps, sets the central parameter $\sigma_{k}= 0$ in the system;
-%In fact, the gap between neighborhood boundaries is wide enough to allow this step to make significant progress in reducing $\mu$. 
-even if it makes significant progress, it also tends to worsen the centrality measure (condition of having all pairwise products $x_{i}s_{i}$ equal). It follows that the step length $\alpha_{k}$ is the maximum value such that the next points remain in the feasible set. We will see that we often can take only a small
-step along the search direction before violating the condition; hence, the affine scaling direction, often does not allow us to make much progress toward a solution.\\ 
-The long-path following method doesn't create a sequence that moves strongly to the solution, indeed, computes the search direction with $\sigma_{k}$ between two fixed limits $\sigma_{\text{min}}$ and $\sigma_{\text{max}}$, in order to improve the centrality measure. The lower bound $\sigma_{\text{min}}$ ensures that each search direction start by moving off the boundary of $\mathcal{N}_{-\infty}(\gamma)$ and into the interior of the neighborhood. Unit steps along the search direction takes the next point outside the neighborhood, since the error of approximating the nonlinear KKT system by the linear equations becomes more pronounced as $\alpha$ increases. Then, it selects $\alpha_{k}$ as large a possible subject to the next point remains $\mathcal{N}_{-\infty}(\gamma)$. The restriction of $\sigma_{k}\in(0,1)$ achieves the twin goals of improving centrality and reducing the duality measure into a single step.\\
-Alternatively, the predictor-corrector methods consists on two types of steps. The predictor step, which start in the inner neighborhood and moves along the affine-scaling direction to the boundary of the outer neighborhood. Between these predictor steps, the algorithm takes corrector steps, computing $\sigma = 1$ and $\alpha= 1$, in order to come back inside the inner neighborhood to prepare for the next predictor corrector step. The Mehrotra's algorithm chooses the centering parameter adaptively: first calculates the affine-scaling direction, then assesses its usefulness as a search direction. If this direction yields a large reduction in $\mu$ without violating the positivity condition $(x, s)> 0$, the algorithm concludes that littele centering in needed, so it chooses $\sigma_{k}$ close to zero and calculates a centered search direction with small value. Otherwise, it enforces a larger amount of centering by choosing $\sigma_{k}$ close to 1. As we see in the description of the Mehrotra's algortihm, the computation of the centered direction and the corrector step are combined, so adaptive centering does not add further to the cost of each iteration. 
+\chapter{Analysis of the predictor corrector LPF method}
+
 \section*{Initialization and termination}
 In the discussion of the interior point methods, it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})$ is feasible respect to the linear equations \ref{DF} and \ref{PF}.\\
- The complexity of obtaining such an initial point is the same as that of solving the
+The complexity of obtaining such an initial point is the same as that of solving the
 linear program itself. However, most implementations work with an infeasible starting point and infeasible iterations, like Mehrotra's method.\\
 The choice of starting point is an important practical issue with a significant effect on the robustness of the algorithm. A popular heuristic for finding $(x^{0}, \lambda^{0}, s^{0})$ starts by calculating $(\tilde{x}, \tilde{\lambda}, \tilde{s})$ as solution of two least-squares problems:
 \begin{align*}
 \min \lVert x \rVert ^{2} &\text{ subject to }Ax = b\\
-	 \min\limits_{(\lambda,s)} \lVert s \rVert ^{2} &\text{ subject to } A^{T}\lambda +s = c
+\min\limits_{(\lambda,s)} \lVert s \rVert ^{2} &\text{ subject to } A^{T}\lambda +s = c
 \end{align*}
 That is, $\tilde{x}$ and $\tilde{s}$ are the vectors of least norm that are in the feasible set and they are computed using the following formulas:
 \begin{equation*}
@@ -1351,20 +1355,31 @@ point, and primal-dual gap, respectively. They are chosen so that the system is
 feasible: for example $(x,\lambda, \tau,\theta)=(e^{T},0,e^{T},e^{T})$ with $e$ unit vector. We now relate optimal solutions to HSD to those for LP. Let us state, without proof, that the HSD problem has an optimal solution and its optimal solution set is bounded. \cite{LNP}
 Denote by $s$ and $k$ the slack variables respectively for the second \ref{Ss} and the third constraint \ref{Kk}, $\mathcal{F}_{h}$ be the set of all points $(\lambda, x, \tau, s, k)$ that are feasible for HSD and $\mathcal{F}_{h}^{o}$ the set of strictly feasible points with $(\lambda,x,s,k)>0$ in $\mathcal{F}_{h}$.  
 \begin{thm}
-Let $(\lambda^{*},x^{*},\tau^{*},\theta^{*},s^{*},k^{*})$ be a strictly-self complementary solution for HSD:
-\begin{enumerate}
-	\item LP has a solution (feasible and bounded) if and only if $\tau^{*}>0$. In this case, $x^{*}/\tau^{*}$ is an optimal solution for the primal LP and $y^{*}/\tau^{*}$, $s^{*}/\tau^{*}$ is an optimal solution for the dual LP.
-	\item LP has no solution if and only if $k^{*}>0$.
-\end{enumerate} 
+	Let $(\lambda^{*},x^{*},\tau^{*},\theta^{*},s^{*},k^{*})$ be a strictly-self complementary solution for HSD:
+	\begin{enumerate}
+		\item LP has a solution (feasible and bounded) if and only if $\tau^{*}>0$. In this case, $x^{*}/\tau^{*}$ is an optimal solution for the primal LP and $y^{*}/\tau^{*}$, $s^{*}/\tau^{*}$ is an optimal solution for the dual LP.
+		\item LP has no solution if and only if $k^{*}>0$.
+	\end{enumerate} 
 \end{thm}
 The HSD consist on a problem with a bounded optimal
 region, with a known strictly feasible starting point.
 In the project, we implement the IIP and HSD algorithms. In terms of robustness, HSD and IIP are comparable; in terms of
 efficiency, HSD is faster than IIP. Generally, HSD takes more time than IIP in
 each iteration, but HSD uses fewer iterations than IIP.
-
-
-
+With the simplex method and interior point metods we can compute optimal solution to linear models, but this does not suffice because the constant parameters from which they are derived, such items as costs, profits, supplies, demands, are almost neveer known certainty at the time the model is solved.\\
+In this chapter we study the effects of changing the input variables with some perturbations.\\ The aim is to formulate a comparison between the simplex and IPM sensitivity and remark the sensitivity information inside the \textit{slack variables}.
+\chapter{Implementation issues}
+There are several important issues concerning interior-point algorithms
+for linear programs.\\
+\section*{Geometric viewpoint}
+Now we outline the geometric viewpoint of the simplex method and the primal-dual methods.\\
+We already stated that the simplex method generates a sequence of basic feasible primal points of the solution set; hence, it creates a path along the boundary of the polytope, checking the cost value at each vertex.\\Instead, the primal-dual interior point methods approach the solution through the interior of the feasible polytope, generating the central path $\mathcal{C}$, rather than working around the boundary.\\ Path-following method follow $\mathcal{C}$ in the direction of decreasing $\tau$ in (4.7) ; ideed, they do not necessarily stay exactly on the path but within a loose and well-defined neighoborhood of $\mathcal{C}$ while steadily reducing the duality measure $\mu$ to zero. Each search direction is computed with a Newton's step toward a point for which the duality measure $\tau$ is equal to or smaller than the current duality measure $\mu$, as we know $\tau=\sigma\mu$. 
+The affine-scaling method, based on pure Newton's steps, sets the central parameter $\sigma_{k}= 0$ in the system;
+%In fact, the gap between neighborhood boundaries is wide enough to allow this step to make significant progress in reducing $\mu$. 
+even if it makes significant progress, it also tends to worsen the centrality measure (condition of having all pairwise products $x_{i}s_{i}$ equal). It follows that the step length $\alpha_{k}$ is the maximum value such that the next points remain in the feasible set. We will see that we often can take only a small
+step along the search direction before violating the condition; hence, the affine scaling direction, often does not allow us to make much progress toward a solution.\\ 
+The long-path following method doesn't create a sequence that moves strongly to the solution, indeed, computes the search direction with $\sigma_{k}$ between two fixed limits $\sigma_{\text{min}}$ and $\sigma_{\text{max}}$, in order to improve the centrality measure. The lower bound $\sigma_{\text{min}}$ ensures that each search direction start by moving off the boundary of $\mathcal{N}_{-\infty}(\gamma)$ and into the interior of the neighborhood. Unit steps along the search direction takes the next point outside the neighborhood, since the error of approximating the nonlinear KKT system by the linear equations becomes more pronounced as $\alpha$ increases. Then, it selects $\alpha_{k}$ as large a possible subject to the next point remains $\mathcal{N}_{-\infty}(\gamma)$. The restriction of $\sigma_{k}\in(0,1)$ achieves the twin goals of improving centrality and reducing the duality measure into a single step.\\
+Alternatively, the predictor-corrector methods consists on two types of steps. The predictor step, which start in the inner neighborhood and moves along the affine-scaling direction to the boundary of the outer neighborhood. Between these predictor steps, the algorithm takes corrector steps, computing $\sigma = 1$ and $\alpha= 1$, in order to come back inside the inner neighborhood to prepare for the next predictor corrector step. The Mehrotra's algorithm chooses the centering parameter adaptively: first calculates the affine-scaling direction, then assesses its usefulness as a search direction. If this direction yields a large reduction in $\mu$ without violating the positivity condition $(x, s)> 0$, the algorithm concludes that littele centering in needed, so it chooses $\sigma_{k}$ close to zero and calculates a centered search direction with small value. Otherwise, it enforces a larger amount of centering by choosing $\sigma_{k}$ close to 1. As we see in the description of the Mehrotra's algortihm, the computation of the centered direction and the corrector step are combined, so adaptive centering does not add further to the cost of each iteration. 
 
 \section*{The centering measure}
 Now we examinate the behaviour of the sequence computed by the IPM algorithms respect to the path $\mathcal{C}$, at which all the pairwise products are $x_{i}s_{i}$ are identical to $\mu$. To value this deviation from $\mathcal{C}$, we compare the pairwise products with their average value $\mu = x^{T}s/n$ using a scaled norm defined by. 
@@ -1403,8 +1418,9 @@ This form often is called the \textit{normal equations} form and a direct sparse
 steps of the long-path following algorithm with the second system, when the elements of the diagonal weighting
 matrix $D^{2}$ takes on both huge and tiny values.
 
-\chapter{Applications}
-In this chapter it is developed a comprehensive analysis of the results obtained by some practical implementations. It is presented three LP problems: the forest service allocation,...\\
+\chapter{Numerical experiments}
+In this chapter it is developed a comprehensive analysis of the results obtained by some practical implementations. It is presented three LP problems: the forest service allocation, Swedish steel model, ...\\
+The fictitious data come from \cite{RR}
 \section{Forest service allocation} 
 The first model we illustrate is the \textit{Forest service allocation}. It is part of model class in which the main issue is how to divide or allocate a valuable resource among competing needs and the resource may be for example land, capital, time or fuel. We will see how U.S Forest Service has used this model to address the sensitive task of managing 191 million acres of national forestland \cite{(Natural)}.\\
 The Forest Service is one of the major Federal land managing agencies. It has been part of the Department of Agricolture since 1905 and over the past 10 years significant administrative and legal challenges have plagued national forest management \cite{ForSer}. Resource simulation models are the principal technologies used for estimating ecological and enviromental responses to activities. These models try to qualify relationships among resources and results of management actions. Simulations such as timber growth-and-yeld models and sediment yield models often examine consequences of management activities for a singele resource. The regional diversity of forest resources has led to many unique, local models rather than universal models. The Forest Service, in 1979, designed FORPLAN as its principal tool for national forest: it is al linear programming system, used to analyze the temporal aspects of the forest output. FORPLAN was chosen because it addressed two key issues in forest plnning: cost efficiency and an allowable timber sale quantity. Besides, these models have been used by each national forest structure with input that represent their problem. This is a strengh of LP. \\
@@ -1421,11 +1437,11 @@ We model, hypotetically, 788 thousand acre Wagonho National Forest, that is assu
 We want to find an allocation that minimizes net present value while producing 40 million board feet of timber, 5 thousand animal unit months of grazing, and keeping average wilderness index at least 70.\\
 The formulation of the model in a LP problem can be written as following:
 \begin{align*}
-\max&\sum_{i=1}^{7}\sum_{j=1}^{3} p_{i,j}x_{i,j}&(present value)\\
-s.t& \sum_{i=1}^{3}x_{i,j}=s_{i}\;\;\;\;i = 1, \dots,7&(allocation)\\
-&\sum_{i=1}^{7}\sum_{j=1}^{3} t_{i,j}x_{i,j}\geq 40000&(timber)\\
-&\sum_{i=1}^{7}\sum_{j=1}^{3} g_{i,j}x_{i,j}\geq5&(grazing)\\
-&\frac{1}{788}\sum_{i=1}^{7}\sum_{j=1}^{3} w_{i,j}x_{i,j}\geq 70&(wilderness)\\
+\max&\sum_{i=1}^{7}\sum_{j=1}^{3} p_{i,j}x_{i,j}&(\text{present value})\\
+s.t& \sum_{i=1}^{3}x_{i,j}=s_{i}\;\;\;\;i = 1, \dots,7&(\text{allocation})\\
+&\sum_{i=1}^{7}\sum_{j=1}^{3} t_{i,j}x_{i,j}\geq 40000&(\text{timber})\\
+&\sum_{i=1}^{7}\sum_{j=1}^{3} g_{i,j}x_{i,j}\geq5&(\text{grazing})\\
+&\frac{1}{788}\sum_{i=1}^{7}\sum_{j=1}^{3} w_{i,j}x_{i,j}\geq 70&(\text{wilderness})\\
 &x_{i,j}\geq 0 \;\;\;\;i = 1,\dots,7;\;\;\;\;j = 1,\dots,3;
 \end{align*}
 Since the LP is not in standard form, we convert the inequalies to equalities adding slack valriables $y_{i,k}$ to the last three constraints, with $i, k = 1, \dots, 3$. The Forest Service Application data used to test the methods are shown in the following table:\\
@@ -1440,11 +1456,80 @@ x_{5,1}^{*} &= 0 & x_{5,2}^{*}&= 154 & x_{5,3}^{*} &= 58 & x_{6,1}^{*} &= 0 & x_
  x_{7,1}^{*}&=0 &x_{7,2}^{*} &= 0 & x_{7,3}^{*} &= 113 & & & &  & & \\
 \end{align*}
 \section{Swedish steel}
-\subsection*{Blending models}
-As allocation models split a resource, blending models combine them. Various applications blend everything from chemicals, to diets, to metals, to animal food. This problems are formulated in a LP model in which you have to decide what mix of ingredients best fulfills specified output requirements. In this section we propose the Swedish steel problem \cite{SP}.\\
+As allocation models split a resource, blending models combine them. Various applications blend everything from chemicals, to diets, to metals, to animal food. This problems are formulated in a LP model in which you have to decide what mix of ingredients best fulfills specified output requirements. In this section we propose the Swedish steel problem.\\
 The steel industry confronts a blending problem when it melts materials in high-temperature furnaces to manufacture new alloys from scrap. Fagersta AB of Fagersta, Sweden, is one of many companies that have used mathematical programming to plan this steel blending \cite{SSM}.\\
-An optimization arises every time a furnace is charged. Scrap in the available inventory is combined with a pure additives to produce a blend having the required percentages of various chemical elements. It is critical to make maximum use of scrap because addittives are much more expensive. In this rresearch we assess that the Swedish steel making will produce a 100-kilogram furnace charge. All steel consists primarily of iron. The following table shows the much smaller fractions of carbon, nickel, chromium, and molybdenum in the four available supplies of scrap. It also shows the three higher-cost addities that can be used and the acceptable ranges for the resulting blend.\\ In the Swedish Steel example we define the decision variables $x_{j}$ where $j = 1, \dots, 4$ refers to the four supplies of scrap and $j = 5, \dots, 7$ refer to the pure additives.\\
+An optimization arises every time a furnace is charged. Scrap in the available inventory is combined with a pure additives to produce a blend having the required percentages of various chemical elements. It is critical to make maximum use of scrap because addittives are much more expensive. In this research we assess that the Swedish steel making will produce a 100-kilogram furnace charge. The following table shows the much smaller fractions of carbon, nickel, chromium, and molybdenum in the four available supplies of scrap. It also shows the three higher-cost addities that can be used and the acceptable ranges for the resulting blend.\\
+The following table illustrate a fictitious version of Swedush steelimaking
+\begin{table}[]
+	\begin{tabular}{@{}lllllll@{}}
+		\toprule
+		& Carbon & Nickel & Chromium & Molybdenum & Available & Cost \\ \midrule
+		First scrap   & 0.80   & 18     & 12       & -          & 75        & 16   \\
+		Second scrap  & 0.70   & -      & -        & -          & 250       & 10   \\
+		Third scrap   & 0.85   & -      & -        & -          & Unlimited & 8    \\
+		Fourth scrap  & 0.40   & -      & -        & -          & Unlimited & 9    \\
+		Nickel        & -      & 100    & -        & -          & Unlimited & 48   \\
+		Chronium      & -      & -      & 100      & 100        & Unlimited & 60   \\
+		Molybdenum    & -      & -      & -        & -          & Unlimited & 53   \\ \midrule
+		Minimum blend & 0.65   & 3.0    & 1.0      & 1.1        &           &      \\ 
+		Maximum blend & 0.75   & 3.5    & 1.2      & 1.3        &           &      \\ \midrule
+	\end{tabular}
+\end{table}
 
+
+The principal decision variables in blending models specify how much of each available ingredient to include in the mix. In the Swedish Steel example we define the decision variables $x_{j}$ where $j = 1, \dots, 4$ refers to the four supplies of scrap and $j = 5, \dots, 7$ refer to the pure additives.\\
+We have also upper and lower limits on the fraction of carbon, nickel, chromium and molybdenum in the mix. Each constraint will have the form:\\
+
+$\sum_{j}\Bigg($\begin{tabular}{l}
+ fraction in\\
+jth\\
+ingredient\\
+\end{tabular}
+$\Bigg)$$\Bigg($\begin{tabular}{l}
+ amount of\\
+jth\\
+ingredient\\
+\end{tabular}$\Bigg)$
+\begin{tabular}{l}
+	$\geq$\\
+	or\\
+	$\leq$\\
+\end{tabular}
+	$\Bigg($\begin{tabular}{l}
+		allowed\\
+		fraction in\\
+		the blend\\
+	\end{tabular}
+	$\Bigg)$
+	$\sum_{j}\Big($\begin{tabular}{l}
+		blend\\
+		total\\
+	\end{tabular}
+	$\Big)$
+	
+	
+\bigskip
+Collecting all the elements, the LP model of the Swedish example is: 
+\begin{align*}
+\min16x_{1}+10x_{2}+8x_{3}+9x_{4}+48x_{5}+60x_{6}+53x_{7}& &\text{(cost)}&\\
+x_{1}+x_{2}+x_{3}+x_{4}+x_{5}+x_{6} + x_{7}&= 1000&\text{(weight)}&\\
+0.008x_{1}+0.007x_{2}+0.0085x_{3}+0.004x_{4}x_{7}&\geq 0.0065(1000)&\text{(carbon)}&\\
+0.008x_{1}+0.007x_{2} + 0.0085x_{3} + 0.004x_{4}x_{7}&\leq 0.0075(1000)&\\
+0.180x_{1}+0.032x_{2} + 1.0x_{5}&\geq 0.030(1000)& \text{(nickel)}&\\
+0.180x_{1}+0.032x_{2} + 1.0x_{5}&\leq 0.035(1000)&\\
+0.120x_{1}+0.011x_{2} + 1.0x_{6}&\geq 0.010(1000)& \text{(chromium)}&\\
+0.120x_{1}+0.011x_{2} + 1.0x_{6}&\leq 0.012(1000)&\\
+0.001x_{2} + 1.0x_{7}&\geq 0.011(1000)& \text{(molybdenum)}&\\
+0.001x_{2} + 1.0x_{7}&\leq 0.013(1000)&\\
+x_{1}&\leq 75&\text{(available)}&\\
+x_{2}&\leq 250 &&\\
+x_{1},\dots, x_{7}\geq 0\\
+\end{align*}
+The unique optimal solution of this model is according to \cite{RR} and confirmed by the tests illustrated below:
+\begin{align*}
+x_{1}^{*} &=  75\text{ kg,} & x_{2}^{*}&=  90.91\text{ kg,} & x_{3}^{*} &= 672.28 \text{ kg,} & x_{4}^{*} &= 137.31 \text{ kg,}\\
+x_{5}^{*} &= 13.59 \text{ kg,}& x_{6}^{*}&= 0\text{ kg,}  & x_{7}^{*} &= 10.91 \text{ kg.} &&\\
+\end{align*}
 \section{The coffee problem}
 \chapter{Conclusion}
 
@@ -1458,6 +1543,8 @@ An optimization arises every time a furnace is charged. Scrap in the available i
 	‘Inequalities–III’, Academic Press, New York, pp: 159–175, (1972).
 	\bibitem{Lem} Lemke C.E, \textit{ The dual method of solving the linear programming problem.} Naval Research Logistics Quarterly, John Wiley and Sons, (1954).
 		\bibitem{LMS} Lustig I. J., Marsten E., Shanno D. F., \emph{ Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, pp. 191-222, (1991).
+		\bibitem{meg} Megiddo N., \emph{ "Pathways to the optimal set in linear programming, in Progress in
+			Mathematical Programming"}, Springer-Verlag, New York, pp. 131-158, (1986).
 	\bibitem{MER} Mehrotra S., \emph{ On the implementation of a primal-dual interior point method. } SIAM J on Optimization, 2, pp: 575-601 (1992).
 	\bibitem{MUR} Mehrotra S., \emph{ Advanced Linear Programming: Computation and
 	Practice. } McGraw-Hill New York, New York (1981).
@@ -1470,17 +1557,18 @@ An optimization arises every time a furnace is charged. Scrap in the available i
 	minimizing a linear form under linear inequality restrictions.} Pacific J Math pp: 183-195, (1955). 
 	\bibitem{Lexico2}  Charnes A. \emph{ Optimality and degeneracy in linear programming}, 1952. pp: 160-170. 
 	\bibitem {Wright} Wright J. Stephen, \emph{\;Primal-Dual Interior Point Methods.} SIAM: society for industrial and applied mathematics. Philadelphia, pag 134.
-	\bibitem {LP} Vanderbei J. Robert, \emph{\;Linear programming:
-		Foundations and Extensions}. Dept. of Operations Research and Financial Engineering
-	Princeton University, Springer Science+ Business Media, 2001.
-	\bibitem{(Natural)} B. Kent, B. B. Bare, R. C. Field, G. A. Bradley, \textit{Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN}, OR, 39, (1991), pp: 13-27.
-\bibitem{meg} N. Megiddo, \emph{ Pathways to the optimal set in linear programming, in Progress in
-Mathematical Programming}, Springer-Verlag, New York, pp. 131-158, (1986).
-\bibitem{SP} Carl-Henrik Westerberg, B. Bjorklund, E. Hultman, \emph{ An application of Mixed Integer Programming in a Swedish Steel Mill}, Interfaces, pp. 39-43, (1977).
-\bibitem{ForSer} \emph{"Forest Service planning : accommodating uses, producing outputs, and sustaining ecosystems"}, Congress of the United States-Office of technology assessment. 
-\bibitem{XY}Xiaojie Xu, Yinyu Ye, \emph{"A generalized homogeneous and self-dual algorithm for linear programming"}, Operations Research Letters, 17, pp: 181-190, (1995)
-\bibitem{LNP}Luenberger David G., Yinyu Ye, \emph{"Linear and Nonlinear Programming"}, Springer Science+Business Media,, 3, pp: 136-140, (2008).
-\bibitem{SSM} Westerberg, C.-H., Bjorklund B., Hultman E., \emph{" An Application of Mixed Integer Programming in a Swedish Steel Mill" }, Interfaces, 7:2, pp: 39-43, (1977).
+
+	\bibitem{(Natural)} B. Kent, B. B. Bare, R. C. Field, G. A. Bradley, \textit{Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN}, OR, 39, pp: 13-27, (1991).
+\bibitem{RR} Rardin Ronald L., \textit{" Optimization in operations reseasch"}, Pearson Education (US), Second edition, University of Arkansas, (2017).
+
+\bibitem{ForSer} \emph{"Forest Service planning : accommodating uses, producing outputs, and sustaining ecosystems"}, Congress of the United States-Office of technology assessment.
+	\bibitem {LP} Vanderbei J. Robert, \emph{\;"Linear programming:
+	Foundations and Extensions"}. Dept. of Operations Research and Financial Engineering
+Princeton University, Springer Science + Business Media, (2001).
+\bibitem{SSM} Westerberg, C.-H., Bjorklund B., Hultman E., \emph{"An Application of Mixed Integer Programming in a Swedish Steel Mill" }, Interfaces, 7:2, pp: 39-43, (1977).
+\bibitem{XY}Xiaojie Xu, Yinyu Ye, \emph{"A generalized homogeneous and self-dual algorithm for linear programming"}, Operations Research Letters, 17, pp: 181-190, (1995).
+\bibitem{LNP}Luenberger David G., Yinyu Ye, \emph{"Linear and Nonlinear Programming"}, Springer Science+Business Media, 3, pp: 136-140, (2008).
+
 
 \end{thebibliography}
 
