@@ -10,7 +10,7 @@ from AffineMethod import affine
 from MehrotraMethod import mehrotra
 from MehrotraMethod2 import mehrotra2
 
-from LPFMethod import longpath
+from LPFMethod import longpath1
 from LPFMethod2 import longpath2
 from LPFMethod_cp import longpathC
 from LPFMethod_PC import longpathPC
@@ -30,7 +30,8 @@ np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 12
                             TUBULAR PRODUCTS OPERATIONS PLANNING
                                            === 
                                            
-Find the minimum of the TPC : the input_data is in canonical form
+Find the minimum of the TPC : the LP is in canonical form
+
 '''
 
 """ import & construct input data for IPM """

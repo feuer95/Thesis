@@ -176,10 +176,10 @@ def fun(A, c, x, B, it, max_it, rule) -> (float, np.array, set, float, np.array,
 # Input data of canonical LP:
 if __name__ == "__main__":
     
-    A, b, c = input_data(3)
+    A, b, c = input_data(28)
 
     # Run simplex method
-    x, u = SimplexMethod(A, b, c, rule = 0) # With Bland's rule
+    x, u = SimplexMethod(A, b, c, rule = 1) # With Bland's rule
     
     # Create a dataframe and convert to excel
     dfu = pd.DataFrame(u, columns = ['it', 'Current Basis', 'Current x', 'Current cost value'])

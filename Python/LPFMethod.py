@@ -26,7 +26,7 @@ Input data: np.arrays: A, cost vector c, vector b of the LP
 
 '''
 
-def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_it = 500):
+def longpath1(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_it = 500):
         
     print('\n\tCOMPUTATION OF LPF ALGORITHM')       
     
@@ -70,10 +70,9 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 1
     # Compute the search direction solving the matricial system
     # NORMAL EQUATIONS with CHOL approach
     
-    it = 0 # Num of iterations
+    it = 0        # Num of iterations
     tm = term(it) # Define tollerance tm = inf
-    
-    u = [] # Construct list of info elements 
+    u = []        # Construct list of info elements 
     u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
     
     while tm > w:
@@ -81,13 +80,12 @@ def longpath(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 1
         print("\tIteration: {}\n".format(it), end='')
                 
         """ Modified Newton's method with with normal equations: find the direction vector (y1, s1, x1)"""
-        ''' Compute the search direction solving the matricial system NORMAL EQUATIONS with CHOL approach '''     
+        ''' Compute the search direction solving the matricial AUGMENTED SYSTEM '''     
         
         cp = 1 - 0.5/math.sqrt(c_A)
         print("Centering parameter sigma:{}.\n".format("%10.3f"%cp))
         
         # solve search direction with AUGMENTED SYSTEM
-              
         X_inv = np.linalg.inv(np.diag(x))           
         W1 = X_inv*np.diag(s)          # W1 = X^(-1)*S        
         T = np.concatenate((np.zeros((r_A,r_A)), A), axis = 1)
@@ -156,8 +154,8 @@ if __name__ == "__main__":
     
     # Input data of canonical LP:
     
-    (A, b, c) = input_data(23)
-      
-    x, s, u = longpath(A, b, c)
+    (A, b, c) = input_data(26)    
+    
+    x, s, u = longpath1(A, b, c)
     
     dfm = cent_meas(x, u, 'LPF', plot = 0)

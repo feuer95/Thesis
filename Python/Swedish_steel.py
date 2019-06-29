@@ -11,17 +11,16 @@ from AffineMethod import affine
 from MehrotraMethod import mehrotra
 from MehrotraMethod2 import mehrotra2
 
-from LPFMethod import longpath
-from LPFMethod2 import longpath2
-from LPFMethod_cp import longpathC
-from LPFMethod_PC import longpathPC
+from LPFMethod import longpath1          # longpath with fixed cp
+from LPFMethod2 import longpath2         # longpath2 with cp iterative
+from LPFMethod_PC import longpathPC      # longpathPredCorr with cp equal to Mehrotra's algorithm
 
 from SimplexMethodIphase import SimplexMethodI # For swedish steel with known basis
 from SimplexMethodIIphases import SimplexMethod
 from scipy.optimize import linprog
 
-import pandas as pd # Export to excel 
-import matplotlib.pyplot as plt # Print plot
+import pandas as pd                     # Export to excel 
+import matplotlib.pyplot as plt         # Print plot
 from cent_meas import cent_meas
 
 

@@ -4,13 +4,14 @@ Created on Mon Jun  3 15:33:26 2019
 
 @author: elena
 """
-from starting_point import sp # Function to find the initial infeasible point
+
+from starting_point import sp       # Function to find the initial infeasible point
 from print_boxed import print_boxed # Print pretty info boxes
-from stdForm import stdForm # Function to extend LP in a standard form
-import numpy as np # To create vectors
+from stdForm import stdForm         # Function to extend LP in a standard form
+import numpy as np                  # To create vectors
+from input_data import input_data   # Data problems
+from term import term               # Compute the conditions of termination
 from cent_meas import cent_meas
-from input_data import input_data
-from term import term # Compute the conditions of termination
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
@@ -26,8 +27,10 @@ Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             max_it:                     (500 by default) 
             
 The system is computed with augmented system
-
-Output data: x, s, u
+            
+Output data: vector x primal solution
+             vector s solution
+             u: list [it, gap, x, s]
 
 '''
 
@@ -35,6 +38,7 @@ Output data: x, s, u
 def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_it = 500):
     
     print('\n\tCOMPUTATION OF LPF ALGORITHM')    
+    
     # Algorithm in 4 steps:  
     # 0..Input error checking
     # 1..Find the initial point with Mehrotra's method 
@@ -71,19 +75,19 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
         
     """ Search vector direction """
     
-    # Compute the search direction solving the matricial system
-    # Instead of solving the std system matrix it is uses AUGMENT SYSTEM with CHOL approach
-    
-    it = 0
-    tm = term(it)
-    
-    u = []
+    '''Modified Newton's method with with normal equations: find the direction vector (y1, s1, x1)'''
+
+    it = 0        # Num of iterations
+    tm = term(it) # Define tollerance tm = inf
+    u = []        # Construct list of info elements 
     u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
+    sig = []
     
     while tm > w:
         
         print("\tIteration: {}".format(it + 1))
         
+        # Compute cp and the direction with augmented system
         cp = min(0.1, 100*np.dot(x,s)/c_A)
         print("Centering parameter cp:{}.\n".format("%10.3f"% cp))
         
@@ -128,6 +132,7 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
         g = z - np.dot(y, b) # Current gap
         it += 1
         u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()])
+        sig.append([cp])
 
         # Termination elements
         tm = term(it, b, c, rb, rc, z, g)
@@ -144,7 +149,7 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
                 "Dual gap: {}\n".format("%10.6f"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
                 "Number of iteration: {}".format(it))
-    return x, s, u
+    return x, s, u, sig
 
 
 #%%
@@ -156,8 +161,8 @@ if __name__ == "__main__":
     
     # Input data of canonical LP:
     
-    (A, b, c) = input_data(21)
+    (A, b, c) = input_data(28)
         
-    x, s, u = longpath2(A, b, c)
+    x, s, u, sig = longpath2(A, b, c)
     
-    dfm = cent_meas(x, u, 'LPF', plot = 0)
+    dlpf = cent_meas(x, u, 'LPF', plot = 0)

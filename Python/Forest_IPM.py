@@ -10,7 +10,7 @@ from AffineMethod import affine
 from MehrotraMethod import mehrotra
 from MehrotraMethod2 import mehrotra2
 
-from LPFMethod import longpath
+from LPFMethod import longpath1
 from LPFMethod2 import longpath2
 from LPFMethod_cp import longpathC
 from LPFMethod_PC import longpathPC
@@ -31,7 +31,7 @@ Find the MAXIMUM total NPV: the constraint set in standard form A x = b using th
     
     1. affine(A, b, -c, c_form = 1)
     2. mehrotra(A, b, -c, c_form = 1) 
-    3. longpath(A, b, -c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005)
+    3. longpath1(A, b, -c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 0.005)
     
     input data: A, b, c, c_form = 1, w = 10^{-8} default
 
@@ -89,7 +89,7 @@ b = np.concatenate((S, b))
 #x_m, s_m, u_m = mehrotra2(A, b, -c, c_form = 1)
 #dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # 37 iterations
 
-x_c, s_c, u_c = longpath2(A, b, -c, c_form = 1) # 30 it
+#x_c, s_c, u_c = longpath2(A, b, -c, c_form = 1) # 30 it
 #dfc = cent_meas(x_c, u_c, label = 'LPF2')
 #
 #x_pc, s_pc, u_pc = longpathPC(A, b, -c, c_form = 1)

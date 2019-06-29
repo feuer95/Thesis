@@ -4,14 +4,13 @@ Created on Tue Jun 25 11:13:57 2019
 
 @author: elena
 """
-
 import numpy as np
 from AffineMethod import affine 
 
 from MehrotraMethod import mehrotra
 from MehrotraMethod2 import mehrotra2
 
-from LPFMethod import longpath
+from LPFMethod import longpath1
 from LPFMethod2 import longpath2
 from LPFMethod_cp import longpathC
 from LPFMethod_PC import longpathPC
@@ -20,6 +19,7 @@ import pandas as pd # Export to excel
 import matplotlib.pyplot as plt # Print plot
 from cent_meas import cent_meas
 from SimplexMethodIIphases import SimplexMethod
+
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
@@ -28,7 +28,7 @@ r = pd.read_excel('ONB.xlsx')
 q = r.as_matrix()
 q = np.asarray(q)
 
-q[[i for i in range(15,25)]] *= -1
+q[[i for i in range(15,26)]] *= -1
 c = q[0,:23]
 A = q[1:26,:23]
 b = q[1:26,23]

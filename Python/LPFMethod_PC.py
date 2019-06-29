@@ -9,10 +9,9 @@ from starting_point import sp       # Function to find the initial infeasible po
 from print_boxed import print_boxed # Print pretty info boxes
 from stdForm import stdForm         # Function to extend LP in a standard form
 import numpy as np                  # To create vectors
+from input_data import input_data   # Data problems
+from term import term               # Compute the conditions of termination
 from cent_meas import cent_meas
-from input_data import input_data
-from term import term
- 
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
@@ -65,7 +64,6 @@ def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w
     print('Dual initial gap: {}.\n'.format("%10.3f"%g))      
     
     # Check if (x, y, s) in neighborhood N_inf and define E:
-    
     if (x*s > gamma*np.dot(x,s)/c_A).all():
         print("Initial point is in N_inf(gamma), gamma = {}\n".format("%10.6f"%gamma))
     E = lambda a: (s+a*s1)*(x+a*x1)-(gamma*np.dot((s+a*s1),(x+a*x1)))/c_A  # Function E: set of values in N_(gamma)
@@ -73,6 +71,7 @@ def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w
     #%%
         
     """ Predictor step """
+    
     '''Pure Newton's method with with normal equations: find the direction vector (y1, s1, x1)'''
 
     it = 0        # Num of iterations
@@ -80,7 +79,10 @@ def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w
     u = []        # Construct list of info elements 
     u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
     sig = []
+    
     while tm > w:
+                
+       print("\tIteration: {}\n".format(it + 1))
 
        # Choose cp = 0 and compute the direction with augmented system
        (x1, y1, s1, rb, rc) = augm(A, b, c, x, y, s, 0) 
@@ -95,7 +97,7 @@ def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w
             break
         else:
             i -= 1
-       mi = np.dot(x,s)/c_A # Duality measure
+       mi = np.dot(x,s)/c_A                  # Duality measure
        mi_af = np.dot(x + t*x1,s + t*s1)/c_A # Average value of the incremented vectors
        Sigma = (mi_af/mi)**3
        
@@ -129,7 +131,7 @@ def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w
             "Optimal cost: {}\n".format("%10.3f"%z) +
             "Number of iteration: {}".format(it))
     
-    return x, s, u
+    return x, s, u, sig
 
 
 #%%
@@ -160,17 +162,16 @@ def augm(A, b, c, x, y, s, cp):
 
 #%%
 '''                           ===
-                   LPF predictor corrector METHOD test
+                       LPF PC METHOD test
                               ===
 '''
 if __name__ == "__main__":
     
     
-#    (A, b, c) = input_data(23)   
+    (A, b, c) = input_data(0)   
 
-    x, s, u = longpathPC(A, b, c)
+    x, s, u, sig1 = longpathPC(A, b, c)
           
     ul = cent_meas(x, u, 'LPF Predictor corrector', plot = 0)
-
-
+    
     
