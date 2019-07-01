@@ -577,7 +577,7 @@ the number of vertices minus $1$.\cite{MINTY}\\ It is illustrated also the resul
 	5 & [3, 4, 2] & [    0.     0. 10000.     1.   100.     0.] & -10000 \\ \hline
 \end{array}
 \end{center}
-
+It has to be said, however, that it is only a theoretical drawback and in practice it is rather exceptional for the simplex method to perform more than $m + n$ iterations on its way to an optimal solution \cite{ComTeq}.
 %Leke~\cite{Lem} developed the dual simplex method in 1954 but it was not found to be an alternative to the primal simplex method for nearly 40 years. This changed in due to the contributions of Forrest and Goldfarb.After discussing the Karush-Kuhn-Tucker optimalityconditions for linear programming, we derive the \textit{dual simplex method} by applying the simplex method to the dual formulation of the standard 
 %form LP. 
 \\
@@ -643,21 +643,21 @@ $x^{*} = \begin{bmatrix}
 where $x^{*}$ and $\lambda^{*}$ are any numberes for which $x_{2}^{*}\geq0$ and $\lambda^{*}\leq0$.
 \end{ex}
 \\
-The Newton's method forms a linear model for $\mathit{F}$ around the current point and obtains the search direction $(\Delta x,\Delta \lambda,\Delta s)$ by solving the following system of linear equations:
+The Newton's method (see Appendix) forms a linear model for $\mathit{F}$ around the current point and obtains the search direction $(\Delta x,\Delta \lambda,\Delta s)$ by solving the following system of linear equations:
 \begin{center}
 	$\mathit{J}(x,\lambda,s)\begin{bmatrix}
 	\Delta x\\\Delta\lambda \\\Delta s
 	\end{bmatrix}=-\mathit{F}(x,\lambda,s)$,
 \end{center}
-where $\mathit{J}$ is the Jacobian of $\mathit{F}$. If the current point is strictly feasible, the Newton step equations becomes
+where $\mathit{J}$ is the Jacobian of the linear $\mathit{F}$. If the current point $(x, \lambda, s)\notin\mathcal{F}$, the Newton step equations becomes
 
 \begin{equation}\label{(5.1)}
 	\begin{bmatrix}
-0&A^{T}&I \\A&0&0\\X&0&S
+0&A^{T}&I \\A&0&0\\S&0&X
 	\end{bmatrix}\begin{bmatrix}
 	\Delta x\\\Delta\lambda \\\Delta s
-	\end{bmatrix}=-\begin{bmatrix}
-	0\\0\\XSe
+	\end{bmatrix}=\begin{bmatrix}
+	c-A^{T}\lambda-s\\b-Ax\\XSe
 	\end{bmatrix}.
 \end{equation}
 
@@ -669,7 +669,7 @@ for some line search parameter $\alpha \in (0,1]$. \\We maintain positivity cond
 
 \section{Primal-dual affine-scaling method}
 
-The simplest primal-dual approach is to apply Newton's method directly to the function $F$, using in the$k^{th}$ iteration a step length $\alpha_{k}$ of less than one in order to have $(x^{k+1},\lambda^{k+1},s^{k+1})\in \mathcal{F}^{o}$. There are different ways to do this and the resulting algorithms are called \textit{Primal-dual affine-scaling methods}, for short Affine-scaling methods, which were proposed for linear programming by Monteiro,
+The simplest primal-dual approach is to apply Newton's method directly to the function $F$, using in the $k^{th}$ iteration a step length $\alpha_{k}$ of less than one in order to have $(x^{k+1},\lambda^{k+1},s^{k+1})\in \mathcal{F}^{o}$. There are different ways to do this and the resulting algorithms are called \textit{Primal-dual affine-scaling methods}, for short Affine-scaling methods, which were proposed for linear programming by Monteiro,
 Adler and Resende \cite{MARE}.\\ 
  The general primal-dual affine-scaling algorithm takes the following form:\\
 \begin{algorithm}[H]
@@ -723,7 +723,7 @@ x&\geq 0\\
 s&\geq 0\\
 x_{i}s_{i}&= \tau,\; \text{for}\;i= 1,2,...,n.\label{(Tao)}
 \end{align} 
-The conditions above are also the optimality conditions for the logarithmic-barrier formulation (P$_{\mu}$) of the original problem (P):
+The conditions above are also the optimality conditions for the following logarithmic-barrier formulation (P$_{\tau}$) of the original problem (P):
 \begin{equation}\label{log}
 \begin{split}
 \text{minimize\;} &c^{T}x + \tau\sum_{i=0}^{n}\ln{x_{i}}\\
@@ -750,13 +750,38 @@ If the sets $\mathcal{P}^{o}$ and $\mathcal{D}^{o}$ are non-empty, the problem (
 Let $(x(\tau), \lambda(\tau), s(\tau))$ be on the primal-dual path $\mathcal{C}$, then the non negative dual gap assumes this value: $c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x=\tau$.\\
 It means that the dual gap provides a measure of closeness to optimality. It is clear that as $\tau\to0$ the duality gap goes to zero, and hence both $x(\tau)$ and
  $(\lambda(\tau), s(\tau))$ approach to the common optimal values of the roblems (P) and (D) respectively. The central path guides us to a solution along a route that maintains positivity of the $x$ and $s$ components and decreases the pairwise products $x_{i}s_{i},\;i = 1,2,...,n$ to zero at the same rate.\\
- \\
- Path-following methods follow $\mathcal{C}$ in the direction of deccreasing $\tau$ to the solution set but they do not neceessarily stay exactly on $\mathcal{C}$ or even particularly close to it. In fact they compute the target value $\tau = \sigma \mu$, where $\sigma = [0,1]$ is called \textit{centering parameter} and $\mu$ the \textit{duality measure}, defined by
-  \begin{equation*}
+ 
+ 
+ Defining $\mathcal{C}$ with the notation introduced in the first section, we have the following mapping $\mathit{F}$:
+ \begin{center}
+ 	$\mathit{F}(x,\lambda,s)= \begin{bmatrix}
+ 	A^{T}\lambda+s-c \\Ax-b \\XSe
+ 	\end{bmatrix}=\begin{bmatrix} 0\\0\\ \tau e \end{bmatrix}$, with $(x,s)\geq0$.
+ \end{center}
+Then, Newton steps toward points on $\mathcal{C}$ are computed as following:
+ \begin{equation}\label{new}
+ \begin{bmatrix}
+ 0&A^{T}&I \\A&0&0\\S&0&X
+ \end{bmatrix}\begin{bmatrix}
+ \Delta x\\\Delta\lambda \\\Delta s
+ \end{bmatrix}=\begin{bmatrix}
+ 0\\0\\-XSe + \tau e
+ \end{bmatrix}.
+ \end{equation}
+ Path-following methods follow $\mathcal{C}$ in the direction of decreasing $\tau$ to the solution set but they do not necessarily stay exactly on $\mathcal{C}$ or even particularly close to it. In fact they compute the target value $\tau = \sigma \mu$, where $\sigma = [0,1]$ is called \textit{centering parameter} and $\mu$ the \textit{duality measure}, defined by
+ \begin{equation*}
  \mu = \frac{1}{n}\sum_{i=1}^{n} x_{i}s_{i} = \frac{x^{T}s}{n}.
- \end{equation*}
+ \end{equation*}\\
+ The perturbation $\sigma\mu$ guarantees progress in reducing the duality gap $x^{T}s$,
+ in this way path-following interior point algorithms attempt to reduce the term from
+ its current value $\mu$ to a new one $\sigma\mu$. In fact, if we state the last equation of \ref{new} in vectorial form, we have:
+ \begin{equation}
+ S\Delta x + X\Delta s = s^{T}\Delta x + x^{T}\Delta s = - XSe + \sigma \mu e = (-1 + \sigma)x^{T}s
+ \end{equation}
+ and provides the necessary term to estimate the progress of the
+ algorithm.\\  
+ \\
  A path-following algorithm explicity restricts the iterates to a neighborhood of the central path $\mathcal{C}$: if $\sigma = 1$, the equations define a \textit{centering direction}, a Newton step toward the point $(x_{\sigma\mu},\lambda_{\sigma\mu}, s_{\sigma\mu})\in\mathcal{C}$, if $\sigma = 0$ then we have the \textit{affine-scaling method}.\\  
-
  Many algorithms use intermediate values of $\sigma$ in $(0,1)$ to trade off between the twin goals of reducing $\mu$ and improving centrality. The neighborhood excludes points $(x, s) $ that are too close to the boundary of the nonegative orthant. Therefore, search directions calculated from any point in the neighborhood make at least minimal progress toward the solution set.
  We define the two most interesting neighborhoods of the central path as given
 by Mizuno et al~\cite{5}:\\
@@ -770,7 +795,7 @@ A disadvantage of the $\mathcal{N}_{2}(\theta)$ neighborhood is its restrictive 
 \begin{center}
 	$\sum\limits_{i=1}^{n}\big(\frac{x_{i}s_{i}}{\mu}-1\big)^{2}\leq \theta^{2}<1$
 \end{center} 
-so that the sum of squares of all relative deviations of $x_{i}s_{i}$ from their average value $\mu$ cannot exceed 1. Even if $\theta$ is close to its uppr bound of 1, the neighborhood $\mathcal{N}_{2}(\theta)$ contains only a small fraction of the points in the strictly feasible set $\mathcal{F}^{o}$. The neighborhood $\mathcal{N}_{-\infty}(\gamma)$, on the other hand, is much more expansive: when $\gamma$ is small, it takes up almost the entire strictly positive feasible set $\mathcal{F}^{o}$. 
+so that the sum of squares of all relative deviations of $x_{i}s_{i}$ from their average value $\mu$ cannot exceed 1. Even if $\theta$ is close to its upper bound of 1, the neighborhood $\mathcal{N}_{2}(\theta)$ contains only a small fraction of the points in the strictly feasible set $\mathcal{F}^{o}$. The neighborhood $\mathcal{N}_{-\infty}(\gamma)$, on the other hand, is much more expansive: when $\gamma$ is small, it takes up almost the entire strictly positive feasible set $\mathcal{F}^{o}$. 
 \newpage
 \subsection{LPF algorithms}
 In this research we discuss the \textit{long-step path-following algorithms}, that are based on the second neighborhood. Since  $\mathcal{N}_{-\infty}(\gamma)$ is a larger central path neighborhood, it allows for more flexibility in the choice of the next iterate and hence larger  step length (hence, the name long-step method). It depends on two parameters $\sigma_{min}$, $\sigma_{max}$, which are lower and upper bounds on the centering parameter $\sigma_{k}$. After computed the search direction with the Newton method, the step length $\alpha_{k}$ is chosed as the maximum value subject to staying inside $\mathcal{N}_{-\infty}(\gamma)$.
@@ -928,7 +953,8 @@ We obtain the combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \
 0\\0\\\Delta X^{\text{aff}}\Delta S^{\text{aff}}e - \sigma\mu e
 \end{bmatrix}.
 \end{equation}
-Although we need to solve at each iteration two linear systems instead of one, the marginal cost is not great because the systems have the same coeffifient matrix and then we need only modify the right-hand side. Having described the essential elements of Mehrotra'a approach, the algorithm is structured as following:
+Although we need to solve at each iteration two linear systems instead of one, the marginal cost is not great because the systems have the same coeffifient matrix and then we need only modify the right-hand side. \\
+ Having described the essential elements of Mehrotra'a approach, the algorithm is structured as following:
 \\
 \textbf{Mehrotra's algorithm}
 \begin{tabbing}
@@ -973,7 +999,7 @@ To measure the efficacy of the affine-scaling direction, we define $\mu_{\text{a
 	\> choose the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)$;\\
 	\textbf{end}
 \end{tabbing}
- 
+We can notice that in the two algorithms the starting point is not necessarily feasible, this approach is elaborated in the next chapter.
 %\lstinputlisting[language=py,caption=applicationContext.py]{Forest.py}
 \chapter{Convergence analysis}
 In this section it is delineated a complete convergence analysis important theoretical results. 
@@ -1318,8 +1344,13 @@ The codes implemented in this research solve linear programming problems with a 
 We define the residual function $r$ that converts the vector sequence into a real number sequence.
 \chapter{Analysis of the predictor corrector LPF method}
 
+
+\chapter{Implementation issues}
+There are several important issues concerning interior-point algorithms
+for linear programs.\\
 \section*{Initialization and termination}
-In the discussion of the interior point methods, it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})$ is feasible respect to the linear equations \ref{DF} and \ref{PF}.\\
+In the discussion of the interior point methods, it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})$ is feasible respect to the linear equations \ref{DF} and \ref{PF}, instead in the predictor-corrector alforithms is requird only $(x^{0},s^{0})>0$.\\
+IPMs are sensitive to the choice of an initial point.
 The complexity of obtaining such an initial point is the same as that of solving the
 linear program itself. However, most implementations work with an infeasible starting point and infeasible iterations, like Mehrotra's method.\\
 The choice of starting point is an important practical issue with a significant effect on the robustness of the algorithm. A popular heuristic for finding $(x^{0}, \lambda^{0}, s^{0})$ starts by calculating $(\tilde{x}, \tilde{\lambda}, \tilde{s})$ as solution of two least-squares problems:
@@ -1374,11 +1405,12 @@ region, with a known strictly feasible starting point.
 In the project, we implement the IIP and HSD algorithms. In terms of robustness, HSD and IIP are comparable; in terms of
 efficiency, HSD is faster than IIP. Generally, HSD takes more time than IIP in
 each iteration, but HSD uses fewer iterations than IIP.
-With the simplex method and interior point metods we can compute optimal solution to linear models, but this does not suffice because the constant parameters from which they are derived, such items as costs, profits, supplies, demands, are almost neveer known certainty at the time the model is solved.\\
-In this chapter we study the effects of changing the input variables with some perturbations.\\ The aim is to formulate a comparison between the simplex and IPM sensitivity and remark the sensitivity information inside the \textit{slack variables}.
-\chapter{Implementation issues}
-There are several important issues concerning interior-point algorithms
-for linear programs.\\
+\\
+Now we deal on the termination criteria; unlike the simplex method, primal-dual algorithms never find an exact solution of the LP. In this research it is computed a finite termination phase that reports an approximate solution for which the residuals and duality measure are sufficiently small. After determinated a small tollerance $\epsilon$, the algorithms terminate when the following conditions on the relative primal and dual feasibility and the relative duality gap are satisfied:
+\begin{align*}
+\frac{\lVert Ax -b\rVert}{1+ \lVert b \rVert}\leq \epsilon, && \frac{\lVert A^{T}y -c\rVert}{1 + \lVert c \rVert}\leq \epsilon, &&\frac{|c^{T}x - b^{T}y|}{1+b^{T}y}\leq \epsilon,
+\end{align*}
+where $\epsilon > 0$, usually of the order $10^{-8}$, as required both in the literature and in practice, \cite{Wright}.
 \section*{Geometric viewpoint}
 Now we outline the geometric viewpoint of the simplex method and the primal-dual methods.\\
 We already stated that the simplex method generates a sequence of basic feasible primal points of the solution set; hence, it creates a path along the boundary of the polytope, checking the cost value at each vertex.\\Instead, the primal-dual interior point methods approach the solution through the interior of the feasible polytope, generating the central path $\mathcal{C}$, rather than working around the boundary.\\ Path-following method follow $\mathcal{C}$ in the direction of decreasing $\tau$ in (4.7) ; ideed, they do not necessarily stay exactly on the path but within a loose and well-defined neighoborhood of $\mathcal{C}$ while steadily reducing the duality measure $\mu$ to zero. Each search direction is computed with a Newton's step toward a point for which the duality measure $\tau$ is equal to or smaller than the current duality measure $\mu$, as we know $\tau=\sigma\mu$. 
@@ -1542,6 +1574,8 @@ x_{5}^{*} &= 13.59 \text{ kg,}& x_{6}^{*}&= 0\text{ kg,}  & x_{7}^{*} &= 10.91 \
 \section{A comparative study}
 In this section, we give a comparison between the results given by the infeasible prima-dual algorithms and the LPF predictor-corrector described in the previous chapter.\\ We compute the methods to solve the LP problems before illustrated. Then a study of the numerical results will be discussed.
 \chapter{Conclusion}
+ All variables $(x, \lambda, s)$ change at each iteration and the linear algebra operations which are required to update them have to involve the complete matrix $A$. This makes a single iteration of the interior point method significantly more expensive than that of the simplex method.
+
 
 \begin{thebibliography}{9}
 	\bibitem{MARE} Adler I., Monteiro R. D. C., Resende M. G. C., \emph{A polynomial-time primal-dual affine scaling algorithm for linear and convex quadratic programming and its power serier extension}, Math. of OR, 15: pp. 191-214, (1990).
@@ -1553,6 +1587,8 @@ In this section, we give a comparison between the results given by the infeasibl
 	‘Inequalities–III’, Academic Press, New York, pp: 159–175, (1972).
 	\bibitem{Lem} Lemke C.E, \textit{ The dual method of solving the linear programming problem.} Naval Research Logistics Quarterly, John Wiley and Sons, (1954).
 		\bibitem{LMS} Lustig I. J., Marsten E., Shanno D. F., \emph{ Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, pp. 191-222, (1991).
+		\bibitem{ComTeq} Maros I., \emph{ "Computational Techniques of the Simplex Method}, first ed., Kluwer
+		Academic Publishers, Boston, (2003).
 		\bibitem{meg} Megiddo N., \emph{ "Pathways to the optimal set in linear programming"}, in Progress in Mathematical Programming: Interior-Point and RElated Methods, Springer-Verlag, New York, pp. 131-158, (1986).
 	\bibitem{MER} Mehrotra S., \emph{ On the implementation of a primal-dual interior point method. } SIAM J on Optimization, 2, pp: 575-601 (1992).
 	\bibitem{MUR} Mehrotra S., \emph{ Advanced Linear Programming: Computation and

@@ -16,9 +16,9 @@ from cent_meas import cent_meas
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
-'''                                 ====
+'''                     ============================
                         LONG-PATH FOLLOWING METHOD B
-                                    ====
+                        ============================
                                     
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             neighborhood param gamma    (10^{-3} by default)
@@ -35,9 +35,9 @@ Output data: vector x primal solution
 '''
 
 
-def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_it = 500):
+def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
     
-    print('\n\tCOMPUTATION OF LPF ALGORITHM')    
+    print('\n\tCOMPUTATION OF LPF ALGORITHM 2')    
     
     # Algorithm in 4 steps:  
     # 0..Input error checking
@@ -62,13 +62,14 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
     (x, y, s) = sp(A, c, b)    
     g = np.dot(c, x) - np.dot(y, b)
     
-    print('\nInitial primal-dual point:\nx = {} \nlambda = {} \ns = {}'.format(x, y, s))    
-    print('Dual initial g: {}.\n'.format("%10.3f"%g))      
+    if info == 0:
+        print('\nInitial primal-dual point:\nx = {} \nlambda = {} \ns = {}'.format(x, y, s))    
+        print('Dual initial g: {}.\n'.format("%10.3f"%g))      
     
     # Check if (x, y, s) in neighborhood N_inf:
     mu = np.dot(x,s)/c_A
     if (x*s > gamma*mu).all():
-        print("Initial point is in N_inf(gamma), gamma = {}\n".format("%10.6f"%gamma))
+        print("Initial point is in N")
     E = lambda a: (s+a*s1)*(x+a*x1)-(gamma*np.dot((s+a*s1),(x+a*x1)))/c_A  # Function E: set of values in N_(gamma)
     
     #%%
@@ -84,15 +85,12 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
     sig = []
     
     while tm > w:
-        
-        print("\tIteration: {}".format(it + 1))
-        
-        # Compute cp and the direction with augmented system
         cp = min(0.1, 100*np.dot(x,s)/c_A)
-        print("Centering parameter cp:{}.\n".format("%10.3f"% cp))
         
-        # solve search direction with AUGMENTED SYSTEM
-              
+        if info == 0:
+            print("\tIteration: {}\n".format(it), end='')
+            print("Centering parameter sigma:{}.\n".format("%10.3f"%cp))      
+
         X_inv = np.linalg.inv(np.diag(x))           
         W1 = X_inv*np.diag(s)          # W1 = X^(-1)*S        
         T = np.concatenate((np.zeros((r_A,r_A)), A), axis = 1)
@@ -109,7 +107,9 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
         y1 = o[:r_A]
         x1 = o[r_A:c_A + r_A]      
         s1 = np.dot(X_inv, rxs) - np.dot(W1, x1)
-        print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3), y1.round(decimals = 3),s1.round(decimals = 3)))
+        
+        if info == 0:
+            print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3), y1.round(decimals = 3),s1.round(decimals = 3)))
         
         """ Compute the largest step length & increment of the points and the iteration"""
         
@@ -119,7 +119,7 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
         while i >= 0:
             if (E(v[i]) > 0).all():
                 t = v[i]
-                print('Largest step length:{}'.format("%10.3f"%t))
+#                print('Largest step length:{}'.format("%10.3f"%t))
                 break
             else:
                 i -= 1
@@ -139,14 +139,14 @@ def longpath2(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
         
         if it == max_it:
             raise TimeoutError("Iterations maxed out") 
-            
-        print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))       
-        print('Dual next gap: {}.\n'.format("%10.3f"%g))
+        if info == 0:    
+            print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))       
+            print('Dual next gap: {}.\n'.format("%10.3f"%g))
 
 #%%
         
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
-                "Dual gap: {}\n".format("%10.6f"%g) +
+                "Dual gap: {}\n".format("%2.2e"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
                 "Number of iteration: {}".format(it))
     return x, s, u, sig
@@ -161,8 +161,8 @@ if __name__ == "__main__":
     
     # Input data of canonical LP:
     
-    (A, b, c) = input_data(28)
+    (A, b, c) = input_data(26)
         
-    x, s, u, sig = longpath2(A, b, c)
+    x, s, u, sig = longpath2(A, b, c, info = 1)
     
     dlpf = cent_meas(x, u, 'LPF', plot = 0)

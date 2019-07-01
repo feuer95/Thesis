@@ -87,24 +87,20 @@ b2 = q[:,7]
 x_a, s_a , u_a = affine(A, b, c, c_form = 1)
 dfu = cent_meas(x_a, u_a, label = 'Affine', plot = 0) # 17 it
 #
-x_m, s_m, u_m = mehrotra(A, b, c, c_form = 1)
+x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, c_form = 1)
 dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # it 8
 #
 #x_l, y_l, s_l, u_l = longpath(A, b, c, c_form = 1, max_it = 2)
 #dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) # 27 it 
 #
-x_l, s_l, u_l = longpath2(A, b, c, c_form = 1)
-dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) # 28 it
+x_l, s_l, u_l, sigma_l = longpath2(A, b, c, c_form = 1)
+dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) # 13 it
 #
 #x_m, s_m, u_m = mehrotra2(A, b, c, c_form = 1)
 #dfm = cent_meas(x_m, u_m, label = 'Mehrotra2', plot = 0) # 8 iterations
 #
-#cp = 0.8
-#x_c, s_c, u_c = longpathC(A, b, c, cp = cp) # BAD
-#dfc = cent_meas(x_c, u_c, label = 'LPF with cp {}'.format(cp))
-#
-#x_pc, s_pc, u_pc = longpathPC(A, b, c, c_form = 1)
-#cfl = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 15 iterations
+x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, c_form = 1)
+cfl = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 15 iterations
 #
 #x_a, s_a , u_a = longpathPC(A, b, c)
 #dfu = cent_meas(x_a, u_a, label = 'LPF PC') # E l'unico ipm che funziona con canonical form 

@@ -27,7 +27,7 @@ def cent_meas(x, u, label, plot = 1):
     # Create a dataframe     
     dfu = pd.DataFrame(u, columns = ['it', 'Current g', 'Current x', 'Current s', 'Primal Feasibility', 'Dual Feasibility'])   
 
-    # Construct list mu: at each iteration a vector [x1*s1, xi * si, ...]
+    # Construct list: at each iteration a vector [x1*s1, xi * si, ...]
     mu = []
     for i in range(len(u)):
         mu.append(u[i][2]*u[i][3])
@@ -36,13 +36,15 @@ def cent_meas(x, u, label, plot = 1):
 
     # Construct list cm: at each iteration the norm || [x1*s1, xi * si, ...] || (centering deviation)
     cm = []
+    sm = []
     for i in range(len(u)):
         r = sum(mu[i])/len(mu[i])
         s = mu[i] - r*np.ones(len(x))
-        cm.append(np.linalg.norm(s))
+        sm.append(r)
+        cm.append(np.linalg.norm(s, 1))
         
     dfu['cd'] = cm # Dataframe with centering deviation
-        
+    dfu['sm'] = sm # mi   
     pf = []
     for i in range(len(u)):
         r = max(u[i][4])
@@ -61,7 +63,7 @@ def cent_meas(x, u, label, plot = 1):
     
     if plot == 0:
         plt.figure()
-        plt.plot(dfu['it'], dfu['Current g'], label = 'Dual gap', marker = '.')
+        plt.plot(dfu['it'], dfu['sm'], label = 'Current g', marker = '.')
         plt.plot(dfu['it'], dfu['cd'], label = 'Centering deviation', marker = '.')
         plt.grid(b = True, which = 'major')
         locs, labels = plt.xticks(np.arange(0, len(u), step = 1))

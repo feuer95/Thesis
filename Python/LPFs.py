@@ -13,7 +13,7 @@ import pandas as pd                      # Export to excel
 import matplotlib.pyplot as plt          # Print plot
 import time
 
-""" We construct lists with info about number of iterations an time to compute a LP problem """
+""" We construct lists with info about number of iterations and time to compute a LP problem """
 
 it1 = []
 time_longpath1 = []
@@ -32,17 +32,17 @@ for i in range(28):
         A, b, c = input_data(i)
         
         start = time.time()
-        x1, s1, u1 = longpath1(A, b, c)
+        x1, s1, u1 = longpath1(A, b, c, info = 1)
         time_longpath1.append(time.time() - start)
         it1.append(len(u1))
         
         start = time.time()
-        x2, s2, u2, sig2 = longpath2(A, b, c)
+        x2, s2, u2, sig2 = longpath2(A, b, c, info = 1)
         time_longpath2.append(time.time() - start)
         it2.append(len(u2))
         
         start = time.time()
-        x3, s3, u3, sig3 = longpathPC(A, b, c)
+        x3, s3, u3, sig3 = longpathPC(A, b, c, info = 1)
         time_longpathPC.append(time.time() - start)
         it3.append(len(u3))
 
@@ -60,8 +60,19 @@ plt.yscale('log')
 plt.legend()
 plt.xlabel('Problem data')
 plt.ylabel('Time (sec)')
-# contruct dataframe using all 4 lists
 
+# contruct dataframe using all 4 lists
 d = {'col1': it1, 'col2': it2, 'col3': time_longpath1, 'col4': time_longpath2 }
 dfu = pd.DataFrame(d)
-# , columns = ['iterations LPF1','iterations LPF2','time LPF1','time LPF2']
+
+# Plot the iterations number    
+plt.figure()
+plt.plot(it1, 'ro', label = 'it LPF 1')
+plt.plot(it2,'b<', label = 'it LPF 2')
+plt.plot(it3, 'g>', label = 'it LPF PC')
+ax = plt.axes()
+ax.set_xticks(range(22))
+ax.set_yticks(it1+it2+it3)
+plt.yscale('linear')
+ax.grid(True)
+plt.legend()

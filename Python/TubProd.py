@@ -12,6 +12,7 @@ from MehrotraMethod2 import mehrotra2
 
 from LPFMethod import longpath1
 from LPFMethod2 import longpath2
+
 from LPFMethod_cp import longpathC
 from LPFMethod_PC import longpathPC
 
@@ -21,7 +22,7 @@ from scipy.optimize import linprog
 import pandas as pd # Export to excel 
 import matplotlib.pyplot as plt # Print plot
 from cent_meas import cent_meas
-
+import time
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
@@ -46,36 +47,53 @@ b = q[1:21,64]
 
 #%%
 
-""" Interior point methods test """
+""" run the methods """
 
 # Recall the interior point methods (optimal cost 252607.143)
-
+# Plot dual gap e centering measure
+#
 #x_a, s_a , u_a = affine(A, b, c)
-#dfu = cent_meas(x_a, u_a, label = 'Affine', plot = 0) # 23 it
+#dfu = cent_meas(x_a, u_a, label = 'Affine') # 29 it
 #
-#x_m, s_m, u_m = mehrotra(A, b, c)
-#dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # it 10
-#
-#x_l, y_l, s_l, u_l = longpath(A, b, c)
-#dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) # BAD
-#
-#x_l, s_l, u_l = longpath2(A, b, c)
-#dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) # 41 it
-#
-#x_m, s_m, u_m = mehrotra2(A, b, c)
-#dfm = cent_meas(x_m, u_m, label = 'Mehrotra2', plot = 0) # 10 it
-#
-#cp = 0.8
-#x_c, s_c, u_c = longpathC(A, b, c, cp = cp) # BAD
-#dfc = cent_meas(x_c, u_c, label = 'LPF with cp {}'.format(cp))
-#
-#x_pc, s_pc, u_pc = longpathPC(A, b, c) # 20 it
-#cfl = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0)
-#
+
+"""            LPF1             """
+
+#start = time.time()
+#x_l, s_l, u_l = longpath1(A, b, c, info = 1)
+#time_lpf1 = time.time()-start
+#print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf1))
+
+dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) # 170 iterations
+
+"""            LPF2             """
+
+start = time.time()
+x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, info = 1) # 13 it
+time_lpf2 = time.time()-start
+print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf2))
+
+dfc = cent_meas(x_c, u_c, label = 'LPF2', plot= 0)
+
+"""            LPF predictor corrector             """
+
+start = time.time()
+x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, info = 1)
+time_lpfpc = time.time()-start
+print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpfpc))
+
+dfpc = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 13 iterations
+
+"""            Mehrotra             """
+
+start = time.time()
+x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, info = 1)
+time_mer = time.time()-start
+print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_mer))
+dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # 10 iterations
 
 " Recall the simplex method "
 
-P, u = SimplexMethod(A, b, c, rule = 1) # 51 it
+#P, u = SimplexMethod(A, b, c, rule = 1) # 51 it
 # it doesn't work with rule = 0
-dfu = pd.DataFrame(u)
+#dfu = pd.DataFrame(u)
 

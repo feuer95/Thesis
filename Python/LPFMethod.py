@@ -16,9 +16,9 @@ import math
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
-'''                                  ====
+'''                   ============================
                       LONG-PATH FOLLOWING METHOD A
-                                     ====
+                      ============================
                                     
 Input data: np.arrays: A, cost vector c, vector b of the LP
             neighborhood param gamma     (10^{-3} by default)
@@ -26,7 +26,7 @@ Input data: np.arrays: A, cost vector c, vector b of the LP
 
 '''
 
-def longpath1(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_it = 500):
+def longpath1(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
         
     print('\n\tCOMPUTATION OF LPF ALGORITHM')       
     
@@ -54,13 +54,14 @@ def longpath1(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
     (x, y, s) = sp(A, c, b)    
     g = np.dot(c,x) - np.dot(y,b)
     
-    print('\nInitial primal-dual point:\nx = {} \nlambda = {} \ns = {}'.format(x, y, s))    
-    print('Dual initial gap: {}.\n'.format("%10.3f"%g))      
+    if info == 0:
+        print('\nInitial primal-dual point:\nx = {} \nlambda = {} \ns = {}'.format(x, y, s))    
+        print('Dual initial gap: {}.\n'.format("%10.3f"%g))      
     
     # Check if (x, y, s) in neighborhood N_inf and define E:
     
     if (x*s > gamma*np.dot(x,s)/c_A).all():
-        print("Initial point is in N_inf(gamma), gamma = {}\n".format("%10.6f"%gamma))
+        print("Initial point is in N")
     E = lambda a: (s+a*s1)*(x+a*x1)-(gamma*np.dot((s+a*s1),(x+a*x1)))/c_A  # Function E: set of values in N_(gamma)
     
     #%%
@@ -77,14 +78,14 @@ def longpath1(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
     
     while tm > w:
         
-        print("\tIteration: {}\n".format(it), end='')
-                
         """ Modified Newton's method with with normal equations: find the direction vector (y1, s1, x1)"""
-        ''' Compute the search direction solving the matricial AUGMENTED SYSTEM '''     
+        ''' Compute the centering parameter = 1 - 1/2* n*(0.5) '''   
         
         cp = 1 - 0.5/math.sqrt(c_A)
-        print("Centering parameter sigma:{}.\n".format("%10.3f"%cp))
-        
+        if info == 0:
+            print("\tIteration: {}\n".format(it), end='')
+            print("Centering parameter sigma:{}.\n".format("%10.3f"%cp))      
+
         # solve search direction with AUGMENTED SYSTEM
         X_inv = np.linalg.inv(np.diag(x))           
         W1 = X_inv*np.diag(s)          # W1 = X^(-1)*S        
@@ -102,7 +103,8 @@ def longpath1(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
         y1 = o[:r_A]
         x1 = o[r_A:c_A + r_A]      
         s1 = np.dot(X_inv, rxs) - np.dot(W1, x1)
-        print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3), y1.round(decimals = 3),s1.round(decimals = 3)))
+        if info == 0:
+            print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3), y1.round(decimals = 3),s1.round(decimals = 3)))
         
         """ Compute the largest step length & increment of the points and the iteration"""
 
@@ -112,7 +114,7 @@ def longpath1(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
         while i >= 0:
             if (E(v[i]) > 0).all():
                 t = v[i]
-                print('Largest step length:{}'.format("%10.3f"%t))
+#                print('Largest step length:{}'.format("%10.3f"%t))
                 break
             else:
                 i -= 1
@@ -131,9 +133,10 @@ def longpath1(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
         
         if it == max_it:
             raise TimeoutError("Iterations maxed out") 
-            
-        print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))       
-        print('Dual next gap: {}.\n'.format("%10.3f"%g))
+        
+        if info == 0:
+            print('\nCurrent point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))       
+            print('Dual next gap: {}.\n'.format("%2.2e"%g))
         
 #%%
            
@@ -154,8 +157,8 @@ if __name__ == "__main__":
     
     # Input data of canonical LP:
     
-    (A, b, c) = input_data(26)    
+    (A, b, c) = input_data(12)    
     
-    x, s, u = longpath1(A, b, c)
+    x, s, u = longpath1(A, b, c, info = 1)
     
     dfm = cent_meas(x, u, 'LPF', plot = 0)

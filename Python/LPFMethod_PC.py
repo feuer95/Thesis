@@ -16,9 +16,9 @@ from cent_meas import cent_meas
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
-'''                                 ====
-            LONG-PATH FOLLOWING METHOD_ Predictor Corrector
-                                    ====
+'''         ===============================================
+            LONG-PATH FOLLOWING METHOD  Predictor Corrector
+            ===============================================
                                     
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             neighborhood parameter gamma (default 0.001)
@@ -32,7 +32,7 @@ Output data: vector x primal solution
             
 '''
 
-def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_it = 300):
+def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_it = 300, info = 0):
         
     print('\n\tLPF predictor-corrector')       
             
@@ -59,15 +59,17 @@ def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w
     
     (x, y, s) = sp(A, c, b)    
     g = np.dot(c,x) - np.dot(y,b)
-    
-    print('\nInitial primal-dual point:\nx = {} \nlambda = {} \ns = {}'.format(x, y, s))    
-    print('Dual initial gap: {}.\n'.format("%10.3f"%g))      
+    if info == 0:
+        
+        print('\nInitial primal-dual point:\nx = {} \nlambda = {} \ns = {}'.format(x, y, s))    
+        print('Dual initial gap: {}.\n'.format("%10.3f"%g))      
     
     # Check if (x, y, s) in neighborhood N_inf and define E:
     if (x*s > gamma*np.dot(x,s)/c_A).all():
-        print("Initial point is in N_inf(gamma), gamma = {}\n".format("%10.6f"%gamma))
+        print("Initial point is in N")
     E = lambda a: (s+a*s1)*(x+a*x1)-(gamma*np.dot((s+a*s1),(x+a*x1)))/c_A  # Function E: set of values in N_(gamma)
-            
+  
+          
     #%%
         
     """ Predictor step """
@@ -81,8 +83,9 @@ def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w
     sig = []
     
     while tm > w:
-                
-       print("\tIteration: {}\n".format(it + 1))
+        
+       if info == 0:
+           print("\tIteration: {}\n".format(it + 1))
 
        # Choose cp = 0 and compute the direction with augmented system
        (x1, y1, s1, rb, rc) = augm(A, b, c, x, y, s, 0) 
@@ -93,7 +96,7 @@ def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w
        while i >= 0:
         if (E(v[i]) > 0).all():
             t = v[i]
-            print('Largest step length:{}'.format("%10.3f"%t))
+#            print('Largest step length:{}'.format("%10.3f"%t))
             break
         else:
             i -= 1
@@ -103,8 +106,10 @@ def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w
        
        """ Corrector step: compute (x_k+1, lambda_k+1, s_k+1) """
        
-       (x1, y1, s1, rb, rc) = augm(A, b, c, x, y, s, Sigma) 
-       print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),x1.round(decimals = 3),s1.round(decimals = 3)))      
+       (x1, y1, s1, rb, rc) = augm(A, b, c, x, y, s, Sigma)
+       
+       if info == 0:
+           print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),x1.round(decimals = 3),s1.round(decimals = 3)))      
     
        # Update 
        x += t*x1            # Current x
@@ -121,16 +126,18 @@ def longpathPC(A, b, c, gamma = (0.001), s_min = 0.1, s_max = 0.9, c_form = 0, w
 
        if it == max_it:
            raise TimeoutError("Iterations maxed out")
-       print('\nCurrent primal-dual point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))    
-       print('Dual next gap: {}.\n'.format("%10.3f"%g))
+          
+       if info == 0:     
+           print('\nCurrent primal-dual point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x.round(decimals = 3), y.round(decimals = 3), s.round(decimals = 3)))    
+           print('Dual next gap: {}.\n'.format("%10.3f"%g))
 
 #%%
-       
+
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
-            "Dual gap: {}\n".format("%10.6f"%g) +
+            "Dual gap: {}\n".format("%2.2e"%g) +
             "Optimal cost: {}\n".format("%10.3f"%z) +
             "Number of iteration: {}".format(it))
-    
+
     return x, s, u, sig
 
 
@@ -168,9 +175,9 @@ def augm(A, b, c, x, y, s, cp):
 if __name__ == "__main__":
     
     
-    (A, b, c) = input_data(0)   
+    (A, b, c) = input_data(22)   
 
-    x, s, u, sig1 = longpathPC(A, b, c)
+    x, s, u, sig1 = longpathPC(A, b, c, info = 1)
           
     ul = cent_meas(x, u, 'LPF Predictor corrector', plot = 0)
     

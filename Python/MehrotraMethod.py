@@ -16,7 +16,7 @@ np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 12
 
 
 '''                                 ====
-                      PREDICTOR-CORRECTOR MEHROTRA ALGORITHM 
+                    PREDICTOR-CORRECTOR MEHROTRA ALGORITHM 
                                     ====
 
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
@@ -30,7 +30,7 @@ Output data: x: primal solution
 Matricial system computed with normal equations
 '''
 
-def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500):
+def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
     
     print('\n\tCOMPUTATION OF MEHROTRA ALGORITHM\n')
         
@@ -58,14 +58,16 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500):
     (x, y, s) = sp(A, c, b)    
     g = np.dot(c, x) - np.dot(y, b)
     
-    print('\nInitial primal-dual point:\nx = {} \nlambda = {} \ns = {}'.format(x, y, s))    
-    print('Dual initial g: {}.\n'.format("%10.3f"%g))      
+    if info == 0:
+        
+        print('\nInitial primal-dual point:\nx = {} \nlambda = {} \ns = {}'.format(x, y, s))    
+        print('Dual initial g: {}.\n'.format("%10.3f"%g))      
   
     #%%
     
     """ Predictor step: compute affine direction """
     '''
-    Compute affine scaling direction solving Qs = R with an augmented system D^2 = S^{-1}*X 
+    Compute affine scaling direction solving Qs = R with system D^2 = S^{-1}*X 
     with Q a large sparse matrix 
     and R = [rb, rc, - x_0*s_0]
     '''
@@ -78,9 +80,7 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500):
     u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
     
     while tm > w:
-        
-        print("\n\tIteration: {}\n".format(it), end='')   
-        
+
         """ Pure Newton's method with with normal equations: find the direction vector (y1, s1, x1)"""
         
         S_inv = np.linalg.inv(np.diag(s))  # S^{-1}
@@ -102,7 +102,11 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500):
         y1 = np.dot(L_inv.T, z)
         s1 = rc - np.dot(A.T, y1)
         x1 = np.dot(S_inv, rxs) - np.dot(W1, s1)
-        print("\nPREDICTOR STEP:\nAffine direction:\n({}, {}, {})\n".format(x1, y1, s1))
+        
+        if info == 0:
+                    
+            print("\n\tIteration: {}\n".format(it), end='')   
+            print("\nPREDICTOR STEP:\nAffine direction:\n({}, {}, {})\n".format(x1, y1, s1))
         
         #%%
         
@@ -133,7 +137,10 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500):
         y2 = np.dot(L_inv.T, z)
         s2 = - np.dot(A.T, y2)
         x2 = np.dot(S_inv, Rxs) - np.dot(W1, s2)
-        print("Cc direction:\n({}, {}, {})\n".format(x2, y2, s2))
+        
+        if info == 0:
+            
+            print("Cc direction:\n({}, {}, {})\n".format(x2, y2, s2))
  
         #%%
         
@@ -156,25 +163,27 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500):
         g = z - np.dot(y, b)     # Current gap 
         it += 1
         u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()])
-        sig.append([Sigma, mi_af, mi]) 
+        sig.append([Sigma]) 
 
         # Termination elements
         tm = term(it, b, c, rb, rc, z, g)
 
         if it == max_it:
            raise TimeoutError("Iterations maxed out")
-
-
-        print('CORRECTOR STEP:\nCurrent primal-dual point: \n x = ',x,'\nlambda = ',y,'\n s = ',s)
-        print('Current g: {}\n'.format("%.3f"%g))        
+           
+        if info == 0:
+            
+            print('CORRECTOR STEP:\nCurrent primal-dual point: \n x = ',x,'\nlambda = ',y,'\n s = ',s)
+            print('Current g: {}\n'.format("%.3f"%g))        
 
 #%%
         
     print_boxed("Found optimal solution of the standard problem at\n x* = {}.\n\n".format(x) +
-                "Dual gap: {}\n".format("%10.6f"%g) +
+                "Dual gap: {}\n".format("%2.2e"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
                 "Number of iteration: {}".format(it))
-    return x, s, u
+    
+    return x, s, u, sig
      
 
 #%%
@@ -184,9 +193,9 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500):
 '''
 if __name__ == "__main__":
     
-#    (A, b, c) = input_data(1)
+    (A, b, c) = input_data(10)
     
-    xm, sm, um = mehrotra(A, b, c)
+    xm, sm, um, sigmam = mehrotra(A, b, c, info = 1)
     
     dm = cent_meas(xm, um, 'Mehrotra', plot = 0)
-
+#   plt.plot(sigmam)
