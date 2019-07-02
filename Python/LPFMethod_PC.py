@@ -24,7 +24,7 @@ Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             neighborhood parameter gamma (default 0.001)
             c_form: canonical form       (default 0)
             w: tollerance                (default 10**(-8))
-            max_it: maximum no of iterations (default 300)
+            max_it: maximum no of iterations (default 500)
             
 Output data: vector x primal solution
              vector s solution
@@ -32,7 +32,7 @@ Output data: vector x primal solution
             
 '''
 
-def longpathPC(A, b, c, gamma = 0.0001, c_form = 0, w = 10**(-8), max_it = 300, info = 0):
+def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
         
     print('\n\tLPF predictor-corrector')       
             
@@ -102,7 +102,7 @@ def longpathPC(A, b, c, gamma = 0.0001, c_form = 0, w = 10**(-8), max_it = 300, 
             i -= 1
        mi = np.dot(x,s)/c_A                  # Duality measure
        mi_aff = np.dot(x + t*x1,s + t*s1)/c_A # Average value of the incremented vectors
-       Sigma =  (mi_aff/mi)**3
+       Sigma = (mi_aff/mi)**3
        
        """ Corrector step: compute (x_k+1, lambda_k+1, s_k+1) """
        
@@ -151,7 +151,7 @@ def augm(A, b, c, x, y, s, cp):
     W1 = X_inv*np.diag(s)                       # W1 = X^(-1)*S   
     T = np.concatenate((np.zeros((r_A,r_A)), A), axis = 1)
     U = np.concatenate((A.T,-W1), axis = 1)
-    V = np.concatenate((T,U), axis = 0)
+    V = np.concatenate((T, U), axis = 0)
     
     # RHS of the linear system with minus
     rb = b - np.dot(A, x)
@@ -175,9 +175,9 @@ def augm(A, b, c, x, y, s, cp):
 if __name__ == "__main__":
     
     
-    (A, b, c) = input_data(29)   
+    (A, b, c) = input_data(21)   
 
-    x, s, u, sig = longpathPC(A, b, -c)
+    x, s, u, sig = longpathPC(A, b, c)
           
     ul = cent_meas(x, u, 'LPF Predictor corrector', plot = 0)
     

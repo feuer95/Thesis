@@ -26,7 +26,7 @@ time_longpathPC = []
 
 # for to fill the lists
 
-for i in range(28):
+for i in range(30):
     if not i in {4,14,20,23,25}:
         print(i)
         A, b, c = input_data(i)

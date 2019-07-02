@@ -19,6 +19,7 @@ import pandas as pd # Export to excel
 import matplotlib.pyplot as plt # Print plot
 from cent_meas import cent_meas
 from SimplexMethodIIphases import SimplexMethod
+from scipy.optimize import linprog
 import time
 
 # Clean form of printed vectors
@@ -72,12 +73,12 @@ x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, c_form = 0, info = 1)
 time_lpf2 = time.time()-start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf2))
 
-dfc = cent_meas(x_c, u_c, label = 'LPF2', plot= 0)
+dfc = cent_meas(x_c, u_c, label = 'LPF2', plot = 0)
 
 """                        LPF predictor corrector                          """
 #                             14 iterations
 start = time.time()
-x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, c_form = 0, info = 1)
+x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, gamma = 0.5, c_form = 0, info = 0)
 time_lpfpc = time.time()-start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpfpc))
 
@@ -86,11 +87,11 @@ dfpc = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0)
 """                          Mehrotra                                       """
  #                          8 iterations
 start = time.time()
-x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, c_form = 0, info = 1)
-time_mer = time.time()-start
+x_m, s_m, u_m, sigma_m = mehrotra2(A, b, c, c_form = 0, info = 1) # Mehrotra1 doesn't work
+time_mer = time.time() - start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_mer))
 dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0)
 
 " Recall the simplex method "
 
-#P, u = SimplexMethod(A, b, c, rule = 0) 
+P, u = SimplexMethod(A, b, c, c_form = 0, rule = 0, max_it = 200) 

@@ -187,13 +187,13 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
      
 
 #%%
-'''                           ===
+'''                ====================
                    MEHROTRA METHOD test
-                              ===
+                   ====================
 '''
 if __name__ == "__main__":
     
-    (A, b, c) = input_data(31)
+    (A, b, c) = input_data(18)
     
     xm, sm, um, sigmam = mehrotra(A, b, c)
     

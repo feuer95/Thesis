@@ -109,8 +109,8 @@ dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0)
 
 " Recall the simplex method "
 
-#P, u = SimplexMethod(A, b, c, rule = 1, c_form = 0) # BAD
+P, u = SimplexMethod(A, b, c, rule = 1, c_form = 1) # BAD
 #
-x = linprog(c, A_eq =A, b_eq = b) # Exact solution
-#
+x = linprog(c, A_eq = A, b_eq = b) # Exact solution
+x = linprog(c, A, b) # BAD
 #plt.show()

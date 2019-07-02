@@ -68,8 +68,8 @@ def longpath2(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, in
     
     # Check if (x, y, s) in neighborhood N_inf:
     mu = np.dot(x,s)/c_A
-    if (x*s > gamma*mu).all():
-        print("Initial point is in N")
+    if not (x*s > gamma*mu).all():
+        print("Initial point is not in N")
     E = lambda a: (s+a*s1)*(x+a*x1)-(gamma*np.dot((s+a*s1),(x+a*x1)))/c_A  # Function E: set of values in N_(gamma)
     
     #%%
@@ -161,7 +161,7 @@ if __name__ == "__main__":
     
     # Input data of canonical LP:
     
-    (A, b, c) = input_data(33)
+    (A, b, c) = input_data(18)
         
     x, s, u, sig = longpath2(A, b, c, info = 1)
     

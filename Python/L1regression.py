@@ -33,10 +33,10 @@ Z = []
 q = np.log(2)
 for i in range(29):
     print(i)
-    if not i in {4, 20}:
+    if not i in {4, 20, 25}:
         (A, b, c) = input_data(i)
         x, s, u, sigma_m = mehrotra2(A, b, c, info = 1)
-        x, v = SimplexMethod(A,b,c)
+        x, v = SimplexMethod(A,b,c, rule = 0)
         x, s, z, sigma_pc = longpathPC(A, b, c, info = 1)        
         B.append(np.log(len(u)-1))
         W.append(np.log(len(v)-1))
@@ -45,7 +45,7 @@ for i in range(29):
         a.append([q, np.log(r)])
         Y.append(np.log(r))
         it.append(i)
-for i in range(29,34):# we compute the models
+for i in range(29, 34):# we compute the models
     it.append(i)
     if i == 29:   
         B.append(np.log(8))
@@ -78,7 +78,7 @@ for i in range(29,34):# we compute the models
         (A, b, c) = input_data(i)
         B.append(np.log(9))
         W.append(np.log(59))
-        Z.append(np.log(13))       
+        Z.append(np.log(41))       
         r = sum(A.shape)        
     a.append([q, np.log(r)])
     Y.append(np.log(r)) 
@@ -95,7 +95,7 @@ plt.figure()
 
 plt.plot(Y, B, 'o', color='black', label = 'Mehrotra')
 plt.plot(Y, W, '<', color='red', label = 'Simplex')
-plt.plot(Y, Z, '>', color='yellow', label = 'LPF predictorCorr')
+plt.plot(Y, Z, '>', color='green', label = 'LPF predictorCorr')
 plt.grid(b = True, which = 'major')
 plt.ylabel('iterations')
 plt.xlabel('size')
@@ -104,18 +104,23 @@ plt.show()
 
 
 # L2 regression of |Ax -b|_2 for Mehrotra
-x = np.dot(np.linalg.pinv(A), B)
-x = [2.2392, 0.1665]
-
+A = np.vstack([Y,np.ones(len(Y))])
+A = A.T
+q = np.dot(np.linalg.pinv(A), B)
+x = np.arange(max(Y)+1)
+ym = q[0]*x + q[1]
+plt.plot(x,ym, c = 'black', linewidth = 2)
 #T = 2**x[1]*(m + n)**x[2]
+
 # L2 regression of |Ax -b|_2 for Simplex
-x = np.dot(np.linalg.pinv(A), W)
-x = [-np.Inf,  np.Inf]
+#x = np.dot(np.linalg.pinv(A), W)
+#x = [-np.Inf,  np.Inf]
 #T = 2**x[1]*(m + n)**x[2]
 
 # L2 regression of |Ax -b|_2 for LPF pc
-x = np.dot(np.linalg.pinv(A), Z)
-x = [2.3336, 0.2922]
+t = np.dot(np.linalg.pinv(A), Z)
+yl = t[0]*x + t[1]
+plt.plot(x,yl, c = 'green', linewidth = 2)
 #T = 2**x[1]*(m + n)**x[2]
 
 # L1 regression of the function |Ax - b|
