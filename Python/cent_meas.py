@@ -41,7 +41,7 @@ def cent_meas(x, u, label, plot = 1):
         r = sum(mu[i])/len(mu[i])
         s = mu[i] - r*np.ones(len(x))
         sm.append(r)
-        cm.append(np.linalg.norm(s, 1))
+        cm.append(np.linalg.norm(s, 2))
         
     dfu['cd'] = cm # Dataframe with centering deviation
     dfu['sm'] = sm # mi   
@@ -63,7 +63,8 @@ def cent_meas(x, u, label, plot = 1):
     
     if plot == 0:
         plt.figure()
-        plt.plot(dfu['it'], dfu['sm'], label = 'Current g', marker = '.')
+        plt.plot(dfu['it'], dfu['sm'], label = 'sTx', c = 'm', marker = '.')
+        plt.plot(dfu['it'], dfu['Current g'], label = 'Current g', marker = 'o')
         plt.plot(dfu['it'], dfu['cd'], label = 'Centering deviation', marker = '.')
         plt.grid(b = True, which = 'major')
         locs, labels = plt.xticks(np.arange(0, len(u), step = 1))

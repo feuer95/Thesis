@@ -18,16 +18,14 @@ import time
 Find the MAXIMUM total NPV: the constraint set in standard form A x = b using the IPM methods:
                 input data: A, b, c, c_form = 1, w = 10^{-8} default
                 expected output data: optimal solution -322515
+
+ Import & construct input data in standard for.
+ We construct the input data with zeros rows for the equailities
+ and identy for the submtrix respect to the inequalities
 '''
 
-print('\n\tfirst TEST ON FOREST SERVICE ALLOCATION\n')
-
-""" import & construct input data in standard form"""
-''' We construct the input data with zeros rows for the equailies
-    and identy for the submtrix respect to the inequalities
-'''
-excel_file = 'Forest.xlsx'
 def forest():
+    excel_file = 'Forest.xlsx'
     r = pd.read_excel('Forest.xlsx')
     c = np.array(r['p'])  # Cost vector of maximum problem
     T = np.array(-r['t'])
@@ -63,39 +61,36 @@ def forest():
 
 optimal solution :
     x^* = [75, 90.91, 672.28, 137.31, 13.59, 0, 10.91]
-    
-'''
-""" import & construct input data """
 
+Find the MAXIMUM total NPV: standard form A_{i} x     < b_{i}
+                                          A_{j} x + 0 = b_{j} 
+
+ import & construct input data in standard form
+'''
 def ssteel():
     excel_file = 'Swedish_steel_IPM.xlsx'
     r = pd.read_excel('Swedish_steel_IPM.xlsx')
     q = r.as_matrix()
     q = np.asarray(q)
     
-    # Input data in canonical form Ax <= b
-    A = q[:,0:7]
+    # Input data in standard form
+    A = q[:,:17]
     b = q[:,17]
-    c = np.array([16, 10, 8, 9, 48, 60, 53])
+    c2 = np.array([16, 10, 8, 9, 48, 60, 53])
+    y = np.zeros(10)
+    c = np.concatenate((c2,y))
     return(A, b, c)
 
 #%%
 
-'''                         ====================================
-                            TUBULAR PRODUCTS OPERATIONS PLANNING
-                            ==================================== 
+'''         ====================================
+            TUBULAR PRODUCTS OPERATIONS PLANNING
+            ==================================== 
                                            
 Find the minimum of the TPC : the LP is in canonical form
+The optimal cost is 252607.143
+import & construct input data for IPM
 '''
-'''                                        ===
-                            TUBULAR PRODUCTS OPERATIONS PLANNING
-                                           === 
-                                           
-Find the minimum of the TPC : the LP is in canonical form
-
-'''
-
-""" import & construct input data for IPM """
 def tubprod():
     excel_file = 'TubProd.xlsx'
     r = pd.read_excel('TubProd.xlsx')
@@ -107,6 +102,12 @@ def tubprod():
     return(A, b, c)
 
 #%%
+"""         ========= 
+            QUICK Aid
+            =========
+Optimal cost:  20766.380  
+                                  
+"""
 
 def qa():    
     excel_file = 'QA.xlsx'
@@ -130,3 +131,25 @@ def qa():
     for i in range(4):
            A[i, c_A + i] = 1
     return(A, b, c)       
+
+#%%%
+"""                 ===   
+                    ONB
+                    ===
+""" 
+def onb():
+    excel_file = 'ONB.xlsx'
+    r = pd.read_excel('ONB.xlsx')
+    q = r.as_matrix()
+    q = np.asarray(q)
+    
+    q[[i for i in range(15,26)]] *= -1
+    c = q[0,:23]
+    A = q[1:26,:23]
+    b = q[1:26,23]
+    b= np.concatenate((b, 20*np.ones((10))))
+    r_A, c_A = A.shape
+    A = np.vstack((A, np.zeros((10,c_A))))
+    for i in range(1,11):
+        A[r_A-1+i,12+i] = 1
+    return(A, b, c)    

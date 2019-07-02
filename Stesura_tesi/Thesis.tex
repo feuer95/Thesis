@@ -1460,7 +1460,7 @@ matrix $D^{2}$ takes on both huge and tiny values.
 
 \chapter{Numerical experiments}
 In this chapter it is developed a comprehensive analysis of the results obtained by some practical implementations. It is presented three LP problems: the forest service allocation, Swedish steel model, ...\\
-The fictitious data come from \cite{RR}.
+The fictitious data used to test the LP methods come from \cite{RR}.
 \section{Forest service allocation} 
 The first model we illustrate is the \textit{Forest service allocation}. It is part of model class in which the main issue is how to divide or allocate a valuable resource among competing needs and the resource may be for example land, capital, time or fuel. We will see how U.S Forest Service has used this model to address the sensitive task of managing 191 million acres of national forestland \cite{(Natural)}.\\
 The Forest Service is one of the major Federal land managing agencies. It has been part of the Department of Agricolture since 1905 and over the past 10 years significant administrative and legal challenges have plagued national forest management \cite{ForSer}. Resource simulation models are the principal technologies used for estimating ecological and enviromental responses to activities. These models try to qualify relationships among resources and results of management actions. Simulations such as timber growth-and-yeld models and sediment yield models often examine consequences of management activities for a singele resource. The regional diversity of forest resources has led to many unique, local models rather than universal models. The Forest Service, in 1979, designed FORPLAN as its principal tool for national forest: it is al linear programming system, used to analyze the temporal aspects of the forest output. FORPLAN was chosen because it addressed two key issues in forest plnning: cost efficiency and an allowable timber sale quantity. Besides, these models have been used by each national forest structure with input that represent their problem. This is a strengh of LP. \\
@@ -1496,7 +1496,7 @@ x_{5,1}^{*} &= 0 & x_{5,2}^{*}&= 154 & x_{5,3}^{*} &= 58 & x_{6,1}^{*} &= 0 & x_
  x_{7,1}^{*}&=0 &x_{7,2}^{*} &= 0 & x_{7,3}^{*} &= 113 & & & &  & & \\
 \end{align*}
 \section{Swedish steel}
-As allocation models split a resource, blending models combine them. Various applications blend everything from chemicals, to diets, to metals, to animal food. This problems are formulated in a LP model in which you have to decide what mix of ingredients best fulfills specified output requirements. In this section we propose the Swedish steel problem.\\
+As allocation models split a resource, instead blending models combine them. Various applications blend everything from chemicals, to diets, to metals, to animal food. This problems are formulated in a LP model in which you have to decide what mix of ingredients best fulfills specified output requirements. In this section we propose the Swedish steel problem.\\
 The steel industry confronts a blending problem when it melts materials in high-temperature furnaces to manufacture new alloys from scrap. Fagersta AB of Fagersta, Sweden, is one of many companies that have used mathematical programming to plan this steel blending \cite{SSM}.\\
 An optimization arises every time a furnace is charged. Scrap in the available inventory is combined with a pure additives to produce a blend having the required percentages of various chemical elements. It is critical to make maximum use of scrap because addittives are much more expensive. In this research we assess that the Swedish steel making will produce a 100-kilogram furnace charge. The following table shows the much smaller fractions of carbon, nickel, chromium, and molybdenum in the four available supplies of scrap. It also shows the three higher-cost addities that can be used and the acceptable ranges for the resulting blend.\\
 The following table illustrate a fictitious version of Swedush steelimaking
@@ -1520,7 +1520,7 @@ The following table illustrate a fictitious version of Swedush steelimaking
 The principal decision variables in blending models specify how much of each available ingredient to include in the mix. In the Swedish Steel example we define the decision variables $x_{j}$ where $j = 1, \dots, 4$ refers to the four supplies of scrap and $j = 5, \dots, 7$ refer to the pure additives.\\
 We have also upper and lower limits on the fraction of carbon, nickel, chromium and molybdenum in the mix. Each constraint will have the form:\\
 
-$\sum_{j}\Bigg($\begin{tabular}{l}
+$\sum\limits_{j}\Bigg($\begin{tabular}{l}
  fraction in\\
 jth\\
 ingredient\\
@@ -1541,7 +1541,7 @@ ingredient\\
 		the blend\\
 	\end{tabular}
 	$\Bigg)$
-	$\sum_{j}\Big($\begin{tabular}{l}
+	$\sum\limits_{j}\Big($\begin{tabular}{l}
 		blend\\
 		total\\
 	\end{tabular}
@@ -1570,9 +1570,54 @@ The unique optimal solution of this model is according to \cite{RR} and confirme
 x_{1}^{*} &=  75\text{ kg,} & x_{2}^{*}&=  90.91\text{ kg,} & x_{3}^{*} &= 672.28 \text{ kg,} & x_{4}^{*} &= 137.31 \text{ kg,}\\
 x_{5}^{*} &= 13.59 \text{ kg,}& x_{6}^{*}&= 0\text{ kg,}  & x_{7}^{*} &= 10.91 \text{ kg.} &&\\
 \end{align*}
+\section{Ohio National Bank shift scheduling}
+Operations planning models decide what work to undertake so that available resources are used efficiently. In Shift scheduling or staff planning models the work is already fixed. We must now plan the resources to accomplish it.\\
+The Ohio National Bank (ONB) confronted such a problem in staffing its check processing center \cite{ONB}. Checks received by the bank already have account numbers and other identifying information encoded on them, Machine operators in the check processing center key the dollar  amount of the check, which is then imprinted with the other information for computerized processing.\\Checks arrive through the buiness day in volumes peaking in the early evening. The fictious version will assume the following arrival (in thousand):
+\begin{table}[H]
+	\begin{center}
+	\begin{tabular}{ll|ll}
+		\hline
+		\textbf{Hour} & \textbf{Arrivals} & \textbf{Hour} & \textbf{Arrivals} \\ \hline
+		11:00 & 10 & 17:00 & 32 \\
+		12:00 & 11 & 18:00 & 50 \\
+		13:00 & 15 & 19:00 & 30 \\
+		14:00 & 20 & 20:00 & 20 \\
+		15:00 & 25 & 21:00 & 8 \\
+		16:00 & 28 & - & -   \\ \hline
+	\end{tabular}
+\end{center}
+\end{table}
+Uncollected checks cost the bank money in lost interest. Thus it is essential that all checks be processed in time for collection on the next business day. ONB decided to enforce a requirement that all checks be completed by 22:00. Furthermore, the number unprocessed at any hour should not exceed 20 thousand. \\
+Two types of employees can perform the check processing task. Full-time employees work an 8-hour shift with a 1-hour lunch break in the middle. Part-time employees work only 4 hour per day with no lunch. Both types of shifts can begin at any hour of the day and full-time employees can be assigned an hour of overtime.\\
+In the analysis we assume that full-time employees receive \$ 11 per hour in pay and benefits, plus an extra \$ 1 per hour in "night differential" for time after 18:00 and 150\% pay for daily overtime. Part-time employees are paid \$ 7 per hour, plus \$ 1 per hour night differential after 18:00. Also, to keep overtime under control, we require that no more than half the full-time employees on any shift work overtime and that the total number of scheduled overtime hours not exceed 20 per day.\\
+Naturally, full-time employees work faster than part-timers. We will assume that full-time operators process 1000 checks per hour and part-timears only 800.\\
+One final complication is encoding stations. The number of machines available limits the number of employees who can work at any one time. Our center will have 35 machines.\\
+Below we propose a possible shift scheduling:
+\begin{table}[]
+	\begin{center}
+	\begin{tabular}{llllllllllll}
+		\hline
+		\multirow{\textbf{Start}} & \multicolumn{3}{l}{\textbf{Full-time shift}} & \multicolumn{8}{l}{\textbf{Part-time shifts}} \\ \cline{2-12} 
+		& \textbf{11} & \textbf{12} & \textbf{13} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15} & \textbf{16} & \textbf{17} & \textbf{18} \\ \hline
+		11:00 & R & - & - & R & - & - & - & - & - & - & - \\
+		12:00 & R & R & - & R & R & - & - & - & - & - & - \\
+		13:00 & R & R & R & R & R & R & - & - & - & - & - \\
+		14:00 & R & R & R & R & R & R & R & - & - & - & - \\
+		15:00 & - & R & R & - & R & R & R & R & - & - & - \\
+		16:00 & R & - & R & - & - & R & R & R & R & - & - \\
+		17:00 & R & R & - & - & - & - & R & R & R & R & - \\
+		18:00 & RN & RN & RN & - & - & - & - & RN & RN & RN & RN \\
+		19:00 & RN & RN & RN & - & - & - & - & - & RN & RN & RN \\
+		20:00 & ON & RN & RN & - & - & - & - & - & - & RN & RN \\
+		21:00 & - & ON & RN & - & - & - & - & - & - & - & RN \\ \hline
+	\end{tabular}
+	\end{center}
+\end{table}
 \section{The coffee problem}
 \section{A comparative study}
 In this section, we give a comparison between the results given by the infeasible prima-dual algorithms and the LPF predictor-corrector described in the previous chapter.\\ We compute the methods to solve the LP problems before illustrated. Then a study of the numerical results will be discussed.
+
+
 \chapter{Conclusion}
  All variables $(x, \lambda, s)$ change at each iteration and the linear algebra operations which are required to update them have to involve the complete matrix $A$. This makes a single iteration of the interior point method significantly more expensive than that of the simplex method.
 
@@ -1586,6 +1631,7 @@ In this section, we give a comparison between the results given by the infeasibl
 		\bibitem{MINTY} Klee, V., Minty, G., \emph{ How good is the simplex algorithm? } in O. Shisha, ed.,
 	‘Inequalities–III’, Academic Press, New York, pp: 159–175, (1972).
 	\bibitem{Lem} Lemke C.E, \textit{ The dual method of solving the linear programming problem.} Naval Research Logistics Quarterly, John Wiley and Sons, (1954).
+		\bibitem{Lem}Based on Krajewski L. J., McKenzie P., Ritzman L. P., \textit{ "Shift Scheduling in Banking Operations: A Case Appllication"}, Interfaces, 10:12, (1980).
 		\bibitem{LMS} Lustig I. J., Marsten E., Shanno D. F., \emph{ Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, pp. 191-222, (1991).
 		\bibitem{ComTeq} Maros I., \emph{ "Computational Techniques of the Simplex Method}, first ed., Kluwer
 		Academic Publishers, Boston, (2003).

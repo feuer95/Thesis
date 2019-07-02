@@ -5,20 +5,20 @@ Created on Tue Apr  9 11:31:52 2019
 
 @author: Elena
 """
-from print_boxed import print_boxed # Print pretty boxes
-from stdForm import stdForm # Convert in standard form
-import numpy as np # Create vectors
-import matplotlib.pyplot as plt # Create graphics
-import pandas as pd # Export to excel 
+from print_boxed import print_boxed      # Print pretty boxes
+from stdForm import stdForm              # Convert in standard form
+import numpy as np                       # Create vectors
+import pandas as pd                      # Export to excel 
 from input_data import input_data
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 
-'''' _SIMPLEX METHOD II PHASES_  '''
+"""         ============
+        SIMPLEX METHOD II PHASES
+              ============   
 
-"""
 Input data: np.arrays: A, vector b, cost vector c of the model LP
             maximum no of iterations          (default 500)
             rule: if Bland's rule             (default 0)
@@ -30,23 +30,19 @@ Output: vector x* optimal vector
     
 def SimplexMethod(A, b, c, max_it = 500, rule = 0, c_form = 0):
     
-    """ Error checking """
-        
+    """ Input error checking & construction in a standard form """
+              
     if not (isinstance(A, np.ndarray) or isinstance(b, np.ndarray) or isinstance(c, np.ndarray)):
-        raise Exception('Inputs must be a numpy arrays')
-                
-    # Construction in a standard form [A | I]
-    if c_form == 0:
-        (A, c) = stdForm(A, c)   
-    A = np.asmatrix(A)    
+        info = 1
+        raise Exception('Inputs must be a numpy arrays: INFO {}'.format(info))
+        
+    if c_form == 0: # Construction in a standard form [A | I]
+        A, c = stdForm(A, c)
+    A = np.asmatrix(A)
     r_A, c_A = A.shape
-
-    """ Check full rank matrix """
-    
-    # Remove ld rows:
-    if not np.linalg.matrix_rank(A) == r_A:        
+    if not np.linalg.matrix_rank(A) == r_A: # Remove ld rows:
         A = A[[i for i in range(r_A) if not np.array_equal(np.linalg.qr(A)[1][i, :], np.zeros(c_A))], :]
-        r_A = A.shape[0]  # Update no. of rows                                                       
+        r_A = A.shape[0]  # Update no. of rows
     
     print('\n\tCOMPUTATION OF SIMPLEX ALGORITHM')
     if rule == 0:
@@ -120,7 +116,7 @@ def fun(A, c, x, B, it, max_it, rule) -> (float, np.array, set, float, np.array,
     z = np.dot(c, x)  # Value of obj. function
     u = []
     while it <= max_it:  # Ensure procedure terminates (for the min reduced cost rule)
-        print("\t\nIteration: {}\nCurrent x: {} \nCurrent B: {}\n".format(it, x, B), end = '')
+#        print("\t\nIteration: {}\nCurrent x: {} \nCurrent B: {}\n".format(it, x, B), end = '')
         u.append([it, B.copy(), x, z.copy()]) # Update table
         lamda = c[B] * B_inv
         if rule == 0:  # Bland's rule
@@ -163,9 +159,9 @@ def fun(A, c, x, B, it, max_it, rule) -> (float, np.array, set, float, np.array,
             B_inv[i, :] -= d[B[i]]/d[B[r]] * B_inv[r, :]
         B_inv[r, :] /= -d[B[r]]
         
-        NB = NB - {s} | {B[r]}  # Update non-basic index set
-        B[r] = s                # Update basic index list       
-        it += 1                 # Update iteration
+        NB = NB - {s} | {B[r]}    # Update non-basic index set
+        B[r] = s                  # Update basic index list       
+        it += 1                   # Update iteration
     return 2, x, set(B), z, it, u # info = 2 if max_iteration
 
 
@@ -176,7 +172,7 @@ def fun(A, c, x, B, it, max_it, rule) -> (float, np.array, set, float, np.array,
 # Input data of canonical LP:
 if __name__ == "__main__":
     
-    A, b, c = input_data(28)
+    A, b, c = input_data(21)
 
     # Run simplex method
     x, u = SimplexMethod(A, b, c, rule = 1) # With Bland's rule
@@ -184,13 +180,3 @@ if __name__ == "__main__":
     # Create a dataframe and convert to excel
     dfu = pd.DataFrame(u, columns = ['it', 'Current Basis', 'Current x', 'Current cost value'])
 #    dfu.to_excel("Simplex_Minty2.xlsx", index = False)
-#    
-#    # Plot the graphic with dataframe elements
-#    plt.figure()
-#    plt.plot(dfu['it'], dfu['Current cost value'], marker = 'o', ls = 'None', label = 'Cost value')
-#    plt.title('Cost value')
-#    plt.ylabel('cost value')
-#    plt.xlabel('iterations')
-#    locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
-#    
-#    plt.grid(b = True, which = 'major')

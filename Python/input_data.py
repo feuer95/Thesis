@@ -4,7 +4,11 @@ Created on Wed May 29 07:53:54 2019
 
 @author: elena
 """
-
+from models import forest
+from models import ssteel
+from models import tubprod
+from models import qa
+from models import onb
 import numpy as np
 
 '''                         = EXAMPLES = 
@@ -169,7 +173,16 @@ def input_data(w):
         c = np.array([6, 8, 5, 9]) 
         A = np.array([[2, 1, 1, 3],[1, 3, 1, 2]])
         b = np.array([5, 3])
-        
+    if w == 29:
+        (A, b, c) = forest()
+    if w == 30:
+        (A, b, c) = ssteel()
+    if w == 31:
+        (A, b, c) = tubprod()
+    if w == 32: # Quick aid
+        (A, b, c) = qa()
+    if w == 33: # Bank
+        (A, b, c) = onb()
     return A, b, c
 
 

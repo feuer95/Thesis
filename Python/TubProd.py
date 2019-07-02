@@ -27,73 +27,70 @@ import time
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
-'''                                        ===
-                            TUBULAR PRODUCTS OPERATIONS PLANNING
-                                           === 
-                                           
-Find the minimum of the TPC : the LP is in canonical form
-
 '''
-
-""" import & construct input data for IPM """
-
-excel_file = 'TubProd.xlsx'
-r = pd.read_excel('TubProd.xlsx')
-q = r.as_matrix()
-q = np.asarray(q)
-c = q[0,:64]
-A = q[1:21,:64]
-b = q[1:21,64]
-
+Find the minimum of the TPC : the LP is in canonical form
+The optimal cost is 252607.143
+import & construct input data for IPM
+'''
+def tubprod():
+    excel_file = 'TubProd.xlsx'
+    r = pd.read_excel('TubProd.xlsx')
+    q = r.as_matrix()
+    q = np.asarray(q)
+    c = q[0,:64]
+    A = q[1:21,:64]
+    b = q[1:21,64]
+    return(A, b, c)
+    
 #%%
 
 """ run the methods """
-
-# Recall the interior point methods (optimal cost 252607.143)
-# Plot dual gap e centering measure
-#
-#x_a, s_a , u_a = affine(A, b, c)
-#dfu = cent_meas(x_a, u_a, label = 'Affine') # 29 it
-#
-
-"""            LPF1             """
-
-#start = time.time()
-#x_l, s_l, u_l = longpath1(A, b, c, info = 1)
-#time_lpf1 = time.time()-start
-#print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf1))
-
-dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) # 170 iterations
-
-"""            LPF2             """
-
-start = time.time()
-x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, info = 1) # 13 it
-time_lpf2 = time.time()-start
-print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf2))
-
-dfc = cent_meas(x_c, u_c, label = 'LPF2', plot= 0)
-
-"""            LPF predictor corrector             """
-
-start = time.time()
-x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, info = 1)
-time_lpfpc = time.time()-start
-print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpfpc))
-
-dfpc = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 13 iterations
-
-"""            Mehrotra             """
-
-start = time.time()
-x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, info = 1)
-time_mer = time.time()-start
-print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_mer))
-dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # 10 iterations
-
-" Recall the simplex method "
-
-#P, u = SimplexMethod(A, b, c, rule = 1) # 51 it
-# it doesn't work with rule = 0
-#dfu = pd.DataFrame(u)
+if __name__ == "__main__": 
+    (A, b, c) = tubprod() # canonical form!
+    """                              Affine                                 """
+    #                                 29 it
+    x_a, s_a , u_a = affine(A, b, c)
+    dfu = cent_meas(x_a, u_a, label = 'Affine')
+    
+    
+    """                            LPF1                                     """
+    #                              IT DOESN'T WORK!!!
+    #start = time.time()
+    #x_l, s_l, u_l = longpath1(A, b, c, info = 1)
+    #time_lpf1 = time.time() - start
+    #print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf1))
+    
+    #dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) 
+    
+    """                            LPF2                                     """
+    #                                  21 it
+    start = time.time()
+    x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, info = 1) 
+    time_lpf2 = time.time()-start
+    print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf2))
+    
+    dfc = cent_meas(x_c, u_c, label = 'LPF2', plot= 0)
+    
+    """                b  LPF predictor corrector                           """
+    #                          20 iterations
+    start = time.time()
+    x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, info = 1)
+    time_lpfpc = time.time()-start
+    print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpfpc))
+    
+    dfpc = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) 
+    
+    """                        Mehrotra                                     """
+    #                             10 iterations
+    start = time.time()
+    x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, info = 1)
+    time_mer = time.time()-start
+    print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_mer))
+    dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0)
+    
+    " Recall the simplex method "
+    
+    #P, u = SimplexMethod(A, b, c, rule = 1) # 51 it
+    # it doesn't work with rule = 0
+    #dfu = pd.DataFrame(u)
 

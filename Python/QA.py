@@ -24,6 +24,11 @@ from SimplexMethodIIphases import SimplexMethod
 from scipy.optimize import linprog
 import time 
 
+"""         ========= 
+            QUICK Aid
+            =========
+"""
+
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
@@ -65,14 +70,14 @@ b1 = np.concatenate((-S, b))
 #dfu = cent_meas(x_a, u_a, label = 'Affine') # 29 it
 
 
-"""            LPF1             """
+"""                              LPF1                                       """
+#                           174 iterations
+start = time.time()
+x_l, s_l, u_l = longpath1(A, b, c, c_form = 1, info = 1)
+time_lpf1 = time.time()-start
+print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf1))
 
-#start = time.time()
-#x_l, s_l, u_l = longpath1(A, b, c, c_form = 1, info = 1)
-#time_lpf1 = time.time()-start
-#print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf1))
-
-#dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) # 170 iterations
+dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) 
 
 """            LPF2             """
 
@@ -83,28 +88,29 @@ print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf2))
 
 dfc = cent_meas(x_c, u_c, label = 'LPF2', plot= 0)
 
-"""            LPF predictor corrector             """
-
+"""                         LPF predictor corrector                         """
+#                              12 iterations
 start = time.time()
 x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, c_form = 1, info = 1)
 time_lpfpc = time.time()-start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpfpc))
 
-dfpc = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) # 12 iterations
-
-"""            Mehrotra             """
-
+dfpc = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) 
+ 
+"""                              Mehrotra                                   """
+#                              7 iterations
 start = time.time()
 x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, c_form = 1, info = 1)
 time_mer = time.time()-start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_mer))
-dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) # 7 iterations
+
+dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) 
 
 
 " Recall the simplex method "
 
-#P, u = SimplexMethod(A1, b1, c1, rule = 0, c_form = 0) # BAD
+#P, u = SimplexMethod(A, b, c, rule = 1, c_form = 0) # BAD
 #
-x = linprog(c1, A1, b1) # Exact solution
+x = linprog(c, A_eq =A, b_eq = b) # Exact solution
 #
 #plt.show()

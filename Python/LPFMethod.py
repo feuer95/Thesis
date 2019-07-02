@@ -23,10 +23,11 @@ np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 12
 Input data: np.arrays: A, cost vector c, vector b of the LP
             neighborhood param gamma     (10^{-3} by default)
             c_form: canonical form       (0 by default)
-
+            w: tollerance                (default 10**(-8))
+            max_it: maximum no of iterations (default 500)
 '''
 
-def longpath1(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
+def longpath1(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
         
     print('\n\tCOMPUTATION OF LPF ALGORITHM')       
     
@@ -76,12 +77,13 @@ def longpath1(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
     u = []        # Construct list of info elements 
     u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
     
+    cp = 1 - 0.5/math.sqrt(c_A)
     while tm > w:
         
         """ Modified Newton's method with with normal equations: find the direction vector (y1, s1, x1)"""
         ''' Compute the centering parameter = 1 - 1/2* n*(0.5) '''   
         
-        cp = 1 - 0.5/math.sqrt(c_A)
+        
         if info == 0:
             print("\tIteration: {}\n".format(it), end='')
             print("Centering parameter sigma:{}.\n".format("%10.3f"%cp))      
@@ -141,7 +143,7 @@ def longpath1(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
 #%%
            
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
-                "Dual gap: {}\n".format("%10.6f"%g) +
+                "Dual gap: {}\n".format("%10.6e"%g) +
                 "Optimal cost: {}\n".format("%10.3f"%z) +
                 "Number of iteration: {}".format(it))
     return x, s, u
@@ -149,16 +151,16 @@ def longpath1(A, b, c, gamma = 0.001, s_min = 0.1, s_max = 0.9, c_form = 0, w = 
 
 
 #%%
-'''                           ===
+'''                     ===============
                         LPF METHOD test
-                              ===
+                        ===============
 '''    
 if __name__ == "__main__": 
     
     # Input data of canonical LP:
     
-    (A, b, c) = input_data(12)    
+    (A, b, c) = input_data(21)    
     
-    x, s, u = longpath1(A, b, c, info = 1)
+    x, s, u = longpath1(A, b, c)
     
     dfm = cent_meas(x, u, 'LPF', plot = 0)

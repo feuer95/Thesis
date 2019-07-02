@@ -153,15 +153,15 @@ def longpath2(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, in
 
 
 #%%
-'''                     ===============
+'''                           ===
                         LPF METHOD test
-                        ===============
+                              ===
 '''    
 if __name__ == "__main__": 
     
     # Input data of canonical LP:
     
-    (A, b, c) = input_data(33)
+    (A, b, c) = input_data(26)
         
     x, s, u, sig = longpath2(A, b, c, info = 1)
     
