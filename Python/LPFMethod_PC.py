@@ -6,6 +6,7 @@ Created on Fri May 31 15:10:16 2019
 """
 
 from starting_point import sp       # Function to find the initial infeasible point
+from starting_point2 import sp2       # Function to find the initial infeasible point
 from print_boxed import print_boxed # Print pretty info boxes
 from stdForm import stdForm         # Function to extend LP in a standard form
 import numpy as np                  # To create vectors
@@ -32,7 +33,7 @@ Output data: vector x primal solution
             
 '''
 
-def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
+def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 0):
         
     print('\n\tLPF predictor-corrector')       
             
@@ -57,8 +58,12 @@ def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, i
 
     """ Initial points: Initial infeasible positive (x,y,s) and initial gap g """
     
-    (x, y, s) = sp(A, c, b)    
+    if ip == 0:
+        (x, y, s) = sp(A, c, b)
+    else:
+        (x, y, s) = sp2(A, c, b)        
     g = np.dot(c,x) - np.dot(y,b)
+    
     if info == 0:
         
         print('\nInitial primal-dual point:\nx = {} \nlambda = {} \ns = {}'.format(x, y, s))    

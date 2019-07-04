@@ -1000,6 +1000,22 @@ To measure the efficacy of the affine-scaling direction, we define $\mu_{\text{a
 	\textbf{end}
 \end{tabbing}
 We can notice that in the two algorithms the starting point is not necessarily feasible, this approach is elaborated in the next chapter.
+\section{IPM algorithms performance}
+In this section we develop an empirical study of the IPM algorithms performace. \\
+We introduce a model that allow us to summirize the results obtained in this fashion: we ralte the number of iterations $T$ required to solve a LP to number of constraints $m$ and/or the number of variables $n$ in the problem. We may assume that $T$ can be approximated by a function of the form \begin{equation}
+	T = 2^{\alpha}(m+n)^{\beta}
+\end{equation}
+for a pair of real numbers $\alpha$ and $\beta$. This multiplicative representation of the numbers of iterations can be converted into an additive representation by taking logarithms. Introducing an $\epsilon$ to value the difference between the model's prediction and the true number of iterations, we see that the model can be written as
+\begin{equation}
+\log T = \alpha \log 2 +\beta \log (m+n) +\epsilon.
+\end{equation}
+\\For each empirical observation we find the two parameters $\alpha$ and $\beta$ and compute $T$ related to the IPM methods proposed: long-path following algorithms with centering parameter $\sigma_{k}^{1}$ and with $\sigma_{k}^{2}$, LPF PC and Mehrotra's algorithms. \\
+The figure \ref{figure:T} shows a log-log plot of iterations versus $m + n$.
+\begin{figure}\label{figure:T}
+	\begin{center}
+		\includegraphics[width= 15 cm]{numberiterations}\caption{number of iterations} \label{fig:float}
+	\end{center}
+\end{figure}
 %\lstinputlisting[language=py,caption=applicationContext.py]{Forest.py}
 \chapter{Convergence analysis}
 In this section it is delineated a complete convergence analysis important theoretical results. 
@@ -1349,11 +1365,12 @@ We define the residual function $r$ that converts the vector sequence into a rea
 There are several important issues concerning interior-point algorithms
 for linear programs.\\
 \section*{Initialization and termination}
-In the discussion of the interior point methods, it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})$ is feasible respect to the linear equations \ref{DF} and \ref{PF}, instead in the predictor-corrector alforithms is requird only $(x^{0},s^{0})>0$.\\
-IPMs are sensitive to the choice of an initial point.
-The complexity of obtaining such an initial point is the same as that of solving the
-linear program itself. However, most implementations work with an infeasible starting point and infeasible iterations, like Mehrotra's method.\\
-The choice of starting point is an important practical issue with a significant effect on the robustness of the algorithm. A popular heuristic for finding $(x^{0}, \lambda^{0}, s^{0})$ starts by calculating $(\tilde{x}, \tilde{\lambda}, \tilde{s})$ as solution of two least-squares problems:
+In the discussion of the interior point methods, it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})$ is feasible respect to the linear equations \ref{DF} and \ref{PF}, instead in the predictor-corrector alforithms it is required only $(x^{0},s^{0})>0$.\\
+IPMs are sensitive to the choice of an initial primal-dual point. In fact, the choice of "poor" starting points may drastically reduce the steps toward the solutiona, giving significant effect on the robustness of the algorithm. Therefore, the choice of good initial values is an important issue in the implementation of IP methods. A common way to deal with this issue is to use heuristic-based strategies that try to keep the infeasibility small while ensuring that nonnegative variables are far enough from zero.\\
+Since most of IPM explicity or implicity attempt to follow the central path $\mathcal{C}$, a very simple choice for the starting point would be to set the nonnegative variables to one and the others to zero. This choice guarantees that the point is perfectly centered, i.e. all pairwise complementarity products are equal to $\mu$ and the nonnegative variables are sufficiently bounded away from zero. However, this point be far from satisfying the constraints \cite{VAN}.\\
+Another strategy aimed to satisfy the requirement that the starting point is both well centerd and not to infeasible is presented in \cite{MER}.\\
+This popular heuristic approach for finding $(x^{0}, \lambda^{0}, s^{0})$ consists on computing least squares solutions to the equations corresponding to the linear constraints of the LP and then shifting the values of the variables to ensure that they are kept away from the boundary of the orthant. Now we see in detail.\\
+The construction starts by calculating $(\tilde{x}, \tilde{\lambda}, \tilde{s})$ as solution of two least-squares problems:
 \begin{align*}
 \min \lVert x \rVert ^{2} &\text{ subject to }Ax = b\\
 \min\limits_{(\lambda,s)} \lVert s \rVert ^{2} &\text{ subject to } A^{T}\lambda +s = c
@@ -1375,37 +1392,30 @@ The starting point is then defined as
 (x^{0}, \lambda^{0}, s^{0}) = (\tilde{x}+\delta e,\tilde{\lambda},\tilde{s}+\delta e).
 \end{align*}
 \\
-We call a LP \textit{self-dual} if the dual of the problem is equivalent to the primal. The advantage of self-duality is that we can apply a primal-dual interior-point algorithm to solve the self-dual problem without doubling the dimension of the linear system solved at each iteration.\\
-For example the algorithm termed \textit{Homogeneous Self-Dual Algorithm} (HSD) is based on the construction of a homogeneous and self-dual linear programming problem in such a way the point $x=1, \lambda = 0, \tau= 1,z=1,\theta= 1$ is feasible. This produces a problem with a bounded optimal
-region, with a known strictly feasible starting point.
-\begin{equation*}
-\begin{alignat*}{4}
-\min&&&(n+1)\theta&\\
-\text{subject to}&&Ax&-b\tau&+\bar{b}\theta=0,\\
-&-A^{T}\lambda&&+c\tau&-\bar{c}\theta\geq0,\\\label{Ss}
-&b^{T}\lambda&-c^{T}x&&+\bar{z}\theta\geq0,\\\label{Kk}
-&-\bar{b}\lambda&+\bar{c}^{T}x&-\bar{z}\tau&=-(n+1),\\
-\lambda\text{ free, }x \geq 0,\tau\geq0, \;\theta \text{ free,} 
-\end{alignat*}
+The logical basis for this choice is that many path-following methods are able to perform long steps toward the solution and to drive the infeasibility to zero at least at the same rate as the duality gap, by keeping the iterates in the central path neighbourhood \begin{equation*}
+\mathcal{N}(\gamma,\beta) =\Bigg\{(x, \lambda, s) | \frac{\lVert(r_{b}, r_{c})\rVert_{2}}{\mu} \leq \beta\frac{\lVert(r_{b}^{o}, r_{c}^{o})\rVert_{2}}{\mu^{o}}, (x, s)>0, x_{i}s_{i} \geq \gamma\mu,\;i = 1,\dots, n \Bigg\}
 \end{equation*}
-where  $\bar{b} = b -Ae,\;\; \bar{c}=c-e,\;\;\bar{z}=c^{T}e+e$.\\
-The vectors $\bar{b}$, $\bar{c}$ and $\bar{z}$ represent the infeasibility of the initial primal point, dual
-point, and primal-dual gap, respectively. They are chosen so that the system is
-feasible: for example $(x,\lambda, \tau,\theta)=(e^{T},0,e^{T},e^{T})$ with $e$ unit vector. We now relate optimal solutions to HSD to those for LP. Let us state, without proof, that the HSD problem has an optimal solution and its optimal solution set is bounded. \cite{LNP}
-Denote by $s$ and $k$ the slack variables respectively for the second \ref{Ss} and the third constraint \ref{Kk}, $\mathcal{F}_{h}$ be the set of all points $(\lambda, x, \tau, s, k)$ that are feasible for HSD and $\mathcal{F}_{h}^{o}$ the set of strictly feasible points with $(\lambda,x,s,k)>0$ in $\mathcal{F}_{h}$.  
-\begin{thm}
-	Let $(\lambda^{*},x^{*},\tau^{*},\theta^{*},s^{*},k^{*})$ be a strictly-self complementary solution for HSD:
-	\begin{enumerate}
-		\item LP has a solution (feasible and bounded) if and only if $\tau^{*}>0$. In this case, $x^{*}/\tau^{*}$ is an optimal solution for the primal LP and $y^{*}/\tau^{*}$, $s^{*}/\tau^{*}$ is an optimal solution for the dual LP.
-		\item LP has no solution if and only if $k^{*}>0$.
-	\end{enumerate} 
-\end{thm}
-The HSD consist on a problem with a bounded optimal
-region, with a known strictly feasible starting point.
-In the project, we implement the IIP and HSD algorithms. In terms of robustness, HSD and IIP are comparable; in terms of
-efficiency, HSD is faster than IIP. Generally, HSD takes more time than IIP in
-each iteration, but HSD uses fewer iterations than IIP.
+where $\gamma\in(0,1)$ and $\beta \geq 1$ are given parameters and $(r_{b}^{o}, r_{c}^{o})$ and $\mu_{o}$ are evaluated at the starting point $(x^{o}, \lambda^{o}, s^{o})$. Note that we must have $\beta \geq 1$ to ensure that the initial point $(x^{o}, \lambda^{o}, s^{o})\in\mathcal{N}(\gamma,\beta)$. \cite{SPS}
 \\
+\\
+The second starting-point strategy is suggested by the convergence theory of the Potential Reduction (PR) method.\\
+The starting point can be chosen as \begin{equation*}
+(x^{o}, \lambda^{o}, s^{o}) = \eta \tilde{w}
+\end{equation*}where $\tilde{w} = (e,0,e)$ and $\eta$ such that 
+\begin{equation}\label{su}
+\frac{\lVert(r^{o}_{b},r^{o}_{c})\rVert_{2}}{\mu^{o}}\leq \tau<1. 
+\end{equation}
+It easy to verify that, since $\mu^{o}$ increases quadratically with $\eta$ and $\lVert(r^{o}_{b},r^{o}_{c})\rVert_{2}$ incrreases linearly, inequality \ref{su} approximately holds if $\eta$ satisfies
+\begin{equation*}
+\eta\geq \frac{\lVert(\tilde{r}_{b},\tilde{r}_{c})\rVert_{2}}{\tau\tilde{\mu}},
+\end{equation*}
+where $(\lVert\tilde{r}_{b},\tilde{r}_{c})\rVert_{2}$ and $\tilde{\mu}$ are respectively the infeasibility and the duality measure associated with $\tilde{w}$ (in this case $\tilde{\mu} = n$). \\
+We note that $(x^{o},\lambda^{o},s^{o})$ is perfectly centeredand all its componenta with lower bound 0 are "sufficient" positive, but even if the ratio in \ref{suu} is small, the duality gap and the infeasibility may very large, slowing the progress toward the solution.\\
+This method strategy, labeled with STP1 (\cite{SPS}), is summarized in \ref{fig:STP1}
+\begin{figure}
+	\caption{\label{fig:STP1}}
+\end{figure}
+\newpage
 Now we deal on the termination criteria; unlike the simplex method, primal-dual algorithms never find an exact solution of the LP. In this research it is computed a finite termination phase that reports an approximate solution for which the residuals and duality measure are sufficiently small. After determinated a small tollerance $\epsilon$, the algorithms terminate when the following conditions on the relative primal and dual feasibility and the relative duality gap are satisfied:
 \begin{align*}
 \frac{\lVert Ax -b\rVert}{1+ \lVert b \rVert}\leq \epsilon, && \frac{\lVert A^{T}y -c\rVert}{1 + \lVert c \rVert}\leq \epsilon, &&\frac{|c^{T}x - b^{T}y|}{1+b^{T}y}\leq \epsilon,
@@ -1488,7 +1498,7 @@ Since the LP is not in standard form, we convert the inequalies to equalities ad
 
 
 \\
-The minimum total net present value is $\$322515.00$ with the following optimal allocation:
+The minimum total net present value is $$322515.00$ with the following optimal allocation:
 \begin{align*}
 x_{1,1}^{*} &=  0 & x_{1,2}^{*}&= 0 & x_{1,3}^{*} &= 75 & x_{2,1}^{*} &= 90 & x_{2,2}^{*} &= 0 & x_{2,3}^{*} &= 0\\
 x_{3,1}^{*} &= 140 & x_{3,2}^{*}&= 0 & x_{3,3}^{*} &= 0 & x_{4,1}^{*} &= 0 & x_{4,2}^{*} &= 0 & x_{4,3}^{*} &= 60\\
@@ -1572,8 +1582,8 @@ x_{5}^{*} &= 13.59 \text{ kg,}& x_{6}^{*}&= 0\text{ kg,}  & x_{7}^{*} &= 10.91 \
 \end{align*}
 \section{Ohio National Bank shift scheduling}
 Operations planning models decide what work to undertake so that available resources are used efficiently. In Shift scheduling or staff planning models the work is already fixed. We must now plan the resources to accomplish it.\\
-The Ohio National Bank (ONB) confronted such a problem in staffing its check processing center \cite{ONB}. Checks received by the bank already have account numbers and other identifying information encoded on them, Machine operators in the check processing center key the dollar  amount of the check, which is then imprinted with the other information for computerized processing.\\Checks arrive through the buiness day in volumes peaking in the early evening. The fictious version will assume the following arrival (in thousand):
-\begin{table}[H]
+The Ohio National Bank (ONB) confronted such a problem in staffing its check processing center \cite{ONB}. Checks received by the bank already have account numbers and other identifying information encoded on them. Machine operators in the check processing center key the dollar  amount of the check, which is then imprinted with the other information for computerized processing.\\Checks arrive through the business day in volumes peaking in the early evening. The fictious version will assume the following arrival (in thousand):
+\begin{table}[H]\caption{\label{table:shiftscheduling}Possible ONB arrivals schedule.}
 	\begin{center}
 	\begin{tabular}{ll|ll}
 		\hline
@@ -1590,10 +1600,10 @@ The Ohio National Bank (ONB) confronted such a problem in staffing its check pro
 Uncollected checks cost the bank money in lost interest. Thus it is essential that all checks be processed in time for collection on the next business day. ONB decided to enforce a requirement that all checks be completed by 22:00. Furthermore, the number unprocessed at any hour should not exceed 20 thousand. \\
 Two types of employees can perform the check processing task. Full-time employees work an 8-hour shift with a 1-hour lunch break in the middle. Part-time employees work only 4 hour per day with no lunch. Both types of shifts can begin at any hour of the day and full-time employees can be assigned an hour of overtime.\\
 In the analysis we assume that full-time employees receive \$ 11 per hour in pay and benefits, plus an extra \$ 1 per hour in "night differential" for time after 18:00 and 150\% pay for daily overtime. Part-time employees are paid \$ 7 per hour, plus \$ 1 per hour night differential after 18:00. Also, to keep overtime under control, we require that no more than half the full-time employees on any shift work overtime and that the total number of scheduled overtime hours not exceed 20 per day.\\
-Naturally, full-time employees work faster than part-timers. We will assume that full-time operators process 1000 checks per hour and part-timears only 800.\\
-One final complication is encoding stations. The number of machines available limits the number of employees who can work at any one time. Our center will have 35 machines.\\
-Below we propose a possible shift scheduling:
-\begin{table}[]
+Naturally, full-time employees work faster than part-timers. We will assume that full-time operators process 1000 checks per hour and part-timers only 800.\\
+One final complication is encoding stations. The number of machines available limits the number of employees who can work at any one time. Let us assume the center will have 35 machines.\\
+
+\begin{table}[]\caption{\label{table:Shiftscheduling2}Possible Shifts in ONB Example}
 	\begin{center}
 	\begin{tabular}{llllllllllll}
 		\hline
@@ -1613,7 +1623,17 @@ Below we propose a possible shift scheduling:
 	\end{tabular}
 	\end{center}
 \end{table}
-\section{The coffee problem}
+The main decisions to be made in shift scheduling models are the number of employees to work various shifts. \\In the ONB case we have all the possibilities in table \ref{table:Shiftscheduling2}. One additional hour may also be worked in overtime.\newpage
+Using the index $h$ corresponding the shift start time, we define the following decision variables:
+\begin{itemize}
+	\item $x_{h}$ is the number of full-time employees beginning a shift at hour $h \in \{11, \dots, 13\}$.
+	\item $y_{h}$ is the number of full-time employees with shift beginning at hour $h$ who overtime ($h \in \{11, 12\}$).
+	\item $z_{h}$ corresponds to the number of part-time employees beginning a shift at hour $h\in\{11, \dots, 18\}$.
+\end{itemize}
+With the ONB case we have a slight complication in covering requirements. Work arrivals are specified on an hour-by-hour basis, but work completion is limited only by checks being finished at 22:00. To model covering in such a case, we define also $w$ as well:
+\begin{itemize}
+	\item $w_{h}$ as unclompeted work backlog at hour $h$ (in thousands).
+\end{itemize}
 \section{A comparative study}
 In this section, we give a comparison between the results given by the infeasible prima-dual algorithms and the LPF predictor-corrector described in the previous chapter.\\ We compute the methods to solve the LP problems before illustrated. Then a study of the numerical results will be discussed.
 
@@ -1623,20 +1643,21 @@ In this section, we give a comparison between the results given by the infeasibl
 
 
 \begin{thebibliography}{9}
-	\bibitem{MARE} Adler I., Monteiro R. D. C., Resende M. G. C., \emph{A polynomial-time primal-dual affine scaling algorithm for linear and convex quadratic programming and its power serier extension}, Math. of OR, 15: pp. 191-214, (1990).
+	\bibitem{MARE} Adler I., Monteiro R. D. C., Resende M. G. C., \emph{ "A polynomial-time primal-dual affine scaling algorithm for linear and convex quadratic programming and its power serier extension"}, Math. of OR, 15: pp. 191-214, (1990).
 	\bibitem{ADL} Adler I., Monteiro R. D. C., \emph{Limiting behaviour of the affine scaling continuous trajectories for linear programming problems}, Mathematical Programming, pp. 29-51, (1991).
-	\bibitem{1}Dantzig, G. B.,\emph{\;Linear Programming and Extensions}, Princeton, University Press, Princeton, NJ, (1963).
+			\bibitem{SPS} D'Apuzzo M., De Simone V., di Serafino D., \emph{ "Starting-point strategies for an infeassible potential reduction method."}, Springer-Verlag, D. Optim Lett, 4, pp: 131-146, (2010).
+	\bibitem{1}Dantzig, G. B.,\emph{\;Linear Programming and Extensions}, Princeton, University Press, Princeton, NJ, (1963).	
 	\bibitem{DAN}Dantzig, G. B.,\emph{\;Expected number of steps of the simplex method for a linear program with a convexity constraint.}, Technical Report SOL 80-3, Systems Optimization Laboratory, Department of Operations Research, Stanford University, Stanford, CA, (1980).
-	\bibitem{2} Andersen E. D, and Ye Y.,  \textit{Combining interior-point and pivoting algorithms for Linear Programming}, ()1996).
+	\bibitem{2} Andersen E. D, and Ye Y.,  \textit{Combining interior-point and pivoting algorithms for Linear Programming}, (1996).
 		\bibitem{MINTY} Klee, V., Minty, G., \emph{ How good is the simplex algorithm? } in O. Shisha, ed.,
 	‘Inequalities–III’, Academic Press, New York, pp: 159–175, (1972).
 	\bibitem{Lem} Lemke C.E, \textit{ The dual method of solving the linear programming problem.} Naval Research Logistics Quarterly, John Wiley and Sons, (1954).
-		\bibitem{Lem}Based on Krajewski L. J., McKenzie P., Ritzman L. P., \textit{ "Shift Scheduling in Banking Operations: A Case Appllication"}, Interfaces, 10:12, (1980).
+		\bibitem{ONB}Based on Krajewski L. J., McKenzie P., Ritzman L. P., \textit{ "Shift Scheduling in Banking Operations: A Case Appllication"}, Interfaces, 10:12, (1980).
 		\bibitem{LMS} Lustig I. J., Marsten E., Shanno D. F., \emph{ Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, pp. 191-222, (1991).
 		\bibitem{ComTeq} Maros I., \emph{ "Computational Techniques of the Simplex Method}, first ed., Kluwer
 		Academic Publishers, Boston, (2003).
 		\bibitem{meg} Megiddo N., \emph{ "Pathways to the optimal set in linear programming"}, in Progress in Mathematical Programming: Interior-Point and RElated Methods, Springer-Verlag, New York, pp. 131-158, (1986).
-	\bibitem{MER} Mehrotra S., \emph{ On the implementation of a primal-dual interior point method. } SIAM J on Optimization, 2, pp: 575-601 (1992).
+	\bibitem{MER} Mehrotra S., \emph{ On the implementation of a primal-dual interior point method. } SIAM Journal on Optimization. 2, pp: 575-601 (1992).
 	\bibitem{MUR} Mehrotra S., \emph{ Advanced Linear Programming: Computation and
 	Practice. } McGraw-Hill New York, New York (1981).
 
@@ -1651,8 +1672,9 @@ In this section, we give a comparison between the results given by the infeasibl
 \bibitem{RR} Rardin Ronald L., \textit{" Optimization in operations reseasch"}, Pearson Education (US), Second edition, University of Arkansas, (2017).
 
 \bibitem{ForSer} \emph{"Forest Service planning : accommodating uses, producing outputs, and sustaining ecosystems"}, Congress of the United States-Office of technology assessment.
-	\bibitem {LP} Vanderbei J. Robert, \emph{\;"Linear programming:
-	Foundations and Extensions"}. Dept. of Operations Research and Financial Engineering
+\bibitem {VAN} Vanderbei J. Robert, \emph{\;"An interior point code for quadratic programming"}, Optim. Methods Software, 1, pp: 451-484, (1999). 
+\bibitem {LP} Vanderbei J. Robert, \emph{\;"Linear programming:
+Foundations and Extensions"}. Dept. of Operations Research and Financial Engineering
 Princeton University, Springer Science + Business Media, (2001).
 \bibitem{SSM} Westerberg, C.-H., Bjorklund B., Hultman E., \emph{"An Application of Mixed Integer Programming in a Swedish Steel Mill" }, Interfaces, 7:2, pp: 39-43, (1977).
 \bibitem {Wright} Wright J. Stephen, \emph{\;Primal-Dual Interior Point Methods.} SIAM: society for industrial and applied mathematics. Philadelphia, %pag 134.

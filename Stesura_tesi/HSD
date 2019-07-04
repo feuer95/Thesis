@@ -1,0 +1,31 @@
+We call a LP \textit{self-dual} if the dual of the problem is equivalent to the primal. The advantage of self-duality is that we can apply a primal-dual interior-point algorithm to solve the self-dual problem without doubling the dimension of the linear system solved at each iteration.\\
+For example the algorithm termed \textit{Homogeneous Self-Dual Algorithm} (HSD) is based on the construction of a homogeneous and self-dual linear programming problem in such a way the point $x=1, \lambda = 0, \tau= 1,z=1,\theta= 1$ is feasible. This produces a problem with a bounded optimal
+region, with a known strictly feasible starting point.
+\begin{equation*}
+\begin{alignat*}{4}
+\min&&&(n+1)\theta&\\
+\text{subject to}&&Ax&-b\tau&+\bar{b}\theta=0,\\
+&-A^{T}\lambda&&+c\tau&-\bar{c}\theta\geq0,\\\label{Ss}
+&b^{T}\lambda&-c^{T}x&&+\bar{z}\theta\geq0,\\\label{Kk}
+&-\bar{b}\lambda&+\bar{c}^{T}x&-\bar{z}\tau&=-(n+1),\\
+\lambda\text{ free, }x \geq 0,\tau\geq0, \;\theta \text{ free,} 
+\end{alignat*}
+\end{equation*}
+where  $\bar{b} = b -Ae,\;\; \bar{c}=c-e,\;\;\bar{z}=c^{T}e+e$.\\
+The vectors $\bar{b}$, $\bar{c}$ and $\bar{z}$ represent the infeasibility of the initial primal point, dual
+point, and primal-dual gap, respectively. They are chosen so that the system is
+feasible: for example $(x,\lambda, \tau,\theta)=(e^{T},0,e^{T},e^{T})$ with $e$ unit vector. We now relate optimal solutions to HSD to those for LP. Let us state, without proof, that the HSD problem has an optimal solution and its optimal solution set is bounded. \cite{LNP}
+Denote by $s$ and $k$ the slack variables respectively for the second \ref{Ss} and the third constraint \ref{Kk}, $\mathcal{F}_{h}$ be the set of all points $(\lambda, x, \tau, s, k)$ that are feasible for HSD and $\mathcal{F}_{h}^{o}$ the set of strictly feasible points with $(\lambda,x,s,k)>0$ in $\mathcal{F}_{h}$.  
+\begin{thm}
+	Let $(\lambda^{*},x^{*},\tau^{*},\theta^{*},s^{*},k^{*})$ be a strictly-self complementary solution for HSD:
+	\begin{enumerate}
+		\item LP has a solution (feasible and bounded) if and only if $\tau^{*}>0$. In this case, $x^{*}/\tau^{*}$ is an optimal solution for the primal LP and $y^{*}/\tau^{*}$, $s^{*}/\tau^{*}$ is an optimal solution for the dual LP.
+		\item LP has no solution if and only if $k^{*}>0$.
+	\end{enumerate} 
+\end{thm}
+The HSD consist on a problem with a bounded optimal
+region, with a known strictly feasible starting point.
+In the project, we implement the IIP and HSD algorithms. In terms of robustness, HSD and IIP are comparable; in terms of
+efficiency, HSD is faster than IIP. Generally, HSD takes more time than IIP in
+each iteration, but HSD uses fewer iterations than IIP.
+\\

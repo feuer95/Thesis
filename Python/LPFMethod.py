@@ -5,6 +5,7 @@ Created on Mon Apr 29 13:49:50 2019
 @author: Elena
 """
 from starting_point import sp         # Find the initial infeasible point
+from starting_point2 import sp2       # Find the initial infeasible point
 from print_boxed import print_boxed   # Print pretty info boxes
 from stdForm import stdForm           # Extend LP in a standard form
 import numpy as np                    # Create vectors
@@ -27,7 +28,7 @@ Input data: np.arrays: A, cost vector c, vector b of the LP
             max_it: maximum no of iterations (default 500)
 '''
 
-def longpath1(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
+def longpath1(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 0):
         
     print('\n\tCOMPUTATION OF LPF ALGORITHM')       
     
@@ -52,6 +53,10 @@ def longpath1(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, in
 
     """ Initial points: Initial infeasible positive (x,y,s) and initial gap g """
     
+    if ip == 0:
+        (x, y, s) = sp(A, c, b)
+    else:
+        (x, y, s) = sp2(A, c, b)        
     (x, y, s) = sp(A, c, b)    
     g = np.dot(c,x) - np.dot(y,b)
     
@@ -61,8 +66,8 @@ def longpath1(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, in
     
     # Check if (x, y, s) in neighborhood N_inf and define E:
     
-    if (x*s > gamma*np.dot(x,s)/c_A).all():
-        print("Initial point is in N")
+    if not (x*s > gamma*np.dot(x,s)/c_A).all():
+        print("Initial point is not in N")
     E = lambda a: (s+a*s1)*(x+a*x1)-(gamma*np.dot((s+a*s1),(x+a*x1)))/c_A  # Function E: set of values in N_(gamma)
     
     #%%

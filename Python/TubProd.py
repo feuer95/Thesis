@@ -56,16 +56,16 @@ if __name__ == "__main__":
     """                            LPF1                                     """
     #                              IT DOESN'T WORK!!!
     #start = time.time()
-    #x_l, s_l, u_l = longpath1(A, b, c, info = 1)
+    #x_l, s_l, u_l = longpath1(A, b, c, info = 1, ip = 0)
     #time_lpf1 = time.time() - start
     #print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf1))
     
     #dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) 
     
     """                            LPF2                                     """
-    #                                  21 it
+    #                              21 it
     start = time.time()
-    x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, info = 1) 
+    x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, info = 1, ip = 0) 
     time_lpf2 = time.time()-start
     print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf2))
     
@@ -74,7 +74,7 @@ if __name__ == "__main__":
     """                b  LPF predictor corrector                           """
     #                          20 iterations
     start = time.time()
-    x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, info = 1)
+    x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, info = 1, ip = 1)
     time_lpfpc = time.time()-start
     print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpfpc))
     
@@ -83,10 +83,12 @@ if __name__ == "__main__":
     """                        Mehrotra                                     """
     #                             10 iterations
     start = time.time()
-    x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, info = 1)
+    x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, info = 1, ip = 0)
     time_mer = time.time()-start
     print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_mer))
+    
     dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0)
+    plt.plot(sigma_m)
     
     " Recall the simplex method "
     

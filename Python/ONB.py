@@ -58,27 +58,28 @@ def onb():
 
 
 """                          LPF1                                          """
-#                         174 iterations
+#                         307 iterations
 start = time.time()
-x_l, s_l, u_l = longpath1(A, b, c, c_form = 0, info = 1)
+x_l, s_l, u_l = longpath1(A, b, c, c_form = 0, info = 1, ip = 0)
 time_lpf1 = time.time()-start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf1))
 
 dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0)
 
 """                                 LPF2                                    """
-#                                  14 it
+#                                  16 it
 start = time.time()
-x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, c_form = 0, info = 1) 
+x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, c_form = 0, info = 1, ip = 1) 
 time_lpf2 = time.time()-start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf2))
 
 dfc = cent_meas(x_c, u_c, label = 'LPF2', plot = 0)
 
 """                        LPF predictor corrector                          """
-#                             14 iterations
+#                             41 iterations / 17 iterations ip = 1
 start = time.time()
 x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, gamma = 0.5, c_form = 0, info = 0)
+x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, c_form = 0, info = 0, ip = 1)
 time_lpfpc = time.time()-start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpfpc))
 
@@ -88,10 +89,12 @@ dfpc = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0)
  #                          8 iterations
 start = time.time()
 x_m, s_m, u_m, sigma_m = mehrotra2(A, b, c, c_form = 0, info = 1) # Mehrotra1 doesn't work
+x_m, s_m, u_m, sigma_m1 = mehrotra2(A, b, c, c_form = 0, info = 1, ip = 1) # Mehrotra1 doesn't work
+
 time_mer = time.time() - start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_mer))
 dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0)
 
 " Recall the simplex method "
 
-P, u = SimplexMethod(A, b, c, c_form = 0, rule = 0, max_it = 200) 
+#P, u = SimplexMethod(A, b, c, c_form = 0, rule = 0, max_it = 200) 

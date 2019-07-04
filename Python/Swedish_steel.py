@@ -89,7 +89,7 @@ if __name__ == "__main__":
     """                             LPF1                                    """
     #                        161 iterations
     start = time.time()
-    x_l, s_l, u_l = longpath1(A, b, c, c_form = 1, info = 1)
+    x_l, s_l, u_l = longpath1(A, b, c, c_form = 1, info = 1, ip = 0)
     time_lpf1 = time.time()-start
     print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf1))
     
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     """                             LPF2                                    """
     #                             13 it
     start = time.time()
-    x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, c_form = 1, info = 1) 
+    x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, c_form = 1, info = 1, ip = 0) 
     time_lpf2 = time.time()-start
     print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf2))
     
@@ -107,32 +107,34 @@ if __name__ == "__main__":
     """                    LPF predictor corrector                          """
     #                          14 iterations
     start = time.time()
-    x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, c_form = 1, info = 1)
+    x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, c_form = 1, info = 1, ip = 0)
     time_lpfpc = time.time()-start
     print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpfpc))
     
     dfpc = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) 
     
     """                          Mehrotra                                   """
-    #                              8 iterations
+    #                            8 iterations
     start = time.time()
-    x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, c_form = 1, info = 1)
+    x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, c_form = 1, info = 1, ip = 1)
     time_mer = time.time() - start
     print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_mer))
     
     dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) 
 
+
+
     """ Recall the simplex method """
     
     (A2, b2, c2) = ssteel2()
-    #P, u = SimplexMethod(A, b, c, rule = 0, c_form = 1) # 17 it Wrong!!!
+    P, u = SimplexMethod(A, b, c, rule = 1, c_form = 1) # 17!!!
     #        Start phase II
     #Iteration: 12
     #Current x: [ 75.  250.  568.   80.5 ...  24.    0.    0.    0. ] 
     
     #P2, u2 = SimplexMethodI(A, b, c, rule = 0, c_form = 1) # 0 it
      
-    #P, u = SimplexMethod(A2, b2, c2, rule = 0) doesn't work
+#    P, u = SimplexMethod(A2, b2, c2, rule = 0) 
     #
     #u2 = np.array([75, 13, 717.503, 177.555, 16.084, 0.857, 0])
     #

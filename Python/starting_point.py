@@ -4,20 +4,19 @@ Created on Tue May 21 16:14:11 2019
 
 @author: elena
 """
-
 import numpy as np
 
-# Clean form of printed vectors
-np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
-
-
-'''' STARTING POINT '''
-
-"""
+'''      ==============
+         STARTING POINT 
+         ==============
+     
+     
 Input data: np.arrays of matrix A, cost vector c, vector b of the STANDARD LP
 Output: vector x, lambda, s infeasible points
+
 (See Mehrotra's paper)
-"""
+
+'''
 
 def sp(A, c, b) -> (np.array, np.array, np.array):
     
@@ -43,5 +42,6 @@ def sp(A, c, b) -> (np.array, np.array, np.array):
         Ds = np.dot(x,s)/sum(x)
         x += 2*Dx*np.ones(c_A) 
         s += 2*Ds*np.ones(c_A)
-    return x,y,s
+        
+    return x, y, s
  

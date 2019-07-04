@@ -71,27 +71,27 @@ b1 = np.concatenate((-S, b))
 
 
 """                              LPF1                                       """
-#                           174 iterations
+#                           174 iterations / 174 iterations
 start = time.time()
-x_l, s_l, u_l = longpath1(A, b, c, c_form = 1, info = 1)
+x_l, s_l, u_l = longpath1(A, b, c, c_form = 1, info = 1, ip = 0)
 time_lpf1 = time.time()-start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf1))
 
 dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) 
 
-"""            LPF2             """
-
+"""                                     LPF2                                """
+#                                      12 it
 start = time.time()
-x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, c_form = 1, info = 1) # 12 it
+x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, c_form = 1, info = 1) 
 time_lpf2 = time.time()-start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf2))
 
 dfc = cent_meas(x_c, u_c, label = 'LPF2', plot= 0)
 
 """                         LPF predictor corrector                         """
-#                              12 iterations
+#                              12 iterations/ 14 iteraions
 start = time.time()
-x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, c_form = 1, info = 1)
+x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, c_form = 1, info = 1, ip = 1)
 time_lpfpc = time.time()-start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpfpc))
 
@@ -100,7 +100,7 @@ dfpc = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0)
 """                              Mehrotra                                   """
 #                              7 iterations
 start = time.time()
-x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, c_form = 1, info = 1)
+x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, c_form = 1, info = 1, ip = 1)
 time_mer = time.time()-start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_mer))
 
@@ -109,8 +109,8 @@ dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0)
 
 " Recall the simplex method "
 
-P, u = SimplexMethod(A, b, c, rule = 1, c_form = 1) # BAD
-#
+#P, u = SimplexMethod(A, b, c, rule = 1, c_form = 1) # BAD
+
 x = linprog(c, A_eq = A, b_eq = b) # Exact solution
 x = linprog(c, A, b) # BAD
 #plt.show()

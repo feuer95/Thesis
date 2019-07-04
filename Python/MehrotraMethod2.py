@@ -1,10 +1,11 @@
-# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 """
 Created on Mon Jun  3 18:34:13 2019
 
 @author: elena
 """
 from starting_point import sp       # Function to find the initial infeasible point
+from starting_point2 import sp2       # Function to find the initial infeasible point
 from print_boxed import print_boxed # Print pretty info boxes
 from stdForm import stdForm         # Function to extend LP in a standard form
 import numpy as np                  # To create vectors
@@ -16,9 +17,9 @@ from term import term
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 
-'''                                 ====
-                      PREDICTOR-CORRECTOR MEHROTRA ALGORITHM 
-                                    ====
+'''                   ======================================
+                      PREDICTOR-CORRECTOR MEHROTRA ALGORITHM with Augmented system
+                      ======================================
 
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             c_form: canonical form -> default 0
@@ -31,7 +32,7 @@ Output data: x: primal solution
 Augmented system           
 '''
 
-def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
+def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 0):
     
     print('\n\tCOMPUTATION OF MEHROTRA ALGORITHMwith Augmented system\n')
         
@@ -56,7 +57,10 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
     
     """ Initial points: Initial infeasible positive (x,y,s) and initial gap g """
     
-    (x, y, s) = sp(A, c, b)    
+    if ip == 0:
+        (x, y, s) = sp(A, c, b)
+    else:
+        (x, y, s) = sp2(A, c, b)        
     g = np.dot(c, x) - np.dot(y, b)
     if info == 0:
         
@@ -158,7 +162,7 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
         s += Alfa2*s2
         it += 1
         if it == max_it:
-           return x, s, u 
+           return x, s, u, sig 
            raise TimeoutError("Iterations maxed out")
 
         # Dual gap c^{T}*x - b^{T}*y = x*s
@@ -195,9 +199,9 @@ if __name__ == "__main__":
     
     # Input data of canonical LP:
     
-    (A, b, c) = input_data(26)
+    (A, b, c) = input_data(20)
     
-    x, s, u, sig = mehrotra2(A, b, c, info = 1)
+    x, s, u, sigma = mehrotra2(A, b, c, info = 1)
     
     dm = cent_meas(x, u, 'Mehrotra with augmented system', plot = 0)
 

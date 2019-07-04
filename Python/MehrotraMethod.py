@@ -4,6 +4,7 @@ Created on Thu Apr 18 16:52:35 2019
 @author: Elena
 """
 from starting_point import sp       # Function to find the initial infeasible point
+from starting_point2 import sp2
 from print_boxed import print_boxed # Print pretty info boxes
 from stdForm import stdForm         # Function to extend LP in a standard form
 import numpy as np                  # To create vectors
@@ -15,13 +16,14 @@ from term import term
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 
-'''                                 ====
+'''                 ======================================
                     PREDICTOR-CORRECTOR MEHROTRA ALGORITHM 
-                                    ====
+                    ======================================
 
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             c_form: canonical form -> default 0
             w = tollerance -> default 10^(-8)
+            sp = starting point -> default 0
             
 Output data: x: primal solution
              s: dual solution
@@ -30,7 +32,7 @@ Output data: x: primal solution
 Matricial system computed with normal equations
 '''
 
-def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
+def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 1):
     
     print('\n\tCOMPUTATION OF MEHROTRA ALGORITHM\n')
         
@@ -55,7 +57,10 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
     
     """ Initial points: Initial infeasible positive (x,y,s) and initial gap g """
     
-    (x, y, s) = sp(A, c, b)    
+    if ip == 0:
+        (x, y, s) = sp(A, c, b)
+    else:
+        (x, y, s) = sp2(A, c, b)        
     g = np.dot(c, x) - np.dot(y, b)
     
     if info == 0:
@@ -193,7 +198,7 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0):
 '''
 if __name__ == "__main__":
     
-    (A, b, c) = input_data(18)
+    (A, b, c) = input_data(21)
     
     xm, sm, um, sigmam = mehrotra(A, b, c)
     

@@ -15,9 +15,9 @@ from input_data import input_data
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
 
 
-"""         ============
+"""     ========================
         SIMPLEX METHOD II PHASES
-              ============   
+        ========================   
 
 Input data: np.arrays: A, vector b, cost vector c of the model LP
             maximum no of iterations          (default 500)
@@ -50,12 +50,12 @@ def SimplexMethod(A, b, c, max_it = 500, rule = 0, c_form = 0):
         print('\t without the Bland\'s rule:\n')
     
     """ IIphases simplex method """
-
-    # If b negative then I phase simplex fun with input data A_I, x_I, c_I
-    # The solution x_I is the initial point for II phase.
-     
+    '''If b negative then I phase simplex fun with input data A_I, x_I, c_I
+    The solution x_I is the initial point for II phase.
+    '''
+    
     if sum(b < 0) > 0:# Phase I variables:
-        print('Vector b < 0:\n\tStart phase I\n')
+#        print('Vector b < 0:\n\tStart phase I\n')
         
         # Change sign of constraints
         A[[i for i in range(r_A) if b[i] < 0]] *= -1  
@@ -105,7 +105,9 @@ def SimplexMethod(A, b, c, max_it = 500, rule = 0, c_form = 0):
     
 #%%
     
-"""Algorithm"""
+"""
+                                     ALGORITHM: tableau steps
+"""
     
 def fun(A, c, x, B, it, max_it, rule) -> (float, np.array, set, float, np.array, list):
     
@@ -116,9 +118,11 @@ def fun(A, c, x, B, it, max_it, rule) -> (float, np.array, set, float, np.array,
     z = np.dot(c, x)  # Value of obj. function
     u = []
     while it <= max_it:  # Ensure procedure terminates (for the min reduced cost rule)
-        print("\t\nIteration: {}\nCurrent x: {} \nCurrent B: {}\n".format(it, x, B), end = '')
+#        print("\t\nIteration: {}\nCurrent x: {} \nCurrent B: {}\n".format(it, x, B), end = '')
+        
         u.append([it, B.copy(), x, z.copy()]) # Update table
         lamda = np.linalg.solve(A[:,B].T, c[B])
+        
         if rule == 0:  # Bland's rule
             optimum = True
             for s in NB: # New reduced cost
