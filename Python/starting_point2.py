@@ -27,7 +27,7 @@ def sp2(A, c, b) -> (np.array, np.array, np.array):
     x = np.ones(c_A)                 
     s = np.ones(c_A)   # xTs = c_A        
     y = np.zeros(r_A) 
-    r = np.concatenate((np.dot(A,x)-b, c -s -np.dot(A.T, y)))       
+    r = np.concatenate((np.dot(A,x) - b, c -s - np.dot(A.T, y)))       
     
     n = np.linalg.norm(r)
     if n / np.dot(x,s) < eps:
