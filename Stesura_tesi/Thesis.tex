@@ -13,10 +13,12 @@
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 \usepackage{listings}
+\usepackage{geometry}
 \usepackage{statrep}
 \usepackage{setspace}
 \usepackage{emptypage}
 \usepackage{newlfont}
+\usepackage{multirow}
 \usepackage{algpseudocode} 
 \usepackage{verbatim}
 \usepackage[]{algorithm2e}
@@ -27,7 +29,6 @@
 \usepackage{fullpage}
 % for algorithm description
 \usepackage{alltt}
-\usepackage{multirow}
 \usepackage{boxedminipage2e}
 % for algorithm description in a box
 \usepackage{boxedminipage}
@@ -143,7 +144,8 @@ First, it is given a brief description of these methods,
 %: the simplex method, that is known to be very efficient practically, and the primal-dual %interior-point
 then we outline a comprehensive convergence analysis of three important IPM: the primal-dual affine scaling, the LPF and the Mehrotra's method. \\
 After introducing the basic theoretical framework, we exhibit a comparison of these competitors, testing them on some real models. We show that the corrector approach of the LPF presented in this work, improves the efficiency of the algorithm but the 
-neighborhood restricts the progress achived in Mehrotra's method.
+neighborhood restricts the progress achived in Mehrotra's method.\\
+The programs that implement these algorithms are written in Python. 
 
 %\addcontentsline{toc}{chapter}{Abstract}  % se non si vuole numerare l'introduzione, ma farla comparire nell'indice
 
@@ -160,24 +162,24 @@ Concluding, in the last chapter we give an overview of the work realized in this
 % CAPITOLO 1
 \chapter{Basic theory}
 The variables in optimization models represent the decisions to be taken and the constraints specify the restrictions and the interactions that limit the variable values.
-To complete the model, we need the objective functions that quantify the decision consquences to be maximezd or minimized. This chapter introduces notations, terminologies and formulations of a general linear programming problem .
+To complete the model, we need the objective functions that quantify the decision consequences to be maximized or minimized. This chapter introduces notations, terminologies and formulations of a general LP problem.
 
 \section{Linear programming: basic notions}
 
 Since 1950, generations of workers in management, economics, finance and engineerng have been trained in the techniques of formulating linear models that,
 as the name implies, are characterized by linear objective function and constraints formulated with linear equalities or linear inequalities.
-Then, the feasible set satisfying the constraints is a polytope, i.e. a convex and connected set with polygonal faces. We say that the LP is \textit{infeasible} if the feasible set is empty and \textit{unbounded} if the objective function, minimization function for istance, is unbounded below on the feasible region.\\
-Weconsider the LP in the following \textit{standard form}:
+Then, the feasible set satisfying the constraints is a \textit{polytope}, i.e. a convex and connected set with polygonal faces. We say that the LP is \textit{infeasible} if the feasible set $\mathcal{P}$ is empty and \textit{unbounded} if the objective function, minimization function for istance, is unbounded below on the feasible region.\\
+W econsider the LP in the following \textit{standard form}:
 \begin{alignat*}{1}\label{eq:stdform}
-\text{minimize\;}\; &c_1 x_1 + c_2 x_2+ ... c_m x_m\\[2mm]
-\text{subject\;to\;} &a_{11} x_1 + a_{12} x_2+ ... +a_{1m}x_m = b_1\\
-&a_{21} x_1 + a_{22} x_2 + ... + a_{2m} x_m= b_2\\
+\text{minimize\;}\; &c_1 x_1 + c_2 x_2+ ... c_n x_n\\[1.8mm]
+\text{subject\;to\;} &a_{11} x_1 + a_{12} x_2+ ... +a_{1n}x_n = b_1\\
+&a_{21} x_1 + a_{22} x_2 + ... + a_{2m} x_n= b_2\\
 &\vdots\\
-&a_{n1} x_1 + a_{n2} x_2 + ... + a_{nm} x_m= b_n\\
+&a_{m1} x_1 + a_{m2} x_2 + ... + a_{mn} x_n= b_m\\
 \text{and}\; & x_1 \geq 0 , x_2 \geq 0, ... , x_m \geq 0
  \end{alignat*}
 
-where the $b_{j}$, $c_{i}$ \text{and} $a_{ij}$ are fixed real costants, with $i \in\{1,...,m\}$ and $j\in\{1,...,m\}$.\\ In a compact notation, using vectors, the standard problem can be written as
+where the $b_{j}$, $c_{i}$ \text{and} $a_{ij}$ are fixed real costants, with $i \in\{1,...,n\}$ and $j\in\{1,...,m\}$.\\ In a compact notation, using vectors, the standard LP problem can be written as
 \begin{equation}\label{(Prim)}
  \begin{split}
 \min\;&c^{T}x\\
@@ -185,36 +187,43 @@ where the $b_{j}$, $c_{i}$ \text{and} $a_{ij}$ are fixed real costants, with $i 
  \end{split}
 \end{equation}
 
-with $x$ an \textit{m}-dimensional column  of decision variables, $c^
-{T}$ a \textit{m}-dimensional vector, \textit{A} a $n \times m$ matrix, and \textit{b} a \textit{n}-dimensional column vector (Kantorovich L., 1939).\\
-If $x$ satisfies the constraints $Ax = b$, $x\geq0$, we call it a \textit{feasible point}; the set of all feasible points is the \textit{feasible set}, indicated by $\mathcal{P}=\lbrace x\; |\; Ax = b , x \geq0\rbrace$.\\
+with $x$ an \textit{n}-dimensional column of decision variables, $c^
+{T}$ a \textit{n}-dimensional vector, \textit{A} a $m \times n$ real matrix, and \textit{b} a \textit{m}-dimensional column vector (Kantorovich L., 1939).\\
+If $x$ satisfies the constraints $Ax = b$, $x\geq0$, we call it \textit{feasible point}; the set of all feasible points is the \textit{feasible set}, indicated by $\mathcal{P}=\lbrace x\in\mathbb{R}^{n,m}\; |\; Ax = b , x \geq0\rbrace$.\\
 In the case the constraints set is determined entirely by linear inequalites $Ax \leq b$, which in the literature (see \cite{W}) is said to be a \textit{canonical form}, the problem may be alternatively expressed as:
 \begin{alignat*}{3}
-\text{minimize\;}&c_1 x_1 + c_2 x_2+ ...+c_m x_m&&&\\[2mm]
-\text{subject\;to\;}&a_{11} x_1 +a_{12}x_2 + ... +a_{1m}x_m +y_{1}&&&= b_1\\
-		   	&a_{21}x_1+a_{22}x_2+ ... +a_{2m}x_m&+y_{2}&&= b_2\\
+\text{minimize\;}&c_1 x_1 + c_2 x_2+ ...+c_n x_n&&&\\[1.8mm]
+\text{subject\;to\;}&a_{11} x_1 +a_{12}x_2 + ... +a_{1n}x_n +y_{1}&&&= b_1\\
+		   	&a_{21}x_1+a_{22}x_2+ ... +a_{2n}x_n&+y_{2}&&= b_2\\
 &&\;\;\;\vdots&&\\
-&a_{n1}x_1+a_{n2}x_2+ ... +a_{nm}x_m+&&&y_{n}=b_n\\
-\text{and} \;& x_{i} \geq 0;\;\; y_{j} \geq 0; \text{\;\;for }i = 1,...,m&\text{ and }j&=&1,...,n.
+&a_{m1}x_1+a_{m2}x_2+ ... +a_{mn}x_n+&&&y_{m}=b_m\\
+\text{and} \;& x_{i} \geq 0;\;\; y_{j} \geq 0; \text{\;\;for }i = 1,...,n&\text{ and }j&=&1,...,m.
 \end{alignat*}
-The new positive variables $\mathit{y_{i}}$, $i \in {1, ..., n}$ introduced to convert the inequalities into identities, are called \textit{slack variables} and the problem has the standard form with $n+m$ unknowns variables \begin{itshape}$x_{i}, y_{j},i \in {1, ..., m}$ and $j \in {1, ..., n}.$\end{itshape}\\ The new matrix, that now describes the linear equality constraints, assumes the form $\left[\begin{matrix}A\;\vert\; I\;\end{matrix}\right]$, with $A$ the $n \times m$ matrix of the original canonical LP and the identity matrix $I$ associated to the slack variables, that has dimension $n \times (n + m)$.\\
-Considering the system of equalities \ref{(Prim)}, we can identify a set of \textit{n} linearly independent columns from the \textit{m} columns of  $A$ and create a $n \times n$ submatrix called \textit{basis matrix} ($A_{B}$) with the index set of the columns ($B$) called \textit{basis} of matrix $A$ .\\
-$A_{B}$ is nonsingular and we may uniquely solve the equation $A_{B}x_{B} = b$. For simplicity, if we assume $B = \{1, \dots, n\}$, then the point $x =\left(x_{B},0_{[m-n]}\right)$ is a solution of the original equality system. This leads to the following definition:
+The new positive variables $\mathit{y_{i}}$, $\;i \in \{1, ..., n\}$ introduced to convert the inequalities into identities, are called \textit{slack variables} and the problem has the standard form with $n+m$ unknowns variables $x_{i}, y_{j},i \in \{1, ..., m\}$ and $j \in \{1, ..., n\}.$\\ The new matrix that now describes the linear equality constraints, assumes the form $\left[\begin{matrix}A\;\vert\; I\;\end{matrix}\right]$, with $A$ the $m \times n$ matrix of the original canonical LP and the identity matrix $I$ associated to the slack variables, and has dimension $m \times (n + m)$.\\
+Considering the system of equalities \ref{(Prim)}, we can identify a set of \textit{m} linearly independent columns from the \textit{n} columns of  $A$ and create a $m \times m$ submatrix called \textit{basis matrix} ($A_{B}$) with the index set of the columns ($B$) called \textit{basis} of matrix $A$. Then, using a partition $(B, N)$, with basis $B$ and $N$ its complementary set, the \textit{nonbasis} set, we can formaulate the standard LP as following:
+\begin{equation}\label{(Prim1)}
+\begin{split}
+\min\;&c_{B}^{T}x_{B}+c_{N}^{T}x_{N}\\
+\text{subject\;to\;}&A_{B}x_{B}+A_{N}x_{N}= b\;\\\text{and\;}&x_{B},x_{N}\geq0
+\end{split}
+\end{equation}
+Since $A_{B}$ is nonsingular, we may uniquely solve the equation $A_{B}x_{B} = b$; if we assume for simplicity $B = \{1, \dots, n\}$, then the point $x =\left(x_{B},0_{N}\right)$ is a solution of the original equality system. This leads to the following definition:
 \begin{defn}
 
-	We define the solution $x$ above as \textit{basic point} with respect to the basis B, the basic point is \textit{feasible} if $x_{B}\geq 0$. \\The components of $x$ associated with columns of $A_{B}$ are called \textit{basic variables} and components associated to $N  = \left\lbrace 1...m\right\rbrace  \backslash B$ are \textit{nonbasic variables}.\\
-	A basis B is \textit{degenerate} if $x_{i}= 0$ for some $i\in B$.\\
-	A LP is said to be \textit{degenerate} if has at least one degenerate basis.
+	We define the solution $x$ above as \textit{basic point} with respect to the basis $B$, the basic point is \textit{feasible} if $x_{B}\geq 0$. \\The components of $x$ associated with columns of $A_{B}$ are called \textit{basic variables} and components associated to $N$ are \textit{nonbasic variables}.\\
+	A basis $B$ is \textit{degenerate} if $x_{i}= 0$ for some $i\in B$.\\
+	A LP is said to be \textit{degenerate} if it has at least one degenerate basis.
 \end{defn}
-For the standard formulation, we will assume throughout that $n < m$.
-Then, the $n$ rows are linear indipendent, then there is at least one basic solution and, accordingly, one solution of the standard problem. Certainly, when we have a canonical form problem, then the extended $n \times (n+m)$ matrix [A | I ] with slack variables satisfies this property. When $n \geq m$, the feasible region is empty or consists in a single point.\\
-Now we outline the importance of basic feasible solutions in solving LP with the simplex method.
+For the standard formulation, when $n \geq m$, the feasible region is empty or consists in a single point.\\
+ We will assume throughout that $m < n$. Hence, the $m$ rows are linear indipendent: there is at least one basic point and, accordingly, one solution of the standard equality system in \ref{(Prim)}. Certainly, if the LP problem is in a canonical form, then the extended $m \times (n+m)$ matrix $[A\;|\;I]$ with slack variables satisfies this property. \\
+Now we outline the importance of basic feasible points in solving LP with the simplex method.
 Throw the following theorem we state that it is necessary only to consider basic feasible
-variables when seeking an optimal solution because the optimal
+vectors when seeking an optimal solution because the optimal
 value is always achieved at such a solution.\\ (The method to prove the theorem is in many respects as important as the result itself, since it represents the beginning of the development of the simplex
 method.)
-\begin{thm}[\textbf{Fundamental theorem of liner programming}] \ \\
+\begin{thm}[\textbf{Fundamental theorem of liner programming}]\label{Fund}
 \begin{enumerate}
+	\
 \item If there is a feasible point for \ref{(Prim)}, then there is a basic feasible point.
 \item If \ref{(Prim)} has solutions, then at least one such solution is a basic optimal point.
 \item If \ref{(Prim)} is feasible and bounded, then it has an optimal solution.
@@ -223,10 +232,10 @@ method.)
 \begin{proof}
 	See \cite{LP}
 \end{proof}
-Thus, it describes a peculiar feature of the linear programming: reducing the task of solving a linear problem to searching over basic feasible solutions. Since for a problem having $m$ variables and $n$ constraints there are at most ${m}\choose{n}$ basic solutions (corresponding to the number of ways of selecting m of n columns), there are only a finite number of possibilities. 
+Thus, it describes a peculiar feature of the LP: reducing the task of solving a linear problem to searching over basic feasible solutions. Since for a problem having $m$ variables and $n$ constraints there are at most ${m}\choose{n}$ basic solutions (corresponding to the number of ways of selecting m of n columns), there are only a finite number of possibilities. 
 
 \subsection*{A geometric approach}
-The linear programming problem is simple to state and visualize. In fact, very simple graphic techniques have enough power to tiny models [such as Two Crude formulation- da sviluppare]. They also yield helpful intuition about properties and soultion methods for model of more realistic size.\\ The set of the linear constraints in \ref{(Prim)} defines a \textit{polytope}, that constitutes the \textit{feasible region} and the \textit{vertices} are the points that do not lie on a stright line between two other points in the set. Algebraically, the vertices of the feasible set $\mathcal{P}$ are exactly the basic feasible points.\\ According to the Fundamental theorem, we can restrict our attention to the vertices of this polytope and it implies that we can explore only at most  ${m}\choose{n}$ points. 
+A LP problem is simple to state and visualize. In fact, very simple graphic techniques have enough power to tiny models [such as Two Crude formulation- da sviluppare]. They also yield helpful intuition about properties and soultion methods for model of more realistic size.\\ The set $\mathcal{P}$ defines a polytope: geometrically it constitutes the \textit{feasible region} and the \textit{vertices} are the points that do not lie on a stright line between two other points in the set. Algebraically, the vertices of the feasible set $\mathcal{P}$ are exactly the basic feasible points.\\ According to the Fundamental theorem, we can restrict our attention to the vertices of this polytope and it implies that we can explore only at most  ${m}\choose{n}$ points. 
 %\begin{ex}
 %The feasible set of a standard form linear programming problem is defined by the following constraints:
 %\begin{alignat*}{3}
@@ -239,49 +248,48 @@ The linear programming problem is simple to state and visualize. In fact, very s
 %[\textit{con una illustrazione grafica del poliedro si mostra l'insieme dei vertici presi in considerazione e candidati punti ottimali}]
 
 \section{Optimality and duality in LP}
-In this section we introduce the optimality and duality theory and investigate the important relationship between primal and dual LP, that provide LP algorithm strategies.\\ 
+In this section we introduce the optimality and duality theory and investigate the important relationship between primal and dual LP, that provide algorithm strategies.\\ 
 Optimality conditions for the LP can be derived from the theory of the constrained optimization related to a general non linear problem (NLP), defined as follow:
 
 \begin{equation}\label{NLP}
 \min f(x)\text{\;subject\;to\;}\begin{cases} c_{i}(x) = 0 &i \in \mathcal{E}\\ c_{i}(x)\leq 0 &i\in \mathcal{I}\end{cases}
 \end{equation}
 \\
-where $f$ and $c_{i}$ are smooth, real-valued functions defined on subset of $\mathbb{R}^{n}$ and $\mathcal{E}$ and $\mathcal{I}$ are two finite sets of indices in $\mathbb{N}$.\\Let us recall only the first-order conditions, that are essential to explain the duality results for the linear case.\\
-In order to state the necessary conditions, the points should satisfy specific regular conditions, defined below:
+where $f$ and $c_{i}$ are smooth, real-valued functions defined on subset of $\mathbb{R}^{n}$ and $\mathcal{E}$ and $\mathcal{I}$ are two finite sets of indices in $\mathbb{N}$.\\Let us recall only the necessary conditions, essential to explain the duality results for the linear case, after introducing the following definition of specific regular conditions, defined below:
 \begin{defn}
-	Given a point x, $\mathcal{A}(x)= \mathcal{E}\cup\left\lbrace i\in\mathcal{I}\;|\;c_{i}(x) =0\right\rbrace$ is called active set and we say that the linear independence constraint qualification, $LICQ$, holds if the set of active constraint gradients $\left\lbrace \nabla c_{i}(x),,i\in\mathcal{A}(x)\right\rbrace$ is linear indipendent.
+	Given a point x, $\mathcal{A}(x)= \mathcal{E}\cup\left\lbrace i\in\mathcal{I}\;|\;c_{i}(x) =0\right\rbrace$ is called \textit{active set} and we say that the linear independence constraint qualification, $LICQ$, holds if the set of active constraint gradients $\left\lbrace \nabla c_{i}(x),,i\in\mathcal{A}(x)\right\rbrace$ is linear indipendent.
 \end{defn}
 We define the \textit{Lagrangian function} for the general problem \ref{NLP} 
 \begin{equation*}
-\mathcal{L}\left(x,\lambda\right)=f(x)-\sum_{i\in\mathcal{E}\cup\mathcal{I}}\lambda_{i}c_{i}(x)
+\mathcal{L}\left(x,\lambda\right)=f(x)-\sum_{i\in\mathcal{E}\cup\mathcal{I}}\lambda_{i}c_{i}(x).
 \end{equation*}
 The necessary conditions, defined in the following theorem, are called \textit{first-order conditions} because they are concerned with properties of the gradients of the objective and constraint functions.
 \begin{thm}
-Suppose that $x^{*}$ is a local solution of (1.1), that f and $c_{i}$ are continuously differentiable, and the LICQ holds at $x^{*}$. Then there is a Lagrange multiplier vector $\lambda^{*}$, such that 
+Suppose that $x^{*}$ is a local solution of \ref{NLP}, that f and $c_{i}$ are continuously differentiable, and the LICQ holds at $x^{*}$. Then there is a Lagrange multiplier vector $\lambda^{*}$, such that 
 \begin{alignat*}{2}
 \mathcal{L}(x^{*},\lambda^{*})&=0&\\
 c_{i}(x^{*})&=0, &\forall i\in\mathcal{E}\\
 c_{i}(x^{*})&\geq 0, &\forall i\in\mathcal{I}\\
 \lambda&\geq 0, &\forall i\in\mathcal{I}\\
-\lambda^{*} &\geq 0 & \forall \in\mathcal{I}\\
-\lambda^{*}c_{i}(x^{*})&= 0,\;\forall i&\in\mathcal{E}\cup\mathcal{I}.\\
+\lambda^{*} &\geq 0, & \forall \in\mathcal{I}\\
+\lambda^{*}c_{i}(x^{*})&= 0,\;\forall i&\in\mathcal{E}\cup\mathcal{I}.\label{CompCon}\\
 \end{alignat*} 
 \end{thm}
 
-These equalites are called \textit{Karush-Kuhn-Tucker} conditions, or \textit{KKT} conditions for short and the last condition is the \textit{complementary condition}.\\ Though this theorem requires LICQ, the result continues to hold for \textit{dependent} constraints provided they are linear, as in the case of the standard LP \cite{W}. The LP Lagrangian function is:\\
-\begin{equation}
+These equalites are called \textit{Karush-Kuhn-Tucker} conditions, or \textit{KKT} conditions for short and the last equality is the \textit{complementary condition}.\\ Though this theorem requires LICQ, the result continues to hold for \textit{dependent} constraints provided they are linear, as in the case of the standard LP \cite{W}. The LP Lagrangian function is:\\
+\begin{equation}\label{Lagrangian}
 \mathcal{L}(x,\lambda,s)=c^{T}x-\lambda^{T}\left(Ax-b\right)-s^{T}x.
 \end{equation}
-Now we illustrate the first-order necessary conditions: let us assume that the matrix $A\in\mathbb{R}^{n,m}$, the vectors $b\in\mathbb{R}^{n}$ and $c\in\mathbb{R}^{m}$ construct a standard LP. A vector $x^{*}$ is a solution if and only if exist Lagrange multipliers $\lambda^{*},\;s^{*}$ such that the primal-dual solution $\left( x^{*},\lambda^{*},s^{*}\right)\in\mathbb{R}^{n}\times\mathbb{R}^{m}\times\mathbb{R}^{n}$ satisfies these conditions, 
+Now we illustrate the first-order necessary conditions: let us assume that the matrix $A\in\mathbb{R}^{m,n}$, the vectors $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$ construct a standard LP. A vector $x^{*}$ is a solution if and only if exist Lagrange multipliers $\lambda^{*},\;s^{*}$ such that the \textit{primal-dual solution} $\left( x^{*},\lambda^{*},s^{*}\right)\in\mathbb{R}^{n}\times\mathbb{R}^{m}\times\mathbb{R}^{n}$ satisfies these conditions: 
 \begin{align}
-A^{T}\lambda+s&=c,\\ \label{DF}
-Ax&=b,\\ \label{PF}
-x&\geq 0,\\
-s&\geq 0,\\
-x_{i}s_{i}&=0,\; for\;i= 1,2,...,m. \label{CC}
+A^{T}\lambda+s&=c,\tag{2.5a}\\ \label{DF}
+Ax&=b,\tag{2.5b}\\ \label{PF}
+x&\geq 0,\tag{2.5c}\\
+s&\geq 0,\tag{2.5d}\\
+x_{i}s_{i}&=0,\; for\;i= 1,2,...,m.\label{CC} \tag{2.5e}
 \end{align} 
-The complementary conditions show that at least one of the components $x_{i}$ and $s_{i}$ must be zero for each $i=0,1,2,...,n$.\\
- Convexity of the problem ensures that these conditions are also sufficient for a global minimum, hence the KKT conditions are also \textit{sufficient}: if we have a primal feasible vector $x$, and another vector $(\lambda, s)$ such that the equations are satisfied, then $x$ is the solution of \ref{(Prim)}. We can prove this claim directly by taking an arbitrary primal feasible vector $\bar{x}$ and showing that its objective value is no smaller than $c^{T}x$:
+The complementary conditions \ref{CC} show that at least one of the components $x_{i}$ and $s_{i}$ must be zero for each $i=0,1,2,...,n$.\\
+ Convexity of the problem ensures that these conditions are also sufficient for a global minimum, hence the KKT conditions are also \textit{sufficient}: if we have a primal feasible vector $x\in\mathcal{P}$, and another vector $(\lambda, s)$ such that the equations are satisfied, then $x$ is the solution of \ref{(Prim)}. We can prove this claim directly by taking an arbitrary primal feasible vector $\bar{x}$ and showing that its objective value is no smaller than $c^{T}x$:
 \begin{equation*}
 c^{T}\bar{x}=(A^{T}\lambda+s)^{T}\bar{x}=b^{T}\lambda+s^{T}\bar{x}\geq b^{T}\lambda= c^{T}x.
 \end{equation*}
@@ -303,17 +311,32 @@ We can restate this problem in a standard form introducing the slack variables a
 &\text{subject\; to\;}A^{T}\lambda+s=c\\ &\text{and\;} s\geq0
 \end{split}
 \end{equation}
-The primal-dual relationship is symmetric: by taking the dual of the dual problem, we recover the original problem \ref{(Prim)} that we briefly call \textit{primal} problem (P).\\
-Let us define the \textit{dual feasible set} $\mathcal{D}=\{(\lambda,s)\in\mathbb{R}^{m+n}| A^{T}\lambda+s= c,s>0\}$, than for every $x\in\mathcal{P}$ and $\left(\lambda,s\right)\in\mathcal{D}$, we have that $c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x \geq0$.\\
-Therefore we have $c^{T}x\geq b^{T}\lambda$ when both primal and dual variables are feasible, and this result is known as \textit{dual gap}.\\
 
-\begin{thm}[\textbf{Strong duality}] \
-\begin{itemize}
-\item If either the primal or the dual problem has a finite solution, then so does the other, and the objective values are equal.
-\item If either the primal or the dual problem is unbounded, the the other problem is infeasible.
-\end{itemize}
+Note that in \ref{Lagrangian} the Lagrange multipliers are the unknowns variables in (D). In fact, the primal-dual relationship is symmetric: by taking the dual of the dual problem, we recover the original problem \ref{(Prim)} that we briefly call \textit{primal} problem (P). In the following theorem is described this relationship:
+\begin{thm}[\textbf{Strong duality}] 
+	\begin{itemize}
+		\
+		\item If either the primal or the dual problem has a finite solution, then so does the other, and the objective values are equal.
+		\item If either the primal or the dual problem is unbounded, the the other problem is infeasible.
+	\end{itemize}
 \end{thm}
-(\textit{le dimostrazioni ancora da scrivere. Riferimento: in [1] capitolo 12}).\\
+(\textit{le dimostrazioni: riferimento: in [1] capitolo 12}).\\ Hence, by examining the KKT conditions from both the primal and the dual viewpoints, we conclude that the vector $(x^{*},\lambda^{*},s^{*})$ is a primal-dual solution if ond only if $x^{*}$ solves (P) and $(\lambda^{*},s^{*})$ solves (D).\\[1 cm]
+%\onehalfspacing
+Let us define the \textit{dual feasible set} $\mathcal{D}=\{(\lambda,s)\in\mathbb{R}^{m+n}| A^{T}\lambda+s= c,s>0\}$, then for every $x\in\mathcal{P}$ and $\left(\lambda,s\right)\in\mathcal{D}$, we have that $c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x \geq0$.\\
+This result leads to the definition of \textit{dual gap} the value $g = c^{T}x - b^{T}y$: since $c^{T}x\geq b^{T}\lambda$ when both primal and dual variables are feasible, we see:\begin{center}
+	if $\exists(x,\lambda,s)\in\mathcal{P}\times\mathcal{D}$, then $g= x^{T}s \geq0$.
+\end{center}
+At a solution, the duality gap $g$ between primal and dual decreases to zero, as we show in the complementary slackness theorem, that is an important premise (foundation) for the IPM illustrade in the Chapter ().
+\begin{thm}[\textbf{Complementary slackness}] \ \\
+	Let $x^{*},(\lambda^{*},s^{*})$ be feasible for the primal and the dual problems. The following are equivalent:
+	\begin{itemize}
+		\item $x^{*}$ is an optimal solution to (P) and $(\lambda^{*},s^{*})$ is an optimal solution to (D).
+		\item $g^{*} = x^{*}^{T}s^{*}=0$.
+		\item $x^{*}_{j}s^{*}_{j}=0,\;\forall\; j=0,...,m$.
+		\item If $s^{*}_{j} > 0$ then $x^{*}_{j}= 0$.
+	\end{itemize}
+\end{thm}
+
 Hence, for every solution $(x^{*}, \lambda^{*}, s^{*})$ we have $x_{j}^{*}= 0$ and/or $s_{j}^{*}= 0$ for all $j=0,1,\dots,m$.\\
 We can define two index sets $\mathcal{B}$ and $\mathcal{N}$ as follows:
 \begin{equation}
@@ -324,7 +347,7 @@ Obviously, $\mathcal{B}$ and $\mathcal{N}$ are disjoint and form a partition of 
 \begin{thm}[Goldman-Tucker]
 	There is at least one solution $(x^{*}, \lambda^{*}, x^{*})$ such that $x^{*}+s^{*}\geq0$.
 \end{thm}
-The set $\mathcal{B}$ does not necessarily contain $n$ elements, that is the number of the rows of the matrix $A$. This set must not be confused with the set of the basic variables $B$, by the definition (2.1). In the following example, for istance, we have $|\mathcal{B}|= 2$ and three basis sets $B = \{1\}, \{2\}, \{3\}$.
+The set $\mathcal{B}$ does not necessarily contain $m$ elements, that is the number of the rows of the matrix $A$. This set must not be confused with the set of the basic variables $B$, by the definition (2.1). In the following example, for istance, we have $|\mathcal{B}|= 2$ and three basis sets $B = \{1\}, \{2\}, \{3\}$.
 \begin{ex}
 Consider
 \begin{center} $\min\limits_{x\in\mathbb{R}^{3}} x_{1} \text{\;subject to\;} x_{1}+x_{2}+x_{3} = 1, x\geq 0$.\end{center}
@@ -335,17 +358,17 @@ The multipliers $(\lambda,s)$ indicate the sensitivity of the optimal objective 
 \begin{equation*}
 0=x^{T}s=x^{T}\Delta s= \left( \Delta x\right)^{T}s=\left( \Delta x\right)^{T}\Delta s
 \end{equation*}
-and by the theorem we have that the optimal objectives of the primal and dual problems are equal, for both the original and perturbated problems, so
+and by the theorem we have that the optimal values for both the original and perturbated problems (P) and (D) equal, so
 
 \begin{align*}
-&c^{T}x=b^{T}\lambda  &c^{T}(x + \Delta x)=\left(b+\Delta b\right)^{T}\left(\lambda+\Delta \lambda\right).
+&c^{T}x=b^{T}\lambda  &c^{T}(x + \Delta x)=\left(b+\Delta b\right)^{T}\left(\lambda+\Delta \lambda\right),
 \end{align*}
-with, by the feasibility of $x + \Delta x$ and $\lambda+\Delta \lambda$:
+with the feasibility of $x + \Delta x$ and $\lambda+\Delta \lambda$:
 \begin{align*}
 &A(x + \Delta x)=b+\Delta b
 &A^{T}\Delta\lambda=-\Delta s.
 \end{align*}
-Hence, the change in optimal objective due to the perturbation is as follows:
+Hence, the change in optimal value due to the perturbation is as follows:
 \begin{align*}
 c^{T}\Delta x&=\left(b+\Delta b\right)^{T}\left(\lambda+\Delta \lambda\right) - b^{T}\lambda\\
 &=\left(b+\Delta b\right)^{T}\Delta \lambda+\left(\Delta b\right)^{T}\lambda\\
@@ -353,29 +376,19 @@ c^{T}\Delta x&=\left(b+\Delta b\right)^{T}\left(\lambda+\Delta \lambda\right) - 
 &=\left(x+\Delta x\right)^{T}\Delta s+\left(\Delta b\right)^{T}\lambda\\
 &=\left(\Delta b\right)^{T}\lambda.\\
 \end{align*} 
-In particular, if $\Delta b = \epsilon e_{j}$, we have that $c^{T}\Delta x+\epsilon \lambda_{j}$ and it shows that the change in optimal objective is $\lambda_{j}$ times the perturbation to $b_{j}$.
-\begin{thm}[\textbf{Complementary slackness}] \ \\
-	Let $x^{*},(\lambda^{*},s^{*})$ be feasible for the primal and the dual problems. The following are equivalent:
-	\begin{itemize}
-		\item $x^{*}$ is an optimal solution to (P) and $(\lambda^{*},s^{*})$ is an optimal solution to (D).
-		\item $(x^{*})^{T}s^{*}=0$
-		\item $x^{*}_{j}s^{*}_{j}=0,\;\forall\; j=0,...,m$
-		\item If $s^{*}_{j} > 0$ then $x^{*}_{j}= 0$.
-	\end{itemize}
-\end{thm}
+In particular, if $\Delta b = \epsilon e_{j}$, we have that $c^{T}\Delta x+\epsilon \lambda_{j}$ and it shows that the change in optimal value is $\lambda_{j}$ times the perturbation to $b_{j}$.
 
 After having delineated the basic tools of the multipliers in terms of sensitivity, the sensitivity analysis is developed later, examining the optimal results obtained by the methods designed.\\
 
-[\textit{Ci sono altri due teoremi che completano il capitolo sulla dualita', ma non utilizzati nella ricerca. Capitolo da perfezionare. L'analisi di sensitività verrà svolta dopo aver introdotto i metodi.}]
 %
 %  CAPITOLO 2
 %
 \chapter{The simplex method}
-The simplex method was introduced in 1947 by George Dantzig \cite{MUR}. The discover of this method happened simultaneously with the realization of linear programming as an efficient modeling tool for practical decision making.\\
+The simplex method was introduced in 1947 by George Dantzig \cite{MUR}. The discover of this method happened simultaneously with the realization of LP as an efficient modeling tool for practical decision making.\\
 The method exploits the insight provided by the fundamental theorem
-of linear programming, which states that if it exists an optimal solution of the LP, it is at one of the vertices of the feasible polytope. \\
-The idea of the simplex method is to proceed from one basic feasible point of the constraint set $\mathcal{F}$ to another, in such a way as to continually decrease the value of the objective
-function until a minimum is reached.\\ Consider the general linear programming problem presented in standard form as in \ref{(Prim)}.
+\ref{Fund}, which states that if it exists an optimal solution of the LP, it is at one of the vertices of the feasible polytope. \\
+The idea of the simplex method is to proceed from one basic feasible point of the feasible set $\mathcal{D}$ to another, in such a way as to continually decrease the value of the objective
+function until a minimum is reached.\\ Consider the general LP problem presented in standard form as in \ref{(Prim)}.
 We assume for the remainder of the chapter that the matrix $A$ has full row rank: in practice, a preprocessing phase is applied to the user-supplied data to remove some
 redundancies from the given constraints and eliminate some of the variables.\\Given an index sets $B$ and $N$, we can identify a partition of the $m$-elements vectors $x$, $c$ and the matrix $A$ and formulate the LP as following:
 \begin{equation}
@@ -404,7 +417,7 @@ Geometrically speaking, $\bar{x}_{B}$ is a move along an edge of the polytope th
 It is possible that we can increase $x_{s}$ to $\infty$ without encountering a suitable $x_{r}$: that means that the contraint $\bar{x}_{\bar{B}} = x_{B} - A_{B}^{-1}A_{s}\bar{x}_{s}>0$ holds for all positive values of $\bar{x}_{s}$. When it happens, the LP is \textit{unbounded}: the cost value $c^{T}x$ decreases to $-\infty$.\\
 We have covered most of the mechanics of taking a single step of the simplex method. The computational procedure is the following:\\ 
 \\
-\textbf{Simplex algorithm}
+\begin{algorithm}[H]\caption{Simplex Method}
 \begin{tabbing}
 	\textbf{Given} \=$B, N, x_{B} = A_{B}^{-1}b\geq 0$ with $x_{N}=0$;\\
 	%\>Solve $A_{B}^{T}\lambda = c_{B}, \text{ for }\lambda$;\\
@@ -415,13 +428,13 @@ We have covered most of the mechanics of taking a single step of the simplex met
 	\> Solve $A_{B}d = A_{s}$ for $d$;\\
 	\>\textbf{If} {$d \leq 0$} unbounded problem: \textbf{stop};\\
 	\>\textbf{Else} \=\\
-	\>\>Calculate the ratio test $\bar{x}_{r} = \min_{i | d_{i} > 0}(x_{B})_{i}/d_{i}$, and\\
-	\>\>use $t$ to denote the minimizing $r = B[t]$;\\
+	\>\>Calculate the ratio test $\bar{x}_{r} = \min_{i | d_{i} > 0}(x_{B})_{i}/d_{i}$, and use $t$ to denote the minimizing $r = B[t]$;\\
 	\>\>Update \=$\bar{x}_{B} = x_{B}-d\bar{x}_{r}$;\\
 	\>\>\>$\bar{x}_{N} = (0,...,0_{[s-1]},\bar{x}_{r},0_{[s+1]},...,0)$;\\
 	\>\> Update sets: $\bar{B} = B \backslash \{r\} + \{s\}$ and $\bar{N} = N \backslash \{s\} + \{r\}$;\\
 	\textbf{end}
 \end{tabbing}
+\end{algorithm}
 
 Summarizing, the simplex algorithm moves from basic feasible solution to another one and it moves from one vertex to an adjacent one, for which the basis $B$ differs inexactly one component. Each iteration begins by checking the sign of the coefficients of the objective function $\widetilde{c}$ on non-basic variables: if none is negative, then the current basic solution is optimal. \\
 As we see, it is required a basic feasible staring point $x$ and a corresponding initial basis $B \in \left\{ 1,2,..., m \right\}$ with $|B|=n$ such that $A_{B}$ is non singular, $A_{B}^{-1}b=x_{B} \geq 0$ and $x_{N}=0$.\\
@@ -486,46 +499,50 @@ In the implementation of the simplex method it is implemented the Bland's rule a
 	x&\;&\;&\;&\geq 0\\
 	\end{alignat*}
 	
-Applying Bland's rule, we find optimal solution at $x^{*} = [0.04, 0,  1,   0,  0.03, 0,   0  ]$ in the basis $B = [0, 2, 4]$ after 7 iterations: the optimal cost value is $c^{T}x^{*} = -0.5$.\\
-\begin{center}
-\begin{array}{ | l | l | l | l | }
-	\hline
-	\text{Iteration} & \text{Current Basis} & \text{Current x} & \text{Current cost value} \\ \hline
-	1 & [4, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	2 & [0, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	3 & [0, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	4 & [2, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	5 & [2, 3, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	6 & [2, 3, 0] & [0.016 0.    1.    0.004 0.    0.    0.   ] & -0.008 \\ \hline
-	7 & [2, 4, 0] & [0.04 0.   1.   0.   0.03 0.   0.  ] & -0.050 \\ \hline
-\end{array}
+Applying Bland's rule, we find optimal solution at $x^{*} = [0.04, 0,  1,   0,  0.03, 0,   0  ]$ in the basis $B = [0, 2, 4]$ after 7 iterations: the optimal cost value is $c^{T}x^{*} = -0.05$.\\
 
+\begin{table}[h]
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Iteration} & \textbf{Current basis} & \textbf{Current x} & \textbf{Current value} \\ \hline
+		1 & [4, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		2 & [2, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		3 & [0, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		4 & [2, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		5 & [2, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		6 & [2, 3, 0] & [0.016, 0, 1, 0.004, 0, 0, 0] & 0.008 \\ \hline
+		7 & [2, 4, 0] & [0.04, 0, 1, 0, 0.03, 0, 0] & -0.05 \\ \hline
+	\end{tabular}\caption{Simplex algorithm result without Bland's rule}
 \end{center}
+\end{table}
+
 Instead without the rule, after 18 iterations the simplex method returns to the same basis sequence, entering in a cycle: the original simplex method repeats the same sequence of six pivotis indefinitely, making no progress toward the solution.
-\begin{center}
-\begin{array}{ | l | l | l | l | }
-	\hline
-	\text{Iteration} & \text{Current Basis} & \text{Current x} &\text{Current cost value} \\ \hline
-	1 & [4, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	2 & [0, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	3 & [0, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	4 & [2, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	5 & [2, 3, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	6 & [4, 3, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	7 & [4, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	8 & [0, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	9 & [0, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	10 & [2, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	11 & [2, 3, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	12 & [4, 3, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	13 & [4, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	14 & [0, 5, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	15 & [0, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	16 & [2, 1, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	17 & [2, 3, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-	18 & [4, 3, 6] & [0. 0. 0. 0. 0. 0. 1.] & 0 \\ \hline
-\end{array}
+
+\begin{table}[h]
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Iteration} & \textbf{Current basis} & \textbf{Current x} & \textbf{Current cost value} \\ \hline
+		1 & [4, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		2 & [0, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0, \\ \hline
+		3 & [0, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0, \\ \hline
+		4 & [2, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0, \\ \hline
+		5 & [2, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		6 & [4, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		7 & [4, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		8 & [0, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		9 & [0, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		10 & [2, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		11 & [2, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		12 & [4, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		13 & [4, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		14 & [0, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		15 & [0, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+	\end{tabular}\caption{Simplex algorithm result with Bland's rule}
 \end{center}
+\end{table}
+
 \end{ex} 
 \newpage
  \section{Analysis of the simplex method}
@@ -820,7 +837,7 @@ The general path-following algorithm is:
 		\> Choose $\sigma_{k}\in[\sigma_{\text{min}},\sigma_{\text{max}}]$ and solve
 	\end{tabbing}
 	\begin{equation}\label{P}
-	\begin{bmatrix}\label{P}
+	\begin{bmatrix}
 	0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
 	\end{bmatrix}\begin{bmatrix}
 	\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
@@ -1556,8 +1573,8 @@ matrix $D^{2}$ takes on both huge and tiny values.
 In this chapter it is developed a comprehensive analysis of the results obtained by some practical implementations. It is presented three LP problems: the forest service allocation, Swedish steel model, ...\\
 The fictitious data used to test the LP methods come from \cite{RR}.
 \section{Forest service allocation} 
-The first model we illustrate is the \textit{Forest service allocation}. It is part of model class in which the main issue is how to divide or allocate a valuable resource among competing needs and the resource may be for example land, capital, time or fuel. We will see how the Forest Service has used this model to address the sensitive task of managing 191 million acres of national forestland \cite{(Natural)}.\\
-The Forest Service is one of the major Federal land managing agencies; it has been part of the Department of Agricolture since 1905 and over the past 10 years significant administrative and legal challenges have plagued national forest management \cite{ForSer}. Resource simulation models are the principal technologies used for estimating ecological and enviromental responses to activities. These models try to qualify relationships among resources and results of management actions. Simulations such as timber growth-and-yeld models and sediment yield models often examine consequences of management activities for a singele resource. The regional diversity of forest resources has led to many unique, local models rather than universal models. The Forest Service, in 1979, designed FORPLAN as its principal tool for national forest: it is al linear programming system, used to analyze the temporal aspects of the forest output. FORPLAN was chosen because it addressed two key issues in forest plnning: cost efficiency and an allowable timber sale quantity. Besides, these models have been used by each national forest structure with input that represent their problem. This is a strengh of LP. \\
+The first model we illustrate is the \textit{Forest service allocation}. It is part of model class in which the main issue is how to divide or allocate a valuable resource among competing needs and the resource may be for example land, capital, time or fuel. We will see how U.S Forest Service has used this model to address the sensitive task of managing 191 million acres of national forestland \cite{(Natural)}.\\
+The Forest Service is one of the major Federal land managing agencies. It has been part of the Department of Agricolture since 1905 and over the past 10 years significant administrative and legal challenges have plagued national forest management \cite{ForSer}. Resource simulation models are the principal technologies used for estimating ecological and enviromental responses to activities. These models try to qualify relationships among resources and results of management actions. Simulations such as timber growth-and-yeld models and sediment yield models often examine consequences of management activities for a singele resource. The regional diversity of forest resources has led to many unique, local models rather than universal models. The Forest Service, in 1979, designed FORPLAN as its principal tool for national forest: it is al linear programming system, used to analyze the temporal aspects of the forest output. FORPLAN was chosen because it addressed two key issues in forest plnning: cost efficiency and an allowable timber sale quantity. Besides, these models have been used by each national forest structure with input that represent their problem. This is a strengh of LP. \\
 The models of a forest begin  by dividing land into homogeneous analysis area, then several prescriptions or land management policies are then proposed and evaluated for each. \\The optimization seeks the best possible allocation of land in the analysis areas to particular prescriptions, subject to forest-wide restrictions on land use.
 We model, hypotetically, 788 thousand acre Wagonho National Forest, that is assumed to have 7 analysis areas, each subject to 3 different prescriptions. The first prescription encourages timbering, the second grazing and the third preserves the land as wilderness. Then we indices the variables as well:
 \begin{itemize}
@@ -1578,12 +1595,11 @@ s.t& \sum_{i=1}^{3}x_{i,j}=s_{i}\;\;\;\;i = 1, \dots,7&(\text{allocation})\\
 &\frac{1}{788}\sum_{i=1}^{7}\sum_{j=1}^{3} w_{i,j}x_{i,j}\geq 70&(\text{wilderness})\\
 &x_{i,j}\geq 0 \;\;\;\;i = 1,\dots,7;\;\;\;\;j = 1,\dots,3;
 \end{align*}
-Since the LP is not in standard form, we convert the inequalies to equalities adding slack valriables $y_{i,k}$ to the last three constraints, with $i, k = 1, \dots, 3$. The Forest Service Application data used to test the methods are shown in the following table:\\
+Since the LP is not in standard form, we convert the inequalies to equalities adding slack valriables $y_{i,k}$ to the last three constraints, with $i, k = 1, \dots, 3$. The Forest Service Application data used to test the methods are shown in the table \ref{table:timber}
 \begin{table}[]
-	\begin{center}
 	\begin{tabular}{cccllll}
 		\hline
-		\begin{tabular}[c]{@{}c@{}}\textbf{Analysis}\\ \textbf{area}, $i$ \end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{Acres},\\ $s_{i}$\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{Prescription},\\ j\end{tabular} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}\textbf{NPV}, $p_{i,j}$\\ (per acre)\end{tabular}} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}\textbf{Timber}, $t_{i,j}$\\ (per acre)\end{tabular}} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}\textbf{Grazing}, $g_{i,j}$\\ (per acre)\end{tabular}} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}\textbf{Wilderness}\\ \textbf{Index}, $w_{i,j}$\end{tabular}} \\ \hline
+		\begin{tabular}[c]{@{}c@{}}\\Analysis area, \\ $i$\end{tabular} & \begin{tabular}[c]{@{}c@{}}Acres,\\ $s_{i}$\end{tabular} & \begin{tabular}[c]{@{}c@{}}Prescription,\\ $j$\end{tabular} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}NPV, $p_{i,j}$\\ (per acre)\end{tabular}} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}Timber, $t_{i,j}$\\ (per acre)\end{tabular}} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}Grazing, $g_{i,j}$\\ (per acre)\end{tabular}} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}Wilderness\\ Index, $w_{i,j}$\end{tabular}} \\ \hline
 		\multirow{3}{*}{1} & \multirow{3}{*}{75} & 1 & 503 & 310 & 0.01 & 40 \\
 		&  & 2 & 140 & 50 & 0.04 & 80 \\
 		&  & 3 & 203 & 0 & 0 & 95 \\ \hline
@@ -1605,9 +1621,9 @@ Since the LP is not in standard form, we convert the inequalies to equalities ad
 		\multirow{3}{*}{7} & \multirow{3}{*}{113} & 1 & 705 & 213 & 0.02 & 40 \\
 		&  & 2 & 60 & 40 & 0.04 & 45 \\
 		&  & 3 & 400 & 0 & 0 & 95 \\ \hline
-	\end{tabular}
-\end{center}
+	\end{tabular}\caption{\label{table:timber}Forest Service Application Data}
 \end{table}
+
 The minimum total net present value is \$ $322515.00$ with the following optimal allocation:
 \begin{align*}
 x_{1,1}^{*} &=  0 & x_{1,2}^{*}&= 0 & x_{1,3}^{*} &= 75 & x_{2,1}^{*} &= 90 & x_{2,2}^{*} &= 0 & x_{2,3}^{*} &= 0\\
@@ -1616,11 +1632,10 @@ x_{5,1}^{*} &= 0 & x_{5,2}^{*}&= 154 & x_{5,3}^{*} &= 58 & x_{6,1}^{*} &= 0 & x_
  x_{7,1}^{*}&=0 &x_{7,2}^{*} &= 0 & x_{7,3}^{*} &= 113 & & & &  & & \\
 \end{align*}
 \section{Swedish steel}
-As allocation models split a resource, instead blending models combine them. Various applications blend everything from chemicals, to diets, to metals, to animal food. This problems are formulated in a LP model in which you have to decide what mix of ingredients best fulfills specified output requirements. In this section we propose the Swedish steel problem.\\
-The steel industry confronts a blending problem when it melts materials in high-temperature furnaces to manufacture new alloys from scrap. Fagersta AB of Fagersta, Sweden, is one of many companies that have used mathematical programming to plan this steel blending \cite{SSM}.\\
-An optimization arises every time a furnace is charged. Scrap in the available inventory is combined with a pure additives to produce a blend having the required percentages of various chemical elements. It is critical to make maximum use of scrap because addittives are much more expensive. In this research we assess that the Swedish steel making will produce a 100-kilogram furnace charge. The following table shows the much smaller fractions of carbon, nickel, chromium, and molybdenum in the four available supplies of scrap. It also shows the three higher-cost addities that can be used and the acceptable ranges for the resulting blend.\\
-The following table illustrate a fictitious version of Swedish steelimaking
-\begin{table}\caption{text}
+As allocation models split a resource, instead blending models combine them. Various applications blend everything from chemicals, to diets, to metals, to animal food: these problems are formulated in a LP model in which you have to decide what mix of ingredients best fulfills specified output requirements. In this section we propose the Swedish steel problem.\\
+The steel industry confronts a blending problem when it melts materials in high-temperature furnaces to manufacture new alloys from scrap. Fagersta AB of Fagersta, in Sweden, is one of many companies that have used mathematical programming to plan this steel blending \cite{SSM}.\\
+An optimization arises every time a furnace is charged. Scrap in the available inventory is combined with a pure additives to produce a blend having the required percentages of various chemical elements. It is critical to make maximum use of scrap because addittives are much more expensive. In this research we assess that the Swedish steel making will produce a 1000-kilogram furnace charge. The table \ref{table:carbon} with fictitious data shows the much smaller fractions of carbon, nickel, chromium, and molybdenum in the four available supplies of scrap. It also shows the three higher-cost addities that can be used and the acceptable ranges for the resulting blend.\\
+\begin{table}\caption{\label{table:carbon}Data for Swedish Steel Example}
 \begin{center}
 	\begin{tabular}{@{}lllllll@{}}
 		\toprule
@@ -1637,9 +1652,9 @@ The following table illustrate a fictitious version of Swedish steelimaking
 	\end{tabular}
 \end{center}
 \end{table}
-The principal decision variables in blending models specify how much of each available ingredient to include in the mix. In the Swedish Steel example we define the decision variables $x_{j}$, where $j = 1, \dots, 4$ refers to the four supplies of scrap and $j = 5, \dots, 7$ refer to the pure additives.\\
+The principal decision variables in blending models specify how much of each available ingredient to include in the mix. In the Swedish Steel example we define the decision variables $x_{j}$, where $j = \{1, \dots, 4\}$ refers to the four supplies of scrap and $j = \{5, \dots, 7\}$ refer to the pure additives.\\
 We have also upper and lower limits on the fraction of carbon, nickel, chromium and molybdenum in the mix. Each constraint will have the form:\\
-
+\begin{center}
 $\sum\limits_{j}\Bigg($\begin{tabular}{l}
  fraction in\\
 jth\\
@@ -1666,8 +1681,7 @@ ingredient\\
 		total\\
 	\end{tabular}
 	$\Big)$
-	
-	
+\end{center}		
 \bigskip
 Collecting all the elements, the LP model of the Swedish example is: 
 \begin{align*}
@@ -1690,10 +1704,52 @@ The unique optimal solution of this model is according to \cite{RR} and confirme
 x_{1}^{*} &=  75\text{ kg,} & x_{2}^{*}&=  90.91\text{ kg,} & x_{3}^{*} &= 672.28 \text{ kg,} & x_{4}^{*} &= 137.31 \text{ kg,}\\
 x_{5}^{*} &= 13.59 \text{ kg,}& x_{6}^{*}&= 0\text{ kg,}  & x_{7}^{*} &= 10.91 \text{ kg.} &&\\
 \end{align*}
+\section{Tubular products operations planning}
+Another classic LP form deals with operation planning. In organizations ranging from volunteer, to government, to manifacturing, to distribution, planners must decide what to do and when and where to do it.\\
+The Tubular Products Division (TP) of Babcock and Wilcox encountered a problem in investigating how work should be reallocated upon opening a new mill \cite{FEM}. TP manifactured steel tubing in a veriety of sizes and for many different uses, including electrical power generation. At the time of the study three mills handled production. The object was to consider how a fourth mill of different configuration would affect the optimal distribution of work (and associated cost) among the mills.\\ The table shows fictional data for existing mills 1 to 3 and one design for new mill 4, versus an array of 16 products. The products comprise all combinations of standard or high-pressure tubing: $\frac{1}{2}-$, $1-$, $2-$ or $8-$inch diameters, and thick or thin tube walls. The table includes the cost (in dollars) per 1000 pounds of each product according to which mill does the work, and the required processing time (in hours) per 1000 pounds produced. Missing values indicate products that cannot be manufactured feasibly at the mill indicated.\\
+We have also assumed division-wide demand for each of the 16 products in thousands of pounds per week. At present the three existing mills 1 to 3 have 800, 480 and 1280 hours per week of effective production cpacity, respectively. New mill 4 is planned for 960 hours per week. See table \ref{tab:TP}.\\
+Here the problem has two index dimensions: $p\in{1, \dots, 16}$ rappresents the product number and $m\in{1, \dots, 4}$ the mill number. Instead, the decision variables and the constants are:
+\begin{itemize}
+	\item \textit{i} is the analysis area number and \textit{j} is the prescription number
+	\item $s_{i}$ is the size of area $i$ in thousands of acres
+	\item $p_{i,j}$ is the net present value (PNV) per acre of all uses in area $i$ if managed under prescription $j$
+	\item $t_{i,j}$ is the projected timber yield (in board feet per acre) of analysis area $i$ if managed under prescription $j$
+	\item $g_{i,j}$ is the projected grazing capability (in animal unit months per acre) of analysis area $i$ if managed under prescription $j$
+	\item $w_{i,j}$ is the wilderness index rating, from 0 to 100, of analysis area $i$ if manages under prescription $j$
+\end{itemize}
+
+\begin{center}
+\begin{table}[]
+	\begin{tabular}{ccccccccccc}
+		\hline
+		& \textbf{} & \multicolumn{2}{c}{\textbf{Mill 1}} & \multicolumn{2}{c}{\textbf{Mill 2}} & \multicolumn{2}{c}{\textbf{Mill 3}} & \multicolumn{2}{c}{\textbf{Mill 4}} & \textbf{} \\
+		&  & Cost, & Hours, & Cost, & Hours, & Cost, & Hours, & Cost, & Hours, & Weekly dem \\ \cline{3-10}
+		& \textbf{Product} & \textbf{$c_{p,1}$} & \textbf{$t_{p,1}$} & \textbf{$c_{p,1}$} & \textbf{$t_{p,2}$} & \textbf{$c_{p,2}$} & \textbf{$t_{p,3}$} & \textbf{$c_{p,3}$} & \textbf{$t_{p,4}$} & \textbf{$d_{p}$} \\ \hline
+		\textbf{Std} &  &  &  &  &  &  &  &  &  &  \\ \cline{1-1}
+		1 & $\frac{1}{2}$in.thick & 90 & 0.8 & 75 & 0.7 & 70 & 0.5 & 63 & 0.6 & 100 \\
+		2 & $\frac{1}{2}$in.thin & 80 & 0.8 & 70 & 0.7 & 65 & 0.5 & 60 & 0.6 & 630 \\
+		3 & 1in.thick & 104 & 0.8 & 85 & 0.7 & 83 & 0.5 & 77 & 0.6 & 500 \\
+		4 & 1in.thin & 98 & 0.8 & 79 & 0.7 & 80 & 0.5 & 74 & 0.6 & 980 \\
+		5 & 2in.thick & 123 & 0.8 & 101 & 0.7 & 110 & 0.5 & 99 & 0.6 & 720 \\
+		6 & 2in.thin & 113 & 0.8 & 94 & 0.7 & 100 & 0.5 & 84 & 0.6 & 240 \\
+		7 & 8in.thick & - & - & 160 & 0.9 & 156 & 0.5 & 140 & 0.6 & 75 \\
+		8 & 8in.thin & - & - & 142 & 0.9 & 150 & 0.5 & 130 & 0.6 & 22 \\ \hline
+		\textbf{Press.} &  &  &  &  &  &  &  &  &  &  \\ \cline{1-1}
+		9 & $\frac{1}{2}$in.thick & 140 & 1.5 & 110 & 0.9 & - & - & 122 & 1.2 & 50 \\
+		10 & $\frac{1}{2}$in.thin & 124 & 1.5 & 96 & 0.9 & - & - & 101 & 1.2 & 22 \\
+		11 & 1in.thick & 160 & 1.5 & 133 & 0.9 & - & - & 138 & 1.2 & 353 \\
+		12 & 1in.thin & 124 & 1.5 & 127 & 0.9 & - & - & 133 & 1.2 & 55 \\
+		13 & 2in.thick & 202 & 1.5 & 150 & 0.9 & - & - & 160 & 1.2 & 125 \\
+		14 & 2in.thin & 190 & 1.5 & 141 & 0.9 & - & - & 140 & 1.2 & 35 \\
+		15 & 8in.thick & - & - & 190 & 1.0 & - & - & 220 & 1.5 & 100 \\
+		16 & 8in.thin & - & - & 175 & 1.0 & - & - & 200 & 1.5 & 10 \\ \hline
+	\end{tabular}\caption{\label{tab:TP}Tubular products application data}
+\end{table}
+\end{center}
 \section{Ohio National Bank shift scheduling}
 Operations planning models decide what work to undertake so that available resources are used efficiently. In Shift scheduling or staff planning models the work is already fixed. We must now plan the resources to accomplish it.\\
 The Ohio National Bank (ONB) confronted such a problem in staffing its check processing center \cite{ONB}. Checks received by the bank already have account numbers and other identifying information encoded on them. Machine operators in the check processing center key the dollar  amount of the check, which is then imprinted with the other information for computerized processing.\\Checks arrive through the business day in volumes peaking in the early evening. The fictious version will assume the following arrival (in thousand):
-\begin{table}[H]\caption{\label{table:shiftscheduling}Possible ONB arrivals schedule.}
+\begin{table}[H]\caption{\label{table:shiftscheduling}Possible ONB arrivals schedule}
 	\begin{center}
 	\begin{tabular}{ll|ll}
 		\hline
@@ -1733,7 +1789,7 @@ One final complication is encoding stations. The number of machines available li
 	\end{tabular}
 	\end{center}
 \end{table}
-The main decisions to be made in shift scheduling models are the number of employees to work various shifts. \\In the ONB case we have all the possibilities in table \ref{table:Shiftscheduling2}. One additional hour may also be worked in overtime.\newpage
+The main decisions to be made in shift scheduling models are the number of employees to work various shifts. \\In the ONB case we have all the possibilities in table \ref{table:Shiftscheduling2}. One additional hour may also be worked in overtime.
 Using the index $h$ corresponding the shift start time, we define the following decision variables:
 \begin{itemize}
 	\item $x_{h}$ is the number of full-time employees beginning a shift at hour $h \in \{11, \dots, 13\}$.
@@ -1750,6 +1806,11 @@ In this section, we give a comparison between the results given by the infeasibl
 
 \chapter{Conclusion}
  All variables $(x, \lambda, s)$ change at each iteration and the linear algebra operations which are required to update them have to involve the complete matrix $A$. This makes a single iteration of the interior point method significantly more expensive than that of the simplex method.
+ \newpage
+ \chapter*{Appendix}
+ \lstinputlisting[language=Python]{SimplexMethodIIphases.py}
+
+ \lstinputlisting[language=Python]{LPFMethod_PC.py}
 \lstinputlisting[language=Python]{MehrotraMethod.py}
 
 \begin{thebibliography}{9}
@@ -1771,7 +1832,7 @@ In this section, we give a comparison between the results given by the infeasibl
 	\bibitem{MUR} Mehrotra S., \emph{ Advanced Linear Programming: Computation and
 	Practice. } McGraw-Hill New York, New York (1981).
 
-	\bibitem{W}Nocedal J., Wright J. S., \emph{\;Numerical Optimization}, Springer Series in OR, Springer, New York, (2006).
+	\bibitem{W}Nocedal J., Wright J. S., \emph{\;"Numerical Optimization"}, Springer Series in OR, Springer, New York, (2006).
 	\bibitem{3}Victor Klee and George J. Minty.\emph{ How good is the simplex algorithm? Technical report}, Washington University Department of Mathematics, 1970.
 	\bibitem{Kar} N. K. Karmarkar,\emph{ A new polynomial-time algorithm for linear programming}, Combinatorica, (1984).
 	\bibitem{5} S. Mizuno, M.J. Todd, and Y. Ye,\emph{\;On adaptive-step primal-dual interior-point algorithms for linear programming}, Math. of OR, vol. 18, pp. 964-981, (1993). 

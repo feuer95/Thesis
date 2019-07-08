@@ -39,7 +39,7 @@ for i in range(29):
         (A, b, c) = input_data(i)
         x, s, u, sigma_m = mehrotra2(A, b, c, info = 1)
 #        x, v = SimplexMethod(A, b, c, rule = 0)
-        x, s, o = longpath1(A, b, c, c_form = 0,  info = 1, ip = 1)
+        x, s, o = longpath1(A, b, c, c_form = 0,  info = 1, ip = 0)
         x, s, p, sigma_2 = longpath2(A, b, c, c_form = 0, info = 1)
         x, s, z, sigma_pc = longpathPC(A, b, c, info = 1)
         

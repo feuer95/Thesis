@@ -173,7 +173,7 @@ if __name__ == "__main__":
     
     A, b, c = input_data(29)
     x, u = SimplexMethod(A, b, c, rule = 0) # With Bland's rule
-    
+    xm, sm, um, sigmam = mehrotra2(A, b, c, info = 1)    
     # Create a dataframe and convert to excel
     dfu = pd.DataFrame(u, columns = ['it', 'Current Basis', 'Current x', 'Current cost value'])
 #    dfu.to_excel("Simplex_Minty2.xlsx", index = False)
