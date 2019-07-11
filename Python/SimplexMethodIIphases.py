@@ -54,8 +54,8 @@ def SimplexMethod(A, b, c, max_it = 500, rule = 0, c_form = 0):
     The solution x_I is the initial point for II phase.
     '''
     
-    if sum(b < 0) > 0:# Phase I variables:
-#        print('Vector b < 0:\n\tStart phase I\n')
+    if sum(b <= 0) > 0:# Phase I variables:
+        print('Vector b < 0:\n\tStart phase I\n')
         
         # Change sign of constraints
         A[[i for i in range(r_A) if b[i] < 0]] *= -1  
@@ -93,8 +93,8 @@ def SimplexMethod(A, b, c, max_it = 500, rule = 0, c_form = 0):
     
     if info == 0:
         print_boxed("Found optimal solution at x* =\n{}\n\n".format(x) +
-#                    "Basis indexes: {}\n".format(B) +
-#                    "Nonbasis indexes: {}\n".format(set(range(c_A)) - B) +
+                    "Basis indexes: {}\n".format(B) +
+                    "Nonbasis indexes: {}\n".format(set(range(c_A)) - B) +
                     "Optimal cost: {}\n".format(z.round(decimals = 3))+
                     "Number of iterations: {}.".format(itII))
     elif info == 1:
@@ -118,7 +118,7 @@ def fun(A, c, x, B, it, max_it, rule) -> (float, np.array, set, float, np.array,
     z = np.dot(c, x)  # Value of obj. function
     u = []
     while it <= max_it:  # Ensure procedure terminates (for the min reduced cost rule)
-#        print("\t\nIteration: {}\nCurrent x: {} \nCurrent B: {}\n".format(it, x, B), end = '')
+        print("\t\nIteration: {}\nCurrent x: {} \nCurrent B: {}\n".format(it, x, B), end = '')
         
         u.append([it, B.copy(), x, z.copy()]) # Update table
         lamda = np.linalg.solve(A[:,B].T, c[B])
@@ -171,9 +171,12 @@ def fun(A, c, x, B, it, max_it, rule) -> (float, np.array, set, float, np.array,
 # Input data of canonical LP:
 if __name__ == "__main__":
     
-    A, b, c = input_data(29)
-    x, u = SimplexMethod(A, b, c, rule = 0) # With Bland's rule
+#    A, b, c = input_data(29)
+    A = np.array([[1, 0, 0],[20,1, 0],[200, 20, 1]])
+    b = np.array([1, 100, 10000])
+    c = np.array([100, 10, 1])
+    x, u = SimplexMethod(A, b, c, rule = 1) # With Bland's rule
     
     # Create a dataframe and convert to excel
     dfu = pd.DataFrame(u, columns = ['it', 'Current Basis', 'Current x', 'Current cost value'])
-#    dfu.to_excel("Simplex_Minty2.xlsx", index = False)
+    dfu.to_excel("Simplex_Minty1.xlsx", index = False)

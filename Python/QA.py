@@ -91,7 +91,7 @@ dfc = cent_meas(x_c, u_c, label = 'LPF2', plot= 0)
 """                         LPF predictor corrector                         """
 #                              12 iterations/ 14 iteraions
 start = time.time()
-x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, c_form = 1, info = 1, ip = 1)
+x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, c_form = 1, info = 1, ip = 0)
 time_lpfpc = time.time()-start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpfpc))
 
@@ -100,7 +100,7 @@ dfpc = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0)
 """                              Mehrotra                                   """
 #                              7 iterations
 start = time.time()
-x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, c_form = 1, info = 1, ip = 1)
+x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, c_form = 1, info = 1, ip = 0)
 time_mer = time.time()-start
 print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_mer))
 

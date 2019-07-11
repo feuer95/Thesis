@@ -83,7 +83,7 @@ if __name__ == "__main__":
     """                        Mehrotra                                     """
     #                             10 iterations
     start = time.time()
-    x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, info = 1, ip = 0)
+    x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, info = 1, ip = 1)
     time_mer = time.time()-start
     print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_mer))
     
