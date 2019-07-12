@@ -172,29 +172,37 @@
 \chapter*{Abstract}
 The concept of optimization is now well rooted as a principle underlying the analysis
 of many complex decisions or allocation problems: Linear Programming (LP) is one of the simplest ways to perform optimization.
-This thesis discusses the Simplex method and the Interior-Point methods (IPM).
-The aim is to show that the significant difference between them is reflected not only on the theoretical background but also in the practical implementation and to point out the powerful of the IPMs, owing to their vast applicability.\\
-The research addresses the role of the combined predictor-corrector step in Mehrotra's IPM method and build  a new algorithm applying this correcting technique to the Long-Path Following methods (LPF), which displays an extensive theoretical complexity and uses the nested neighborhood $\mathcal{N}_{-\infty}(\gamma)$.\\
+This thesis introduces the two mot important methods: the Simplex method and the Interior-Point methods (IPM).
+We show that the significant difference between them is reflected not only on the theoretical background but also in the practical implementation and to point out the powerful of the IPMs, owing to their vast applicability.\\
+The research addresses the role of the combined predictor-corrector step in Mehrotra's IPM method and build  a new algorithm applying this correcting technique to the Long-Path Following methods (LPF), which displays an extensive theoretical complexity and uses the nested neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
 First, it is given a brief description of these methods,
 %: the simplex method, that is known to be very efficient practically, and the primal-dual %interior-point
-then we outline a comprehensive convergence analysis of three important IPM: the primal-dual affine scaling, the LPF and the Mehrotra's method. \\
-After introducing the basic theoretical framework, we exhibit a comparison of these competitors, testing them on some real models. We show that the corrector approach of the LPF presented in this work, improves the efficiency of the algorithm but the 
+then we outline a comprehensive convergence analysis of three important IPM: the primal-dual affine scaling, the LPF and the Mehrotra's methods. \\
+After introducing the basic theoretical framework, we exhibit a comparison of these competitors, testing them on some real models. We show that the corrector approach of the LPF presented in this work improves the efficiency of the algorithm but the 
 neighborhood restricts the progress achived in Mehrotra's method.\\
 The programs that implement these algorithms are written in Python. 
-
-%\addcontentsline{toc}{chapter}{Abstract}  % se non si vuole numerare l'introduzione, ma farla comparire nell'indice
+%\addcontentsline{toc}{chapter}{Abstract}
+\chapter*{Sommario}
+Il concetto di ottimizzazione si basa sull'analisi di problemi decisionali o di assegnazione: la Programmazione Lineare (LP) è uno dei metodi più semplici per risolvere un problema di ottimizzaizone.\\ 
+Questa tesi introduce due dei più importanti metodi di LP: il metodo del Simplesso e i metodi del Punto interno (IPM). Nella prima parte si illustra la rilevante differenza tra i due metodi: con risultati numerici si conferma la complessità esponenziale del metodo del Simplesso rispetto a quella polinomiale dei IPM e la vasta applicabilità di questi ultimi.\\
+La ricerca pone particolare attenzione al ruolo del "predictor-corrector step" nel metodo IPM di Mehrotra e attua questa strategia al metodo IPM \textit{Long-Path Following} (LPF), il quale si differenzia operando su un intorno limitato $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
+Nella seconda parte della tesi si presenta una breve descrizione, seguita da un'analisi teorica, dei seguenti IPM: metodo Affine Primale-Duale, LPF e il metodo di Mehrotra.\\
+Successivamente, essi verranno testati su problemi reali con dati fittizzi esaminando il metodo proposto \textit{Predictor-Corrector LPF}: si deduce che, nonostante ci sia un vantaggio computazionale, l'intorno $\mathcal{N}_{-\infty}(\gamma,\beta)$ limita l'efficacia della strategia.\\   
+I metodi sono implementati con il linguaggio di programmazione Python. 
+%  % se non si vuole numerare l'introduzione, ma farla comparire nell'indice
 
 
 \chapter{Introduction to the linear programming}
 Optimization is a fundamental tool for understanding nature, science, engineering, economics and mathematics: a large number of real world problems can be treated as optimization problems, in which the goal is to select values that maximize or minimize a given \textit{objective function}, subject to certain \textit{constraints}.\\ The process of identifying objective, variables and constraints for a given problem is knows as \textit{modeling}. Construction of an appropriate model is the first step and, once it is formulated, an optimization algorithm can be used to find its solution.\\ There is a collection of algorithms, each of them is tailored to a particular type of optimization problem. Linear programming problem remains one of the most well-studied optimization problems: it consists in maximizing or minimizing a linear function over a certain domain, defined by a set of linear constraints.\\
 Linear Programming (LP) has been dominant paradigm in optimization since Dantzig's development of the simplex method in the 1940s. Regarding the theoretical complexity of this method, it has proved that the expected number of iterations in the solution of a linear problem is polynomial. Furthermore, the worst case complexity has exponential behavior. It has been observed that the simplex algorithm performs sufficiently well in practice, especially on small or medium sized LPs, but its performance is not satisfactory in large-scale LPs. This weakness of simplex algorithm is due to the stalling and cycling problem but many anti-cycling pivoting rules have been introduced in the past.\\
 Since Dantzig's initial contribution, researchers have made many efforts in order to enhance the performance of simplex algorithm. In the 1980s the monopoly of the simplex algorithm in the solution of the LP has been challenged. Interior Point Methods (IPM) were the result of subsequent research and their performance has been more than satisfactory compared to the simplex algorithm. The main idea of IPMs is that the computation of the optimal solution can be achieved by moving inside the feasible region, defined by the constraints. \\
-This thesis is organized as follow:
-an introductory section summarizes the basic theory of the linear programming. In the chapter 2 we delineate the simplex method. The chapter 3 is dedicated to the primal-dual interior point methods, taking particular attention to the affine-scaling and the long-path following methods. It is also examined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\After a theoretical convergence analysis, the implementation illustrates the numerical results that we obtained for the considered physical problems and a comparison is performed.
+This thesis is organized as follow: an introductory section summarizes the basic theory of the linear programming. In the Chapter 3 we delineate the simplex method. The Chapter 4 is dedicated to the primal-dual interior point methods, taking particaular attention to the infeasible primal-dual path-following interior point algorithm proposed. It is also examined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\After a theoretical convergence analysis, some numerical example for the considered physical problems are giver and a comparison is performed.
 Concluding, in the last chapter we give an overview of the work realized in this thesis and suggest possible next steps. 
 
 %
 % CAPITOLO 1
+%
+
 \chapter{Basic theory}
 The variables in optimization models represent the decisions to be taken and the constraints specify the restrictions and the interactions that limit the variable values.
 To complete the model, we need the objective functions that quantify the decision consequences to be maximized or minimized. This chapter introduces notations, terminologies and formulations of a general LP problem.
@@ -221,17 +229,17 @@ where the $b_{j}$, $c_{i}$ \text{and} $a_{ij}$ are fixed real costants, with $i 
 \text{subject\;to\;}&Ax= b\;\\\text{and\;}&x\geq0
  \end{split}
 \end{equation}
-
 with $x$ an \textit{n}-dimensional column vector of decision variables, $c^
-{T}$ a \textit{n}-dimensional vector, \textit{A} a $m \times n$ real matrix, and \textit{b} a \textit{m}-dimensional column vector (Kantorovich L., 1939).\\
+{T}$ a \textit{n}-dimensional vector, \textit{A} a $m \times n$ real matrix, and \textit{b} a \textit{m}-dimensional column vector (Kantorovich L., 1939).
+Throughgout the thesis these notations are used.\\
 If $x$ satisfies the constraints $Ax = b$, $x\geq0$, we call it \textit{feasible point}; the set of all feasible points is the \textit{feasible set}, indicated by $\mathcal{P}=\lbrace x\in\mathbb{R}^{n,m}\; |\; Ax = b , x \geq0\rbrace$.\\
 In the case the constraints set is determined entirely by linear inequalites $Ax \leq b$, which in the literature (see \cite{W}) is said to be a \textit{canonical form}, the problem may be alternatively expressed as:
 \begin{alignat*}{3}
 \text{minimize\;}&c_1 x_1 + c_2 x_2+ ...+c_n x_n&&&\\[1.8mm]
-\text{subject\;to\;}&a_{11} x_1 +a_{12}x_2 + ... +a_{1n}x_n +y_{1}&&&= b_1\\
-		   	&a_{21}x_1+a_{22}x_2+ ... +a_{2n}x_n&+y_{2}&&= b_2\\
+\text{subject\;to\;}&a_{11} x_1 +a_{12}x_2 + ... +a_{1n}x_n +y_{1}&&&= b_1;\\
+		   	&a_{21}x_1+a_{22}x_2+ ... +a_{2n}x_n&+y_{2}&&= b_2;\\
 &&\;\;\;\vdots&&\\
-&a_{m1}x_1+a_{m2}x_2+ ... +a_{mn}x_n+&&&y_{m}=b_m\\
+&a_{m1}x_1+a_{m2}x_2+ ... +a_{mn}x_n+&&&y_{m}=b_m;\\
 \text{and} \;& x_{i} \geq 0;\;\; y_{j} \geq 0; \text{\;\;for }i = 1,...,n&\text{ and }j&=&1,...,m.
 \end{alignat*}
 The new positive variables $\mathit{y_{i}}$, $\;i \in \{1, ..., n\}$ introduced to convert the inequalities into identities, are called \textit{slack variables} and the problem has the standard form with $n+m$ unknowns variables $x_{i}, y_{j},i \in \{1, ..., m\}$ and $j \in \{1, ..., n\}.$\\ The new matrix that now describes the linear equality constraints, assumes the form $\left[\begin{matrix}A\;\vert\; I\;\end{matrix}\right]$, with $A$ the $m \times n$ matrix of the original canonical LP and the identity matrix $I$ associated to the slack variables, and has dimension $m \times (n + m)$.\\
@@ -274,7 +282,8 @@ A LP problem is simple to state and visualize. In fact, very simple graphic tech
 Considering the following simple LP:
 \begin{align*}
 \min -&x_{1}+ x_{2}-4x_{3}\\
-	&x_{1}+x_{2}+x_{3}=1, \text{\; with\;} x_{1}, x_{2}, x_{3} \geq 0
+\text{subject to }&x_{1}+x_{2}+x_{3}=1,\\
+ \text{\; with\;} &x_{1}, x_{2}, x_{3} \geq 0
 \end{align*}
 the tetrahedron in \ref{tetra} is a geometric rappresentetion of the feasible set $\mathcal{P}$: the verteces ${x}_{B_{1}}$, ${x}_{B_{2}}$ and ${x}_{B_{3}}$ are feasible basic points respect to the the basis $B_{1} =\{1\}$,  $B_{2} =\{2\}$,  $B_{3} =\{3\}$.
 \begin{figure}[h]\caption{\label{tetra}}
@@ -427,7 +436,7 @@ The multipliers $(\lambda,s)$ indicate the sensitivity of the optimal objective 
 \begin{equation*}
 0=x^{T}s=x^{T}\Delta s= \left( \Delta x\right)^{T}s=\left( \Delta x\right)^{T}\Delta s
 \end{equation*}
-and by the theorem we have that the optimal values for both the original and perturbated problems (P) and (D) equal, so
+and, by the theorem, we have that the optimal values for both the original and perturbated problems (P) and (D) equal, so
 
 \begin{align*}
 &c^{T}x=b^{T}\lambda  &c^{T}(x + \Delta x)=\left(b+\Delta b\right)^{T}\left(\lambda+\Delta \lambda\right),
@@ -773,7 +782,7 @@ and its dual is
 s_{1}\\s_{2}\\s_{3}
 \end{bmatrix}=\begin{bmatrix}1\\0\\0\end{bmatrix}, s\geq0 
 \end{equation*}
-Any feasible primal-dual vector $(x, \lambda, s)\in\mathcal{F}$ has $x_{1}= x_{2}= s_{2}= 0$, so $\mathcal{F}^{0}=\emptyset$. The optimal objective function value for this problem is 0, and the primal-dual solutionn set is defined by
+Any feasible primal-dual vector $(x, \lambda, s)\in\mathcal{F}$ has $x_{1}= x_{2}= s_{2}= 0$, so $\mathcal{F}^{0}=\emptyset$. The optimal objective function value for this problem is 0, and the primal-dual solution set is defined by
 \begin{center}
 $x^{*} = \begin{bmatrix}
 0\\x^{*}_{2}\\ 0
@@ -819,15 +828,14 @@ Adler and Resende \cite{MARE}.\\
 	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})$ with $(x^{0}, s^{0})>0$;\\
 	\textbf{for} \= $k = 0, 1, 2,...$ \\
 	\> solve
-\begin{equation*}
+	
 \begin{bmatrix}
-0&A^{T}&I \\A& 0&0\\X^{k}&0&S^{k}
+$0&A^{T}&I \\A& 0&0\\X^{k}&0&S^{k}
 \end{bmatrix}\begin{bmatrix}
 \Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
 \end{bmatrix}=-\begin{bmatrix}
--r_{c}^{k}\\-r_{b}^{k}\\X^{k}S^{k}e
+-r_{c}^{k}\\-r_{b}^{k}\\X^{k}S^{k}e$
 \end{bmatrix};
-\end{equation*}
 \\
 	\\
 	\>\textbf{set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$
@@ -1472,22 +1480,42 @@ To measure the efficiency of the affine-scaling direction, we define $\mu_{\text
 .
 \section{IPM algorithms performance}
 In this section we develop an empirical study of the IPM algorithms performace. \\
-We introduce a model that allow us to summarize the results obtained in this fashion: we rate the number of iterations $T$ required to solve a LP to the number of constraints $m$ and/or the number of variables $n$ in the problem. We may assume that $T$ can be approximated by a function of the form 
+We rate the number of iterations $T$ required to solve a LP to the number of constraints $m$ and/or the number of variables $n$ in the problem. We may assume that $T$ can be approximated by a function of the form 
 \begin{equation*}
-	T = 2^{\alpha}(m+n)^{\beta},
+	T \approx 2^{\alpha}(m+n)^{\beta},
 \end{equation*}
 for a pair of real numbers $\alpha$ and $\beta$. This multiplicative representation of the numbers of iterations can be converted into an additive representation by taking logarithms. Introducing an $\epsilon$ to value the difference between the model's prediction and the true number of iterations, we see that the model can be written as
 \begin{equation*}
-\log T = \alpha \log 2 +\beta \log (m+n) +\epsilon.
+\log T \approx \alpha \log 2 +\beta \log (m+n) +\epsilon.
 \end{equation*}
-\\For each empirical LP problem $k$ we find the two parameters $\alpha$ and $\beta$ and compute $T_{k}$ related to the IPM methods proposed in this thesis: long-path following algorithms with centering parameter $\sigma_{k}^{1}$ and with $\sigma_{k}^{2}$, LPF PC and Mehrotra's algorithms. \\
-Here we give the numerical results about the number of iterations required to compute the algorithms on 30 LP problems retrieved in the \textbf{Appendix}.
+Now we compute $T$ related to the IPM methods proposed in this thesis: long-path following algorithms with centering parameter $\sigma_{k}^{1}$ and with $\sigma_{k}^{2}$, LPF PC and Mehrotra's algorithms. In order to find $\alpha$ and $\beta$  for each method, we introduce the following regression model, with $k$ observations:\\
+\begin{equation}
+\begin{bmatrix}
+\log T_{1}\\\log T_{2}\\\dots\\\log T_{k}\\
+\end{bmatrix}
+ =
+ \begin{bmatrix}
+\log 2&\log (m_{1}+n_{1})\\
+\dots&\dots\\
+\log 2&\log (m_{k}+n_{k})
+\end{bmatrix}\begin{bmatrix}
+\alpha\\\beta
+\end{bmatrix}
++
+\begin{bmatrix}
+\epsilon_{1}\\
+\dots\\
+\epsilon_{k}
+\end{bmatrix}.
+\end{equation}
 
-\begin{table}[]
+In the Table \ref{tab:numite} we give the numerical results about the number of iterations $T_{k}$ required to compute the algorithms on $k =30$ standard LP with model data $A\in\mathbb{R}^{m,n}$, $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$ (see in the \textbf{Appendix}).
+
+\begin{table}[]\caption{\label{tab:numite}Number of iterations required to solve standard LP problems with $n$ variables and $n$ constraints.}
 	\begin{center}
 	\begin{tabular}{cccccc}
 		\hline
-		\textbf{rows} & \textbf{columns} & \textbf{Mehrotra $T_{k}$} & \textbf{LPF PC $T_{k}$} & \textbf{LPF 1 $T_{k}$} & \textbf{LPF 2 $T_{k}$} \\ \hline
+		\textbf{rows $m$} & \textbf{columns $n$} & \textbf{Mehrotra $T_{k}$} & \textbf{LPF PC $T_{k}$} & \textbf{LPF 1 $T_{k}$} & \textbf{LPF 2 $T_{k}$} \\ \hline
 		1 & 2 & 6 & 7 & 60 & 8 \\
 		2 & 2 & 6 & 7 & 66 & 8 \\
 		4 & 2 & 6 & 7 & 83 & 10 \\
@@ -1524,11 +1552,20 @@ Here we give the numerical results about the number of iterations required to co
 
 \begin{figure}\label{figure:T}
 	\begin{center}
-		\includegraphics[width= 13 cm]{numberiterations}\caption{number of iterations}
+		\includegraphics[width= 13 cm]{numberiterations}\caption{log–log plot of T vs. m + n and the L1 and L2
+			regression lines.}
 	\end{center}
 \end{figure}
 %\ref{figure:T}
-The Figure (4.2) shows a log-log plot of iterations versus $m + n$ and the $L^{1}$ regression lines.
+The Figure 4.2 shows a log-log plot of $T$ versus $m + n$ and the $L^{1}$ regression lines for all methods.
+We can conclude that the algorithm codes used in this research solve LP problems after T iterations approximated by
+\begin{align*}
+T& \approx 2^{0.1657}(m + n)^{1.5394} \text{ with Mehrotra's method,}\\
+T &\approx 2^{0.313}(m + n)^{3.9349} \text{ with LPF1 method,}\\
+T& \approx 2^{0.2898}(m + n)^{1.6157} \text{ with LPF2 method,}\\
+T& \approx 2^{0.3955}(m + n)^{1.3784} \text{ with LPF2 method.}\\
+\end{align*}
+These outcomes confirm the practical success of the IPM, proving their polynomial complexity. 
 %\lstinputlisting[language=py,caption=applicationContext.py]{Forest.py}
 
 %\begin{table}[]
@@ -1958,7 +1995,7 @@ One final complication is encoding stations. The number of machines available li
 \begin{table}[]\caption{\label{table:Shiftscheduling2}Possible Shifts in ONB Example}
 	\begin{center}
 	\begin{tabular}{llllllllllll}
-		\hline\multirow{\textbf{Start}} & \multicolumn{3}{l}{\textbf{Full-time shift}} & \multicolumn{8}{l}{\textbf{Part-time shifts}} \\ \cline{2-12} 
+		\hline\row{\textbf{Start}} & \multicolumn{3}{l}{\textbf{Full-time shift}} & \multicolumn{8}{l}{\textbf{Part-time shifts}} \\ \cline{2-12} 
 		& \textbf{11} & \textbf{12} & \textbf{13} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15} & \textbf{16} & \textbf{17} & \textbf{18} \\ \hline
 		11:00 & R & - & - & R & - & - & - & - & - & - & - \\
 		12:00 & R & R & - & R & R & - & - & - & - & - & - \\
@@ -2013,7 +2050,7 @@ Long path following method predictor-corrector:
 \section{Starting points codes}
  \lstinputlisting[language=Python]{starting_point.py}
  \lstinputlisting[language=Python]{starting_point2.py}
-	\chapter{Newton's method}
+	\chapter*{Newton's method}
 %\end{appendices}
 \begin{thebibliography}{9}
 	
