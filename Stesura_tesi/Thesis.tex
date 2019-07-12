@@ -172,14 +172,15 @@
 \chapter*{Abstract}
 The concept of optimization is now well rooted as a principle underlying the analysis
 of many complex decisions or allocation problems: Linear Programming (LP) is one of the simplest ways to perform optimization.
-This thesis introduces the two mot important methods: the Simplex method and the Interior-Point methods (IPM).
-We show that the significant difference between them is reflected not only on the theoretical background but also in the practical implementation and to point out the powerful of the IPMs, owing to their vast applicability.\\
-The research addresses the role of the combined predictor-corrector step in Mehrotra's IPM method and build  a new algorithm applying this correcting technique to the Long-Path Following methods (LPF), which displays an extensive theoretical complexity and uses the nested neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
-First, it is given a brief description of these methods,
+This thesis introduces the two most types of methods are presented: the Simplex method and the Interior-Point methods (IPM).
+We show that the significant difference between them is reflected not only on the theoretical background but also in the practical implementation. \\
+The efficiency and vast applicability of the IPM algorithms was proven by applying it to various case studies.
+The research addresses the role of the combined predictor-corrector step in Mehrotra's IPM method and builds  a new algorithm applying this technique to the Long-Path Following methods (LPF), which displays an extensive theoretical complexity and uses the nested neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
+First, a brief description of these methods is given,
 %: the simplex method, that is known to be very efficient practically, and the primal-dual %interior-point
 then we outline a comprehensive convergence analysis of three important IPM: the primal-dual affine scaling, the LPF and the Mehrotra's methods. \\
-After introducing the basic theoretical framework, we exhibit a comparison of these competitors, testing them on some real models. We show that the corrector approach of the LPF presented in this work improves the efficiency of the algorithm but the 
-neighborhood restricts the progress achived in Mehrotra's method.\\
+After introducing the basic theoretical framework, we exhibit a comparison of these competitors, testing them on some real models. We show that the corrector approach of the LPF presented in this work improves the efficiency of the algorithm. However, the 
+neighborhood restricts the progress achived in Mehrotra's method under specific conditions.\\
 The programs that implement these algorithms are written in Python. 
 %\addcontentsline{toc}{chapter}{Abstract}
 \chapter*{Sommario}
