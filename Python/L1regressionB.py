@@ -107,7 +107,7 @@ Z = np.asarray(Z)
 #%%
 d = {'row': M, 'columns':N, 'Mehrotra':B, 'LPF PC':Z, 'LPF 1':O, 'LPF 2':P}
 df = pd.DataFrame(d)
-df.to_excel("itertations_analysis.xlsx", index = False)  
+#df.to_excel("itertations_analysis.xlsx", index = False)  
 '''
 plt.figure()
 

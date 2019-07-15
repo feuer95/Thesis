@@ -97,7 +97,22 @@ def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, i
        
        # Find the maximum alpha s.t the next iteration is in N_gamma      
        v = np.arange(0, 1.0000, 0.0001)
-       i = len(v)-1
+       i = len(v)-1       
+       while i >= 0:
+        if (E(v[i]) > 0).all():
+            t = v[i]
+#            print('Largest step length:{}'.format("%10.3f"%t))
+            break
+        else:
+            i -= 1       
+       mi = np.dot(x,s)/c_A                  # Duality measure
+       mi_aff = np.dot(x + t*x1,s + t*s1)/c_A # Average value of the incremented vectors
+       Sigma = (mi_aff/mi)**3
+       
+       """ Corrector step: compute (x_k+1, lambda_k+1, s_k+1) """
+       
+       (x1, y1, s1, rb, rc) = augm(A, b, c, x, y, s, Sigma)      
+
        while i >= 0:
         if (E(v[i]) > 0).all():
             t = v[i]
@@ -105,14 +120,6 @@ def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, i
             break
         else:
             i -= 1
-       mi = np.dot(x,s)/c_A                  # Duality measure
-       mi_aff = np.dot(x + t*x1,s + t*s1)/c_A # Average value of the incremented vectors
-       Sigma = (mi_aff/mi)**3
-       
-       """ Corrector step: compute (x_k+1, lambda_k+1, s_k+1) """
-       
-       (x1, y1, s1, rb, rc) = augm(A, b, c, x, y, s, Sigma)
-       
        if info == 0:
            print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),x1.round(decimals = 3),s1.round(decimals = 3)))      
     
@@ -180,7 +187,7 @@ def augm(A, b, c, x, y, s, cp):
 if __name__ == "__main__":
     
     
-    (A, b, c) = input_data(21)   
+    (A, b, c) = input_data(3)   
 
     x, s, u, sig = longpathPC(A, b, c)
           

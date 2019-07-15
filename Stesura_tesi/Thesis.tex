@@ -421,7 +421,7 @@ For every KKT solution $(x^{*}, \lambda^{*}, s^{*})$ we have $x_{j}^{*}= 0$ and/
 We can define two index sets $\mathcal{B}$ and $\mathcal{N}$ as follows:
 \begin{equation}\label{index}
 \mathcal{B} =\{j\in\{1,\dots,m\}|\; x^{*} \not= 0\}, \;
-\mathcal{N} =\{j\in\{1,\dots,m\}|\; s^{*} \not= 0\}
+\mathcal{N} =\{j\in\{1,\dots,m\}|\; s^{*} \not= 0\}.
 \end{equation}  
 Obviously, $\mathcal{B}$ and $\mathcal{N}$ are disjoint and form a partition of the indices. Now we state an important theorem:
 \begin{thm}[Goldman-Tucker]
@@ -469,9 +469,9 @@ optimization, in general.\\
 The method exploits the insight provided by the fundamental theorem
 \ref{Fund}, which states that if it exists an optimal solution of the LP, it is at one of the vertices of the feasible polytope. \\
 The idea of the simplex method is to proceed from one basic feasible point of the feasible set $\mathcal{P}$ to another, in such a way as to continually decrease the value of the objective
-function until a minimum is reached.\\ Consider the general LP problem presented in standard form as in \ref{(Prim)}.
+function until a minimum is reached.\\ Consider the general LP problem presented in standard form as in (\ref{(Prim)}).
 We assume for the remainder of the chapter that the matrix $A$ has full row rank: in practice, a preprocessing phase is applied to the user-supplied data to remove some
-redundancies from the given constraints and eliminate some of the variables.\\Given an index sets $B$ and $N$, we can identify a partition of the $m$-elements vectors $x$, $c$ and of the matrix $A$ and formulate the LP as following:
+redundancies from the given constraints and eliminate some of the variables.\\Given an index sets $B$ and $N$, we can identify a partition of the $n$-elements vectors $x$, $c$ and of the matrix $A$ and formulate the LP as follows:
 \begin{equation}
 \begin{split}
 \text{minimize\;} &c^{T}_{B}x_{B}+c^{T}_{N}x_{N},\\
@@ -482,7 +482,7 @@ redundancies from the given constraints and eliminate some of the variables.\\Gi
  \\Note that for any $x$, the basic variables $x_{B}$ can be written as a function of the nonbasic variables $x_{N}$ and hence, $x_{B}=A_{B}^{-1}b-A_{B}^{-1}A_{N}x_{N}$. \\Similarly, the objective function can be written as $c^{T}x=c_{B}^{T}A_{B}^{-1}b+(c_{N}-A_{N}^{T}A_{B}^{-T}c_{B})^{T}x_{N}$, denoting the \textit{reduced cost} by \begin{center}
  	$\widetilde{c}=c_{N}-A_{N}^{T}A_{B}^{-T}c_{B}$.
  \end{center}Since we are dealing only with basic feasible points, we can consider the relative basic feasible point $x$ with $x_{N}= 0$, then the cost value it is exactly $\widetilde{c}$.\\
- We can choose the dual points $(\lambda,s)$ such that $(x, \lambda, s)$ satisfies the KKT condition as well: from \ref{CC} we set $s_{B}= 0$ for the complementary condition, therefore we get $s_{N}= c_{N}- A_{N}^{T}\lambda$ from \ref{DF}. Besides, since $A_{B}$ is not singular, this equality uniquely defines $\lambda$ as $\lambda = A_{B}^{-T}c_{B}$ and we can state that the reduced cost $\tilde{c}$ is identical to $s_{N}$ in the feasible basic point.\\  
+ We can choose the dual points $(\lambda,s)$ such that $(x, \lambda, s)$ satisfies the KKT condition as well: from (\ref{CC}) we set $s_{B}= 0$ for the complementary condition, therefore we get $s_{N}= c_{N}- A_{N}^{T}\lambda$ from (\ref{DF}). Besides, since $A_{B}$ is not singular, this equality uniquely defines $\lambda$ as $\lambda = A_{B}^{-T}c_{B}$ and we can state that the reduced cost $\tilde{c}$ is identical to $s_{N}$ in the feasible basic point.\\  
  
  If there exists a $j \in N$ such that $\widetilde{c}_{j} \leq 0$, then by increasing $x_{j}$ up from zero, we will decrease the value of the objective function.\\
 So, in a step of the simplex method we find an index $s \in N$ such that $\widetilde{c}_{s} \leq 0$ and increase $x_{s}$ as much as possible while keeping $x_{B} \geq 0$. We enforce that this non-basic variable is now positive and we include the index $s$ in the basis $B$.\\
@@ -534,7 +534,7 @@ We have covered most of the mechanics of taking a single step of the simplex met
 \end{tabbing}
 \end{algorithm}
 
-Summarizing, the simplex algorithm moves from basic feasible solution to another one and it moves from one vertex to an adjacent one, for which the basis $B$ differs inexactly one component.\\ Each iteration begins by checking the sign of the coefficients of the reduced cost $\widetilde{c}$ on non-basic variables: if none is negative, then the current basic fesible point is optimal. \\
+Summarizing, the simplex algorithm moves from basic feasible solution to another one and it moves from one vertex to an adjacent one, for which the basis $B$ differs in exactly one component.\\ Each iteration begins by checking the sign of the coefficients of the reduced cost $\widetilde{c}$ on non-basic variables: if none is negative, then the current basic fesible point is optimal. \\
 As we see, it is required a basic feasible starting point $x$ with initial basis $B \in \left\{ 1,2,..., n \right\}$ such that $|B|=m$, $A_{B}$ non singular, $A_{B}^{-1}b=x_{B} \geq 0$ and $x_{N}=0$.\\[1cm]
 Now we see that a basic feasible point is immediately available for some LP.\\ For example, in LP problems with constraints in canonical form and with $b > 0$, a basic feasible point corresponding to the standard form is provided by the slack variables as feasible basic ones: $x =\left(0_{[m]},b\right)$.\\Sometimes the problem of finding an initial point and a basis may be itself nontrivial but the \textit{two-phase} method deals with this difficulty. The idea is to add artificial variables in order to give a basic feasible initial point for a second phase in which we can extract easily the solution of the original problem.\\
 In \textit{phase I} we solve the following problem, with unit vector $e= (1,\dots,1)^{T}$:
@@ -602,17 +602,17 @@ Applying Bland's rule, we find optimal solution at $x^{*} = [0.04, 0,  1,   0,  
 
 \begin{table}[h]
 	\begin{center}
-	\begin{tabular}{|c|c|c|c|}
+	\begin{tabular}{cccc}
 		\hline
-		\textbf{Iteration} & \textbf{Current basis} & \textbf{Current x} & \textbf{Current value} \\ \hline
-		1 & [4, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		2 & [2, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		3 & [0, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		4 & [2, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		5 & [2, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		6 & [2, 3, 0] & [0.016, 0, 1, 0.004, 0, 0, 0] & 0.008 \\ \hline
+		\textbf{Iteration} & \textbf{Current Basis} & \textbf{Current x} & \textbf{Current cost value} \\ \hline
+		1 & [4, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		2 & [0, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		3 & [0, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		4 & [2, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		5 & [2, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		6 & [2, 3, 0] & [0.016, 0, 1, 0.004, 0, 0, 0] & 0.008 \\
 		7 & [2, 4, 0] & [0.04, 0, 1, 0, 0.03, 0, 0] & -0.05 \\ \hline
-	\end{tabular}\caption{Simplex algorithm result with Bland's rule}
+	\end{tabular}\caption{Simplex algorithm result with Bland's rule.}
 \end{center}
 \end{table}
 
@@ -620,25 +620,25 @@ Instead without the rule, after 18 iterations the simplex method returns to the 
 
 \begin{table}[h]
 	\begin{center}
-	\begin{tabular}{|c|c|c|c|}
+	\begin{tabular}{cccc}
 		\hline
 		\textbf{Iteration} & \textbf{Current basis} & \textbf{Current x} & \textbf{Current cost value} \\ \hline
-		1 & [4, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		2 & [0, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0, \\ \hline
-		3 & [0, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0, \\ \hline
-		4 & [2, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0, \\ \hline
-		5 & [2, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		6 & [4, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		7 & [4, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		8 & [0, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		9 & [0, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		10 & [2, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		11 & [2, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		12 & [4, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		13 & [4, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-		14 & [0, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
+		1 & [4, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		2 & [0, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		3 & [0, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ 
+		4 & [2, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		5 & [2, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		6 & [4, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		7 & [4, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		8 & [0, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		9 & [0, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		10 & [2, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		11 & [2, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ 
+		12 & [4, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		13 & [4, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
+		14 & [0, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
 		15 & [0, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\ \hline
-	\end{tabular}\caption{Simplex algorithm result without Bland's rule}
+	\end{tabular}\caption{Simplex algorithm result without Bland's rule.}
 \end{center}
 \end{table}
 \end{ex} 
@@ -649,13 +649,12 @@ method. \\
  Since the method operates by moving from one basic feasible point
 to another without ever returning to a previously visited point, an upper bound
 on the number of iterations is the number of basic feasible points.\\Hence, given a LP in standard form with
-coefficient matrix and vectors $A\in\mathbb{R}^{n,m}, b\in\mathbb{R}^{n}$ and $c\in\mathbb{R}^{m}$, it computes at most $m\choose n$ iterations.\\
+coefficient matrix and vectors $A\in\mathbb{R}^{m,n}, b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$, it computes at most $n\choose m$ iterations.\\
 The number of pivot steps to solve
 the problem starting from a basic feasible solution is typically a small multiple of
-$m$: usually between $2m$ and $3m$. At one time researchers believed (and attempted to prove) that the simplex
-algorithm always requires a number of iterations that is
+$n$: usually between $2n$ and $3n$. At one time researchers believed (and attempted to prove) that the simplex algorithm always requires a number of iterations that is
 bounded by a polynomial expression in the problem size. In fact, Dantzig observed that for problems with
-$m \leq 50$ and $n \leq 200$ the number of iterations is ordinarily less than $\frac{3}{2}m$ \cite{DAN}.
+$m \leq 50$ and $n \leq 200$ the number of iterations is ordinarily less than $\frac{3}{2}n$ \cite{DAN}.
 \\ However, in 1972, Victor Klee and George Minty exhibited a class of linear programs each of which requires an
 exponential number in the size of the problem of iterations when solved by the simplex method.\\
 One form of the Klee–Minty example is the following whose feasible polytope has $2^{n}$
@@ -682,13 +681,13 @@ the number of vertices minus $1$.\cite{MINTY}\\ It is illustrated also the resul
 	\begin{tabular}{|c|c|c|c|}
 		\hline
 		\textbf{Iteration} & \textbf{Current basis} & \textbf{Current x} & \textbf{Current cost value} \\ \hline
-		0 & [3, 4, 5] & [0, 0, 0, 1, 100, 10000] & 0 \\ \hline
-		1 & [0, 4, 5] & [1, 0, 0, 0, 80, 9800] & -100 \\ \hline
-		2 & [0, 1, 5] & [1, 80, 0, 0, 0, 8200] & -900 \\ \hline
-		3 & [3, 1, 5] & [0, 100, 0, 1, 0, 8000] & -1000 \\ \hline
-		4 & [0, 1, 5] & [0, 100, 8000, 1, 0, 0] & -9000 \\ \hline
-		5 & [0, 1, 2] & [1, 80, 8200, 0, 0, 0] & -9100 \\ \hline
-		6 & [0, 4, 2] & [1, 0, 9800, 0, 80, 0] & -9900 \\ \hline
+		0 & [3, 4, 5] & [0, 0, 0, 1, 100, 10000] & 0 \\ 
+		1 & [0, 4, 5] & [1, 0, 0, 0, 80, 9800] & -100 \\
+		2 & [0, 1, 5] & [1, 80, 0, 0, 0, 8200] & -900 \\
+		3 & [3, 1, 5] & [0, 100, 0, 1, 0, 8000] & -1000 \\ 
+		4 & [0, 1, 5] & [0, 100, 8000, 1, 0, 0] & -9000 \\ 
+		5 & [0, 1, 2] & [1, 80, 8200, 0, 0, 0] & -9100 \\
+		6 & [0, 4, 2] & [1, 0, 9800, 0, 80, 0] & -9900 \\ 
 		7 & [3, 4, 2] & [0, 0, 10000, 1, 100, 0] & -10000 \\ \hline
 	\end{tabular}
 \end{center}
@@ -699,11 +698,11 @@ the number of vertices minus $1$.\cite{MINTY}\\ It is illustrated also the resul
 		\begin{tabular}{|c|c|c|c|}
 			\hline
 			\textbf{Iteration} & \textbf{Current basis} & \textbf{Current x} & \textbf{Current cost value} \\ \hline
-			0 & [3, 4, 5] & [0, 0, 0, 1, 100, 10000] & 0 \\ \hline
-			1 & [0, 4, 5] & [1, 0, 0, 0, 80, 9800] & -100 \\ \hline
-			2 & [0, 1, 5] & [1, 80, 0, 0, 0, 8200] & -900 \\ \hline
-			3 & [0, 1, 2] & [1, 80, 8200, 0, 0, 0] & -9100 \\ \hline
-			4 & [0, 4, 2] & [1, 0, 9800, 0, 80, 0] & -9900 \\ \hline
+			0 & [3, 4, 5] & [0, 0, 0, 1, 100, 10000] & 0 \\
+			1 & [0, 4, 5] & [1, 0, 0, 0, 80, 9800] & -100 \\
+			2 & [0, 1, 5] & [1, 80, 0, 0, 0, 8200] & -900 \\
+			3 & [0, 1, 2] & [1, 80, 8200, 0, 0, 0] & -9100 \\
+			4 & [0, 4, 2] & [1, 0, 9800, 0, 80, 0] & -9900 \\
 			5 & [3, 4, 2] & [0, 0, 10000, 1, 100, 0] & -10000 \\ \hline
 		\end{tabular}
 	\end{center}
@@ -752,12 +751,12 @@ Following a fundamentally different approach from the simplex method, IPM avoid 
 The primal-dual methods find primal-dual solutions $(x^{*},\lambda^{*},s^{*})$ by applying variants of Newton's search direction method to the three optimatility conditions (\ref{DF}), (\ref{PF}), (\ref{CC}) and modifying the search directions and the step lengths so that the inequality $(x,s)>0$ is satisfied.\\
 
  Let restate the optimality conditions by a mapping $\mathit{F}$ from $\mathbb{R}^{2n+m}$ to $\mathbb{R}^{2n+m}$:
-\begin{center}\label{F}
-	$\mathit{F}(x,\lambda,s)= \begin{bmatrix}
+\begin{equation}\label{F}
+	\mathit{F}(x,\lambda,s)= \begin{bmatrix}
 	A^{T}\lambda+s-c \\Ax-b \\XSe
-	\end{bmatrix}=0$, with $(x,s)\geq0,$
-\end{center}
-where $X = diag(x_{1}, x_{2},...,x_{n})$ and $S = diag(s_{1}, s_{2},...,s_{n})$.\\
+	\end{bmatrix}=0,
+\end{equation}
+with $(x,s)\geq0$, where $X = diag(x_{1}, x_{2},...,x_{n})$ and $S = diag(s_{1}, s_{2},...,s_{n})$.\\
 Note that $\mathit{F}$ is linear in the first two equations and mildly nonlinear in the last equation. 
 The general IPM algorithm generates iterates $(x^{k},\lambda^{k},s^{k})$ with the following properties:
 \begin{itemize}
@@ -829,17 +828,19 @@ Adler and Resende \cite{MARE}.\\
 	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})$ with $(x^{0}, s^{0})>0$;\\
 	\textbf{for} \= $k = 0, 1, 2,...$ \\
 	\> solve
-	
+	\end{tabbing}
+\begin{equation}\label{mtx:aff}\tag{4.1b}	
 \begin{bmatrix}
-$0&A^{T}&I \\A& 0&0\\X^{k}&0&S^{k}
+0&A^{T}&I \\A& 0&0\\X^{k}&0&S^{k}
 \end{bmatrix}\begin{bmatrix}
 \Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
 \end{bmatrix}=-\begin{bmatrix}
--r_{c}^{k}\\-r_{b}^{k}\\X^{k}S^{k}e$
+-r_{c}^{k}\\-r_{b}^{k}\\X^{k}S^{k}e
 \end{bmatrix};
-\\
+\end{equation}
+\begin{tabbing}
 	\\
-	\>\textbf{set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$
+	\=\textbf{set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$
 	\\
 	\>\> with $\alpha_{k}$ such that $(x^{k+1}, s^{k+1})>0$; \\
 	\textbf{end}
@@ -972,7 +973,7 @@ The general path-following algorithm is:
 	\end{bmatrix}\begin{bmatrix}
 	\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
 	\end{bmatrix}=-\begin{bmatrix}
-	A^{T}y^{k}+s^{k}-c\\Ax^{k}-b\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
+	0\\0\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
 	\end{bmatrix};
 	\end{equation}
 	\begin{tabbing}
@@ -1036,8 +1037,26 @@ The following Lemma shows the properties of this sequence in $\mathcal{N}_{-\inf
 	~\cite{Wright} pag. 101
 \end{proof}
 We see the Lemma assert the sequence is bounded (see \ref{B}) and hence the existence of the limit is verified.\\
-\subsection{Affine-scaling convergence}
-We examine the asymptotic behavior of this method, that is of significant theoretical interest: we assume that $(x, \lambda, s)\in\mathcal{F}^{0}$, hence, the affine-scaling direction $(\Delta x, \Delta \lambda, \Delta s)$ satisfies the following matricial system:\\
+We can introduce an extension of $\mathcal{N}_{-\infty}(\gamma)$ that includes infeasible points. This neighborhood is defined by
+\begin{equation}\label{neigh3}
+\mathcal{N}_{-\infty}(\gamma,\beta) =\Bigg\{(x, \lambda, s) | \frac{\lVert(r_{b}, r_{c})\rVert_{2}}{\mu} \leq \beta\frac{\lVert(r_{b}^{0}, r_{c}^{0})\rVert_{2}}{\mu^{0}},\; (x, s)>0,\; x_{i}s_{i} \geq \gamma\mu,\;i = 1,\dots, n \Bigg\}
+\end{equation}
+where $\gamma\in(0,1)$ and $\beta \geq 1$ are given parameters and the residuals $(r_{b}^{0}, r_{c}^{0})$ and $\mu_{0}$ are evaluated at the starting point. Notice that we must have $\beta \geq 1$ to ensure that the initial point $(x^{0}, \lambda^{0}, s^{0})\in\mathcal{N}(\gamma,\beta)$.\\
+When LPF algorithm works with $\mathcal{N}_{-\infty}(\gamma,\beta)$, the search direction is obtained solving:
+	\begin{equation*}
+\begin{bmatrix}
+0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
+\end{bmatrix}\begin{bmatrix}
+\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
+\end{bmatrix}=-\begin{bmatrix}
+-r_{c}^{k}\\-r_{b}^{k}\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
+\end{bmatrix}.
+\end{equation*}
+ 
+\section{Asymptotic convergence}
+We examine the asymptotic behavior of these two methods, that are of significant theoretical interest: the following complexity results state that IPM converge arbitrarily close to an optimal solution linearly respect to the duality measure $\mu$. We show, too, LPF algorithm can be accelereted so that its sequence of duality measure $\{\mu_{k}\}$ converges almost quadratically to 0.\\
+\subsection{Affine-scaling method}
+In this analysis we set that $(x, \lambda, s)\in\mathcal{F}^{0}$, hence, the affine-scaling direction $(\Delta x, \Delta \lambda, \Delta s)$ satisfies the following matricial system:\\
 \begin{equation}\label{5.1}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\S&0&X
@@ -1054,10 +1073,11 @@ More precisely we assume that $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$
 	\begin{equation*}
 	\lVert \Delta x_{\mathcal{B}} \rVert \leq C \mu \text{\;and\;} \lVert \Delta s_\mathcal{B} \rVert \leq C \mu,
 	\end{equation*}
-	with the set $\mathcal{B}$ defined previously in $\ref{index}$. 
+	with the set $\mathcal{B}$ defined in ($\ref{index}$). 
 \end{lem}
+
 \begin{proof}
-	Let us define the positive diagonal matrix $D = X^{1/2}S^{-1/2}$. Multiplying the last block row of \ref{5.1} by $(XS)^{-1/2}$, we obtain 
+	Let us define the positive diagonal matrix $D = X^{1/2}S^{-1/2}$. Multiplying the last block row of (\ref{5.1}) by $(XS)^{-1/2}$, we obtain 
 	\begin{equation*}
 	D^{-1}\Delta x + D \Delta s = -(XS)^{1/2}e.
 	\end{equation*}
@@ -1093,7 +1113,7 @@ Now we show that $\lVert \Delta x_{\mathcal{B}}\rVert$ and $\lVert \Delta s_{\ma
 \end{lem}
 The next lemma is due essentially to Adler and Montiero \cite{ADL}. $A_{\mathcal{B}}$,  Let us denote $A_{\mathcal{N}}$, $D_{\mathcal{B}}$ and $D_{\mathcal{N}}$ a column partition of the matrices $A$ and $D$, according to the sets $\mathcal{B}$ and $\mathcal{N}$, respectively.
 \begin{lem}
-	Suppose that the assumption of the Lemma \ref{(T)} hold. Then
+	Suppose that the assumption of the Lemma \ref{(T)} holds. Then
 	\begin{enumerate}
 		\item $u = \Delta x_{B}$ is the unique solution of the following convex quadratic problem
 		\begin{align} \label{(U)}
@@ -1115,7 +1135,7 @@ The next lemma is due essentially to Adler and Montiero \cite{ADL}. $A_{\mathcal
 	\end{align*}
 	The second equation is satisfied from the second row of (\ref{5.1}). Combining the first and the third block rows in (\ref{5.1}), for the indices $\mathcal{B}$ we have:
 	\begin{equation*}
-	-D_{\mathcal{B}}^{-2}\Delta x_{\mathcal{B}} + A_{\mathcal{B}}^{T}\Delta \lambda = s_{\mathcal{B}}
+	-D_{\mathcal{B}}^{-2}\Delta x_{\mathcal{B}} + A_{\mathcal{B}}^{T}\Delta \lambda = s_{\mathcal{B}}.
 	\end{equation*}
 	Since $(x, \lambda, s)$ is feasible, we have $s_{\mathcal{B}}= -A_{\mathcal{B}}^{T}\lambda+ c_{\mathcal{B}}$, whereas for any solution $(x^{*}, \lambda^{*}, s^{*})$, we have $c_{\mathcal{B}}= A_{\mathcal{B}^{T}\lambda^{*}}$. Then, we obtain
 	\begin{equation*}
@@ -1130,7 +1150,7 @@ The next lemma is due essentially to Adler and Montiero \cite{ADL}. $A_{\mathcal
 	A_{\mathcal{N}}^{T}\Delta\lambda + \Delta s_{\mathcal{N}} &=0. 
 	\end{align*}
 	The last two equations follow immediately from the first block row of (\ref{5.1}).\\
-	Then, it is easy to show that the choices $\hat{u}_{N}= x_{\mathcal{N}}+\Delta x_{\mathcal{N}}$ and $\hat{u}_{\mathcal{B}}=x_{\mathcal{B}}+\Delta x_{\mathcal{B}}-x_{\mathcal{B}}^{*}$, satisfy the first and the second equations, where $x^{*}$ is the primal solution.\\
+	Then, it is easy to show that the choices $\hat{u}_{N}= x_{\mathcal{N}}+\Delta x_{\mathcal{N}}$ and $\hat{u}_{\mathcal{B}}=x_{\mathcal{B}}+\Delta x_{\mathcal{B}}-x_{\mathcal{B}}^{*}$ satisfy the first and the second equations, where $x^{*}$ is the primal solution.\\
 	Now we prove the uniqueness of the $\Delta s_{\mathcal{B}}$.\\
 	If we multiply (\ref{44}) by $A_{\mathcal{B}}$ and (\ref{45}) by $A_{\mathcal{N}}$ and add, then we obtain
 	\begin{equation*}
@@ -1154,19 +1174,31 @@ The next lemma is due essentially to Adler and Montiero \cite{ADL}. $A_{\mathcal
 	\end{equation*}
 \end{thm}
 \begin{proof}
-	Since the diagonal of $D_{\mathcal{B}}$ is strictly positive, we can apply the lemma~\ref{(T)} directly to the convex quadratic problem~\ref{(U)}. Hence, there is a constant $\bar{C}$ depending on $A_{\mathcal{B}}$ such that
+	Since the diagonal of $D_{\mathcal{B}}$ is strictly positive, we can apply the Lemma~\ref{(T)} directly to the convex quadratic problem~\ref{(U)}. Hence, there is a constant $\bar{C}$ depending on $A_{\mathcal{B}}$ such that
 	\begin{equation}
 	\lVert \Delta x_{\mathcal{B}}\rVert \leq \bar{C}\lVert A_{\mathcal{N}}\Delta x_{\mathcal{N}}\rVert\leq \bar{C}\lVert A_{\mathcal{N}}\rVert C\mu,
 	\end{equation}
-	Similarly, from(~\ref{(V)}), there is a constant $\bar{K}$ depending on $A$ such that
+	Similarly, from (\ref{(V)}), there is a constant $\bar{K}$ depending on $A$ such that
 	\begin{equation}
-	\lVert \Delta s_{\mathcal{N}}\rVert \leq \bar{K}\lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert\lVert \Delta s_{\mathcal{B}}\rVert \leq\bar{K} \lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert C\mu,
+	\lVert \Delta s_{\mathcal{N}}\rVert \leq \bar{K}\lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert\lVert \Delta s_{\mathcal{B}}\rVert \leq\bar{K} \lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert C\mu.
 	\end{equation}
 	The result follows when we define K$\;=\bar{K} \lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert C$.
 \end{proof}
-A result similar to Theorem~\ref{(Z)} holds for steps of an IPM algorithm \cite{Wright}.\\ The implementation realized in this research computes the infeasible with two heuristic techniques, which we depict later.\\
-\section{LPF convergence analysis}
-The following is a technical lemma.
+A result similar to Theorem~\ref{(Z)} holds for steps of infeasible IPM algorithms; we state it with the following theorem, that works (?) in the extended neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$ \cite{Wright}.\\
+\begin{thm}
+	Suppose that the iteration sequence $(x^{k},\lambda^{k},s^{k})$ is generated by an infeasible interior-point algorithm, whose iterates are confined to the neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$ defined by (\ref{neigh3}), and $\mu_{k}\to 0$. Then if $(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})$ is the affine-scaling step defined by (\ref{mtx:aff}) NO (4.1b-problema con label in algorithm enviroment) at the kth iterate, there is a constant C such that
+	\begin{equation*}
+		\lVert(\Delta x^{k},\Delta s^{k})\rVert\leq C\mu_{k},
+	\end{equation*}
+	for all $\mu_{k}$ sufficently small.
+\end{thm}
+\begin{proof}
+	The structre of the proof is the same as in the feasible case \cite{Wright}.
+\end{proof}
+The implementation realized in this research computes the infeasible with two heuristic techniques, which we depict later.\\
+\subsection{LPF method analysis}
+Here an analysis for the feasible longstep path-following algorithm is done; in this context, the search direction $(\Delta x, \Delta \lambda, \Delta s)$ is found by solving (\ref{Pb}) with the residuals $r_{c}^{k}$ and $r_{b}^{k}$ null.
+The following is a technical lemma in order to provide a bound on $\lVert\Delta X\Delta S e\rVert_{2}$.
 \begin{lem}\label{lem1}
 	Let u and v be any two vectors in $\mathbb{R}^{n}$ with $u^{T}v \geq 0$. Then, 
 	\begin{align*}
@@ -1194,8 +1226,8 @@ The next lemma is an important tool to proof the following statement.
 	\end{align*}
 \end{lem}
 \begin{proof}
-%	$(x + \Delta x)^{T}(s +\Delta s) = SX + x \Delta s + s \Delta x + \Delta x \Delta s$ and $S \Delta x + X \Delta s + XS = 0$, by the last row of \ref{(5.1)}. These two equations show that $\Delta x\Delta s = 0$.\\
-	By multiplying the last block row of $\ref{Pb}$ by $(XS)^{-1/2}$ and recalling the definition of $D = X^{1/2}S^{-1/2}$, we obtain 
+	Since $(x + \Delta x)^{T}(s +\Delta s) = XS + x \Delta s + s \Delta x + \Delta x \Delta s$ and $S \Delta x + X \Delta s + XS = 0$, by the last row of (\ref{(5.1)}) we can state that $\Delta x\Delta s = 0$.\\
+	By multiplying the last block row of ($\ref{Pb}$) by $(XS)^{-1/2}$ and recalling the definition of $D = X^{1/2}S^{-1/2}$, we obtain 
 	\begin{equation}\label{58}
 	D^{-1}\Delta x + D \Delta s = (XS)^{-1/2}(-XSe + \sigma \mu e).
 	\end{equation}
@@ -1203,7 +1235,7 @@ The next lemma is an important tool to proof the following statement.
 	\begin{align*}
 	\lVert \Delta X \Delta S e\rVert &= \lVert(D^{-1}\Delta X)(D\Delta S)e \rVert \\
 	&\leq 2^{-3/2}\lVert D^{-1}\Delta x + D \Delta s\rVert^{2}, \text{\;from Lemma \ref{lem1}}\\
-	&= 2^{-3/2}\lVert (XS)^{-1/2}(-XSe + \sigma \mu e)\rVert ^{2} \text{,\; from (\ref{58})}\\
+	&= 2^{-3/2}\lVert (XS)^{-1/2}(-XSe + \sigma \mu e)\rVert ^{2} \text{,\; from (\ref{58})}.\\
 	\end{align*}
 	Expanding the squared Euclidean norm and using such relationships as $x^{T}s = n\mu$ and $e^{T}e = n$, we obtain
 	\begin{align*}
@@ -1213,7 +1245,6 @@ The next lemma is an important tool to proof the following statement.
 	&\leq 2^{-3/2}(1 + 1/\gamma)n \mu.
 	\end{align*}
 \end{proof}
-
 \begin{thm}
 	Given the parameters $\gamma$, $\sigma_{\text{min}}$ and $\sigma_{\text{max}}$ in the long-step path following algorithm, there is a constant $\delta$ indipendent of n such that
 	\begin{equation}\label{(5.10)}
@@ -1224,19 +1255,22 @@ The next lemma is an important tool to proof the following statement.
 	First of all we prove that $(x_{k}, \lambda_{k}, s_{k})+\alpha(\Delta x_{k},\Delta \lambda_{k},\Delta s_{k})\in\mathcal{N}_{-\infty}(\gamma)$ for all $\sigma \in \bigg[0,2^{3/2}\gamma \frac{1 - \gamma}{1 +\ \gamma}\frac{\sigma_{k}}{n}\bigg]$.\\
 	
 	From the last $n$ equalities of (\ref{Pb}), we have that 
-	\begin{align}&(x_{i}^{k}, \lambda_{i}^{k}, s_{i}^{k})+\alpha(\Delta x_{i}^{k},\Delta \lambda_{i}^{k},\Delta s_{i}^{k});\\ 
-	 &=x_{i}^{k}s_{i}^{k} + \alpha(x_{i}^{k} \Delta s_{i}^{k} + s_{i}^{k} \Delta x_{i}^{k})+\alpha^{2}\Delta x_{i}^{k} \Delta s_{i}^{k}; \\
-	&=x_{i}^{k}s_{i}^{k}(1 - \alpha) + \alpha \sigma_{k}\mu_{k}-\alpha^{2}|\Delta x_{i}^{k} \Delta s_{i}^{k}| \label{(5.11)};\\
-	&\geq \gamma(1 - \alpha)\mu_{k} + \alpha \sigma_{k}\mu_{k}-\alpha^{2}2^{-3/2}(1 + 1/ \gamma)n\mu_{k} \label{(5.12)}.\\
+	\begin{align}&(x_{i}^{k}, \lambda_{i}^{k}, s_{i}^{k})+\alpha(\Delta x_{i}^{k},\Delta \lambda_{i}^{k},\Delta s_{i}^{k})\\ 
+	 &=x_{i}^{k}s_{i}^{k} + \alpha(x_{i}^{k} \Delta s_{i}^{k} + s_{i}^{k} \Delta x_{i}^{k})+\alpha^{2}\Delta x_{i}^{k} \Delta s_{i}^{k} \\
+	&=x_{i}^{k}s_{i}^{k}(1 - \alpha) + \alpha \sigma_{k}\mu_{k}-\alpha^{2}|\Delta x_{i}^{k} \Delta s_{i}^{k}| \label{(5.11)}\\
+	&\geq \gamma(1 - \alpha)\mu_{k} + \alpha \sigma_{k}\mu_{k}-\alpha^{2}2^{-3/2}(1 + 1/ \gamma)n\mu_{k} \label{(5.12)}.
 	\end{align}
-	In the equation (\ref{(5.11)}) $\alpha x_{i}^{k}s_{i}^{k}$ is added in order to use the last equations of the matrix system.\\ 
-	In (\ref{(5.12)}) it is used the inequality in \textbf{Lemma \ref{lem:ma1}}: $|\Delta x_{i}^{k}\Delta s_{i}^{k}|\leq2^{-3/2}(1 + 1/\gamma)n\mu_{k}$, for any $i = 1,2,...,n$. \\
+	In (\ref{(5.11)}) $\alpha x_{i}^{k}s_{i}^{k}$ is added in order to use the last equations of the matrix system.\\ 
+	In (\ref{(5.12)}) it is used the inequality in Lemma \ref{lem:ma1}}: $|\Delta x_{i}^{k}\Delta s_{i}^{k}|\leq2^{-3/2}(1 + 1/\gamma)n\mu_{k}$, for any $i = 1,2,...,n$. \\
 	By summing the $n$ components of the equation $S^{k}\Delta x^{k} + X^{k} \Delta s^{k} = -X^{k}S^{k}e + \sigma_{k} \mu_{k}e$ and using the null product $\Delta x \Delta s$, we have
-	\begin{align*}\mu_{k}(\alpha)\vcentcolon=(x_{i}^{k} + \alpha\Delta x_{i}^{k})^{T}(s_{i}^{k} + \alpha\Delta s_{i}^{k})/n&=\\ 
-	x_{i}^{k}s_{i}^{k}/n - \alpha \mu_{k}+\alpha \sigma_{k} \mu_{k} &=\\
-	(1-\alpha(1-\sigma_{k}))\mu_{k}.
+	\begin{align*}\mu_{k}(\alpha)\vcentcolon&=(x_{i}^{k} + \alpha\Delta x_{i}^{k})^{T}(s_{i}^{k} + \alpha\Delta s_{i}^{k})/n\\ 
+	&=x_{i}^{k}s_{i}^{k}/n - \alpha \mu_{k}+\alpha \sigma_{k} \mu_{k} \\
+	&=(1-\alpha(1-\sigma_{k}))\mu_{k}.
 	\end{align*}
-	From these last two formulas, we can see that proximity condition:\\$(x_{i}^{k} + \alpha\Delta x_{i}^{k})^{T}(s_{i}^{k} + \alpha\Delta s_{i}^{k}) \geq \gamma\mu_{k}(\alpha)$ is satisfied if \begin{equation*}
+	From these last two formulas, we can see that proximity condition:
+	\begin{equation*}
+		(x_{i}^{k} + \alpha\Delta x_{i}^{k})^{T}(s_{i}^{k} + \alpha\Delta s_{i}^{k}) \geq \gamma\mu_{k}(\alpha)
+	\end{equation*} is satisfied if \begin{equation*}
 	\gamma(1-\alpha)\mu_{k} + \alpha\sigma_{k}\mu_{k} - \alpha^{2}2^{-3/2}(1 + 1/\gamma)n\mu_{k}\geq \gamma(1 - \alpha +\alpha\sigma_{k})\mu_{k}.
 	\end{equation*}
 	Rearranging the expression in further two steps, we assert the upper bound of the interval of the parameter $\alpha$:
@@ -1244,7 +1278,7 @@ The next lemma is an important tool to proof the following statement.
 	\alpha\sigma_{k}\mu_{k}(1-\gamma)&\geq\alpha^{2}2^{-3/2}(1+1/\gamma),\\
 	\alpha&\leq \frac{2^{3/2}}{n} \sigma_{k}\gamma\frac{1-\gamma}{1+\gamma}.\\		
 	\end{align*}
-	Now, we complete the prof of the theorem by estimating the reduction in $\mu$ on the $k$th step. Using the inequality above, we get:
+	Now, we complete the proof of the theorem by estimating the reduction in $\mu$ on the $k$th step. Using the inequality above, we get:
 	\begin{align*}
 	\mu_{k+1}& = (x_{i}^{k} + \alpha_{k}\Delta x_{i}^{k})^{T}(s_{i}^{k} + \alpha_{k}\Delta s_{i}^{k})/n\\
 	& = [(x^{k})^{T}s^{k} + \alpha_{k}\big((x^{k})^{T}\Delta s^{k} + (s^{k})^{T}\Delta x^{k}\big) +\alpha^{2}_{k}(\Delta x^{k})^{T}\Delta s^{k}]/n\\
@@ -1282,21 +1316,15 @@ We complete the analysis theory with the following theorem which shows that a re
 	\end{equation*}
 	we have 
 	\begin{equation*}
-	k\bigg(-\frac{\delta}{n}\bigg)\leq\log\epsilon
+	k\bigg(-\frac{\delta}{n}\bigg)\leq\log\epsilon,
 	\end{equation*}	
 	that guarantees
 	\begin{equation*}
-	\mu_{k}/\mu_{o}\leq\epsilon.
+	\mu^{k}/\mu^{0}\leq\epsilon.
 	\end{equation*}	
 \end{proof}
-Most of algorithms do not require the initial point to be strictly feasible but require only that $(x^{k},s^{k})>0$ (\textit{infeasible-interior point algorithms}), as for the affine-scaling method formulated in \textbf{Algorithm \ref{alg:AS}}.\\
-
-Instead for the LPF method, we define an extension of $\mathcal{N}_{-\infty}(\gamma)$ that includes infeasible points. The neighborhood is defined by
- \begin{equation}\label{neigh3}
-\mathcal{N}(\gamma,\beta) =\Bigg\{(x, \lambda, s) | \frac{\lVert(r_{b}, r_{c})\rVert_{2}}{\mu} \leq \beta\frac{\lVert(r_{b}^{0}, r_{c}^{0})\rVert_{2}}{\mu^{0}},\; (x, s)>0,\; x_{i}s_{i} \geq \gamma\mu,\;i = 1,\dots, n \Bigg\}
-\end{equation}
-where $\gamma\in(0,1)$ and $\beta \geq 1$ are given parameters and the residuals $(r_{b}^{0}, r_{c}^{0})$ and $\mu_{0}$ are evaluated at the starting point. Notice that we must have $\beta \geq 1$ to ensure that the initial point $(x^{0}, \lambda^{0}, s^{0})\in\mathcal{N}(\gamma,\beta)$.
-In the general framework \textbf{Algorithm 3} we have not specified how the centering parameter is choosen: different interior-point algorithms use a peculiar method to select $\sigma_{k}$.\\
+This marginal per-itertion reduction of $\mu^{k}$ is enough to deliver a polynomial complexity of the lgorithm \cite{25y}.\\
+In the general framework Algorithm 3 we have not specified how the centering parameter is chosen: different interior-point algorithms use a peculiar method to select $\sigma_{k}$.\\
 Now we see two heuristic choices of $\sigma_{k}$ at the $k^{th}$ iteration of the algorithm; the first one decreases at each iteration and the second one is fixed: 
 \begin{align}
 \sigma^{1}_{k} &= \min\{0.1, 100\mu_{k} \},\label{LPF1}\tag{4.13a}\\
@@ -1309,7 +1337,8 @@ with $\mu_{k}$ the duality measure of the current primal-dual point and $n$ is t
 \includegraphics[width=9 cm]{timeLPF12}\caption{Log plot time storage: test problems for comparing the two centering parameters} 
 \end{center}
 \end{figure}
-Analyzing the graphic in Figure 4.1 we state that the LPF with the centering parameter (\ref{LPF1}) \textit{LPF 1} requires a less number of iterations and less time storage then \textit{LPF2} to find a LP solution, indipendently to the characteristic of the problem data. The storage time refers to the time required to solve LP problems with LPF codes I have implemented and outlined in the \textbf{Appendix A.3}.\\
+Analyzing the graphic in Figure 4.1 we state that the LPF with the centering parameter (\ref{LPF1}) \textit{LPF 1} requires a less number of iterations and less time storage then \textit{LPF2} to find a LP solution, indipendently to the characteristic of the problem data. The storage time refers to the time required to solve LP problems with LPF codes I have implemented and outlined in the Appendix A.3.\\
+\\
 In the research we will present a predictor-corrector LPF algorithm based on Mehrotra's method, in which the centering parameter is choosen adaptively.\\
 Afterwards, in the numerical experiments it will be focused on the LPF method with  $\sigma^{2}$.
 
@@ -1340,19 +1369,19 @@ A^{T}\lambda+s-c\\Ax-b\\XSe
 \end{bmatrix}.
 \end{equation}
 Now we find the step lengths to the boundary along this direction, performing separate calculations for the primal and dual components as follow:
-\begin{align}\label{Qw}\tag{4.22a}
+\begin{align}\label{Qw}\tag{4.22}
 \alpha_{\text{aff}}^{\text{pri}}=\arg\max\{\alpha\in[0,1]\;|\;x +\alpha\Delta x^{\text{aff}}\geq 0\}, \\
-\alpha_{\text{aff}}^{\text{dual}}=\arg\max\{\alpha\in[0,1]\;|\;s +\alpha\Delta s^{\text{aff}}\geq 0\}\tag{4.22b}.
+\alpha_{\text{aff}}^{\text{dual}}=\arg\max\{\alpha\in[0,1]\;|\;s +\alpha\Delta s^{\text{aff}}\geq 0\}\tag{4.22a}.
 \end{align}
 To measure the efficacy of the affine-scaling direction, we define $\mu_{\text{aff}}$ as the hypothetical value of $\mu$ resulting from a full step to the boundary, that is,
-\begin{equation*}
+\begin{equation}\tag{4.22b}
 	\mu_{\text{aff}}= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n
-\end{equation*}
+\end{equation}
 If $\mu_{\text{aff}}\ll\mu$, the affine-scaling direction is a good search direction that permits significant progress to be made in reducing $\mu$, so we choose the centering parameter $\sigma$ close to 0. If $\mu_{\text{aff}}$ is just a little smaller than $\mu$, we choose $\sigma$ closer to 1. This choice has the effect of moving us closer  to the central path $\mathcal{C}$, so that the algorithm is in a better position to achieve a substantial decrease in $\mu$ on the next iteration.\\
 Mehrotra \cite{MER} suggests the following heuristic, which has proved to be effective in exhaustive computational testing:
-\begin{equation}\tag{4.22c}\label{CP}
+\begin{equation*}\label{CP}
 \sigma = \bigg(\frac{\mu_{\text{aff}}}{\mu}\bigg)^{3}.
-\end{equation}
+\end{equation*}
 The centering step component is computed solving a linear system with the same coefficient matrix as in (\ref{(A)}) but the right-hand side equal to $[0, 0,\sigma\mu e]$: actually it is combined with the corrector step, as we see later.\\
 To motivate the corrector step, we see how the $i$th pairwise product $x_{i}s_{i}$ is affected by a full step in the affine-scaling direction:
 \begin{equation*}
@@ -1400,9 +1429,9 @@ Although we need to solve at each iteration two linear systems instead of one, t
 \begin{algorithm}\caption{Mehrotra's algorithm}
 \begin{tabbing}
 	\\
-	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})> 0$; \\
+	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})$ with $(x^{0}, s^{0})> 0$ ; \\
 	\textbf{for} \= $k = 0, 1, 2,...$ \\
-	\> solve \ref{(A)} for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;\\
+	\> solve (\ref{(A)}) for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;\\
 	\> calculate $\alpha_{\text{aff}}^{\text{pri}}$, $\alpha_{\text{aff}}^{\text{dual}}$ and $\mu_{\text{aff}}$ as in (4.22);\\
 	\> set centering parameter to $\sigma = (\mu_{\text{aff}}/\mu)^{3}$; \\
 	\> solve (\ref{(C)}) for $(\Delta x^{cc},\Delta \lambda^{cc},\Delta s^{cc})$;\\
@@ -1434,19 +1463,19 @@ To move along the trajectory $\mathcal{H}$, we can form a Taylor series approxim
 \begin{equation*}
 (x_{\tau},\lambda_{\tau},s_{\tau})=(x_{0},\lambda_{0},s_{0})+\tau(x_{0}^{'},\lambda_{0}^{'},s_{0}^{'})+\frac{1}{2}\tau^{2}(x_{0}^{"},\lambda_{0}^{"},s_{0}^{"})+\dots = \sum_{j=0}^{\infty}\frac{\tau^{j}}{j!}(x_{0}^{j},\lambda_{0}^{j},s_{0}^{j}).
 \end{equation*}
-Here, $(x_{0}^{j},\lambda_{0}^{j},s_{0}^{j})$ is the derivative of $(x_{\tau},\lambda_{\tau},s_{\tau})$ with respect to $\tau$, evaluated in $\tau = 0$. We can find these derivatives by implicity differenziating (\ref{T}). Setting $\tau=0$ we have:
-\begin{equation}
+Here, $(x_{0}^{j},\lambda_{0}^{j},s_{0}^{j})$ is the derivative of $(x_{\tau},\lambda_{\tau},s_{\tau})$ with respect to $\tau$, evaluated in $\tau = 0$. We can find these derivatives by implicity differenziating (\ref{T}). Setting $\tau=0$, we have:
+\begin{equation*}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\X&0&S
 \end{bmatrix}\begin{bmatrix}
 x_{0}^{'}\\\lambda_{0}^{'}\\s_{0}^{'}
 \end{bmatrix}=-\begin{bmatrix}
-A^{T}\lambda-c\\Ax-b\\XSe
+-r_{c}\\-r_{b}\\XSe
 \end{bmatrix},
-\end{equation}
+\end{equation*}
 which is exactly the same system as the affine-scaling step equation.\\
 Hence, we can make the identification $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})=(x^{'}_{0},\lambda^{'}_{0},s^{'}_{0})$. Differentiating again with respect to $\tau$, we obtain the second derivative solving
-\begin{equation}
+\begin{equation*}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\X&0&S
 \end{bmatrix}\begin{bmatrix}
@@ -1454,25 +1483,25 @@ x_{0}^{''}\\\lambda_{0}^{''}\\s_{0}^{''}
 \end{bmatrix}=-\begin{bmatrix}
 0\\0\\2X^{'}_{0}S^{'}_{0}e
 \end{bmatrix}
-\end{equation}
+\end{equation*}
 and we see that $(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\Delta s^{\text{cor}})=\frac{1}{2}(x^{''}_{0},\lambda^{''}_{0},s^{''}_{0})$. Now we truncate the Taylor series at two terms and use the last two results, in order to have the following approximation:
-\begin{equation}
-(x_{\tau},\lambda_{\tau}, s_{\tau})\approx(x, \lambda, s)+ \tau(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+\tau^{2}(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\Delta s^{\text{cor}})
-\end{equation}
+\begin{equation*}
+(x_{\tau},\lambda_{\tau}, s_{\tau})\approx(x, \lambda, s)+ \tau(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+\tau^{2}(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\Delta s^{\text{cor}}).
+\end{equation*}
 If we ignore the centering term  by setting $\sigma =0$ and, hence, constrain the primal and dual step lengths to be identical, then the algorithm searches the successive point along the line
 \begin{equation}
-(x_{\tau},\lambda_{\tau}, s_{\tau})\approx(x, \lambda, s)+ \tau(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+\tau(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\Delta s^{\text{cor}})
+(x_{\tau},\lambda_{\tau}, s_{\tau})\approx(x, \lambda, s)+ \tau(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+\tau(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\Delta s^{\text{cor}}),
 \end{equation} 
 that is, the $\tau^{2}$ coefficient in the last term is replaced by $\tau$. Instead when we account for the centering parameter, the correspondence between the derivatives of the trajectory and the MPC search direction no longer holds. \\
 Then we introduce the modified trajectory $\mathcal{H}_{\sigma}$ for which the correspondence continues to hold even in the presence of $\sigma$. Also $\mathcal{H}_{\sigma}$ starts at $(x, \lambda, s)$ and aims at the solution set $\Omega$. All $(x_{\tau},\lambda_{\tau},s_{\tau})$ in this trajectory satisfy:
-\begin{equation}\label{T}
+\begin{equation}\label{Tt}
 \begin{bmatrix}
 A^{T}\lambda+s-c \\Ax-b \\XSe
 \end{bmatrix}=\begin{bmatrix}
 (1-\tau)(A^{T}\lambda-c)\\(1-\tau)(Ax-b)\\(1-\tau)XSe+\tau^{2}(1-\tau)\sigma\mu e
 \end{bmatrix},(x,s)\geq0.
 \end{equation}
-The tangent to this trajectory is the affine-scaling direction, as for $\mathcal{H}$, but the curvature can be identified with the combined centering-corrector step rather than the corrector component alone. The trajectory $\mathcal{H}_{\sigma}$ tends to bulge more toward the central path than $\mathcal{H}$. Despite the closer relationship between $\mathcal{H}_{\sigma}$  and MPC algorithm, we can not qualify it as a second-order trajectory-following algorithm because it still searches along a linear direction rather than a quadratic path.  
+The tangent to this trajectory is the affine-scaling direction, as for $\mathcal{H}$, but the curvature can be identified with the combined centering-corrector step rather than the corrector component alone. The trajectory $\mathcal{H}_{\sigma}$ approximates more the central path than $\mathcal{H}$. Despite the closer relationship between $\mathcal{H}_{\sigma}$  and MPC algorithm, we can not qualify it as a second-order trajectory-following algorithm because it still searches along a linear direction rather than a quadratic path.  
 \subsection{A predictor-corrector LPF method}
 In this research it is proposed a predictor-corrector long-path following method (PC-LPF) in which the centering parameter $\sigma$ is computed adaptively, equal to (\ref{CP}).\\
 This predictor-corrector algorithm below is a definite improvement over the long-path following algorithm because of the adaptivity that is built into the choice of the predictor step. We will discuss if eventually this potential
@@ -1488,10 +1517,10 @@ To measure the efficiency of the affine-scaling direction, we define $\mu_{\text
 \begin{algorithm}\caption{\label{alg:pc}PC-LPF algorithm}
 \begin{tabbing}
 	\\
-	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})> 0$; \\
+	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})$ with $(x^{0}, s^{0})> 0$; \\
 	\textbf{for} \= $k = 0, 1, 2,...$ \\
 	\> solve (\ref{(A)}) for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;\\
-	\> calculate $\alpha_{\text{pre}}^{\text{pri}}$ and $\mu_{\text{aff}}$ as in (4.22);\\
+	\> calculate $\alpha_{\text{pre}}^{\text{pri}}$ and $\mu_{\text{aff}}$ as in ($\ref{QWw}$);\\
 	\> set centering parameter to $\sigma_{k} = (\mu_{\text{aff}}/\mu)^{3}$; \\
 	\> solve (\ref{Pb}) for $(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})$;\\
 	\> choose the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma,\beta)$;\\
@@ -1822,18 +1851,18 @@ The Forest Service is one of the major Federal land managing agencies. It has be
 The models of a forest begin  by dividing land into homogeneous analysis area, then several prescriptions or land management policies are then proposed and evaluated for each. \\The optimization seeks the best possible allocation of land in the analysis areas to particular prescriptions, subject to forest-wide restrictions on land use.
 We model, hypotetically, 788 thousand acre Wagonho National Forest, that is assumed to have 7 analysis areas, each subject to 3 different prescriptions. The first prescription encourages timbering, the second grazing and the third preserves the land as wilderness. Then we indices the variables as well:
 \begin{itemize}
-	\item \textit{i} is the analysis area number and \textit{j} is the prescription number
-	\item $s_{i}$ is the size of area $i$ in thousands of acres
-	\item $p_{i,j}$ is the net present value (PNV) per acre of all uses in area $i$ if managed under prescription $j$
-	\item $t_{i,j}$ is the projected timber yield (in board feet per acre) of analysis area $i$ if managed under prescription $j$
-	\item $g_{i,j}$ is the projected grazing capability (in animal unit months per acre) of analysis area $i$ if managed under prescription $j$
-	\item $w_{i,j}$ is the wilderness index rating, from 0 to 100, of analysis area $i$ if manages under prescription $j$
+	\item \textit{i} is the analysis area number and \textit{j} is the prescription number;
+	\item $s_{i}$ is the size of area $i$ in thousands of acres;
+	\item $p_{i,j}$ is the net present value (PNV) per acre of all uses in area $i$ if managed under prescription $j$;
+	\item $t_{i,j}$ is the projected timber yield (in board feet per acre) of analysis area $i$ if managed under prescription $j$;
+	\item $g_{i,j}$ is the projected grazing capability (in animal unit months per acre) of analysis area $i$ if managed under prescription $j$;
+	\item $w_{i,j}$ is the wilderness index rating, from 0 to 100, of analysis area $i$ if manages under prescription $j$.
 \end{itemize}
 We want to find an allocation that minimizes net present value while producing 40 million board feet of timber, 5 thousand animal unit months of grazing, and keeping average wilderness index at least 70.\\
-The formulation of the model in a LP problem can be written as following:
+The formulation of the model in a LP problem can be written as follows:
 \begin{align*}
 \max&\sum_{i=1}^{7}\sum_{j=1}^{3} p_{i,j}x_{i,j}&(\text{present value})\\
-s.t& \sum_{i=1}^{3}x_{i,j}=s_{i}\;\;\;\;i = 1, \dots,7&(\text{allocation})\\
+s.t\;\; & \sum_{i=1}^{3}x_{i,j}=s_{i}\;\;\;\;i = 1, \dots,7&(\text{allocation})\\
 &\sum_{i=1}^{7}\sum_{j=1}^{3} t_{i,j}x_{i,j}\geq 40000&(\text{timber})\\
 &\sum_{i=1}^{7}\sum_{j=1}^{3} g_{i,j}x_{i,j}\geq5&(\text{grazing})\\
 &\frac{1}{788}\sum_{i=1}^{7}\sum_{j=1}^{3} w_{i,j}x_{i,j}\geq 70&(\text{wilderness})\\
@@ -2087,6 +2116,11 @@ Long path following method predictor-corrector:
 	\bibitem{DAN}Dantzig, G. B.,\emph{\;"Expected number of steps of the simplex method for a linear program with a convexity constraint."}, Technical Report SOL 80-3, Systems Optimization Laboratory, Department of Operations Research, Stanford University, Stanford, CA, (1980).
 	%\bibitem{DAN} G. B. Dantzig, A. Orden, P. Wolfe, \emph{ Notes on linear programming: Part I- The generalized simplex method for
 	%minimizing a linear form under linear inequality restrictions.} Pacific J Math pp: 183-195, (1955). 
+	
+	% G
+	
+	\bibitem{25y} Gondzio J, \textit{ "Interior Point Methods 25 yeears later."}, European Journal of Operational Research 218, Issue 3, pp: 587-601, (2011).	
+	
 % K
 		\bibitem{MINTY} Klee, V., Minty, G., \emph{ "How good is the simplex algorithm?"} in O. Shisha, ed.,
 	‘Inequalities–III’, Academic Press, New York, pp: 159–175, (1972).
