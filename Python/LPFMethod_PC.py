@@ -115,7 +115,14 @@ def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, i
        
        if info == 0:
            print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),x1.round(decimals = 3),s1.round(decimals = 3)))      
-    
+       i = len(v)-1
+       while i >= 0:
+        if (E(v[i]) > 0).all():
+            t = v[i]
+#            print('Largest step length:{}'.format("%10.3f"%t))
+            break
+        else:
+            i -= 1  
        # Update 
        x += t*x1            # Current x
        y += t*y1            # Current y
@@ -180,7 +187,7 @@ def augm(A, b, c, x, y, s, cp):
 if __name__ == "__main__":
     
     
-    (A, b, c) = input_data(21)   
+    (A, b, c) = input_data(3)   
 
     x, s, u, sig = longpathPC(A, b, c)
           

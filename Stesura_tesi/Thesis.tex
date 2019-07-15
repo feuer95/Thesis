@@ -84,9 +84,9 @@
 %aggiunto da me
 \theoremstyle{plain} 
 \newtheorem{thm}{Theorem}[chapter] 
-\newtheorem{cor}[thm]{Corollario} 
+\newtheorem{cor}[thm]{Corollary} 
 \newtheorem{lem}[thm]{Lemma}
-\newtheorem{prop}[thm]{Proposizione} 
+\newtheorem{prop}[thm]{Proposition} 
 \newtheorem*{theorem*}{Theorem}
 
 
@@ -339,18 +339,18 @@ where $f$ and $c_{i}$ are smooth, real-valued functions defined on subset of $\m
 \begin{defn}
 	Given a point x, $\mathcal{A}(x)= \mathcal{E}\cup\left\lbrace i\in\mathcal{I}\;|\;c_{i}(x) =0\right\rbrace$ is called \textit{active set} and we say that the linear independence constraint qualification, $LICQ$, holds if the set of active constraint gradients $\left\lbrace \nabla c_{i}(x),,i\in\mathcal{A}(x)\right\rbrace$ is linear indipendent.
 \end{defn}
-We define the \textit{Lagrangian function} for the general problem \ref{NLP} 
+We define the \textit{Lagrangian function} for the general problem (\ref{NLP}) 
 \begin{equation*}
 \mathcal{L}\left(x,\lambda\right)=f(x)-\sum_{i\in\mathcal{E}\cup\mathcal{I}}\lambda_{i}c_{i}(x).
 \end{equation*}
 The necessary conditions, defined in the following theorem, are called \textit{first-order conditions} because they are concerned with properties of the gradients of the objective and constraint functions.
-\begin{thm}
-Suppose that $x^{*}$ is a local solution of \ref{NLP}, that f and $c_{i}$ are continuously differentiable, and the LICQ holds at $x^{*}$. Then there is a Lagrange multiplier vector $\lambda^{*}$, such that 
+\begin{thm}\label{thm:kkt}
+Suppose that $x^{*}$ is a local solution of (\ref{NLP}), that f and $c_{i}$ are continuously differentiable, and the LICQ holds at $x^{*}$. Then there is a Lagrange multiplier vector $\lambda^{*}$, such that 
 \begin{alignat*}{2}
 \nabla_{x}\mathcal{L}(x^{*},\lambda^{*})&=0&&\\
 c_{i}(x^{*})&=0, &&\;\;\;\;\forall i\in\mathcal{E}\\
 c_{i}(x^{*})&\geq 0, &&\;\;\;\;\forall i\in\mathcal{I}\\
-\lambda^{*} &\geq 0, &&\;\;\;\;\forall \in\mathcal{I}\\
+\lambda^{*} &\geq 0, &&\;\;\;\;\forall i\in\mathcal{I}\\
 \lambda^{*}c_{i}(x^{*})&= 0,&&\;\;\;\;\forall i\in\mathcal{E}\cup\mathcal{I}.\label{CompCon}\\
 \end{alignat*} 
 \end{thm}
@@ -744,7 +744,7 @@ In this research is proposed a new long-path following algorithm labeled as \tex
 
 \newpage
 \section{Introduction to primal-dual methods}
-We consider the LP problem formulated in a standard form. \\
+We consider the LP problem formulated in the standard form $\ref{(Prim)}$. \\
 Following a fundamentally different approach from the simplex method, IPM avoid the boundary of the polytope until optimality and focus on the KKT conditions, solving the primal and dual LP currently.\\
 \\
 \\
@@ -791,36 +791,45 @@ $x^{*} = \begin{bmatrix}
 1-\lambda^{*}\\0\\-\lambda^{*}
 \end{bmatrix}$,  
 \end{center}
-where $x^{*}$ and $\lambda^{*}$ are any numberes for which $x_{2}^{*}\geq0$ and $\lambda^{*}\leq0$.
+where $x^{*}$ and $\lambda^{*}$ are any numbers for which $x_{2}^{*}\geq0$ and $\lambda^{*}\leq0$.
 \end{ex}
-\\
+
 The Newton's method (see Appendix) forms a linear model for $\mathit{F}$ around the current point and obtains the search direction $(\Delta x,\Delta \lambda,\Delta s)$ by solving the following system of linear equations:
 \begin{center}
 	$\mathit{J}(x,\lambda,s)\begin{bmatrix}
 	\Delta x\\\Delta\lambda \\\Delta s
 	\end{bmatrix}=-\mathit{F}(x,\lambda,s)$,
 \end{center}
-where $\mathit{J}$ is the Jacobian of the linear mapping $\mathit{F}$. If the current point $(x, \lambda, s)\notin\mathcal{F}$, the Newton step equations becomes
-
+where $\mathit{J}$ is the Jacobian of the linear mapping $\mathit{F}$. For $(x, \lambda, s)\in\mathcal{F}^{0}$, the direction $(\Delta x, \Delta \lambda, \Delta s)$ satisfies
+\begin{equation}
+\begin{bmatrix}
+0&A^{T}&I \\A&0&0\\S&0&X
+\end{bmatrix}\begin{bmatrix}
+\Delta x\\\Delta\lambda \\\Delta s
+\end{bmatrix}=\begin{bmatrix}
+0\\0\\XSe
+\end{bmatrix}.
+\end{equation}
+ If the current point $(x, \lambda, s)\notin\mathcal{F}$, the Newton step equations become
 \begin{equation}\label{(5.1)}
 	\begin{bmatrix}
 0&A^{T}&I \\A&0&0\\S&0&X
 	\end{bmatrix}\begin{bmatrix}
 	\Delta x\\\Delta\lambda \\\Delta s
 	\end{bmatrix}=\begin{bmatrix}
-	c-A^{T}\lambda-s\\b-Ax\\XSe
-	\end{bmatrix}.
+	-r_{c}\\-r_{b}\\XSe
+	\end{bmatrix},
 \end{equation}
-
+where the residuals $r_{b}$ and $r_{c}$ are defined respectively by $r_{b} = Ax - b$ and $r_{c} = A^{T}\lambda + s-c$.\\
 A full step along this direction usually is not permissible, since it would violate the bound $(x,s)>0$. To avoid this difficulty, we perform a line search along the Newton direction so that the new iterate is
 \begin{equation*}
-	(x,\lambda,s) +\alpha (\Delta x,\Delta \lambda,\Delta s)
+	(x,\lambda,s) +\alpha (\Delta x,\Delta \lambda,\Delta s),
 \end{equation*} 
 for some line search parameter $\alpha \in (0,1]$. \\We maintain positivity conditions of $(x,s)$ at all iterates for two reasons. First, vectors that solve $\mathit{F}$ that have negative components are of no interest in terms of solving the primal and dual problems (P) and (\ref{(Dual)}). Second, when the matrix $A$ has linearly indipendent rows, the Jacobian $J$ is guaranteed to be nonsingular whenever $x>0$ and $s>0$ hold, and so the solution is guaranteed.
 
 \section{Primal-dual affine-scaling method}
 
-The simplest primal-dual approach is to apply Newton's method directly to the nonlinear system $F$ using in the $k^{th}$ iteration a step length $\alpha_{k}<1$ in order to guarantee $(x^{k+1},\lambda^{k+1},s^{k+1})\in \mathcal{F}^{0}$.\\ There are different ways to do this and the resulting algorithms are called \textit{Primal-dual affine-scaling methods}, for short Affine-scaling methods, which were proposed for linear programming by Monteiro,
+The simplest primal-dual approach is to apply Newton's method directly to the nonlinear system $F$ using in the $k^{th}$ iteration a step length $\alpha_{k}<1$ in order to guarantee $(x^{k+1},s^{k+1})>0$.\\ There are different ways to do this and the resulting algorithms are called \textit{Primal-dual affine-scaling methods}, for short Affine-scaling methods, which were proposed for linear programming by Monteiro,
 Adler and Resende \cite{MARE}.\\ 
  The general primal-dual affine-scaling algorithm takes the following form:\\
 \begin{algorithm}[H]
@@ -828,16 +837,9 @@ Adler and Resende \cite{MARE}.\\
 	\\
 	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})$ with $(x^{0}, s^{0})>0$;\\
 	\textbf{for} \= $k = 0, 1, 2,...$ \\
-	\> solve
-	
-\begin{bmatrix}
-$0&A^{T}&I \\A& 0&0\\X^{k}&0&S^{k}
-\end{bmatrix}\begin{bmatrix}
-\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
-\end{bmatrix}=-\begin{bmatrix}
--r_{c}^{k}\\-r_{b}^{k}\\X^{k}S^{k}e$
-\end{bmatrix};
-\\
+	\> solve	
+
+	\\
 	\\
 	\>\textbf{set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$
 	\\
@@ -861,168 +863,47 @@ $\text{for\;} i = 1,...,n,$ and the largest value of $\alpha_{k}$ that satisfies
 We can step back from this maximum value, and prevent each $x_{i}$ and $s_{i}$ from being too close to zero, by defining $\alpha_{k} = \min\left(1,\eta_{k}*\alpha_{max}\right)$, with $\eta_{k}$ usually $0.999$.\\
 This approach is called \textit{primal-dual affine scaling} and often does not allow us to make much progress toward a solution. 
 Even though, the search direction steps are used to find the predictor directions in the predictor-corrector algorithms, explained in the Chapter ().
-\subsection{Affine-scaling convergence}
-We examine the asymptotic behavior of this method, that is of significant theoretical interest: we assume that $(x, \lambda, s)\in\mathcal{F}^{0}$, hence, the affine-scaling direction $(\Delta x, \Delta \lambda, \Delta s)$ satisfies the following matricial system:\\
-\begin{equation}\label{5.1}
-\begin{bmatrix}
-0&A^{T}&I \\A&0&0\\S&0&X
-\end{bmatrix}\begin{bmatrix}
-\Delta x\\\Delta\lambda \\\Delta s
-\end{bmatrix}=-\begin{bmatrix}
-0\\0\\XSe
-\end{bmatrix},
-\end{equation}\\
-with residuals $r_{b}$ and $r_{c}$ equal to 0.\\
-More precisely we assume that $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$.
-\begin{lem}
-	Suppose that $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$ and that the affine-scaling direction $(\Delta x,\Delta \lambda, \Delta s)$ is calculated. Then there is a costant $C$ such that
-	\begin{equation*}
-	\lVert \Delta x_{\mathcal{B}} \rVert \leq C \mu \text{\;and\;} \lVert \Delta s_\mathcal{B} \rVert \leq C \mu,
-	\end{equation*}
-	with the set $\mathcal{B}$ defined previously in $\ref{index}$. 
-\end{lem}
-\begin{proof}
-	Let us define the positive diagonal matrix $D = X^{1/2}S^{-1/2}$. Multiplying the last block row of \ref{5.1} by $(XS)^{-1/2}$, we obtain 
-	\begin{equation*}
-	D^{-1}\Delta x + D \Delta s = -(XS)^{1/2}e.
-	\end{equation*}
-	Taking inner products of both sides of this expression, we have
-	\begin{equation*}
-	\lVert D^{-1}\Delta x \rVert^{2} + 2\Delta x^{T}\Delta s+ \lVert D\Delta s \rVert^{2}= \lVert(XS)^{1/2}e\rVert^{2}= x^{T}s= n\mu.
-	\end{equation*}
-	Because $\Delta x^{T}\Delta s= 0$ and the other two terms are positive, we can write
-	\begin{equation*}
-	\lVert D^{-1}\Delta x\rVert^{2}\leq n\mu, \;\;\lVert D\Delta s\rVert^{2}\leq n\mu.
-	\end{equation*}
-	Since $D_{i,i}= \sqrt{x_{i}/s_{i}}$ for any $i$, we have that
-	\begin{equation*}
-	\frac{s_{i}}{x_{i}}(\Delta x_{i})^{2}\leq\lVert D^{-1}\Delta x\rVert^{2}\leq n\mu.
-	\end{equation*}
-	Hence, choosing $i\in\mathcal{N}$ and using $x_{i}s_{i}\geq\gamma\mu$, we find
-	\begin{equation*}
-	(\Delta x_{i})^{2}\leq\frac{n\mu x_{i}}{s_{i}}=\frac{n\mu x_{i}^{2}}{x_{i}s_{i}}\leq\frac{n\mu^{3}}{\gamma\mu C^{2}}\mu^{2}.
-	\end{equation*}
-	Therefore, we have 
-	\begin{equation*}
-	\lVert \Delta x_{\mathcal{N}}\rVert \leq \sqrt{n}\max\limits_{i \in \mathcal{N}}|\Delta x_{i}|\leq\frac{n}{\gamma^{1/2}C}\mu.
-	\end{equation*}
-	To argument for $\lVert \Delta s_{\mathcal{B}}\rVert$ is identical.
-\end{proof}
-Now we show that $\lVert \Delta x_{\mathcal{B}}\rVert$ and $\lVert \Delta s_{\mathcal{N}}\rVert$ are also $\mathcal{O}(\mu)$ by using the following two technical lemmas and an important theorem.
-\begin{lem} \label{(T)}
-	Let the matrix $H\in\mathbb{R}^{p,q}$ be given. Then there exists a nonnegative constant $\bar{C}$ depending only on $H$ with the following property: for any vector $h\in Range(H)$ and any nonsingular diagonal matrix $\Sigma$, the unique solution $\bar{w}$ of the problem
-	\begin{align*}
-	\min\limits_{w}\frac{1}{2}\lVert\Sigma w\rVert^{2} \text{\;subject to\;} Hw = h
-	\end{align*}
-	satisfies $\lVert\bar{w}\rVert\leq \bar{C}\lVert h\rVert$.
-\end{lem}
-The next lemma is due essentially to Adler and Montiero \cite{ADL}. $A_{\mathcal{B}}$,  Let us denote $A_{\mathcal{N}}$, $D_{\mathcal{B}}$ and $D_{\mathcal{N}}$ a column partition of the matrices $A$ and $D$, according to the sets $\mathcal{B}$ and $\mathcal{N}$, respectively.
-\begin{lem}
-	Suppose that the assumption of the Lemma \ref{(T)} hold. Then
-	\begin{enumerate}
-		\item $u = \Delta x_{B}$ is the unique solution of the following convex quadratic problem
-		\begin{align} \label{(U)}
-		\min\limits_{u}\frac{1}{2}\lVert D_{\mathcal{B}}^{-1}u\rVert^{2} \text{subject to }A_{\mathcal{B}}u = -A_{\mathcal{N}}\Delta x_{\mathcal{N}};
-		\end{align}
-		\item $(v, \pi) = (\Delta s_{N}, \Delta \lambda)$ is a solution of the convex quadratic problem
-		\begin{align}
-		\min\limits_{(v, \pi)}\frac{1}{2}\lVert D_{\mathcal{N}}v\rVert^{2} \text{ subject to } &A_{\mathcal{B}u} = -A_{\mathcal{N}}\Delta x_{\mathcal{N}},\label{44}\\
-		&A_{\mathcal{N}^{T}\pi}+ v =0.\label{45}		 
-		\end{align}
-		The $\Delta s_{\mathcal{N}}$ component is unique.
-	\end{enumerate} 
-\end{lem} 
-\begin{proof}
-	\textit{1}. From KKT conditions, we say that $\Delta x_{\mathcal{B}}$ is a solution if there exists a vector $\hat{\pi}$ such that
-	\begin{align*}
-	D_{\mathcal{B}}^{-2}\Delta x_{\mathcal{B}}-A_{\mathcal{B}}^{T}\hat{\pi}&= 0,\\
-	A_{\mathcal{B}}\Delta x_{B}&= -A_{\mathcal{N}}\Delta x_{\mathcal{N}}
-	\end{align*}
-	The second equation is satisfied from the second row of (\ref{5.1}). Combining the first and the third block rows in (\ref{5.1}), for the indices $\mathcal{B}$ we have:
-	\begin{equation*}
-	-D_{\mathcal{B}}^{-2}\Delta x_{\mathcal{B}} + A_{\mathcal{B}}^{T}\Delta \lambda = s_{\mathcal{B}}
-	\end{equation*}
-	Since $(x, \lambda, s)$ is feasible, we have $s_{\mathcal{B}}= -A_{\mathcal{B}}^{T}\lambda+ c_{\mathcal{B}}$, whereas for any solution $(x^{*}, \lambda^{*}, s^{*})$, we have $c_{\mathcal{B}}= A_{\mathcal{B}^{T}\lambda^{*}}$. Then, we obtain
-	\begin{equation*}
-	-D_{\mathcal{B}}^{-2}\Delta x_{\mathcal{B}} + A_{\mathcal{B}}^{T}\Delta \lambda = -A_{\mathcal{B}}^{T}\lambda+ c_{\mathcal{B}} = -A_{\mathcal{B}}^{T}(\lambda - \lambda^{*}). 
-	\end{equation*}
-	If we set $\hat{\pi} = \lambda + \Delta\lambda + \lambda^{*}$, then also the first KKT condition holds.\newline
-	\textit{2.} We recall again the KKT conditions and $(v,\pi)=(\Delta s_{N},\Delta\lambda)$ is a solution if there exist vectors $\hat{u}_{\mathcal{B}}$ and $\hat{u}_{\mathcal{N}}$ such that
-	\begin{align*}
-	D_{\mathcal{N}}^{2}\Delta s_{N}-\hat{u}_{N}&=0,\\
-	-A_{\mathcal{B}}^{T}\hat{u}_{\mathcal{B}}-A_{\mathcal{N}}^{T}\hat{u}_{N}&=0,\\
-	A_{\mathcal{B}}^{T}\Delta \lambda &= -\Delta s_{\mathcal{B}},\\
-	A_{\mathcal{N}}^{T}\Delta\lambda + \Delta s_{\mathcal{N}} &=0. 
-	\end{align*}
-	The last two equations follow immediately from the first block row of (\ref{5.1}).\\
-	Then, it is easy to show that the choices $\hat{u}_{N}= x_{\mathcal{N}}+\Delta x_{\mathcal{N}}$ and $\hat{u}_{\mathcal{B}}=x_{\mathcal{B}}+\Delta x_{\mathcal{B}}-x_{\mathcal{B}}^{*}$, satisfy the first and the second equations, where $x^{*}$ is the primal solution.\\
-	Now we prove the uniqueness of the $\Delta s_{\mathcal{B}}$.\\
-	If we multiply (\ref{44}) by $A_{\mathcal{B}}$ and (\ref{45}) by $A_{\mathcal{N}}$ and add, then we obtain
-	\begin{equation*}
-	(A_{\mathcal{B}}A_{\mathcal{B}}^{T}+A_{\mathcal{N}}A_{\mathcal{N}}^{T})\pi+A_{\mathcal{N}}v = AA^{T}\pi+A_{\mathcal{N}}v = -A_{\mathcal{B}}\Delta s_{\mathcal{B}}.
-	\end{equation*} 
-	Since A has full rank for hypothesis, we can write
-	\begin{equation*}
-	\pi = -(AA^{T})^{-1}(A_{\mathcal{N}}v +A_{\mathcal{B}}\Delta s_{\mathcal{B}}),
-	\end{equation*}
-	so the minimization problem can be formulated as
-	\begin{equation}\label{(V)}
-	\min\limits_{v}\frac{1}{2}\lVert D_{\mathcal{N}}v\rVert^{2} \text{ subject to }
-	(I-A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{N}})v =A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\Delta s_{\mathcal{B}}.		 
-	\end{equation}
-	Since this problem  has strictly convex objective, the solution $v=\Delta s_{\mathcal{N}}$ is unique. To conclude, we can recover $\Delta \lambda=\pi$ as defined above. 
-\end{proof}
-\begin{thm}\label{(Z)}
-	Given $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$ and $(\Delta x,\Delta \lambda, \Delta s)$ computed in (\ref{5.1}), there is a constant K such that
-	\begin{equation*}
-	\lVert (\Delta x, \Delta s)\rVert \leq K \mu.
-	\end{equation*}
-\end{thm}
-\begin{proof}
-	Since the diagonal of $D_{\mathcal{B}}$ is strictly positive, we can apply the lemma~\ref{(T)} directly to the convex quadratic problem~\ref{(U)}. Hence, there is a constant $\bar{C}$ depending on $A_{\mathcal{B}}$ such that
-	\begin{equation}
-	\lVert \Delta x_{\mathcal{B}}\rVert \leq \bar{C}\lVert A_{\mathcal{N}}\Delta x_{\mathcal{N}}\rVert\leq \bar{C}\lVert A_{\mathcal{N}}\rVert C\mu,
-	\end{equation}
-	Similarly, from(~\ref{(V)}), there is a constant $\bar{K}$ depending on $A$ such that
-	\begin{equation}
-	\lVert \Delta s_{\mathcal{N}}\rVert \leq \bar{K}\lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert\lVert \Delta s_{\mathcal{B}}\rVert \leq\bar{K} \lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert C\mu,
-	\end{equation}
-	The result follows when we define K$\;=\bar{K} \lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert C$.
-\end{proof}
-A result similar to Theorem~\ref{(Z)} holds for steps of an IPM algorithm \cite{Wright}.\\ The implementation realized in this research computes the infeasible with two heuristic techniques, which we depict later.\\
+
 Most primal-dual methods use less aggressive Newton search direction, making a perturbation of the system $F$ and they are presented in the next section.
 
 \section{Long path-following methods}
 
-Another method for solving a linear program is to follow a central path from a given initial primal-dual solution point.\\ Assuming $\mathcal{F}^{0}\neq \varnothing$, the \textit{central path} $\mathcal{C}$ is an arc of strictly feasible points that play an important role in the following primal-dual algorithm. It is parametrized by a scalar $\tau  > 0$ and each point $(x_{\tau}, \lambda_{\tau}, s_{\tau})\in \mathcal{C}$ satisfies the following equations:
+Another method for solving a LP is to follow a central path from a given initial primal-dual solution point.\\ Assuming $\mathcal{F}^{0}\neq \varnothing$, the \textit{central path} $\mathcal{C}$ is an arc of strictly feasible points that play an important role in the following primal-dual algorithm. It is parametrized by a scalar $\tau  > 0$ and each point $(x_{\tau}, \lambda_{\tau}, s_{\tau})\in \mathcal{C}$ satisfies the following equations:
 \begin{align}
-A^{T}\lambda+s&=c\tag{4.3a}\\
-Ax&=b\tag{4.3b}\\\label{KKT2}
-x&\geq 0\tag{4.3c}\\
-s&\geq 0\tag{4.3d}\\
+A^{T}\lambda+s&=c,\tag{4.3a}\\
+Ax&=b,\tag{4.3b}\\\label{KKT2}
+x&\geq 0,\tag{4.3c}\\
+s&\geq 0,\tag{4.3d}\\
 x_{i}s_{i}&= \tau,\; \text{for}\;i= 1,2,...,n.\tag{4.3e}\label{(Tao)}
 \end{align} 
 The conditions (4.3) are also the optimality conditions for the following \textit{logarithmic-barrier formulation} (P$_{\tau}$) of the original problem (P):
-\begin{equation}\label{log}
+\begin{equation}\label{log}\tag{P$_{\tau}$}
 \begin{split}
 \text{minimize\;} &c^{T}x + \tau\sum_{i=0}^{n}\ln{x_{i}}\\
-\text{subject\; to\;}&Ax = b\;\text{and\;} x\geq0
+\text{subject\;to\;}&Ax = b\;\text{and\;} x\geq0.
 \end{split}
 \end{equation}
-In fact, the KKT conditions associated to this problem, with Lagrange multiplier $\lambda$ for the equality constraint, are
-\begin{equation*}
-c_{i} - \dfrac{\tau}{x_{i}} - A^{T}_{i}\lambda,\; \text{for}\;i = 1,2,...,n.
-\end{equation*}  
-Since the objective function is strictly convex, these conditions are sufficient as well as necessary for optimality; besides, defining $s_{i} = \dfrac{\tau}{x_{i}}$, we recover (\ref{(Tao)}): it requires that the pairwise products $x_{i}s_{i}$ have the same value for all indices $i$.\\[0.5cm]
+In fact, the Lagrangian function for (\ref{log}), with Lagrange multipliers $\lambda$ and $s$ for the equality constraint, is
+\begin{equation}
+\mathcal{L}(x,\lambda,s)=c^{T}x- \tau\sum_{i=0}^{n}\ln{x_{i}}-\lambda^{T}\left(Ax-b\right)-s^{T}x
+\end{equation}
+and the corresponding \textit{KKT} conditions, from the Theorem \ref{thm:kkt} are:
+\begin{align*}
+c_{i} - \dfrac{\tau}{x_{i}} - A^{T}_{i}\lambda&= 0,\; \text{for}\;i = 1,2,...,n,\\
+Ax&=b,\\
+x&\geq 0,\\
+s&\geq 0.\\
+\end{align*}  
+Since the objective function is strictly convex, these conditions are sufficient as well as necessary for optimality; besides, defining $s_{i} = \dfrac{\tau}{x_{i}}$, we recover (\ref{(Tao)}): it imposes that the pairwise products $x_{i}s_{i}$ have the same value for all indices $i$.\\[0.5cm]
 Now we see the relation between the (P$_{\tau}$) and (P) with the following result.
 \begin{prop}
 	Assume that the set $\mathcal{P}^{o} = \mathcal{P}\cap\{x\in\mathbb{R}^{n}| x> 0\}$ is non-empty and let $\tau>0$ be given. Then problem (P$_{\tau}$) has an optimal solution if and only if the set of optimal solutions of (P) is non-empty and bounded.
 \end{prop}
 A proof of the proposition can be found in \cite{meg}. From this result, we immediately conclude that if (P$_{\tau}$) has a solution for some $\tau>0$ then it has a solution for all $\tau>0$.
 \begin{prop}
-	Assume that problem (P) is feasible. Then the set of optimal solutions of (P) is non-empty and bounded if and only if $\mathcal{D}^{0} = \mathcal{D}\cap\{x\in\mathbb{R}^{n}| s> 0\}$  is non-empty.
+	Assume that the LP problem (P) is feasible. Then the set of optimal solutions of (P) is non-empty and bounded if and only if $\mathcal{D}^{0} = \mathcal{D}\cap\{x\in\mathbb{R}^{n}| s> 0\}$  is non-empty.
 \end{prop}
-The proof is an application of duality theory for linear programming. As a consequence of the two previous propositions, we have the following corollary.
+The proof is an application of duality theory for LP. As a consequence of the two previous propositions, we have the following corollary.
 \begin{cor}
 If the sets $\mathcal{P}^{0}$ and $\mathcal{D}^{0}$ are non-empty, then the problem (P$_{\tau}$) (and consequently the relative KKT conditions) has a unique solution $(x(\tau),\lambda(\tau),s(\tau))$, for all $\tau>0$. 
 \end{cor}
@@ -1074,11 +955,32 @@ A disadvantage of the $\mathcal{N}_{2}(\theta)$ neighborhood is its restrictive 
 \begin{center}
 	$\sum\limits_{i=1}^{n}\big(\frac{x_{i}s_{i}}{\mu}-1\big)^{2}\leq \theta^{2}<1$,
 \end{center} 
-so that the sum of squares of all relative deviations of $x_{i}s_{i}$ from their average value $\mu$ cannot exceed 1. Even if $\theta$ is close to its upper bound of 1, the neighborhood $\mathcal{N}_{2}(\theta)$ contains only a small fraction of the points in the strictly feasible set $\mathcal{F}^{0}$. The neighborhood $\mathcal{N}_{-\infty}(\gamma)$, on the other hand, is much more expansive: when $\gamma$ is small, it takes up almost the entire strictly positive feasible set $\mathcal{F}^{0}$. 
-
-\subsection*{LPF methods}
-In this research we discuss the \textit{long-step path-following algorithms}, that are based on the second neighborhood. Since  $\mathcal{N}_{-\infty}(\gamma)$ is a larger central path neighborhood, it allows for more flexibility in the choice of the next iterate and hence larger  step length (hence, the name long-step method). It depends on two parameters $\sigma_{min}$, $\sigma_{max}$, which are lower and upper bounds on the centering parameter $\sigma_{k}$. After computed the search direction with the Newton method, the step length $\alpha_{k}$ is chosed as the maximum value subject to staying inside $\mathcal{N}_{-\infty}(\gamma)$.
-The general path-following algorithm is:
+so that the sum of squares of all relative deviations of $x_{i}s_{i}$ from their average value $\mu$ cannot exceed 1. Even if $\theta$ is close to its upper bound of 1, the neighborhood $\mathcal{N}_{2}(\theta)$ contains only a small fraction of the points in the strictly feasible set $\mathcal{F}^{0}$. The neighborhood $\mathcal{N}_{-\infty}(\gamma)$, on the other hand, is much more expansive: when $\gamma$ is small, it takes up almost the entire strictly positive feasible set $\mathcal{F}^{0}$. \\
+In this research we discuss the \textit{Long-step Path-Following algorithms} (LPF), that selects the second neighborhood. Since  $\mathcal{N}_{-\infty}(\gamma)$ is a larger central path neighborhood, it allows for more flexibility in the choice of the next iterate and hence larger step length (hence, the name long-step method). After computed the search direction with the Newton method, the step length $\alpha_{k}$ is chosed as the maximum value subject to staying inside $\mathcal{N}_{-\infty}(\gamma)$.\\
+The following Lemma shows important properties of the points in $\mathcal{N}_{-\infty}(\gamma)$.
+It is stated that the sequence $\{x^{k},s^{k}\}$ generated by a LPF algorithm is bounded, hence there is at least one limit point $(x^{*},s^{*})$ for $\mu_{k}\to0$. Defining $\lambda^{*}$ the vector such that $c-s^{*}= A\lambda^{*}$, the limit points $(x^{*},\lambda^{*},s^{*})$ correspond to the strictly complementary solutions for which:
+\begin{align*}
+&x^{*}_{i}>0, \text{\;for\;} i \in\mathcal{B},
+&s^{*}_{i}>0, \text{\;for\;} i \in\mathcal{N},
+\end{align*}
+where $\mathcal{B}\cup\mathcal{N}$ is the partition of $\{1,2,\dots,m\}$ defined in (\ref{index}).
+\begin{lem}
+	Let $\mu_{0}\geq 0$ and $\gamma\in(0,1)$. Then for all points $(x,\lambda,s)$ such that
+	\begin{equation*}
+	(x,\lambda,s)\in\mathcal{N}_{-\infty}(\gamma)\subset\mathcal{F}^{0}, \;\; \mu \leq \mu_{0}
+	\end{equation*}
+	there are constants $C_{0}$ and $C_{1}$ such that
+	\begin{align*}
+	\lVert(x,s) \rVert&\leq C_{0}\\0< x_{i}&\leq \mu/C_{1}\;\; (i \in\mathcal{N}),\\
+	0< s_{i}&\leq \mu/C_{1}\;\; (i \in\mathcal{B}),\\ 
+	s_{i}&\geq C_{1}\gamma \;\; (i \in\mathcal{N}),\\
+	x_{i}&\geq C_{1}\gamma \;\; (i \in\mathcal{B}).\\
+	\end{align*}
+\end{lem}
+\begin{proof}
+See~\cite{Wright} pag. 101
+\end{proof}
+The general long path-following algorithm is:
 \begin{algorithm}[H]
 	\begin{tabbing}
 		\\
@@ -1124,30 +1026,143 @@ The general path-following algorithm is:
 %	\> Choosing the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)$\\
 %	\textbf{end}
 %\end{tabbing}
+The centering parameter $\sigma_{k}$ is bounded by $\sigma_{\text{min}}$ and $\sigma_{\text{max}}$; in this research we see two practical LPF algorithms with a specific $\sigma$. \\
 
-The convergence results we will illustrate show that the sequence generated by a LPF algorithm is bounded and therefore has at least one limit point. Further, all limit points correspond to strictly complementary solutions $(x^{*},\lambda^{*},s^{*})$ for which:
-\begin{align*}
-&x^{*}_{i}>0, \text{\;for\;} i \in\mathcal{B},
-&s^{*}_{i}>0, \text{\;for\;} i \in\mathcal{N},
-\end{align*}
-where $\mathcal{B}\cup\mathcal{N}$ is the partition of $\{1,2,\dots,m\}$ defined previously.
-The following lemma shows properties of the points in $\mathcal{N}_{-\infty}(\gamma)$ that are used in the analysis section.
+\subsection{{Asymptotic convergence}
+We examine the asymptotic behavior of these primal-dual methods, that is of significant theoretical interest. \\
+We see that $\Delta x$ and $\Delta s$ compnents of the affine-scaling step have size $\mathcal(O)(\mu)$. Instead the algorithm LPF generates a sequence such that converges almost quadratically to zero.\\
+The predictor-corrector methods, presented in the suceeding chapter, enhances the algorithms before described.   
+The theoretical properties 
+the we assume that $(x, \lambda, s)\in\mathcal{F}^{0}$, hence, the affine-scaling direction $(\Delta x, \Delta \lambda, \Delta s)$ satisfies the following matricial system:\\
+\begin{equation}\label{5.1}
+\begin{bmatrix}
+0&A^{T}&I \\A&0&0\\S&0&X
+\end{bmatrix}\begin{bmatrix}
+\Delta x\\\Delta\lambda \\\Delta s
+\end{bmatrix}=-\begin{bmatrix}
+0\\0\\XSe
+\end{bmatrix},
+\end{equation}\\
+with residuals $r_{b}$ and $r_{c}$ equal to 0.\\
+More precisely we assume that $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$.
 \begin{lem}
-	Let $\mu_{0}\geq 0$ and $\gamma\in(0,1)$. Then for all points $(x,\lambda,s)$ with
+	Suppose that $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$ and that the affine-scaling direction $(\Delta x,\Delta \lambda, \Delta s)$ is calculated. Then there is a costant $C$ such that
 	\begin{equation*}
-	(x,\lambda,s)\in\mathcal{N}_{-\infty}(\gamma)\subset\mathcal{F}^{0}, \;\; \mu \leq \mu_{0}
+	\lVert \Delta x_{\mathcal{B}} \rVert \leq C \mu \text{\;and\;} \lVert \Delta s_\mathcal{B} \rVert \leq C \mu,
 	\end{equation*}
-	there are constants $C_{0}$ and $C_{1}$ such that
-	\begin{align*}
-	\lVert(x,s) \rVert&\leq C_{0}\\0< x_{i}&\leq \mu/C_{1}\;\; (i \in\mathcal{N}),\\
-	0< s_{i}&\leq \mu/C_{1}\;\; (i \in\mathcal{B}),\\ 
-	s_{i}&\geq C_{1}\gamma \;\; (i \in\mathcal{N}),\\
-	x_{i}&\geq C_{1}\gamma \;\; (i \in\mathcal{B}).\\
-	\end{align*}
+	with the set $\mathcal{B}$ defined previously in $\ref{index}$. 
 \end{lem}
 \begin{proof}
-	~\cite{Wright} pag. 101
+	Let us define the positive diagonal matrix $D = X^{1/2}S^{-1/2}$. Multiplying the last block row of \ref{5.1} by ($(XS)^{-1/2}$), we obtain 
+	\begin{equation*}
+	D^{-1}\Delta x + D \Delta s = -(XS)^{1/2}e.
+	\end{equation*}
+	Taking inner products of both sides of this expression, we have
+	\begin{equation*}
+	\lVert D^{-1}\Delta x \rVert^{2} + 2\Delta x^{T}\Delta s+ \lVert D\Delta s \rVert^{2}= \lVert(XS)^{1/2}e\rVert^{2}= x^{T}s= n\mu.
+	\end{equation*}
+	Because $\Delta x^{T}\Delta s= 0$ and the other two terms are positive, we can write
+	\begin{equation*}
+	\lVert D^{-1}\Delta x\rVert^{2}\leq n\mu, \;\;\lVert D\Delta s\rVert^{2}\leq n\mu.
+	\end{equation*}
+	Since $D_{i,i}= \sqrt{x_{i}/s_{i}}$ for any $i$, we have that
+	\begin{equation*}
+	\frac{s_{i}}{x_{i}}(\Delta x_{i})^{2}\leq\lVert D^{-1}\Delta x\rVert^{2}\leq n\mu.
+	\end{equation*}
+	Hence, choosing $i\in\mathcal{N}$ and using $x_{i}s_{i}\geq\gamma\mu$, we find
+	\begin{equation*}
+	(\Delta x_{i})^{2}\leq\frac{n\mu x_{i}}{s_{i}}=\frac{n\mu x_{i}^{2}}{x_{i}s_{i}}\leq\frac{n\mu^{3}}{\gamma\mu C^{2}}\mu^{2}.
+	\end{equation*}
+	Therefore, we have 
+	\begin{equation*}
+	\lVert \Delta x_{\mathcal{N}}\rVert \leq \sqrt{n}\max\limits_{i \in \mathcal{N}}|\Delta x_{i}|\leq\frac{n}{\gamma^{1/2}C}\mu.
+	\end{equation*}
+	To argument for $\lVert \Delta s_{\mathcal{B}}\rVert$ is identical.
 \end{proof}
+Now we show that $\lVert \Delta x_{\mathcal{B}}\rVert$ and $\lVert \Delta s_{\mathcal{N}}\rVert$ are also $\mathcal{O}(\mu)$ by using the following two technical lemmas and an important theorem.
+\begin{lem} \label{(T)}
+	Let the matrix $H\in\mathbb{R}^{p,q}$ be given. Then there exists a nonnegative constant $\bar{C}$ depending only on $H$ with the following property: for any vector $h\in Range(H)$ and any nonsingular diagonal matrix $\Sigma$, the unique solution $\bar{w}$ of the problem
+	\begin{align*}
+	\min\limits_{w}\frac{1}{2}\lVert\Sigma w\rVert^{2} \text{\;subject to\;} Hw = h
+	\end{align*}
+	satisfies $\lVert\bar{w}\rVert\leq \bar{C}\lVert h\rVert$.
+\end{lem}
+The next lemma is due essentially to Adler and Montiero \cite{ADL}.   Let us denote $A_{\mathcal{B}}$, $A_{\mathcal{N}}$, $D_{\mathcal{B}}$ and $D_{\mathcal{N}}$ a column partition of the matrices $A$ and $D$, according to the sets $\mathcal{B}$ and $\mathcal{N}$, respectively.
+\begin{lem}
+	Suppose that the assumption of the Lemma \ref{(T)} hold. Then
+	\begin{enumerate}
+		\item $u = \Delta x_{B}$ is the unique solution of the following convex quadratic problem
+		\begin{align} \label{(U)}
+		\min\limits_{u}\frac{1}{2}\lVert D_{\mathcal{B}}^{-1}u\rVert^{2} \text{subject to }A_{\mathcal{B}}u = -A_{\mathcal{N}}\Delta x_{\mathcal{N}};
+		\end{align}
+		\item $(v, \pi) = (\Delta s_{N}, \Delta \lambda)$ is a solution of the convex quadratic problem
+		\begin{align}
+		\min\limits_{(v, \pi)}\frac{1}{2}\lVert D_{\mathcal{N}}v\rVert^{2} \text{ subject to } &A_{\mathcal{B}u} = -A_{\mathcal{N}}\Delta x_{\mathcal{N}},\label{44}\\
+		&A_{\mathcal{N}^{T}\pi}+ v =0.\label{45}		 
+		\end{align}
+		The $\Delta s_{\mathcal{N}}$ component is unique.
+	\end{enumerate} 
+\end{lem} 
+\begin{proof}
+	\textit{1}. From KKT conditions, we say that $\Delta x_{\mathcal{B}}$ is a solution if there exists a vector $\hat{\pi}$ such that
+	\begin{align*}
+	D_{\mathcal{B}}^{-2}\Delta x_{\mathcal{B}}-A_{\mathcal{B}}^{T}\hat{\pi}&= 0,\\
+	A_{\mathcal{B}}\Delta x_{B}&= -A_{\mathcal{N}}\Delta x_{\mathcal{N}}.
+	\end{align*}
+	The second equation is satisfied from the second row of (\ref{5.1}). Combining the first and the third block rows in (\ref{5.1}), for the indices $\mathcal{B}$ we have:
+	\begin{equation*}
+	-D_{\mathcal{B}}^{-2}\Delta x_{\mathcal{B}} + A_{\mathcal{B}}^{T}\Delta \lambda = s_{\mathcal{B}}
+	\end{equation*}
+	Since $(x, \lambda, s)$ is feasible, we have $s_{\mathcal{B}}= -A_{\mathcal{B}}^{T}\lambda+ c_{\mathcal{B}}$, whereas for any solution $(x^{*}, \lambda^{*}, s^{*})$, we have $c_{\mathcal{B}}= A_{\mathcal{B}^{T}}\lambda^{*}$. Then, we obtain
+	\begin{equation*}
+	-D_{\mathcal{B}}^{-2}\Delta x_{\mathcal{B}} + A_{\mathcal{B}}^{T}\Delta \lambda = -A_{\mathcal{B}}^{T}\lambda+ c_{\mathcal{B}} = -A_{\mathcal{B}}^{T}(\lambda - \lambda^{*}). 
+	\end{equation*}
+	If we set $\hat{\pi} = \lambda + \Delta\lambda + \lambda^{*}$, then also the first KKT condition holds.\newline
+	\textit{2.} We recall again the KKT conditions and $(v,\pi)=(\Delta s_{N},\Delta\lambda)$ is a solution if there exist vectors $\hat{u}_{\mathcal{B}}$ and $\hat{u}_{\mathcal{N}}$ such that
+	\begin{align*}
+	D_{\mathcal{N}}^{2}\Delta s_{N}-\hat{u}_{N}&=0,\\
+	-A_{\mathcal{B}}^{T}\hat{u}_{\mathcal{B}}-A_{\mathcal{N}}^{T}\hat{u}_{N}&=0,\\
+	A_{\mathcal{B}}^{T}\Delta \lambda &= -\Delta s_{\mathcal{B}},\\
+	A_{\mathcal{N}}^{T}\Delta\lambda + \Delta s_{\mathcal{N}} &=0. 
+	\end{align*}
+	The last two equations follow immediately from the first block row of (\ref{5.1}).\\
+	Then, it is easy to show that the choices $\hat{u}_{N}= x_{\mathcal{N}}+\Delta x_{\mathcal{N}}$ and $\hat{u}_{\mathcal{B}}=x_{\mathcal{B}}+\Delta x_{\mathcal{B}}-x_{\mathcal{B}}^{*}$, satisfy the first and the second equations, where $x^{*}$ is the primal solution.\\
+	Now we prove the uniqueness of the $\Delta s_{\mathcal{B}}$.\\
+	If we multiply (\ref{44}) by $A_{\mathcal{B}}$ and (\ref{45}) by $A_{\mathcal{N}}$ and add, then we obtain
+	\begin{equation*}
+	(A_{\mathcal{B}}A_{\mathcal{B}}^{T}+A_{\mathcal{N}}A_{\mathcal{N}}^{T})\pi+A_{\mathcal{N}}v = AA^{T}\pi+A_{\mathcal{N}}v = -A_{\mathcal{B}}\Delta s_{\mathcal{B}}.
+	\end{equation*} 
+	Since A has full rank for hypothesis, we can write
+	\begin{equation*}
+	\pi = -(AA^{T})^{-1}(A_{\mathcal{N}}v +A_{\mathcal{B}}\Delta s_{\mathcal{B}}),
+	\end{equation*}
+	so the minimization problem can be formulated as
+	\begin{equation}\label{(V)}
+	\min\limits_{v}\frac{1}{2}\lVert D_{\mathcal{N}}v\rVert^{2} \text{ subject to }
+	(I-A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{N}})v =A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\Delta s_{\mathcal{B}}.		 
+	\end{equation}
+	Since this problem  has strictly convex objective, the solution $v=\Delta s_{\mathcal{N}}$ is unique. To conclude, we can recover $\Delta \lambda=\pi$ as defined above. 
+\end{proof}
+\begin{thm}\label{(Z)}
+	Given $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$ and $(\Delta x,\Delta \lambda, \Delta s)$ computed in (\ref{5.1}), there is a constant K such that
+	\begin{equation*}
+	\lVert (\Delta x, \Delta s)\rVert \leq K \mu.
+	\end{equation*}
+\end{thm}
+\begin{proof}
+	Since the diagonal of $D_{\mathcal{B}}$ is strictly positive, we can apply the lemma~\ref{(T)} directly to the convex quadratic problem~\ref{(U)}. Hence, there is a constant $\bar{C}$ depending on $A_{\mathcal{B}}$ such that
+	\begin{equation}
+	\lVert \Delta x_{\mathcal{B}}\rVert \leq \bar{C}\lVert A_{\mathcal{N}}\Delta x_{\mathcal{N}}\rVert\leq \bar{C}\lVert A_{\mathcal{N}}\rVert C\mu,
+	\end{equation}
+	Similarly, from(~\ref{(V)}), there is a constant $\bar{K}$ depending on $A$ such that
+	\begin{equation}
+	\lVert \Delta s_{\mathcal{N}}\rVert \leq \bar{K}\lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert\lVert \Delta s_{\mathcal{B}}\rVert \leq\bar{K} \lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert C\mu,
+	\end{equation}
+	The result follows when we define K$\;=\bar{K} \lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert C$.
+\end{proof}
+A result similar to Theorem~\ref{(Z)} holds for steps of an IPM algorithm \cite{Wright}.\\ The implementation realized in this research computes the infeasible with two heuristic techniques, which we depict later.\\
+\subsection*{LPF methods convergence}
+
 The following is a technical lemma.
 \begin{lem}\label{lem1}
 	Let u and v be any two vectors in $\mathbb{R}^{n}$ with $u^{T}v \geq 0$. Then, 
@@ -1275,9 +1290,14 @@ Most of algorithms do not require the initial point to be strictly feasible but 
 
 Instead for the LPF method, we define an extension of $\mathcal{N}_{-\infty}(\gamma)$ that includes infeasible points. The neighborhood is defined by
  \begin{equation}\label{neigh3}
-\mathcal{N}(\gamma,\beta) =\Bigg\{(x, \lambda, s) | \frac{\lVert(r_{b}, r_{c})\rVert_{2}}{\mu} \leq \beta\frac{\lVert(r_{b}^{0}, r_{c}^{0})\rVert_{2}}{\mu^{0}},\; (x, s)>0,\; x_{i}s_{i} \geq \gamma\mu,\;i = 1,\dots, n \Bigg\}
+\mathcal{N}(\gamma,\beta) =\Bigg\{(x, \lambda, s) | \frac{\lVert(r_{b}, r_{c})\rVert_{2}}{\mu} \leq \beta\frac{\lVert(r_{b}^{0}, r_{c}^{0})\rVert_{2}}{\mu^{0}},\; (x, s)>0,\; x_{i}s_{i} \geq \gamma\mu,\;i = 1,\dots, n \Bigg\},
 \end{equation}
-where $\gamma\in(0,1)$ and $\beta \geq 1$ are given parameters and the residuals $(r_{b}^{0}, r_{c}^{0})$ and $\mu_{0}$ are evaluated at the starting point. Notice that we must have $\beta \geq 1$ to ensure that the initial point $(x^{0}, \lambda^{0}, s^{0})\in\mathcal{N}(\gamma,\beta)$.
+where $\gamma\in(0,1)$ and $\beta \geq 1$ are given parameters and the residuals $(r_{b}^{0}, r_{c}^{0})$ and $\mu_{0}$ are evaluated at the starting point. Notice that we must have $\beta \geq 1$ to ensure that the initial point $(x^{0}, \lambda^{0}, s^{0})\in\mathcal{N}(\gamma,\beta)$.\\
+For all points in the neighborhood $\mathcal{N}(\gamma,\beta)$, the infeasibility is uniformly bounded by some multiple of the duality measure $\mu$. By forcing $\mu_{k}$ to zero monotonically and restricting all iterates $(x_{k},\lambda_{k},s_{k})$ to the neighborhood $\mathcal{N}(\gamma,\beta)$, we have that the residuals $r_{b}^{k}$ and  $r_{c}^{k}$ tend to 0. The other condition in $\ref{neigh3}$ ($x_{i}s_{i} \geq \gamma\mu$) is the same as in the feasible neighborhhod $\mathcal{N}_{-\infty}(\gamma)$. It keeps the pairwise products $x_{i}s_{i}$ roughly in balance and prevents the Newton-like search directions from being distorted by components of $(x,s)$ that approach zero prematurely.\\
+A result similar to \textbf{Theorem} $\ref{(Z)}$ holdds for the steps of an infeasible interior-point algorithm. We state the result in general terms in the following theorem:
+\begin{thm}
+	Suppose that the iteration sequence $(x^{k}, \lambda^{k},s^{k})$ is generated by an infeasible-interior point algorithm whose iterates are confined to the neighborhood $\mathcal{N}(\gamma,\beta)$ defined by $\ref{neigh3}$, 
+\end{thm}
 In the general framework \textbf{Algorithm 3} we have not specified how the centering parameter is choosen: different interior-point algorithms use a peculiar method to select $\sigma_{k}$.\\
 Now we see two heuristic choices of $\sigma_{k}$ at the $k^{th}$ iteration of the algorithm; the first one decreases at each iteration and the second one is fixed: 
 \begin{align}
@@ -1320,9 +1340,9 @@ A^{T}\lambda+s-c\\Ax-b\\XSe
 \end{bmatrix}.
 \end{equation}
 Now we find the step lengths to the boundary along this direction, performing separate calculations for the primal and dual components as follow:
-\begin{align}\label{Qw}\tag{4.22a}
+\begin{align}\label{Qw}\tag{4.23a}
 \alpha_{\text{aff}}^{\text{pri}}=\arg\max\{\alpha\in[0,1]\;|\;x +\alpha\Delta x^{\text{aff}}\geq 0\}, \\
-\alpha_{\text{aff}}^{\text{dual}}=\arg\max\{\alpha\in[0,1]\;|\;s +\alpha\Delta s^{\text{aff}}\geq 0\}\tag{4.22b}.
+\alpha_{\text{aff}}^{\text{dual}}=\arg\max\{\alpha\in[0,1]\;|\;s +\alpha\Delta s^{\text{aff}}\geq 0\}\tag{4.23b}.
 \end{align}
 To measure the efficacy of the affine-scaling direction, we define $\mu_{\text{aff}}$ as the hypothetical value of $\mu$ resulting from a full step to the boundary, that is,
 \begin{equation*}
@@ -1330,7 +1350,7 @@ To measure the efficacy of the affine-scaling direction, we define $\mu_{\text{a
 \end{equation*}
 If $\mu_{\text{aff}}\ll\mu$, the affine-scaling direction is a good search direction that permits significant progress to be made in reducing $\mu$, so we choose the centering parameter $\sigma$ close to 0. If $\mu_{\text{aff}}$ is just a little smaller than $\mu$, we choose $\sigma$ closer to 1. This choice has the effect of moving us closer  to the central path $\mathcal{C}$, so that the algorithm is in a better position to achieve a substantial decrease in $\mu$ on the next iteration.\\
 Mehrotra \cite{MER} suggests the following heuristic, which has proved to be effective in exhaustive computational testing:
-\begin{equation}\tag{4.22c}\label{CP}
+\begin{equation}\tag{4.23c}\label{CP}
 \sigma = \bigg(\frac{\mu_{\text{aff}}}{\mu}\bigg)^{3}.
 \end{equation}
 The centering step component is computed solving a linear system with the same coefficient matrix as in (\ref{(A)}) but the right-hand side equal to $[0, 0,\sigma\mu e]$: actually it is combined with the corrector step, as we see later.\\
@@ -1382,8 +1402,8 @@ Although we need to solve at each iteration two linear systems instead of one, t
 	\\
 	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})> 0$; \\
 	\textbf{for} \= $k = 0, 1, 2,...$ \\
-	\> solve \ref{(A)} for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;\\
-	\> calculate $\alpha_{\text{aff}}^{\text{pri}}$, $\alpha_{\text{aff}}^{\text{dual}}$ and $\mu_{\text{aff}}$ as in (4.22);\\
+	\> solve (\ref{(A)}) for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;\\
+	\> calculate $\alpha_{\text{aff}}^{\text{pri}}$, $\alpha_{\text{aff}}^{\text{dual}}$ and $\mu_{\text{aff}}$ as in (4.23);\\
 	\> set centering parameter to $\sigma = (\mu_{\text{aff}}/\mu)^{3}$; \\
 	\> solve (\ref{(C)}) for $(\Delta x^{cc},\Delta \lambda^{cc},\Delta s^{cc})$;\\
 	\> compute the search direction and step to boundary from: \\
@@ -1458,20 +1478,20 @@ In this research it is proposed a predictor-corrector long-path following method
 This predictor-corrector algorithm below is a definite improvement over the long-path following algorithm because of the adaptivity that is built into the choice of the predictor step. We will discuss if eventually this potential
 technique may further accelerate the performance of the LPF method.
 The values of the step lengths and the centering parameter are performed in order to guarantee that the next iteration $(x^{k}, \lambda^{k}, s^{k})$ is in $\mathcal{N}_{-\infty}(\gamma,\beta)$:
-\begin{align}\label{QWw}
-\alpha_{\text{aff}}^{\text{pri}}=\arg\max\{\alpha\in[0,1]\;|\;(x^{k}, \lambda^{k}, s^{k})+ \alpha(\Delta x^{\text{aff}}, \Delta\lambda^{\text{aff}}, \Delta s^{\text{aff}})\in\mathcal{N}_{-\infty}(\gamma,\beta)\}
+\begin{align}\label{QWw}\tag{4.31a}
+\alpha_{\text{aff}}=\arg\max\{\alpha\in[0,1]\;|\;(x^{k}, \lambda^{k}, s^{k})+ \alpha(\Delta x^{\text{aff}}, \Delta\lambda^{\text{aff}}, \Delta s^{\text{aff}})\in\mathcal{N}_{-\infty}(\gamma,\beta)\}.
 \end{align}
 To measure the efficiency of the affine-scaling direction, we define $\mu_{\text{aff}}$ as the hypothetical value of $\mu$ resulting from a full step to the boundary, that is,
-\begin{equation*}
-\mu_{\text{aff}}= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n.
-\end{equation*}
+\begin{equation}\tag{4.31b}
+\mu_{\text{aff}}= (x+\alpha_{\text{aff}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}\Delta s^{\text{aff}})/n.
+\end{equation}
 \begin{algorithm}\caption{\label{alg:pc}PC-LPF algorithm}
 \begin{tabbing}
 	\\
-	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})> 0$; \\
+	\textbf{Given} $(x^{0}, s^{0})> 0$; \\
 	\textbf{for} \= $k = 0, 1, 2,...$ \\
 	\> solve (\ref{(A)}) for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;\\
-	\> calculate $\alpha_{\text{pre}}^{\text{pri}}$ and $\mu_{\text{aff}}$ as in (4.22);\\
+	\> calculate $\alpha_{\text{aff}}$ and $\mu_{\text{aff}}$ as in (4.31);\\
 	\> set centering parameter to $\sigma_{k} = (\mu_{\text{aff}}/\mu)^{3}$; \\
 	\> solve (\ref{Pb}) for $(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})$;\\
 	\> choose the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma,\beta)$;\\
@@ -1606,7 +1626,8 @@ We define the residual function $r$ that converts the vector sequence into a rea
 There are several important issues concerning interior-point algorithms
 for linear programs.
 \section*{Initialization and termination}
-In the discussion of the interior point methods, it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})$ is feasible respect to the linear equations \ref{DF} and \ref{PF}, instead in the predictor-corrector alforithms it is required only $(x^{0},s^{0})>0$.\\
+In the convergence analysis of the IPM, it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})$ is a primal-dual feasible point in ${F}$, but it is required only $(x^{0},s^{0})>0$.\\
+The theorem $TO WRITE$ ensures convergence under loose restrictions on the starting point .
 IPMs are sensitive to the choice of an initial primal-dual point. In fact, the choice of "poor" starting points may drastically reduce the steps toward the solutiona, giving significant effect on the robustness of the algorithm. Therefore, the choice of good initial values is an important issue in the implementation of the methods. A common way to deal with this issue is to use heuristic-based strategies that try to keep the infeasibility small while ensuring that nonnegative variables are far enough from zero.\\
 Since most of IPM explicity or implicity attempt to follow the central path $\mathcal{C}$, a very simple choice for the starting point would be to set the nonnegative variables to one and the others to zero. This choice guarantees that the point is perfectly centered, i.e. all pairwise complementarity products are equal to $\mu$ and the nonnegative variables are sufficiently bounded away from zero. However, this point be far from satisfying the constraints \cite{VAN}.\\
 Another strategy aimed to satisfy the requirement that the starting point is both well centerd and not to infeasible is presented \cite{MER} by Mehrotra; we will briefly call it as Mehrotra's initial point method (MIP). This popular heuristic approach for finding $(x^{0}, \lambda^{0}, s^{0})$ consists on computing least squares solutions to the equations corresponding to the linear constraints of the LP and then shifting the values of the variables to ensure that they are kept away from the boundary of the orthant. \\
@@ -2054,42 +2075,42 @@ Long path following method predictor-corrector:
 	\chapter*{Newton's method}
 %\end{appendices}
 \begin{thebibliography}{9}
-	
-	% A
-	
-	\bibitem{MARE} Adler I., Monteiro R. D. C., Resende M. G. C., \emph{ "A polynomial-time primal-dual affine scaling algorithm for linear and convex quadratic programming and its power serier extension."}, Math. of OR, 15, pp: 191-214, (1990).
-	\bibitem{ADL} Adler I., Monteiro R. D. C., \emph{ "Limiting behaviour of the affine scaling continuous trajectories for linear programming problems."}, Mathematical Programming, pp: 29-51, (1991).
-	\bibitem{2} Andersen E. D., Ye Y.,  \textit{Combining interior-point and pivoting algorithms for Linear Programming}, (1996).
-	\bibitem{SPS} D'Apuzzo M., De Simone V., di Serafino D., \emph{ "Starting-point strategies for an infeassible potential reduction method."}, Springer-Verlag, D. Optim Lett, 4, pp: 131-146, (2010).
-	\bibitem{DAN1}Dantzig, G. B.,\textit{ "Maximization of a linear function of variables subject to linear
-	inequalities"}, Activity Analysis of Production and Allocation, pp: 339-347, (1947).
-	\bibitem{1}Dantzig, G. B.,\emph{\;"Linear Programming and Extensions"}, Princeton, University Press, Princeton, NJ, (1963).	
-	\bibitem{DAN}Dantzig, G. B.,\emph{\;"Expected number of steps of the simplex method for a linear program with a convexity constraint."}, Technical Report SOL 80-3, Systems Optimization Laboratory, Department of Operations Research, Stanford University, Stanford, CA, (1980).
-	%\bibitem{DAN} G. B. Dantzig, A. Orden, P. Wolfe, \emph{ Notes on linear programming: Part I- The generalized simplex method for
-	%minimizing a linear form under linear inequality restrictions.} Pacific J Math pp: 183-195, (1955). 
+
+% A
+
+\bibitem{MARE} Adler I., Monteiro R. D. C., Resende M. G. C., \emph{ "A polynomial-time primal-dual affine scaling algorithm for linear and convex quadratic programming and its power serier extension."}, Math. of OR, 15, pp: 191-214, (1990).
+\bibitem{ADL} Adler I., Monteiro R. D. C., \emph{ "Limiting behaviour of the affine scaling continuous trajectories for linear programming problems."}, Mathematical Programming, pp: 29-51, (1991).
+\bibitem{2} Andersen E. D., Ye Y.,  \textit{Combining interior-point and pivoting algorithms for Linear Programming}, (1996).
+\bibitem{SPS} D'Apuzzo M., De Simone V., di Serafino D., \emph{ "Starting-point strategies for an infeassible potential reduction method."}, Springer-Verlag, D. Optim Lett, 4, pp: 131-146, (2010).
+\bibitem{DAN1}Dantzig, G. B.,\textit{ "Maximization of a linear function of variables subject to linear
+inequalities"}, Activity Analysis of Production and Allocation, pp: 339-347, (1947).
+\bibitem{1}Dantzig, G. B.,\emph{\;"Linear Programming and Extensions"}, Princeton, University Press, Princeton, NJ, (1963).	
+\bibitem{DAN}Dantzig, G. B.,\emph{\;"Expected number of steps of the simplex method for a linear program with a convexity constraint."}, Technical Report SOL 80-3, Systems Optimization Laboratory, Department of Operations Research, Stanford University, Stanford, CA, (1980).
+%\bibitem{DAN} G. B. Dantzig, A. Orden, P. Wolfe, \emph{ Notes on linear programming: Part I- The generalized simplex method for
+%minimizing a linear form under linear inequality restrictions.} Pacific J Math pp: 183-195, (1955). 
 % K
-		\bibitem{MINTY} Klee, V., Minty, G., \emph{ "How good is the simplex algorithm?"} in O. Shisha, ed.,
-	‘Inequalities–III’, Academic Press, New York, pp: 159–175, (1972).
+	\bibitem{MINTY} Klee, V., Minty, G., \emph{ "How good is the simplex algorithm?"} in O. Shisha, ed.,
+‘Inequalities–III’, Academic Press, New York, pp: 159–175, (1972).
 
-		\bibitem{ONB}Based on Krajewski L. J., McKenzie P., Ritzman L. P., \textit{ "Shift Scheduling in Banking Operations: A Case Appllication"}, Interfaces, 10:12, (1980).
-		\bibitem{Lem} Lemke C.E, \textit{ "The dual method of solving the linear programming problem."} Naval Research Logistics Quarterly, John Wiley and Sons, (1954).
-		\bibitem{Kar} Karmarkar N. K.,\emph{ "A new polynomial-time algorithm for linear programming"}, Combinatorica, (1984).
-		\bibitem{(Natural)} Kent B., Bare B. B., Field R. C., Bradley G. A., \textit{"Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN".}, OR, 39, pp: 13-27, (1991).
-		\bibitem{LNP}Luenberger David G., Yinyu Ye, \emph{"Linear and Nonlinear Programming"}, Springer Science+Business Media, 3, pp: 136-140, (2008).
-		\bibitem{LMS} Lustig I. J., Marsten E., Shanno D. F., \emph{ Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, pp. 191-222, (1991).
-		\bibitem{ComTeq} Maros I., \emph{ "Computational Techniques of the Simplex Method}, first ed., Kluwer
-		Academic Publishers, Boston, (2003).
-		\bibitem{meg} Megiddo N., \emph{ "Pathways to the optimal set in linear programming."}, in Progress in Mathematical Programming: Interior-Point and Related Methods, Springer-Verlag, New York, pp. 131-158, (1986).
-	\bibitem{MER} Mehrotra S., \emph{ "On the implementation of a primal-dual interior point method."}, SIAM Journal on Optimization. 2, pp: 575-601 (1992).
-	\bibitem{MUR} Mehrotra S., \emph{ Advanced Linear Programming: Computation and
-	Practice. } McGraw-Hill New York, New York (1981).
-		\bibitem{5}Mizuno S., Todd M.J., Y. Ye,\emph{\;On adaptive-step primal-dual interior-point algorithms for linear programming}, Math. of OR, vol. 18, pp. 964-981, (1993). 
-	%	
-	%N
-	%
-	\bibitem{W}Nocedal J., Wright J. S., \emph{\;"Numerical Optimization"}, Springer Series in OR, Springer, New York, (2006).
+	\bibitem{ONB}Based on Krajewski L. J., McKenzie P., Ritzman L. P., \textit{ "Shift Scheduling in Banking Operations: A Case Appllication"}, Interfaces, 10:12, (1980).
+	\bibitem{Lem} Lemke C.E, \textit{ "The dual method of solving the linear programming problem."} Naval Research Logistics Quarterly, John Wiley and Sons, (1954).
+	\bibitem{Kar} Karmarkar N. K.,\emph{ "A new polynomial-time algorithm for linear programming"}, Combinatorica, (1984).
+	\bibitem{(Natural)} Kent B., Bare B. B., Field R. C., Bradley G. A., \textit{"Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN".}, OR, 39, pp: 13-27, (1991).
+	\bibitem{LNP}Luenberger David G., Yinyu Ye, \emph{"Linear and Nonlinear Programming"}, Springer Science+Business Media, 3, pp: 136-140, (2008).
+	\bibitem{LMS} Lustig I. J., Marsten E., Shanno D. F., \emph{ Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, pp. 191-222, (1991).
+	\bibitem{ComTeq} Maros I., \emph{ "Computational Techniques of the Simplex Method}, first ed., Kluwer
+	Academic Publishers, Boston, (2003).
+	\bibitem{meg} Megiddo N., \emph{ "Pathways to the optimal set in linear programming."}, in Progress in Mathematical Programming: Interior-Point and Related Methods, Springer-Verlag, New York, pp. 131-158, (1986).
+\bibitem{MER} Mehrotra S., \emph{ "On the implementation of a primal-dual interior point method."}, SIAM Journal on Optimization. 2, pp: 575-601 (1992).
+\bibitem{MUR} Mehrotra S., \emph{ Advanced Linear Programming: Computation and
+Practice. } McGraw-Hill New York, New York (1981).
+	\bibitem{5}Mizuno S., Todd M.J., Y. Ye,\emph{\;On adaptive-step primal-dual interior-point algorithms for linear programming}, Math. of OR, vol. 18, pp. 964-981, (1993). 
+%	
+%N
+%
+\bibitem{W}Nocedal J., Wright J. S., \emph{\;"Numerical Optimization"}, Springer Series in OR, Springer, New York, (2006).
 
-	%\bibitem{Lexico2}  Charnes A. \emph{ Optimality and degeneracy in linear programming}, 1952. pp: 160-170. 
+%\bibitem{Lexico2}  Charnes A. \emph{ Optimality and degeneracy in linear programming}, 1952. pp: 160-170. 
 
 \bibitem{RR} Rardin Ronald L., \textit{" Optimization in operations reseasch"}, Pearson Education (US), Second edition, University of Arkansas, (2017).
 
@@ -2108,7 +2129,4 @@ Princeton University, Springer Science + Business Media, (2001).
 \bibitem{matlab}Zhang Y., \textit{ "Solving large-scale linear programs by inteior point methods under
 the Matlab enviroment"}, Optimization Methods and Software, 10, pp: 1-31, (1999).
 \end{thebibliography}
-
-
-
 \end{document}
