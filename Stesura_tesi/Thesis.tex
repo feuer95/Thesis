@@ -344,7 +344,8 @@ We define the \textit{Lagrangian function} for the general problem \ref{NLP}
 \mathcal{L}\left(x,\lambda\right)=f(x)-\sum_{i\in\mathcal{E}\cup\mathcal{I}}\lambda_{i}c_{i}(x).
 \end{equation*}
 The necessary conditions, defined in the following theorem, are called \textit{first-order conditions} because they are concerned with properties of the gradients of the objective and constraint functions.
-\begin{thm}
+
+\begin{thm}\label{thm:kkt}
 Suppose that $x^{*}$ is a local solution of \ref{NLP}, that f and $c_{i}$ are continuously differentiable, and the LICQ holds at $x^{*}$. Then there is a Lagrange multiplier vector $\lambda^{*}$, such that 
 \begin{alignat*}{2}
 \nabla_{x}\mathcal{L}(x^{*},\lambda^{*})&=0&&\\
@@ -365,7 +366,7 @@ A^{T}\lambda+s&=c,\tag{2.5a}\\ \label{DF}
 Ax&=b,\tag{2.5b}\\ \label{PF}
 x&\geq 0,\tag{2.5c}\\
 s&\geq 0,\tag{2.5d}\\
-x_{i}s_{i}&=0,\; for\;i= 1,2,...,m.\label{CC} \tag{2.5e}
+x_{i}s_{i}&=0,\; for\;i= 1,2,...,n.\label{CC} \tag{2.5e}
 \end{align} 
 The complementary conditions \ref{CC} show that at least one of the components $x_{i}$ and $s_{i}$ must be zero for each $i=0,1,2,...,n$.\\
  Convexity of the problem ensures that these conditions are also sufficient for a global minimum, hence the KKT conditions are also \textit{sufficient}: if we have a primal feasible vector $x\in\mathcal{P}$, and another vector $(\lambda, s)$ such that the equations are satisfied, then $x$ is the solution of \ref{(Prim)}. We can prove this claim directly by taking an arbitrary primal feasible vector $\bar{x}$ and showing that its objective value is no smaller than $c^{T}x$:
@@ -791,9 +792,8 @@ $x^{*} = \begin{bmatrix}
 1-\lambda^{*}\\0\\-\lambda^{*}
 \end{bmatrix}$,  
 \end{center}
-where $x^{*}$ and $\lambda^{*}$ are any numberes for which $x_{2}^{*}\geq0$ and $\lambda^{*}\leq0$.
+where $x^{*}$ and $\lambda^{*}$ are any numbers for which $x_{2}^{*}\geq0$ and $\lambda^{*}\leq0$.
 \end{ex}
-\\
 The Newton's method (see Appendix) forms a linear model for $\mathit{F}$ around the current point and obtains the search direction $(\Delta x,\Delta \lambda,\Delta s)$ by solving the following system of linear equations:
 \begin{center}
 	$\mathit{J}(x,\lambda,s)\begin{bmatrix}
@@ -814,13 +814,13 @@ where $\mathit{J}$ is the Jacobian of the linear mapping $\mathit{F}$. If the cu
 
 A full step along this direction usually is not permissible, since it would violate the bound $(x,s)>0$. To avoid this difficulty, we perform a line search along the Newton direction so that the new iterate is
 \begin{equation*}
-	(x,\lambda,s) +\alpha (\Delta x,\Delta \lambda,\Delta s)
+	(x,\lambda,s) +\alpha (\Delta x,\Delta \lambda,\Delta s),
 \end{equation*} 
 for some line search parameter $\alpha \in (0,1]$. \\We maintain positivity conditions of $(x,s)$ at all iterates for two reasons. First, vectors that solve $\mathit{F}$ that have negative components are of no interest in terms of solving the primal and dual problems (P) and (\ref{(Dual)}). Second, when the matrix $A$ has linearly indipendent rows, the Jacobian $J$ is guaranteed to be nonsingular whenever $x>0$ and $s>0$ hold, and so the solution is guaranteed.
 
 \section{Primal-dual affine-scaling method}
 
-The simplest primal-dual approach is to apply Newton's method directly to the nonlinear system $F$ using in the $k^{th}$ iteration a step length $\alpha_{k}<1$ in order to guarantee $(x^{k+1},\lambda^{k+1},s^{k+1})\in \mathcal{F}^{0}$.\\ There are different ways to do this and the resulting algorithms are called \textit{Primal-dual affine-scaling methods}, for short Affine-scaling methods, which were proposed for linear programming by Monteiro,
+The simplest primal-dual approach is to apply Newton's method directly to the nonlinear system $F$ using in the $k^{th}$ iteration a step length $\alpha_{k}<1$ in order to guarantee $(x^{k+1},s^{k+1})>0$.\\ There are different ways to do this and the resulting algorithms are called \textit{Primal-dual affine-scaling methods}, for short Affine-scaling methods, which were proposed for linear programming by Monteiro,
 Adler and Resende \cite{MARE}.\\ 
  The general primal-dual affine-scaling algorithm takes the following form:\\
 \begin{algorithm}[H]
@@ -860,7 +860,182 @@ $\text{for\;} i = 1,...,n,$ and the largest value of $\alpha_{k}$ that satisfies
 
 We can step back from this maximum value, and prevent each $x_{i}$ and $s_{i}$ from being too close to zero, by defining $\alpha_{k} = \min\left(1,\eta_{k}*\alpha_{max}\right)$, with $\eta_{k}$ usually $0.999$.\\
 This approach is called \textit{primal-dual affine scaling} and often does not allow us to make much progress toward a solution. 
-Even though, the search direction steps are used to find the predictor directions in the predictor-corrector algorithms, explained in the Chapter ().
+Even though, the search direction steps are used to find the predictor directions in the predictor-corrector algorithms, explained in the Section \ref{sec:pc}.
+
+Most primal-dual methods use less aggressive Newton search direction, making a perturbation of the system $F$ and they are presented in the next section.
+
+\section{Long path-following methods}
+
+Another method for solving LP is to follow a central path from a given initial primal-dual solution point.\\ Assuming $\mathcal{F}^{0}\neq \varnothing$, the \textit{central path} $\mathcal{C}$ is an arc of strictly feasible points that play an important role in the following primal-dual algorithm. It is parametrized by a scalar $\tau  > 0$ and each point $(x_{\tau}, \lambda_{\tau}, s_{\tau})\in \mathcal{C}$ satisfies the following equations:
+\begin{align}
+A^{T}\lambda+s&=c,\tag{4.3a}\\
+Ax&=b,\tag{4.3b}\\\label{KKT2}
+x&\geq 0,\tag{4.3c}\\
+s&\geq 0,\tag{4.3d}\\
+x_{i}s_{i}&= \tau,\; \text{for}\;i= 1,2,...,n.\tag{4.3e}\label{(Tao)}
+\end{align} 
+The conditions (4.3) are also the optimality conditions for the following \textit{logarithmic-barrier formulation} (P$_{\tau}$) of the original problem (P):
+\begin{equation}\label{log}
+\begin{split}
+\text{minimize\;} &c^{T}x + \tau\sum_{i=0}^{n}\ln{x_{i}}\\
+\text{subject\; to\;}&Ax = b\;\text{and\;} x\geq0
+\end{split}
+\end{equation}
+In fact, the Lagrangian function for (\ref{log}), with Lagrange multipliers $\lambda$ for the equality constraint and $s$ for the inequality one, is
+\begin{equation}
+\mathcal{L}(x,\lambda,s)=c^{T}x- \tau\sum_{i=0}^{n}\ln{x_{i}}-\lambda^{T}\left(Ax-b\right)-s^{T}x
+\end{equation}
+and the corresponding \textit{KKT} conditions, from the Theorem \ref{thm:kkt} are:
+\begin{align*}
+c_{i} - \dfrac{\tau}{x_{i}} - A^{T}_{i}\lambda&= 0,\; \text{for}\;i = 1,2,...,n,\\
+Ax&=b,\\
+x&\geq 0,\\
+s&\geq 0.\\
+\end{align*}  
+Since the objective function is strictly convex, these conditions are sufficient as well as necessary for optimality; besides, defining $s_{i} = \dfrac{\tau}{x_{i}}$, we recover (\ref{(Tao)}): it requires that the pairwise products $x_{i}s_{i}$ have the same value for all indices $i$.\\[0.5cm]
+Now we see the relation between the (P$_{\tau}$) and (P) with the following result.
+\begin{prop}
+	Assume that the set $\mathcal{P}^{o} = \mathcal{P}\cap\{x\in\mathbb{R}^{n}| x> 0\}$ is non-empty and let $\tau>0$ be given. Then problem (P$_{\tau}$) has an optimal solution if and only if the set of optimal solutions of (P) is non-empty and bounded.
+\end{prop}
+A proof of the proposition can be found in \cite{meg}. From this result, we immediately conclude that if (P$_{\tau}$) has a solution for some $\tau>0$ then it has a solution for all $\tau>0$.
+\begin{prop}
+	Assume that problem (P) is feasible. Then the set of optimal solutions of (P) is non-empty and bounded if and only if $\mathcal{D}^{0} = \mathcal{D}\cap\{x\in\mathbb{R}^{n}| s> 0\}$  is non-empty.
+\end{prop}
+The proof is an application of duality theory for linear programming. As a consequence of the two previous propositions, we have the following corollary.
+\begin{cor}
+If the sets $\mathcal{P}^{0}$ and $\mathcal{D}^{0}$ are non-empty, then the problem (P$_{\tau}$) (and consequently the relative KKT conditions) has a unique solution $(x(\tau),\lambda(\tau),s(\tau))$, for all $\tau>0$. 
+\end{cor}
+Let $(x(\tau), \lambda(\tau), s(\tau))$ be on the primal-dual path $\mathcal{C}$, then the non negative duality gap assumes this value: $g = c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x=\tau$.\\
+It means that $g$ provides a measure of closeness to optimality. It is clear that as $\tau\to0$ the duality gap goes to zero, and hence both $x(\tau)$ and
+ $(\lambda(\tau), s(\tau))$ approach to the common optimal values of the roblems (P) and (D) respectively. The central path guides us to a solution along a route that maintains positivity of the $x$ and $s$ components and decreases the pairwise products $x_{i}s_{i},\;i = 1,2,...,n$ to zero at the same rate.\\
+ 
+ 
+ Defining $\mathcal{C}$ with the notation introduced in the first section, we have the following mapping $\mathit{F}$:
+ \begin{center}
+ 	$\mathit{F}(x,\lambda,s)= \begin{bmatrix}
+ 	A^{T}\lambda+s-c \\Ax-b \\XSe
+ 	\end{bmatrix}=\begin{bmatrix} 0\\0\\ \tau e \end{bmatrix}$, with $(x,s)\geq0$.
+ \end{center}
+Then, Newton steps toward points on $\mathcal{C}$ are computed as following:
+ \begin{equation}\label{new}
+ \begin{bmatrix}
+ 0&A^{T}&I \\A&0&0\\S&0&X
+ \end{bmatrix}\begin{bmatrix}
+ \Delta x\\\Delta\lambda \\\Delta s
+ \end{bmatrix}=\begin{bmatrix}
+ 0\\0\\-XSe + \tau e
+ \end{bmatrix}.
+ \end{equation}
+ Path-following methods follow $\mathcal{C}$ in the direction of decreasing $\tau$ to the solution set but they do not necessarily stay exactly on $\mathcal{C}$ or even particularly close to it. In fact they compute the target value $\tau = \sigma \mu$, where $\sigma = [0,1]$ is called \textit{centering parameter} and $\mu$ the \textit{duality measure}, defined by
+ \begin{equation*}
+ \mu = \frac{1}{n}\sum_{i=1}^{n} x_{i}s_{i} = \frac{x^{T}s}{n}.
+ \end{equation*}\\
+ The perturbation $\sigma\mu$ guarantees progress in reducing the duality gap $g = x^{T}s$,
+ in this way path-following interior point algorithms attempt to reduce the term from
+ its current value $\mu$ to a new one $\sigma\mu$. In fact, if we state the last equation of \ref{new} in vectorial form, we have:
+ \begin{equation}
+ S\Delta x + X\Delta s = s^{T}\Delta x + x^{T}\Delta s = - XSe + \sigma \mu e = (-1 + \sigma)x^{T}s
+ \end{equation}
+ and provides the necessary term to estimate the progress of the
+ algorithm.\\  
+ \\
+ A path-following algorithm explicity restricts the iterates to a neighborhood of the central path $\mathcal{C}$: if $\sigma = 1$, the equations define a \textit{centering direction}, a Newton step toward the point $(x_{\sigma\mu},\lambda_{\sigma\mu}, s_{\sigma\mu})\in\mathcal{C}$, if $\sigma = 0$, then we have the \textit{affine-scaling method}.\\  
+ Many algorithms use intermediate values of $\sigma$ in $(0,1)$ to trade off between the twin goals of reducing $\mu$ and improving centrality. A neighborhood of $\mathcal{C}$ excludes points $(x, s) $ that are too close to the boundary of the nonegative hyperplane. Therefore, search directions calculated from any point in the neighborhood make at least minimal progress toward the solution set.
+ We define the two most interesting neighborhoods of the central path as given
+by Mizuno et al.~\cite{5}:\\
+\begin{equation*}
+\mathcal{N}_{2}(\theta) =\{(x, \lambda,s)\in\mathcal{F}^{0} \;|\;\lVert XSe - \mu e \rVert \leq \theta \mu \}, \text{\;for some\;} \theta \in [0,1),
+\end{equation*} 
+\begin{equation*}
+\mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\in\mathcal{F}^{0} \;|\; x_{i}s_{i} \geq \gamma \mu \}, \text{\;for some\;} \gamma \in [0,1).
+\end{equation*} 
+A disadvantage of the $\mathcal{N}_{2}(\theta)$ neighborhood is its restrictive nature \cite{W}: from the definition above, we have for $(x, \lambda,s)\in\mathcal{N}_{2}(\theta)$ that
+\begin{center}
+	$\sum\limits_{i=1}^{n}\big(\frac{x_{i}s_{i}}{\mu}-1\big)^{2}\leq \theta^{2}<1$,
+\end{center} 
+so that the sum of squares of all relative deviations of $x_{i}s_{i}$ from their average value $\mu$ cannot exceed 1. Even if $\theta$ is close to its upper bound of 1, the neighborhood $\mathcal{N}_{2}(\theta)$ contains only a small fraction of the points in the strictly feasible set $\mathcal{F}^{0}$. The neighborhood $\mathcal{N}_{-\infty}(\gamma)$, on the other hand, is much more expansive: when $\gamma$ is small, it takes up almost the entire strictly positive feasible set $\mathcal{F}^{0}$. 
+
+\subsection*{LPF methods}
+In this research we discuss the \textit{Long-step Path-Following} algorithms, that are based on the second neighborhood. Since  $\mathcal{N}_{-\infty}(\gamma)$ is a larger central path neighborhood, it allows for more flexibility in the choice of the next iterate and hence larger step length (hence, the name long-step method). It depends on two parameters $\sigma_{min}$, $\sigma_{max}$, which are lower and upper bounds on the centering parameter $\sigma_{k}$. After computed the search direction with the Newton method, the step length $\alpha_{k}$ is chosed as the maximum value subject to staying inside $\mathcal{N}_{-\infty}(\gamma)$.
+The general path-following algorithm is:
+\begin{algorithm}[H]
+	\begin{tabbing}
+		\\
+		\textbf{Given  }\= $\gamma\in(0,1)$, $\sigma_{\text{min}}$, $\sigma_{\text{max}}$, with $0<\sigma_{\text{min}}< \sigma_{\text{max}}<1$,\\
+		\> and $(x^{0}, \lambda^{0}, s^{0})\in\mathcal{N}_{-\infty}(\gamma)$;\\
+		\textbf{for} \= $k = 0, 1, 2,...$ \\
+		\> let $\sigma_{k}\in[\sigma_{\text{min}},\sigma_{\text{max}}]$ and solve
+	\end{tabbing}
+	\begin{equation}\label{Pb}
+	\begin{bmatrix}
+	0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
+	\end{bmatrix}\begin{bmatrix}
+	\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
+	\end{bmatrix}=-\begin{bmatrix}
+	A^{T}y^{k}+s^{k}-c\\Ax^{k}-b\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
+	\end{bmatrix};
+	\end{equation}
+	\begin{tabbing}
+		\\
+		$\;\;\;\;\;$\=choose the largest $\alpha_{k}\in[0,1]$ so that $(x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})\in\mathcal{N}_{-\infty}(\gamma)$; \\
+		\>set $(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$;\\
+		
+		\textbf{end}
+	\end{tabbing}
+	\caption{LPF algorithm}
+\end{algorithm}
+%\begin{tabbing}
+%	\textbf{Given} $\gamma, \sigma_{min}, \sigma_{max}$ and $(x^{o}, \lambda^{o}, s^{o})\in\mathcal{N}_{-\infty}(\gamma)$ with $(x^{o}, s^{o})>0$;\\
+%	\textbf{for} \= $k = 0, 1, 2,...$ \\
+%	\> Choose $\sigma_{k}\in[\sigma_{min},\sigma_{max}]$ and solve
+%\end{tabbing}
+%\begin{equation}\label{(5.9)}
+%\begin{bmatrix}
+%0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
+%\end{bmatrix}\begin{bmatrix}
+%\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
+%\end{bmatrix}=-\begin{bmatrix}
+%0\\0\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
+%\end{bmatrix}
+%\end{equation}
+%\begin{tabbing}
+%	\textbf{Set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$\\
+%	\> Choosing the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)$\\
+%	\textbf{end}
+%\end{tabbing}
+
+Now let define $\{(x^{k},s^{k})\}$ a sequence generated by the LPF algorithm. If it has a limit point, then it is possible to construct a primal-dual solution from any such limit point by the following argument: if $\mathcal{I}$ is a subsequence for which $\lim_{i\in\mathcal{I}}(x^{i},s^{i})=(x^{*},s^{*})$, we have for all $i\in\mathcal{I}$ that
+\begin{alignat*}
+&&Ax^{i}= b, &&c - s^{i}\in \text{range}(A^{T}), &&(x^{i},s^{i})>0.
+\end{alignat*}
+Taking limits and using the facts that range($A^{T}$) is closed and $\mu_{k}\to 0$, we find that $(x^{*},s^{*})$ satisfies
+\begin{align*}
+Ax^{*}&= b,\\c-s^{*}&\in\text{range}(A^{T}),\\(x^{*},s^{*})&>0,\\(x^{*})^{T}s^{*}&=0.\\
+\end{align*}
+Hence, for some $\lambda^{*}$ we have $c-s^{*}= A^{T}\lambda^{*}$. Comparing these conditions with the $KKT$ conditions in (\ref{thm:kkt}), we can conclude that $(x^{*},\lambda^{*},s^{*})$ is a primal-dual solution for which:
+\begin{align*}
+&x^{*}_{i}>0, \forall i \in\mathcal{B},
+&s^{*}_{i}>0, \forall i \in\mathcal{N},
+\end{align*}
+where $\mathcal{B}\cup\mathcal{N}$ is the partition of $\{1,2,\dots,n\}$ defined in ($\ref{index}$).
+The following Lemma shows the properties of this sequence in $\mathcal{N}_{-\infty}(\gamma)$, with $\mathcal{B}$ and $\mathcal{N}$ obtained by the argument above.
+\begin{lem}
+	Let $\mu_{0}\geq 0$ and $\gamma\in(0,1)$. Then for all points $(x,\lambda,s)$ with
+	\begin{equation*}
+	(x,\lambda,s)\in\mathcal{N}_{-\infty}(\gamma)\subset\mathcal{F}^{0}, \;\; \mu \leq \mu_{0}
+	\end{equation*}
+	there are constants $C_{0}$ and $C_{1}$ such that
+	\begin{align*}
+	\lVert(x,s) \rVert&\leq C_{0},\tag{B}\label{B}\\0< x_{i}&\leq \mu/C_{1}\;\; (i \in\mathcal{N}),\\
+	0< s_{i}&\leq \mu/C_{1}\;\; (i \in\mathcal{B}),\\ 
+	s_{i}&\geq C_{1}\gamma \;\; (i \in\mathcal{N}),\\
+	x_{i}&\geq C_{1}\gamma \;\; (i \in\mathcal{B}).\\
+	\end{align*}
+\end{lem}
+\begin{proof}
+	~\cite{Wright} pag. 101
+\end{proof}
+We see the Lemma assert the sequence is bounded (see \ref{B}) and hence the existence of the limit is verified.\\
 \subsection{Affine-scaling convergence}
 We examine the asymptotic behavior of this method, that is of significant theoretical interest: we assume that $(x, \lambda, s)\in\mathcal{F}^{0}$, hence, the affine-scaling direction $(\Delta x, \Delta \lambda, \Delta s)$ satisfies the following matricial system:\\
 \begin{equation}\label{5.1}
@@ -990,164 +1165,7 @@ The next lemma is due essentially to Adler and Montiero \cite{ADL}. $A_{\mathcal
 	The result follows when we define K$\;=\bar{K} \lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert C$.
 \end{proof}
 A result similar to Theorem~\ref{(Z)} holds for steps of an IPM algorithm \cite{Wright}.\\ The implementation realized in this research computes the infeasible with two heuristic techniques, which we depict later.\\
-Most primal-dual methods use less aggressive Newton search direction, making a perturbation of the system $F$ and they are presented in the next section.
-
-\section{Long path-following methods}
-
-Another method for solving a linear program is to follow a central path from a given initial primal-dual solution point.\\ Assuming $\mathcal{F}^{0}\neq \varnothing$, the \textit{central path} $\mathcal{C}$ is an arc of strictly feasible points that play an important role in the following primal-dual algorithm. It is parametrized by a scalar $\tau  > 0$ and each point $(x_{\tau}, \lambda_{\tau}, s_{\tau})\in \mathcal{C}$ satisfies the following equations:
-\begin{align}
-A^{T}\lambda+s&=c\tag{4.3a}\\
-Ax&=b\tag{4.3b}\\\label{KKT2}
-x&\geq 0\tag{4.3c}\\
-s&\geq 0\tag{4.3d}\\
-x_{i}s_{i}&= \tau,\; \text{for}\;i= 1,2,...,n.\tag{4.3e}\label{(Tao)}
-\end{align} 
-The conditions (4.3) are also the optimality conditions for the following \textit{logarithmic-barrier formulation} (P$_{\tau}$) of the original problem (P):
-\begin{equation}\label{log}
-\begin{split}
-\text{minimize\;} &c^{T}x + \tau\sum_{i=0}^{n}\ln{x_{i}}\\
-\text{subject\; to\;}&Ax = b\;\text{and\;} x\geq0
-\end{split}
-\end{equation}
-In fact, the KKT conditions associated to this problem, with Lagrange multiplier $\lambda$ for the equality constraint, are
-\begin{equation*}
-c_{i} - \dfrac{\tau}{x_{i}} - A^{T}_{i}\lambda,\; \text{for}\;i = 1,2,...,n.
-\end{equation*}  
-Since the objective function is strictly convex, these conditions are sufficient as well as necessary for optimality; besides, defining $s_{i} = \dfrac{\tau}{x_{i}}$, we recover (\ref{(Tao)}): it requires that the pairwise products $x_{i}s_{i}$ have the same value for all indices $i$.\\[0.5cm]
-Now we see the relation between the (P$_{\tau}$) and (P) with the following result.
-\begin{prop}
-	Assume that the set $\mathcal{P}^{o} = \mathcal{P}\cap\{x\in\mathbb{R}^{n}| x> 0\}$ is non-empty and let $\tau>0$ be given. Then problem (P$_{\tau}$) has an optimal solution if and only if the set of optimal solutions of (P) is non-empty and bounded.
-\end{prop}
-A proof of the proposition can be found in \cite{meg}. From this result, we immediately conclude that if (P$_{\tau}$) has a solution for some $\tau>0$ then it has a solution for all $\tau>0$.
-\begin{prop}
-	Assume that problem (P) is feasible. Then the set of optimal solutions of (P) is non-empty and bounded if and only if $\mathcal{D}^{0} = \mathcal{D}\cap\{x\in\mathbb{R}^{n}| s> 0\}$  is non-empty.
-\end{prop}
-The proof is an application of duality theory for linear programming. As a consequence of the two previous propositions, we have the following corollary.
-\begin{cor}
-If the sets $\mathcal{P}^{0}$ and $\mathcal{D}^{0}$ are non-empty, then the problem (P$_{\tau}$) (and consequently the relative KKT conditions) has a unique solution $(x(\tau),\lambda(\tau),s(\tau))$, for all $\tau>0$. 
-\end{cor}
-Let $(x(\tau), \lambda(\tau), s(\tau))$ be on the primal-dual path $\mathcal{C}$, then the non negative duality gap assumes this value: $g = c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x=\tau$.\\
-It means that $g$ provides a measure of closeness to optimality. It is clear that as $\tau\to0$ the duality gap goes to zero, and hence both $x(\tau)$ and
- $(\lambda(\tau), s(\tau))$ approach to the common optimal values of the roblems (P) and (D) respectively. The central path guides us to a solution along a route that maintains positivity of the $x$ and $s$ components and decreases the pairwise products $x_{i}s_{i},\;i = 1,2,...,n$ to zero at the same rate.\\
- 
- 
- Defining $\mathcal{C}$ with the notation introduced in the first section, we have the following mapping $\mathit{F}$:
- \begin{center}
- 	$\mathit{F}(x,\lambda,s)= \begin{bmatrix}
- 	A^{T}\lambda+s-c \\Ax-b \\XSe
- 	\end{bmatrix}=\begin{bmatrix} 0\\0\\ \tau e \end{bmatrix}$, with $(x,s)\geq0$.
- \end{center}
-Then, Newton steps toward points on $\mathcal{C}$ are computed as following:
- \begin{equation}\label{new}
- \begin{bmatrix}
- 0&A^{T}&I \\A&0&0\\S&0&X
- \end{bmatrix}\begin{bmatrix}
- \Delta x\\\Delta\lambda \\\Delta s
- \end{bmatrix}=\begin{bmatrix}
- 0\\0\\-XSe + \tau e
- \end{bmatrix}.
- \end{equation}
- Path-following methods follow $\mathcal{C}$ in the direction of decreasing $\tau$ to the solution set but they do not necessarily stay exactly on $\mathcal{C}$ or even particularly close to it. In fact they compute the target value $\tau = \sigma \mu$, where $\sigma = [0,1]$ is called \textit{centering parameter} and $\mu$ the \textit{duality measure}, defined by
- \begin{equation*}
- \mu = \frac{1}{n}\sum_{i=1}^{n} x_{i}s_{i} = \frac{x^{T}s}{n}.
- \end{equation*}\\
- The perturbation $\sigma\mu$ guarantees progress in reducing the duality gap $g = x^{T}s$,
- in this way path-following interior point algorithms attempt to reduce the term from
- its current value $\mu$ to a new one $\sigma\mu$. In fact, if we state the last equation of \ref{new} in vectorial form, we have:
- \begin{equation}
- S\Delta x + X\Delta s = s^{T}\Delta x + x^{T}\Delta s = - XSe + \sigma \mu e = (-1 + \sigma)x^{T}s
- \end{equation}
- and provides the necessary term to estimate the progress of the
- algorithm.\\  
- \\
- A path-following algorithm explicity restricts the iterates to a neighborhood of the central path $\mathcal{C}$: if $\sigma = 1$, the equations define a \textit{centering direction}, a Newton step toward the point $(x_{\sigma\mu},\lambda_{\sigma\mu}, s_{\sigma\mu})\in\mathcal{C}$, if $\sigma = 0$, then we have the \textit{affine-scaling method}.\\  
- Many algorithms use intermediate values of $\sigma$ in $(0,1)$ to trade off between the twin goals of reducing $\mu$ and improving centrality. A neighborhood of $\mathcal{C}$ excludes points $(x, s) $ that are too close to the boundary of the nonegative hyperplane. Therefore, search directions calculated from any point in the neighborhood make at least minimal progress toward the solution set.
- We define the two most interesting neighborhoods of the central path as given
-by Mizuno et al.~\cite{5}:\\
-\begin{equation*}
-\mathcal{N}_{2}(\theta) =\{(x, \lambda,s)\in\mathcal{F}^{0} \;|\;\lVert XSe - \mu e \rVert \leq \theta \mu \}, \text{\;for some\;} \theta \in [0,1),
-\end{equation*} 
-\begin{equation*}
-\mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\in\mathcal{F}^{0} \;|\; x_{i}s_{i} \geq \gamma \mu \}, \text{\;for some\;} \gamma \in [0,1).
-\end{equation*} 
-A disadvantage of the $\mathcal{N}_{2}(\theta)$ neighborhood is its restrictive nature \cite{W}: from the definition above, we have for $(x, \lambda,s)\in\mathcal{N}_{2}(\theta)$ that
-\begin{center}
-	$\sum\limits_{i=1}^{n}\big(\frac{x_{i}s_{i}}{\mu}-1\big)^{2}\leq \theta^{2}<1$,
-\end{center} 
-so that the sum of squares of all relative deviations of $x_{i}s_{i}$ from their average value $\mu$ cannot exceed 1. Even if $\theta$ is close to its upper bound of 1, the neighborhood $\mathcal{N}_{2}(\theta)$ contains only a small fraction of the points in the strictly feasible set $\mathcal{F}^{0}$. The neighborhood $\mathcal{N}_{-\infty}(\gamma)$, on the other hand, is much more expansive: when $\gamma$ is small, it takes up almost the entire strictly positive feasible set $\mathcal{F}^{0}$. 
-
-\subsection*{LPF methods}
-In this research we discuss the \textit{long-step path-following algorithms}, that are based on the second neighborhood. Since  $\mathcal{N}_{-\infty}(\gamma)$ is a larger central path neighborhood, it allows for more flexibility in the choice of the next iterate and hence larger  step length (hence, the name long-step method). It depends on two parameters $\sigma_{min}$, $\sigma_{max}$, which are lower and upper bounds on the centering parameter $\sigma_{k}$. After computed the search direction with the Newton method, the step length $\alpha_{k}$ is chosed as the maximum value subject to staying inside $\mathcal{N}_{-\infty}(\gamma)$.
-The general path-following algorithm is:
-\begin{algorithm}[H]
-	\begin{tabbing}
-		\\
-		\textbf{Given  }\= $\gamma\in(0,1)$, $\sigma_{\text{min}}$, $\sigma_{\text{max}}$, with $0<\sigma_{\text{min}}< \sigma_{\text{max}}<1$,\\
-		\> and $(x^{0}, \lambda^{0}, s^{0})\in\mathcal{N}_{-\infty}(\gamma)$;\\
-		\textbf{for} \= $k = 0, 1, 2,...$ \\
-		\> let $\sigma_{k}\in[\sigma_{\text{min}},\sigma_{\text{max}}]$ and solve
-	\end{tabbing}
-	\begin{equation}\label{Pb}
-	\begin{bmatrix}
-	0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
-	\end{bmatrix}\begin{bmatrix}
-	\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
-	\end{bmatrix}=-\begin{bmatrix}
-	A^{T}y^{k}+s^{k}-c\\Ax^{k}-b\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
-	\end{bmatrix};
-	\end{equation}
-	\begin{tabbing}
-		\\
-		$\;\;\;\;\;$\=choose the largest $\alpha_{k}\in[0,1]$ so that $(x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})\in\mathcal{N}_{-\infty}(\gamma)$; \\
-		\>set $(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$;\\
-		
-		\textbf{end}
-	\end{tabbing}
-	\caption{LPF algorithm}
-\end{algorithm}
-%\begin{tabbing}
-%	\textbf{Given} $\gamma, \sigma_{min}, \sigma_{max}$ and $(x^{o}, \lambda^{o}, s^{o})\in\mathcal{N}_{-\infty}(\gamma)$ with $(x^{o}, s^{o})>0$;\\
-%	\textbf{for} \= $k = 0, 1, 2,...$ \\
-%	\> Choose $\sigma_{k}\in[\sigma_{min},\sigma_{max}]$ and solve
-%\end{tabbing}
-%\begin{equation}\label{(5.9)}
-%\begin{bmatrix}
-%0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
-%\end{bmatrix}\begin{bmatrix}
-%\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
-%\end{bmatrix}=-\begin{bmatrix}
-%0\\0\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
-%\end{bmatrix}
-%\end{equation}
-%\begin{tabbing}
-%	\textbf{Set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$\\
-%	\> Choosing the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)$\\
-%	\textbf{end}
-%\end{tabbing}
-
-The convergence results we will illustrate show that the sequence generated by a LPF algorithm is bounded and therefore has at least one limit point. Further, all limit points correspond to strictly complementary solutions $(x^{*},\lambda^{*},s^{*})$ for which:
-\begin{align*}
-&x^{*}_{i}>0, \text{\;for\;} i \in\mathcal{B},
-&s^{*}_{i}>0, \text{\;for\;} i \in\mathcal{N},
-\end{align*}
-where $\mathcal{B}\cup\mathcal{N}$ is the partition of $\{1,2,\dots,m\}$ defined previously.
-The following lemma shows properties of the points in $\mathcal{N}_{-\infty}(\gamma)$ that are used in the analysis section.
-\begin{lem}
-	Let $\mu_{0}\geq 0$ and $\gamma\in(0,1)$. Then for all points $(x,\lambda,s)$ with
-	\begin{equation*}
-	(x,\lambda,s)\in\mathcal{N}_{-\infty}(\gamma)\subset\mathcal{F}^{0}, \;\; \mu \leq \mu_{0}
-	\end{equation*}
-	there are constants $C_{0}$ and $C_{1}$ such that
-	\begin{align*}
-	\lVert(x,s) \rVert&\leq C_{0}\\0< x_{i}&\leq \mu/C_{1}\;\; (i \in\mathcal{N}),\\
-	0< s_{i}&\leq \mu/C_{1}\;\; (i \in\mathcal{B}),\\ 
-	s_{i}&\geq C_{1}\gamma \;\; (i \in\mathcal{N}),\\
-	x_{i}&\geq C_{1}\gamma \;\; (i \in\mathcal{B}).\\
-	\end{align*}
-\end{lem}
-\begin{proof}
-	~\cite{Wright} pag. 101
-\end{proof}
+\section{LPF convergence analysis}
 The following is a technical lemma.
 \begin{lem}\label{lem1}
 	Let u and v be any two vectors in $\mathbb{R}^{n}$ with $u^{T}v \geq 0$. Then, 
@@ -1294,7 +1312,9 @@ with $\mu_{k}$ the duality measure of the current primal-dual point and $n$ is t
 Analyzing the graphic in Figure 4.1 we state that the LPF with the centering parameter (\ref{LPF1}) \textit{LPF 1} requires a less number of iterations and less time storage then \textit{LPF2} to find a LP solution, indipendently to the characteristic of the problem data. The storage time refers to the time required to solve LP problems with LPF codes I have implemented and outlined in the \textbf{Appendix A.3}.\\
 In the research we will present a predictor-corrector LPF algorithm based on Mehrotra's method, in which the centering parameter is choosen adaptively.\\
 Afterwards, in the numerical experiments it will be focused on the LPF method with  $\sigma^{2}$.
-\section{Predictor-corrector algorithms}
+
+\section{Predictor-corrector algorithms}\label{sec:pc}
+
 Most interior-point software written since 1990s have been based on Mehrotra's predictor-corrector algorithm (MPC).\\
 Since Karmarkar's landmark paper \cite{Kar}, IPM became one of the most active research area that produced a large amount of research results. Moreover, several powerful methods have been developed: predictor-corrector methods are among the most efficient and most implementations are based on a variant of Mehrotra's algorithm. \\
 The Mehrotra's contribution was to combine the work developed by Montiero, Adles and Resende \cite{MARE} and the infeasible-interior-point path-following approach implemented by Lustig, Marsten and Shanno \cite{LMS}.\\ 
@@ -1359,7 +1379,7 @@ To assess the effect of the corrector component, we examine the pairwise product
 \end{equation*}
 This result yelds to a better reduction of the duality measure: in fact it results:
 \begin{center} 
-	\\$\lVert(\Delta x^{\text{aff}},\Delta s^{\text{aff}}) \rVert = \mathcal{O}(\mu)$ and $\lVert(\Delta x^{\text{cor}},\Delta s^{\text{cor}}) \rVert = \mathcal{O}(\mu^{2})$.
+$\lVert(\Delta x^{\text{aff}},\Delta s^{\text{aff}}) \rVert = \mathcal{O}(\mu)$ and $\lVert(\Delta x^{\text{cor}},\Delta s^{\text{cor}}) \rVert = \mathcal{O}(\mu^{2})$.
 \end{center}
 When the limiting matrix is singular, the corrector step may no longer be smaller in norm than the affine-scaling step, ideed, it is often larger. Even in this situation, the use of the corrector component usually enhances the overall efficiency of the algorithm in practice.\\
 Since the centering and corrector components are obtained by solving linear system with the same coefficient matrix and they are indipendent each other, we can merge them into a single direction by adding their corresponding right-hand sides and compute the combined direction. 
