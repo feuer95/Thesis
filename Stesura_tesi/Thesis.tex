@@ -761,7 +761,7 @@ Note that $\mathit{F}$ is linear in the first two equations and mildly nonlinear
 The general IPM algorithm generates iterates $(x^{k},\lambda^{k},s^{k})$ with the following properties:
 \begin{itemize}
 	\item $x^{k}$ and $s^{k}$ are nonnegative and strictly positive at each iteration (this requisite leads to the term \textit{interior point});
-	\item the 2-norm of the residuals $r_{b}^{k} = b - Ax^{k}$ and $r_{c}^{k} =c - A^{T}\lambda^{k} -s^{k}$ decrease at each iteration;
+	\item the 2-norm of the residuals $r_{b}^{k} = Ax^{k} - b$ and $r_{c}^{k} =A^{T}\lambda^{k} +s^{k} - c$ decrease at each iteration;
 	\item the duality measure $\mu_{k} = \frac{x^{T}_{k}s_{k}}{n}$ decreases at each iteration;
 	\item the next iterate $(x^{k+1},\lambda^{k+1},s^{k+1})$ is computed by an increment of a modified Newton's direction.
 \end{itemize}
@@ -835,7 +835,7 @@ Adler and Resende \cite{MARE}.\\
 \end{bmatrix}\begin{bmatrix}
 \Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
 \end{bmatrix}=-\begin{bmatrix}
--r_{c}^{k}\\-r_{b}^{k}\\X^{k}S^{k}e
+r_{c}^{k}\\r_{b}^{k}\\X^{k}S^{k}e
 \end{bmatrix};
 \end{equation}
 \begin{tabbing}
@@ -1049,7 +1049,7 @@ When LPF algorithm works with $\mathcal{N}_{-\infty}(\gamma,\beta)$, the search 
 \end{bmatrix}\begin{bmatrix}
 \Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
 \end{bmatrix}=-\begin{bmatrix}
--r_{c}^{k}\\-r_{b}^{k}\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
+r_{c}^{k}\\r_{b}^{k}\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
 \end{bmatrix}.
 \end{equation*}
  
@@ -1066,7 +1066,7 @@ In this analysis we set that $(x, \lambda, s)\in\mathcal{F}^{0}$, hence, the aff
 0\\0\\XSe
 \end{bmatrix},
 \end{equation}\\
-with residuals $r_{b}$ and $r_{c}$ equal to 0.\\
+with residuals $r_{b}$ and $r_{c}$ respct to the feasible point equal to 0.\\
 More precisely we assume that $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$.
 \begin{lem}
 	Suppose that $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$ and that the affine-scaling direction $(\Delta x,\Delta \lambda, \Delta s)$ is calculated. Then there is a costant $C$ such that
@@ -1334,32 +1334,32 @@ with $\mu_{k}$ the duality measure of the current primal-dual point and $n$ is t
 
 \begin{figure}\label{fig:float}
 \begin{center}
-\includegraphics[width=9 cm]{timeLPF12}\caption{Log plot time storage: test problems for comparing the two centering parameters} 
+\includegraphics[width=9 cm]{timeLPF12}\caption{Log plot time storage: test problems for comparing the two centering parameters.} 
 \end{center}
 \end{figure}
-Analyzing the graphic in Figure 4.1 we state that the LPF with the centering parameter (\ref{LPF1}) \textit{LPF 1} requires a less number of iterations and less time storage then \textit{LPF2} to find a LP solution, indipendently to the characteristic of the problem data. The storage time refers to the time required to solve LP problems with LPF codes I have implemented and outlined in the Appendix A.3.\\
-\\
-In the research we will present a predictor-corrector LPF algorithm based on Mehrotra's method, in which the centering parameter is choosen adaptively.\\
-Afterwards, in the numerical experiments it will be focused on the LPF method with  $\sigma^{2}$.
+Analyzing the graphic in Figure 4.1 we state that the LPF with the centering parameter (\ref{LPF1}), \textit{LPF 1}, requires a less number of iterations and less time storage then  with (\ref{LPF2}), \textit{LPF2}, to find a LP solution, indipendently to the characteristic of the problem data. The storage time refers to the time required to solve LP problems with LPF codes I have implemented and outlined in the Appendix A.3.\\
+From these excellent theoretical properties, we design a modified LPF algorithm: it exploits the fact that all iterates belong to $\mathcal{N}_{-\infty}(\gamma,\beta)$ of the central path, but with techniques, presented in the next section, it may accelerate its performance. 
+
 
 \section{Predictor-corrector algorithms}\label{sec:pc}
-
-Most interior-point software written since 1990s have been based on Mehrotra's predictor-corrector algorithm (MPC).\\
-Since Karmarkar's landmark paper \cite{Kar}, IPM became one of the most active research area that produced a large amount of research results. Moreover, several powerful methods have been developed: predictor-corrector methods are among the most efficient and most implementations are based on a variant of Mehrotra's algorithm. \\
-The Mehrotra's contribution was to combine the work developed by Montiero, Adles and Resende \cite{MARE} and the infeasible-interior-point path-following approach implemented by Lustig, Marsten and Shanno \cite{LMS}.\\ 
+In the late 80s, Mehrotra and indipendently Lustig, Marsten, Shanno and their collaborators made impressive progress in the implementation of IPM. Two particular techniques have proved particulary successful in accelerating the IPM convergence: Mehrotra's predictor-corrector algorithm and multiple centrality correctors. Since these two methods were developed, there have been a number of attempts to investigate their behaviour rigorosly but, even if are successful in practice, they are hard to analyse theoretically \cite{25y}.\\
+In the research we will present a predictor-corrector LPF algorithm based on Mehrotra's method, in which the centering parameter $\sigma$ is chosen adaptively.\\
+%Most interior-point software written since 1990s have been based on Mehrotra's predictor-corrector algorithm (MPC).\\
+%Since Karmarkar's landmark paper \cite{Kar}, IPM became one of the most active research area that produced a large amount of research results. Moreover, several powerful methods have been developed: predictor-corrector methods are among the most efficient and most implementations are based on a variant of Mehrotra's algorithm. \\
+The Mehrotra's contribution was to combine the work developed by Montiero, Adles and Resende \cite{MARE} and the infeasible-interior-point path-following approach implemented by Lustig, Marsten and Shanno \cite{LMS}. 
 The method incorporates these algorithmic devices that contribute to its practical success, including the use of different step lengths for the primal and dual variables and a heuristic choice of the step lengths that is designed to speed the asymptotic convergence.\\
+\subsection{Mehrotra's method}
+In this section we start by outline a single iteration and then we define the method.\\
 It generates sequence of infeasible iterates $(x^{k},\lambda^{k},s^{k})$ for which $(x^{k},s^{k})>0$. The search direction at each iteration consists of three components:
 \begin{enumerate}
 	\item an affine-scaling "predictor" direction;
 	\item a centering term whose size is governed by the adaptively chosen centering parameter $\sigma$;
 	\item a "corrector" direction that attempts to compensate for some of the nonlinearity in the affine-scaling direction.
 	\end{enumerate}
-The MPC algorithm is described later. \\
 The affine-scaling component is calculated before the centering component. By arranging the computations in this way, we gain a key advantage: the ability to choose the centering parameter $\sigma$ adaptively rather then a priori, as in the algorithm LPF.\\
-If the affine-scaling direction makes good progress in reducing the duality measure $\mu$ while remaining inside the positive hyperplane defined by $(x,s)>0$, we conclude that little centering is needed, so we choose $\sigma$ close to 1.
-\subsection{Mehrotra's algorithm}
+If the affine-scaling direction makes good progress in reducing the duality measure $\mu$ while remaining inside the positive hyperplane defined by $(x,s)>0$, we conclude that little centering is needed, so we choose $\sigma$ close to 1.\\
 Given a point $(x, \lambda, s)$ with $(x, s)> 0$, we compute the affine-scaling direction:
-\begin{equation}\label{(A)}
+\begin{equation}\label{(A)}\tag{4.21}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\X&0&S
 \end{bmatrix}\begin{bmatrix}
@@ -1369,12 +1369,12 @@ A^{T}\lambda+s-c\\Ax-b\\XSe
 \end{bmatrix}.
 \end{equation}
 Now we find the step lengths to the boundary along this direction, performing separate calculations for the primal and dual components as follow:
-\begin{align}\label{Qw}\tag{4.22}
+\begin{align}\label{Qw}\tag{4.22a}
 \alpha_{\text{aff}}^{\text{pri}}=\arg\max\{\alpha\in[0,1]\;|\;x +\alpha\Delta x^{\text{aff}}\geq 0\}, \\
-\alpha_{\text{aff}}^{\text{dual}}=\arg\max\{\alpha\in[0,1]\;|\;s +\alpha\Delta s^{\text{aff}}\geq 0\}\tag{4.22a}.
+\alpha_{\text{aff}}^{\text{dual}}=\arg\max\{\alpha\in[0,1]\;|\;s +\alpha\Delta s^{\text{aff}}\geq 0\}\tag{4.22b}.
 \end{align}
 To measure the efficacy of the affine-scaling direction, we define $\mu_{\text{aff}}$ as the hypothetical value of $\mu$ resulting from a full step to the boundary, that is,
-\begin{equation}\tag{4.22b}
+\begin{equation}\tag{4.22c}
 	\mu_{\text{aff}}= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n
 \end{equation}
 If $\mu_{\text{aff}}\ll\mu$, the affine-scaling direction is a good search direction that permits significant progress to be made in reducing $\mu$, so we choose the centering parameter $\sigma$ close to 0. If $\mu_{\text{aff}}$ is just a little smaller than $\mu$, we choose $\sigma$ closer to 1. This choice has the effect of moving us closer  to the central path $\mathcal{C}$, so that the algorithm is in a better position to achieve a substantial decrease in $\mu$ on the next iteration.\\
@@ -1448,17 +1448,17 @@ Although we need to solve at each iteration two linear systems instead of one, t
 \textbf{end}
 \end{tabbing}
 \end{algorithm}
-
+\newpage
 \subsection*{Analysis of MPC}
-In order to study the performance of the Mehrotra's algorithm, we introduce the trajectory-following methods from ODEs. These one define a trajectory from the current point, we say $(x,\lambda,s)$, to the solution set $\Omega$. There are infinitely many trajectories to choose from, but in this case it is obtained from a linear scaling of the function (\ref{F}).\\ Denoting this trajectory by $\mathcal{H}$ and parametrizing it by $\tau\in[0,1)$, we find that each point $(x_{\tau},\lambda_{\tau},s_{\tau})\in\mathcal{H}$ is a solution of the following nonlinear system:
+In order to study the performance of the Mehrotra's algorithm, we introduce the trajectory-following methods from ODEs. These one define a trajectory from the current point, we say $(x,\lambda,s)$, to the solution set $\Omega$. There are infinitely many trajectories to choose from, but in this case it is obtained from a linear scaling of the function (\ref{F}).\\ Denoting this trajectory by $\mathcal{H}$ and parametrizing it by $\tau\in[0,1)$, we find that each point $(\hat{x},\hat{\lambda},\hat{s})_{\tau}\in\mathcal{H}$ is a solution of the following nonlinear system:
 \begin{equation}\label{T}
 \begin{bmatrix}
-A^{T}\lambda+s-c \\Ax-b \\XSe
-\end{bmatrix}=\begin{bmatrix}
-(1-\tau)(A^{T}\lambda-c)\\(1-\tau)(Ax-b)\\(1-\tau)XSe
-\end{bmatrix}, (x,s)\geq0.
+A^{T}\lambda+\hat{s}-c \\A\hat{x}-b \\\hat{X}\hat{S}e
+\end{bmatrix}=-\begin{bmatrix}
+(1-\tau)r_{c}\\(1-\tau)r_{b}\\-(1-\tau)XSe
+\end{bmatrix}, (\hat{x},\hat{s})\geq0,
 \end{equation}
-We see that $(x_{\tau},\lambda_{\tau},s_{\tau})$ with $\tau = 0$ is exactly the initial point and that, if the limit exists, then $\lim\limits_{\tau\to\infty}(x_{\tau},\lambda_{\tau},s_{\tau}) = (x^{*},\lambda^{*},s^{*})$.\\
+with $r_{c}$ and $r_{b}$ residuals respect to the initial point. We see that $(\hat{x},\hat{\lambda},\hat{s})_{\tau}$ with $\tau = 0$ is exactly the initial point and that $\lim\limits_{\tau\to\infty}(\hat{x},\hat{\lambda},\hat{s})_{\tau} = (x^{*},\lambda^{*},s^{*})$, if the limit exists.\\
 To move along the trajectory $\mathcal{H}$, we can form a Taylor series approximation to $(x_{\tau},\lambda_{\tau},s_{\tau})$ by expanding about the initial point  $(x,\lambda,s)$ as follows:
 \begin{equation*}
 (x_{\tau},\lambda_{\tau},s_{\tau})=(x_{0},\lambda_{0},s_{0})+\tau(x_{0}^{'},\lambda_{0}^{'},s_{0}^{'})+\frac{1}{2}\tau^{2}(x_{0}^{"},\lambda_{0}^{"},s_{0}^{"})+\dots = \sum_{j=0}^{\infty}\frac{\tau^{j}}{j!}(x_{0}^{j},\lambda_{0}^{j},s_{0}^{j}).
@@ -1469,7 +1469,7 @@ Here, $(x_{0}^{j},\lambda_{0}^{j},s_{0}^{j})$ is the derivative of $(x_{\tau},\l
 0&A^{T}&I \\A&0&0\\X&0&S
 \end{bmatrix}\begin{bmatrix}
 x_{0}^{'}\\\lambda_{0}^{'}\\s_{0}^{'}
-\end{bmatrix}=-\begin{bmatrix}
+\end{bmatrix}=\begin{bmatrix}
 -r_{c}\\-r_{b}\\XSe
 \end{bmatrix},
 \end{equation*}
@@ -1497,8 +1497,8 @@ Then we introduce the modified trajectory $\mathcal{H}_{\sigma}$ for which the c
 \begin{equation}\label{Tt}
 \begin{bmatrix}
 A^{T}\lambda+s-c \\Ax-b \\XSe
-\end{bmatrix}=\begin{bmatrix}
-(1-\tau)(A^{T}\lambda-c)\\(1-\tau)(Ax-b)\\(1-\tau)XSe+\tau^{2}(1-\tau)\sigma\mu e
+\end{bmatrix}=-\begin{bmatrix}
+(1-\tau)r_{c})\\(1-\tau)r_{b}\\-(1-\tau)XSe+\tau^{2}(1-\tau)\sigma\mu e
 \end{bmatrix},(x,s)\geq0.
 \end{equation}
 The tangent to this trajectory is the affine-scaling direction, as for $\mathcal{H}$, but the curvature can be identified with the combined centering-corrector step rather than the corrector component alone. The trajectory $\mathcal{H}_{\sigma}$ approximates more the central path than $\mathcal{H}$. Despite the closer relationship between $\mathcal{H}_{\sigma}$  and MPC algorithm, we can not qualify it as a second-order trajectory-following algorithm because it still searches along a linear direction rather than a quadratic path.  
@@ -1530,7 +1530,7 @@ To measure the efficiency of the affine-scaling direction, we define $\mu_{\text
 .
 \section{IPM algorithms performance}
 In this section we develop an empirical study of the IPM algorithms performace. \\
-We rate the number of iterations $T$ required to solve a LP to the number of constraints $m$ and/or the number of variables $n$ in the problem. We may assume that $T$ can be approximated by a function of the form 
+We rate the number of iterations $T$ required to solve a LP to the number of constraints $m$ and/or the number of variables $n$ in the LP problem. We may assume that $T$ can be approximated by a function of the form 
 \begin{equation*}
 	T \approx 2^{\alpha}(m+n)^{\beta},
 \end{equation*}
@@ -1724,12 +1724,8 @@ The starting point is then defined as
 } 
 \end{figure}
 
-\begin{figure}[t]
-	\begin{center}
-			
-	\end{center}
-\end{figure}
-The logical basis of this strategy (outlined in Figure \ref{fig:STP2}) is that many path-following methods are able to perform long steps toward the solution and to drive the infeasibility to zero at least at the same rate as the duality gap, by keeping the iterates in the central path neighbourhood $\mathcal{N}_{-\infty}(\gamma,\beta)$, see \ref{neigh3},  \cite{SPS}.
+
+The logical basis of this strategy (outlined in Figure \ref{fig:STP2}) is that many LPF methods are able to perform long steps toward the solution and to drive the infeasibility to zero at least at the same rate as the duality gap, by keeping the iterates in the central path neighbourhood $\mathcal{N}_{-\infty}(\gamma,\beta)$, see (\ref{neigh3}),  \cite{SPS}.
 The second starting-point strategy is suggested by the convergence theory of the Potential Reduction (PR) method.\\
 The starting point can be chosen as \begin{equation*}
 (x^{0}, \lambda^{0}, s^{0}) = \eta \tilde{w},
@@ -1785,10 +1781,10 @@ Now we analyze the infeability measures and the duality gaps corresponding to th
 		8 & 2 &  & 8.30e+01 & -5.62e+00 & -14.76 &  & 5.37e+01 & -5.07e+00 & -1.06e+01 \\
 		2 & 4 &  & 2.64e+01 & -6.25e+00 & -4.22 &  & 2.58e+01 & -1.21e+01 & -2.13e+00 \\
 		10 & 24 &  & 1.49e+05 & -1.70e+04 & -8.78 &  & 2.77e+09 & -3.15e+08 & -8.77e+00 \\ \hline
-	\end{tabular}\caption{Infeasibility measures $\lVert (r_{b}, r_{c})\rVert_{2}$, duality gaps ${\mu}$ and their ratios corresponding to MIP and STP1}
+	\end{tabular}\caption{Infeasibility measures $\lVert (r_{b}, r_{c})\rVert_{2}$, duality gaps ${\mu}$ and their ratios corresponding to MIP and STP1.}
 \end{table}
 We see that it is not a evidence peculiar behaviour of the values of the infeasibility error and the duality gap obtained by each strategy. Even if the ratio is smaller for the STP1 initial points, the duality gap and the infeasibility error are competitive and they don't lead to an effective comparison.\\ 
-\newpage
+\\
 Now we deal on the termination criteria; unlike the simplex method, primal-dual algorithms never find an exact solution of the LP. In this research it is computed a finite termination phase that reports an approximate solution for which the residuals and duality measure are sufficiently small. After determinated a small tollerance $\epsilon$, the algorithms terminate when the following conditions on the relative primal and dual feasibility and the relative duality gap are satisfied:
 \begin{align*}
 \frac{\lVert Ax -b\rVert}{1+ \lVert b \rVert}\leq \epsilon, && \frac{\lVert A^{T}y -c\rVert}{1 + \lVert c \rVert}\leq \epsilon, &&\frac{|c^{T}x - b^{T}y|}{1+b^{T}y}\leq \epsilon,
@@ -1899,10 +1895,10 @@ Since the LP is not in standard form, we convert the inequalies to equalities ad
 
 The minimum total net present value is \$ $322515.00$ with the following optimal allocation:
 \begin{align*}
-x_{1,1}^{*} &=  0 & x_{1,2}^{*}&= 0 & x_{1,3}^{*} &= 75 & x_{2,1}^{*} &= 90 & x_{2,2}^{*} &= 0 & x_{2,3}^{*} &= 0\\
-x_{3,1}^{*} &= 140 & x_{3,2}^{*}&= 0 & x_{3,3}^{*} &= 0 & x_{4,1}^{*} &= 0 & x_{4,2}^{*} &= 0 & x_{4,3}^{*} &= 60\\
-x_{5,1}^{*} &= 0 & x_{5,2}^{*}&= 154 & x_{5,3}^{*} &= 58 & x_{6,1}^{*} &= 0 & x_{6,2}^{*} &= 0 & x_{6,3}^{*} &= 98\\
- x_{7,1}^{*}&=0 &x_{7,2}^{*} &= 0 & x_{7,3}^{*} &= 113 & & & &  & & \\
+x_{1,1}^{*} &=  0, & x_{1,2}^{*}&= 0, & x_{1,3}^{*} &= 75, & x_{2,1}^{*} &= 90, & x_{2,2}^{*} &= 0, & x_{2,3}^{*} &= 0,\\
+x_{3,1}^{*} &= 140, & x_{3,2}^{*}&= 0, & x_{3,3}^{*} &= 0, & x_{4,1}^{*} &= 0, & x_{4,2}^{*} &= 0, & x_{4,3}^{*} &= 60,\\
+x_{5,1}^{*} &= 0, & x_{5,2}^{*}&= 154, & x_{5,3}^{*} &= 58, & x_{6,1}^{*} &= 0, & x_{6,2}^{*} &= 0, & x_{6,3}^{*} &= 98,\\
+ x_{7,1}^{*}&= 0,&x_{7,2}^{*} &= 0, & x_{7,3}^{*} &= 113. & & & &  & & \\
 \end{align*}
 \section{Swedish steel}
 As allocation models split a resource, instead blending models combine them. Various applications blend everything from chemicals, to diets, to metals, to animal food: these problems are formulated in a LP model in which you have to decide what mix of ingredients best fulfills specified output requirements. In this section we propose the Swedish steel problem.\\
@@ -2042,7 +2038,7 @@ In the analysis we assume that full-time employees receive \$ 11 per hour in pay
 Naturally, full-time employees work faster than part-timers. We will assume that full-time operators process 1000 checks per hour and part-timers only 800.\\
 One final complication is encoding stations. The number of machines available limits the number of employees who can work at any one time. Let us assume the center will have 35 machines.\\
 
-\begin{table}[]\caption{\label{table:Shiftscheduling2}Possible Shifts in ONB Example}
+\begin{table}[]\caption{\label{table:Shiftscheduling2}Possible Shifts in ONB Example.}
 	\begin{center}
 	\begin{tabular}{llllllllllll}
 		\hline\row{\textbf{Start}} & \multicolumn{3}{l}{\textbf{Full-time shift}} & \multicolumn{8}{l}{\textbf{Part-time shifts}} \\ \cline{2-12} 
