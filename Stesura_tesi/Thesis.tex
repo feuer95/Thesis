@@ -172,10 +172,10 @@
 \chapter*{Abstract}
 The concept of optimization is now well rooted as a principle underlying the analysis
 of many complex decisions or allocation problems: Linear Programming (LP) is one of the simplest ways to perform optimization.
-This thesis introduces the two most types of methods are presented: the Simplex method and the Interior-Point methods (IPM).
-We show that the significant difference between them is reflected not only on the theoretical background but also in the practical implementation. \\
+This thesis introduces the two major types of methods: the Simplex method and the Interior-Point Methods (IPM).
+We show that the significant difference between them is reflected not only on the theoretical background but also in the practical implementation.\\
 The efficiency and vast applicability of the IPM algorithms was proven by applying it to various case studies.
-The research addresses the role of the combined predictor-corrector step in Mehrotra's IPM method and builds  a new algorithm applying this technique to the Long-Path Following methods (LPF), which displays an extensive theoretical complexity and uses the nested neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
+The research addresses the role of the combined predictor-corrector step in Mehrotra's IPM method and builds  a new algorithm applying this technique to the Long-Path Following methods (LPF), that displays an extensive theoretical complexity and uses the nested neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
 First, a brief description of these methods is given,
 %: the simplex method, that is known to be very efficient practically, and the primal-dual %interior-point
 then we outline a comprehensive convergence analysis of three important IPM: the primal-dual affine scaling, the LPF and the Mehrotra's methods. \\
@@ -185,20 +185,25 @@ The programs that implement these algorithms are written in Python.
 %\addcontentsline{toc}{chapter}{Abstract}
 \chapter*{Sommario}
 Il concetto di ottimizzazione si basa sull'analisi di problemi decisionali o di assegnazione: la Programmazione Lineare (LP) è uno dei metodi più semplici per risolvere un problema di ottimizzaizone.\\ 
-Questa tesi introduce due dei più importanti metodi di LP: il metodo del Simplesso e i metodi del Punto interno (IPM). Nella prima parte si illustra la rilevante differenza tra i due metodi: con risultati numerici si conferma la complessità esponenziale del metodo del Simplesso rispetto a quella polinomiale dei IPM e la vasta applicabilità di questi ultimi.\\
+Vengono inizialmente presentati due dei più importanti metodi di LP: il metodo del Simplesso e i metodi del Punto interno (IPM). Si illustra la rilevante differenza tra i due metodi: con risultati numerici si conferma la complessità esponenziale del metodo del Simplesso rispetto a quella polinomiale dei IPM e la vasta applicabilità di questi ultimi.\\
 La ricerca pone particolare attenzione al ruolo del "predictor-corrector step" nel metodo IPM di Mehrotra e attua questa strategia al metodo IPM \textit{Long-Path Following} (LPF), il quale si differenzia operando su un intorno limitato $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
-Nella seconda parte della tesi si presenta una breve descrizione, seguita da un'analisi teorica, dei seguenti IPM: metodo Affine Primale-Duale, LPF e il metodo di Mehrotra.\\
-Successivamente, essi verranno testati su problemi reali con dati fittizzi esaminando il metodo proposto \textit{Predictor-Corrector LPF}: si deduce che, nonostante ci sia un vantaggio computazionale, l'intorno $\mathcal{N}_{-\infty}(\gamma,\beta)$ limita l'efficacia della strategia.\\   
+Nella seconda parte della tesi si espone una breve descrizione, seguita da un'analisi teorica, dei seguenti IPM: metodo Affine primale-duale, LPF e il metodo di Mehrotra.\\
+Successivamente, essi verranno testati su problemi reali con dati fittizzi, prestando particolare interesse al metodo proposto \textit{Predictor-Corrector LPF}: si deduce che, nonostante ci sia un vantaggio computazionale, l'intorno $\mathcal{N}_{-\infty}(\gamma,\beta)$ limita l'efficacia della strategia.\\   
 I metodi sono implementati con il linguaggio di programmazione Python. 
 %  % se non si vuole numerare l'introduzione, ma farla comparire nell'indice
 
 
 \chapter{Introduction to the linear programming}
-Optimization is a fundamental tool for understanding nature, science, engineering, economics and mathematics: a large number of real world problems can be treated as optimization problems, in which the goal is to select values that maximize or minimize a given \textit{objective function}, subject to certain \textit{constraints}.\\ The process of identifying objective, variables and constraints for a given problem is knows as \textit{modeling}. Construction of an appropriate model is the first step and, once it is formulated, an optimization algorithm can be used to find its solution.\\ There is a collection of algorithms, each of them is tailored to a particular type of optimization problem. Linear programming problem remains one of the most well-studied optimization problems: it consists in maximizing or minimizing a linear function over a certain domain, defined by a set of linear constraints.\\
-Linear Programming (LP) has been dominant paradigm in optimization since Dantzig's development of the simplex method in the 1940s. Regarding the theoretical complexity of this method, it has proved that the expected number of iterations in the solution of a linear problem is polynomial. Furthermore, the worst case complexity has exponential behavior. It has been observed that the simplex algorithm performs sufficiently well in practice, especially on small or medium sized LPs, but its performance is not satisfactory in large-scale LPs. This weakness of simplex algorithm is due to the stalling and cycling problem but many anti-cycling pivoting rules have been introduced in the past.\\
-Since Dantzig's initial contribution, researchers have made many efforts in order to enhance the performance of simplex algorithm. In the 1980s the monopoly of the simplex algorithm in the solution of the LP has been challenged. Interior Point Methods (IPM) were the result of subsequent research and their performance has been more than satisfactory compared to the simplex algorithm. The main idea of IPMs is that the computation of the optimal solution can be achieved by moving inside the feasible region, defined by the constraints. \\
-This thesis is organized as follow: an introductory section summarizes the basic theory of the linear programming. In the Chapter 3 we delineate the simplex method. The Chapter 4 is dedicated to the primal-dual interior point methods, taking particaular attention to the infeasible primal-dual path-following interior point algorithm proposed. It is also examined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\After a theoretical convergence analysis, some numerical example for the considered physical problems are giver and a comparison is performed.
-Concluding, in the last chapter we give an overview of the work realized in this thesis and suggest possible next steps. 
+Optimization is a fundamental tool for understanding nature, science, engineering, economics and mathematics: a large number of real world problems can be treated as optimization problems, in which the goal is to select values that maximize or minimize a given \textit{objective function}, subject to certain \textit{constraints}.\\ The process of identifying objective, variables and constraints for a given problem is knows as \textit{modeling}. Construction of an appropriate model is the first step and, once it is formulated, an optimization algorithm can be used to find its solution.\\ There is a collection of algorithms, each of them is tailored to a particular type of optimization problem. Linear Programming (LP) problems remain one of the most well-studied optimization problems: it consists in maximizing or minimizing a linear function over a certain domain, defined by a set of linear constraints.\\
+Numerical methods for LP have been extensively studied by a huge number of authors: the two major computational one are the Simplex Method and the Interior Point Methods (IPM).
+For several decades the simplex algorithm was the only method available to solve LP \cite{1}. Regarding the theoretical complexity of this method, it has proved that the expected number of iterations in the solution of a linear problem is polynomial but the worst case complexity has exponential behavior. In fact, it has been observed that the simplex algorithm performs sufficiently well in practice, especially on small or medium sized LPs, but its performance is not satisfactory in large-scale LPs. By its design, the method visits the vertices of the polytope defined by the constraints and, because the number may be astronomical, it is exposed to the possibility of having to visit many of them before to reach the optimal one.\\ Another weakness of simplex algorithm is due to the stalling and cycling problem but many anti-cycling pivoting rules have been introduced in the past.\\
+In the 1980s the monopoly of the simplex algorithm in the solution of the LP has been challenged. Since Dantzig's initial contribution, researchers have made many efforts in order to enhance the performance of simplex algorithm: Interior Point Methods were the result of subsequent research and their performance has been more satisfactory compared to the simplex algorithm. The main idea of IPMs is that the computation of the optimal solution can be achieved by moving inside the feasible region, defined by the constraints.\\
+Although the fundamentals of IPM had been established several years before that Leonid Khachiyan (in 1979) and then Narendra Karmarkar (in 1984) proposed their algorithms for solving LP, as outlined in the survey article by Wright (2005), it is true that \textit{Khachiyan’s ellipsoid algorithm} was the first algorithm for LP to be actually proven to be theoretically efficient. Nevertheless, although the simplex method is highly inefficient for some pathological examples (we outline the Klee-Minty example), it is turned out that it was clearly superior on average in comparison to the ellipsoid method and, in particular, on essentially any practical problem that would occur in a real-life context. This state changed with \textit{Karmarkar’s algorithm} that is both efficient in theory and practice and nowadays widely considered the first interior-point method for LP.\\
+The equivalence between Karmarkar's projective method and the Newton barrier method increased interest in the role of barrier functions in the theory of IPM, but currently it is broadly accepted that the \textit{primal-dual} IPM are the most efficient interior point methods.\\
+Over the last 25 years later, the developed simplex method and IPM are both widely used and continue to compete between each other \cite{25y}. \\
+This thesis is organized as follow: an introductory section summarizes the basic theory of the LP. In the Chapter 3 we delineate the simplex method. The Chapter 4 is dedicated to the primal-dual interior point methods, taking particaular attention to the primal-dual long-path following method. It is also examined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\
+Then, an infeasible primal-dual long-step path-following algorithm is proposed: with numerical results, we discuss the technique responsable for its practical efficiency.\\
+Concluding, in the last chapter we give an overview of the work realized in this thesis and comment on possible developments on IPM. 
 
 %
 % CAPITOLO 1
@@ -282,9 +287,9 @@ Thus, it describes a peculiar feature of the LP: reducing the task of solving it
 A LP problem is simple to state and visualize. In fact, very simple graphic techniques have enough power to tiny models. They also yield helpful intuition about properties and soultion methods for model of more realistic size.\\ The set $\mathcal{P}$ defines a polytope: geometrically it constitutes the \textit{feasible region} and the \textit{vertices} are the points that do not lie on a stright line between two other points in the set. Algebraically, the vertices of the feasible set $\mathcal{P}$ are exactly the basic feasible points.\\ According to the Fundamental theorem, we can restrict our attention to the vertices of this polytope and it implies that we can explore only at most  ${m}\choose{n}$ points.\\[0.5cm]
 Considering the following simple LP:
 \begin{align*}
-\min -&x_{1}+ x_{2}-4x_{3}\\
+\min\limits_{(x_{1},x_{2},x_{3})\in\mathbb{R}^{3}} -&x_{1}+ x_{2}-4x_{3}\\
 \text{subject to }&x_{1}+x_{2}+x_{3}=1,\\
- \text{\; with\;} &x_{1}, x_{2}, x_{3} \geq 0
+ \text{\; with\;} &x_{1}, x_{2}, x_{3} \geq 0,
 \end{align*}
 the tetrahedron in \ref{tetra} is a geometric rappresentetion of the feasible set $\mathcal{P}$: the verteces ${x}_{B_{1}}$, ${x}_{B_{2}}$ and ${x}_{B_{3}}$ are feasible basic points respect to the the basis $B_{1} =\{1\}$,  $B_{2} =\{2\}$,  $B_{3} =\{3\}$.
 \begin{figure}[h]\caption{\label{tetra}}
@@ -1052,7 +1057,6 @@ When LPF algorithm works with $\mathcal{N}_{-\infty}(\gamma,\beta)$, the search 
 r_{c}^{k}\\r_{b}^{k}\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
 \end{bmatrix}.
 \end{equation*}
- 
 \section{Asymptotic convergence}
 We examine the asymptotic behavior of these two methods, that are of significant theoretical interest: the following complexity results state that IPM converge arbitrarily close to an optimal solution linearly respect to the duality measure $\mu$. We show, too, LPF algorithm can be accelereted so that its sequence of duality measure $\{\mu_{k}\}$ converges almost quadratically to 0.\\
 \subsection{Affine-scaling method}
@@ -1261,7 +1265,7 @@ The next lemma is an important tool to proof the following statement.
 	&\geq \gamma(1 - \alpha)\mu_{k} + \alpha \sigma_{k}\mu_{k}-\alpha^{2}2^{-3/2}(1 + 1/ \gamma)n\mu_{k} \label{(5.12)}.
 	\end{align}
 	In (\ref{(5.11)}) $\alpha x_{i}^{k}s_{i}^{k}$ is added in order to use the last equations of the matrix system.\\ 
-	In (\ref{(5.12)}) it is used the inequality in Lemma \ref{lem:ma1}}: $|\Delta x_{i}^{k}\Delta s_{i}^{k}|\leq2^{-3/2}(1 + 1/\gamma)n\mu_{k}$, for any $i = 1,2,...,n$. \\
+	In (\ref{(5.12)}) it is used the inequality in Lemma \ref{lem:ma1}: $|\Delta x_{i}^{k}\Delta s_{i}^{k}|\leq2^{-3/2}(1 + 1/\gamma)n\mu_{k}$, for any $i = 1,2,...,n$. \\
 	By summing the $n$ components of the equation $S^{k}\Delta x^{k} + X^{k} \Delta s^{k} = -X^{k}S^{k}e + \sigma_{k} \mu_{k}e$ and using the null product $\Delta x \Delta s$, we have
 	\begin{align*}\mu_{k}(\alpha)\vcentcolon&=(x_{i}^{k} + \alpha\Delta x_{i}^{k})^{T}(s_{i}^{k} + \alpha\Delta s_{i}^{k})/n\\ 
 	&=x_{i}^{k}s_{i}^{k}/n - \alpha \mu_{k}+\alpha \sigma_{k} \mu_{k} \\
@@ -1296,7 +1300,7 @@ The next lemma is an important tool to proof the following statement.
 \end{proof}
 We complete the analysis theory with the following theorem which shows that a reduction of a factor of $\epsilon$ in the duality measure $\mu$ can be obtained in $\mathcal{O}(n\log{1/\epsilon})$ iterations.
 \begin{thm}
-	Given $\epsilon>0$ and $\gamma\in(0,1)$, suppose the starting point in the algorithm satisfies $(x^{0},\lambda^{0},s^{0})\in\mathcal{N}(\gamma)$. Then there is an index $\mathcal{K}$ with $\mathcal{K}=\mathcal{O}(n\log1/\epsilon)$ such that $\mu_{k}\leq\epsilon\mu_{0}$.
+	Given $\epsilon>0$ and $\gamma\in(0,1)$, suppose the starting point in the algorithm satisfies $(x^{0},\lambda^{0},s^{0})\in\mathcal{N}(\gamma)$. Then there is an index $\mathcal{K}$ with $\mathcal{K}=\mathcal{O}(n\log1/\epsilon)$ such that $\mu_{k}\leq\epsilon\mu_{0}$, for all $k\in\mathcal{K}$.
 \end{thm}
 \begin{proof}
 	By taking the logarithms of both sides in (\ref{(5.10)}), we obtain
@@ -1651,11 +1655,11 @@ These outcomes confirm the practical success of the IPM, proving their polynomia
 The algorithms studied generate a sequence of improving primal-dual points $(x^{k},\lambda^{k}, s^{k})$ to the exact solution and in this section we describe the convergence rate of each of them. \\
 The codes implemented in this research solve linear programming problems with a starting infeasible point, as we will delineate in the chapter 7. Then, we can determine the order of convergence checking the convergence to the feasible set $\mathcal{F}$, hence to the exact solution.\\
 We define the residual function $r$ that converts the vector sequence into a real number sequence.
-\chapter{Implementation issues}
+\chapter{Implementation details}
 There are several important issues concerning interior-point algorithms
 for linear programs.
 \section*{Initialization and termination}
-In the discussion of the interior point methods, it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})$ is feasible respect to the linear equations \ref{DF} and \ref{PF}, instead in the predictor-corrector alforithms it is required only $(x^{0},s^{0})>0$.\\
+In the discussion of the interior point methods, it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})$ is feasible respect to the linear equations (\ref{DF}) and (\ref{PF}), instead in the predictor-corrector alforithms it is required only $(x^{0},s^{0})>0$.\\
 IPMs are sensitive to the choice of an initial primal-dual point. In fact, the choice of "poor" starting points may drastically reduce the steps toward the solutiona, giving significant effect on the robustness of the algorithm. Therefore, the choice of good initial values is an important issue in the implementation of the methods. A common way to deal with this issue is to use heuristic-based strategies that try to keep the infeasibility small while ensuring that nonnegative variables are far enough from zero.\\
 Since most of IPM explicity or implicity attempt to follow the central path $\mathcal{C}$, a very simple choice for the starting point would be to set the nonnegative variables to one and the others to zero. This choice guarantees that the point is perfectly centered, i.e. all pairwise complementarity products are equal to $\mu$ and the nonnegative variables are sufficiently bounded away from zero. However, this point be far from satisfying the constraints \cite{VAN}.\\
 Another strategy aimed to satisfy the requirement that the starting point is both well centerd and not to infeasible is presented \cite{MER} by Mehrotra; we will briefly call it as Mehrotra's initial point method (MIP). This popular heuristic approach for finding $(x^{0}, \lambda^{0}, s^{0})$ consists on computing least squares solutions to the equations corresponding to the linear constraints of the LP and then shifting the values of the variables to ensure that they are kept away from the boundary of the orthant. \\
@@ -1832,7 +1836,7 @@ Alternatively, the predictor-corrector methods consists on two types of steps. T
 \section*{The centering measure}
 Now we examinate the behaviour of the sequence computed by the IPM algorithms respect to the path $\mathcal{C}$, at which all the pairwise products are $x_{i}s_{i}$ are identical to $\mu$. To value this deviation from $\mathcal{C}$, we compare the pairwise products with their average value $\mu = x^{T}s/n$ using a scaled norm defined by. 
 \begin{equation}
-\frac{1}{\mu}\lVert XSe - \mu e \rVert_{2}
+\frac{1}{\mu}\lVert XSe - \mu e \rVert_{2}.
 \end{equation}
 The problem data are ten little scale LP problems formulated in canonical form. The codes implemented are the algorithm in previously described: affine-scaling, long-path following and Mehrtotra's algorithms. It is also implemented a variation of the long-path following method, in which the centering paramenter is $\sigma_{k}=\sigma$ for all $k$, instead chosen in a random way.
 
@@ -2041,7 +2045,7 @@ One final complication is encoding stations. The number of machines available li
 \begin{table}[]\caption{\label{table:Shiftscheduling2}Possible Shifts in ONB Example.}
 	\begin{center}
 	\begin{tabular}{llllllllllll}
-		\hline\row{\textbf{Start}} & \multicolumn{3}{l}{\textbf{Full-time shift}} & \multicolumn{8}{l}{\textbf{Part-time shifts}} \\ \cline{2-12} 
+		\hline{\textbf{Start}} & \multicolumn{3}{l}{\textbf{Full-time shift}} & \multicolumn{8}{l}{\textbf{Part-time shifts}} \\ \cline{2-12} 
 		& \textbf{11} & \textbf{12} & \textbf{13} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15} & \textbf{16} & \textbf{17} & \textbf{18} \\ \hline
 		11:00 & R & - & - & R & - & - & - & - & - & - & - \\
 		12:00 & R & R & - & R & R & - & - & - & - & - & - \\
@@ -2077,23 +2081,24 @@ In this section, we give a comparison between the results given by the infeasibl
  Second point: while the neighborhood $\mathcal{N}_{-\infty}$ ensures that some products do not approach zero too early as with the pure affine scaling method, it does not prevent products from becoming too large with respect to the average. Hence, it does not provide a complete picture of centrality of the iterate.
 
 %\begin{appendices}
+\appendix
 \chapter*{Appendix}	
  Let us present the codes I have implemented with Python's programming language for the analysis and the study of the algorithms.
- \section{Simplex method code}\label{app:A.1}
+ \section*{Simplex method code}\label{app:A.1}
  \lstinputlisting[language=Python]{SimplexMethodIIphases.py}
- \section{Affine scaling method code}
+ \section*{Affine scaling method code}
  \lstinputlisting[language=Python]{AffineMethod.py}
- \section{LPF method codes}
+ \section*{LPF method codes}
  With centering parameter $\sigma^{1}$:
  \lstinputlisting[language=Python]{LPFMethod.py}
 With centering parameter $\sigma^{2}$:
  \lstinputlisting[language=Python]{LPFMethod2.py}
 Long path following method predictor-corrector:
  \lstinputlisting[language=Python]{LPFMethod_PC.py}
-\section{MPC method code}
+\section*{MPC method code}
 \lstinputlisting[language=Python]{MehrotraMethod.py}
 \newpage
-\section{Starting points codes}
+\section*{Starting points codes}
  \lstinputlisting[language=Python]{starting_point.py}
  \lstinputlisting[language=Python]{starting_point2.py}
 	\chapter*{Newton's method}
@@ -2152,7 +2157,7 @@ Princeton University, Springer Science + Business Media, (2001).
 %W
 
 \bibitem{SSM} Westerberg, C.-H., Bjorklund B., Hultman E., \emph{"An Application of Mixed Integer Programming in a Swedish Steel Mill" }, Interfaces, 7:2, pp: 39-43, (1977).
-\bibitem {Wright} Wright J. Stephen, \emph{\;Primal-Dual Interior Point Methods.} SIAM: society for industrial and applied mathematics. Philadelphia, %pag 134.
+\bibitem {Wright} Wright J. Stephen, \emph{\;"Primal-Dual Interior Point Methods".} SIAM: society for industrial and applied mathematics. Philadelphia, pag 134, (1997).
 \bibitem{WWW}Wright M. H.,\textit{ “Interior methods for constrained optimization”}, Acta Numerica, Cambridge Univ. Press, Cambridge, UK, pp: 341–407, (1992).
 \bibitem{XY}Xiaojie Xu, Yinyu Ye, \emph{"A generalized homogeneous and self-dual algorithm for linear programming"}, Operations Research Letters, 17, pp: 181-190, (1995).
 \bibitem{matlab}Zhang Y., \textit{ "Solving large-scale linear programs by inteior point methods under
