@@ -174,19 +174,19 @@ The concept of optimization is now well rooted as a principle underlying the ana
 of many complex decisions or allocation problems: Linear Programming (LP) is one of the simplest ways to perform optimization.
 This thesis introduces the two major types of methods: the Simplex method and the Interior-Point Methods (IPM).
 We show that the significant difference between them is reflected not only on the theoretical background but also in the practical implementation.\\
-The efficiency and vast applicability of the IPM algorithms was proven by applying it to various case studies.
-The research addresses the role of the combined predictor-corrector step in Mehrotra's IPM method and builds  a new algorithm applying this technique to the Long-Path Following methods (LPF), that displays an extensive theoretical complexity and uses the nested neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
+%The efficiency and vast applicability of the IPM algorithms was proven by applying it to various case studies.
+The research addresses the role of the combined predictor-corrector step in Mehrotra's IPM method and builds  a new algorithm obtained applying this technique to the Long-Path Following methods (LPF), that displays an extensive theoretical complexity and uses the nested neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
 First, a brief description of these methods is given,
 %: the simplex method, that is known to be very efficient practically, and the primal-dual %interior-point
 then we outline a comprehensive convergence analysis of three important IPM: the primal-dual affine scaling, the LPF and the Mehrotra's methods. \\
-After introducing the basic theoretical framework, we exhibit a comparison of these competitors, testing them on some real models. We show that the corrector approach of the LPF presented in this work improves the efficiency of the algorithm. However, the 
+After introducing the basic theoretical framework, we exhibit a comparison of these competitors, testing them on some real models. We show that the corrector approach of the new (new?) LPF presented in this work improves the efficiency of the algorithm; however, the 
 neighborhood restricts the progress achived in Mehrotra's method under specific conditions.\\
 The programs that implement these algorithms are written in Python. 
 %\addcontentsline{toc}{chapter}{Abstract}
 \chapter*{Sommario}
 Il concetto di ottimizzazione si basa sull'analisi di problemi decisionali o di assegnazione: la Programmazione Lineare (LP) è uno dei metodi più semplici per risolvere un problema di ottimizzaizone.\\ 
 Vengono inizialmente presentati due dei più importanti metodi di LP: il metodo del Simplesso e i metodi del Punto interno (IPM). Si illustra la rilevante differenza tra i due metodi: con risultati numerici si conferma la complessità esponenziale del metodo del Simplesso rispetto a quella polinomiale dei IPM e la vasta applicabilità di questi ultimi.\\
-La ricerca pone particolare attenzione al ruolo del "predictor-corrector step" nel metodo IPM di Mehrotra e attua questa strategia al metodo IPM \textit{Long-Path Following} (LPF), il quale si differenzia operando su un intorno limitato $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
+La ricerca pone particolare attenzione sul ruolo del "predictor-corrector step" nel metodo IPM di Mehrotra e attua questa strategia al metodo \textit{Long-Path Following} (LPF), il quale si differenzia dagli altri  IPM operando su un intorno limitato $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
 Nella seconda parte della tesi si espone una breve descrizione, seguita da un'analisi teorica, dei seguenti IPM: metodo Affine primale-duale, LPF e il metodo di Mehrotra.\\
 Successivamente, essi verranno testati su problemi reali con dati fittizzi, prestando particolare interesse al metodo proposto \textit{Predictor-Corrector LPF}: si deduce che, nonostante ci sia un vantaggio computazionale, l'intorno $\mathcal{N}_{-\infty}(\gamma,\beta)$ limita l'efficacia della strategia.\\   
 I metodi sono implementati con il linguaggio di programmazione Python. 
@@ -196,9 +196,9 @@ I metodi sono implementati con il linguaggio di programmazione Python.
 \chapter{Introduction to the linear programming}
 Optimization is a fundamental tool for understanding nature, science, engineering, economics and mathematics: a large number of real world problems can be treated as optimization problems, in which the goal is to select values that maximize or minimize a given \textit{objective function}, subject to certain \textit{constraints}.\\ The process of identifying objective, variables and constraints for a given problem is knows as \textit{modeling}. Construction of an appropriate model is the first step and, once it is formulated, an optimization algorithm can be used to find its solution.\\ There is a collection of algorithms, each of them is tailored to a particular type of optimization problem. Linear Programming (LP) problems remain one of the most well-studied optimization problems: it consists in maximizing or minimizing a linear function over a certain domain, defined by a set of linear constraints.\\
 Numerical methods for LP have been extensively studied by a huge number of authors: the two major computational one are the Simplex Method and the Interior Point Methods (IPM).
-For several decades the simplex algorithm was the only method available to solve LP \cite{1}. Regarding the theoretical complexity of this method, it has proved that the expected number of iterations in the solution of a linear problem is polynomial but the worst case complexity has exponential behavior. In fact, it has been observed that the simplex algorithm performs sufficiently well in practice, especially on small or medium sized LPs, but its performance is not satisfactory in large-scale LPs. By its design, the method visits the vertices of the polytope defined by the constraints and, because the number may be astronomical, it is exposed to the possibility of having to visit many of them before to reach the optimal one.\\ Another weakness of simplex algorithm is due to the stalling and cycling problem but many anti-cycling pivoting rules have been introduced in the past.\\
+For several decades the simplex algorithm was the only method available to solve LP \cite{1}. Regarding the theoretical complexity of this method, it has proved that the expected number of iterations in the solution of a linear problem is polynomial but the worst case complexity has exponential behavior. In fact, it has been observed that the simplex algorithm performs sufficiently well in practice, especially on small or medium sized LPs, but its performance is not satisfactory in large-scale LPs. By its design, the method visits the vertices of the polytope defined by the constraints, and it is exposed to the possibility of having to visit many of them, before to reach the optimal one.\\ Another weakness of simplex algorithm is due to the stalling and cycling problem but many anti-cycling pivoting rules have been introduced in the past, as we see later.\\
 In the 1980s the monopoly of the simplex algorithm in the solution of the LP has been challenged. Since Dantzig's initial contribution, researchers have made many efforts in order to enhance the performance of simplex algorithm: Interior Point Methods were the result of subsequent research and their performance has been more satisfactory compared to the simplex algorithm. The main idea of IPMs is that the computation of the optimal solution can be achieved by moving inside the feasible region, defined by the constraints.\\
-Although the fundamentals of IPM had been established several years before that Leonid Khachiyan (in 1979) and then Narendra Karmarkar (in 1984) proposed their algorithms for solving LP, as outlined in the survey article by Wright (2005), it is true that \textit{Khachiyan’s ellipsoid algorithm} was the first algorithm for LP to be actually proven to be theoretically efficient. Nevertheless, although the simplex method is highly inefficient for some pathological examples (we outline the Klee-Minty example), it is turned out that it was clearly superior on average in comparison to the ellipsoid method and, in particular, on essentially any practical problem that would occur in a real-life context. This state changed with \textit{Karmarkar’s algorithm} that is both efficient in theory and practice and nowadays widely considered the first interior-point method for LP.\\
+Although the fundamentals of IPM had been established several years before that Leonid Khachiyan (in 1979) and then Narendra Karmarkar (in 1984) proposed their algorithms for solving LP, it is true that \textit{Khachiyan’s ellipsoid algorithm} was the first algorithm for LP to be actually proven to be theoretically efficient. Nevertheless, although the simplex method is highly inefficient for some pathological examples (we outline the Klee-Minty example), it is turned out that it was clearly superior on average in comparison to the ellipsoid method and, in particular, on essentially any practical problem that would occur in a real-life context. This state changed with \textit{Karmarkar’s algorithm} that is both efficient in theory and practice and nowadays widely considered the first interior-point method for LP.\\
 The equivalence between Karmarkar's projective method and the Newton barrier method increased interest in the role of barrier functions in the theory of IPM, but currently it is broadly accepted that the \textit{primal-dual} IPM are the most efficient interior point methods.\\
 Over the last 25 years later, the developed simplex method and IPM are both widely used and continue to compete between each other \cite{25y}. \\
 This thesis is organized as follow: an introductory section summarizes the basic theory of the LP. In the Chapter 3 we delineate the simplex method. The Chapter 4 is dedicated to the primal-dual interior point methods, taking particaular attention to the primal-dual long-path following method. It is also examined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\
@@ -221,11 +221,11 @@ Then, the feasible set satisfying the constraints is a \textit{polytope}, i.e. a
 We consider the LP in the following \textit{standard form}:
 \begin{alignat*}{1}\label{eq:stdform}
 \text{minimize\;}\; &c_1 x_1 + c_2 x_2+ ... c_n x_n\\[1.8mm]
-\text{subject\;to\;} &a_{11} x_1 + a_{12} x_2+ ... +a_{1n}x_n = b_1\\
-&a_{21} x_1 + a_{22} x_2 + ... + a_{2m} x_n= b_2\\
+\text{subject\;to\;} &a_{11} x_1 + a_{12} x_2+ ... +a_{1n}x_n = b_1,\\
+&a_{21} x_1 + a_{22} x_2 + ... + a_{2m} x_n= b_2,\\
 &\vdots\\
-&a_{m1} x_1 + a_{m2} x_2 + ... + a_{mn} x_n= b_m\\
-\text{and}\; & x_1 \geq 0 , x_2 \geq 0, ... , x_m \geq 0
+&a_{m1} x_1 + a_{m2} x_2 + ... + a_{mn} x_n= b_m,\\
+\text{and}\; & x_1 \geq 0 , x_2 \geq 0, ... , x_m \geq 0.
  \end{alignat*}
 
 where the $b_{j}$, $c_{i}$ \text{and} $a_{ij}$ are fixed real costants, with $i \in\{1,...,n\}$ and $j\in\{1,...,m\}$.\\ In a compact notation, using vectors, the standard LP problem can be written as
@@ -242,10 +242,10 @@ If $x$ satisfies the constraints $Ax = b$, $x\geq0$, we call it \textit{feasible
 In the case the constraints set is determined entirely by linear inequalites $Ax \leq b$, which in the literature (see \cite{W}) is said to be a \textit{canonical form}, the problem may be alternatively expressed as:
 \begin{alignat*}{3}
 \text{minimize\;}&c_1 x_1 + c_2 x_2+ ...+c_n x_n&&&\\[1.8mm]
-\text{subject\;to\;}&a_{11} x_1 +a_{12}x_2 + ... +a_{1n}x_n +y_{1}&&&= b_1;\\
-		   	&a_{21}x_1+a_{22}x_2+ ... +a_{2n}x_n&+y_{2}&&= b_2;\\
+\text{subject\;to\;}&a_{11} x_1 +a_{12}x_2 + ... +a_{1n}x_n +y_{1}&&&= b_1,\\
+		   	&a_{21}x_1+a_{22}x_2+ ... +a_{2n}x_n&+y_{2}&&= b_2,\\
 &&\;\;\;\vdots&&\\
-&a_{m1}x_1+a_{m2}x_2+ ... +a_{mn}x_n+&&&y_{m}=b_m;\\
+&a_{m1}x_1+a_{m2}x_2+ ... +a_{mn}x_n+&&&y_{m}=b_m,\\
 \text{and} \;& x_{i} \geq 0;\;\; y_{j} \geq 0; \text{\;\;for }i = 1,...,n&\text{ and }j&=&1,...,m.
 \end{alignat*}
 The new positive variables $\mathit{y_{i}}$, $\;i \in \{1, ..., n\}$ introduced to convert the inequalities into identities, are called \textit{slack variables} and the problem has the standard form with $n+m$ unknowns variables $x_{i}, y_{j},i \in \{1, ..., m\}$ and $j \in \{1, ..., n\}.$\\ The new matrix that now describes the linear equality constraints, assumes the form $\left[\begin{matrix}A\;\vert\; I\;\end{matrix}\right]$, with $A$ the $m \times n$ matrix of the original canonical LP and the identity matrix $I$ associated to the slack variables, and has dimension $m \times (n + m)$.\\
@@ -264,12 +264,12 @@ Since $A_{B}$ is nonsingular, we may uniquely solve the equation $A_{B}x_{B} = b
 	A LP is said to be \textit{degenerate} if it has at least one degenerate basis.
 \end{defn}
 For the standard formulation, when $m \geq n$ the feasible region is empty or consists in a single point.\\
- We will assume throughout that $m < n$, hence the $m$ rows are linear indipendent: there is at least one basic point and, accordingly, one solution of the standard equality system in \ref{(Prim)}. Certainly, if the LP problem is in canonical form, then the extended $m \times (n+m)$ matrix $[A\;|\;I]$ with slack variables satisfies this property. \\
+ We will assume throughout that $m < n$, hence the $m$ rows are linear indipendent: there is at least one basic point and, accordingly, one solution of the standard equality system in (\ref{(Prim)}). Certainly, if the LP problem is in canonical form, then the extended $m \times (n+m)$ matrix $[A\;|\;I]$ with slack variables satisfies this property. \\
 Now we outline the importance of basic feasible points in solving LP with the simplex method.
-Throw the following theorem we state that it is necessary only to consider basic feasible
+Throw the following theorem, we state that it is necessary only to consider basic feasible
 vectors when seeking an optimal solution because the optimal
-value is always achieved at such a solution.\\ (The method to prove the theorem is in many respects as important as the result itself, since it represents the beginning of the development of the simplex
-method.)
+value is always achieved at such a solution.\\ The method to prove the theorem is in many respects as important as the result itself, since it represents the beginning of the development of the simplex
+method.
 \begin{thm}[\textbf{Fundamental theorem of liner programming}]\label{Fund}
 \begin{enumerate}
 	\
@@ -281,17 +281,18 @@ method.)
 \begin{proof}
 	See \cite{LP}
 \end{proof}
-Thus, it describes a peculiar feature of the LP: reducing the task of solving it to searching over basic feasible points the solutions. Since for a problem having $n$ variables and $m$ constraints there are at most ${n}\choose{m}$ basic points (corresponding to the number of ways of selecting m of n columns), there are only a finite number of possibilities. 
+Thus, it describes a peculiar feature of the LP: reducing the task of solving it to searching over basic feasible points the solutions. Since for a problem having $n$ variables and $m$ constraints there are at most ${n}\choose{m}$ basic points (corresponding to the number of ways of selecting m of n columns of $A$), there are only a finite number of possibilities. 
 
 \subsection*{A geometric approach}
-A LP problem is simple to state and visualize. In fact, very simple graphic techniques have enough power to tiny models. They also yield helpful intuition about properties and soultion methods for model of more realistic size.\\ The set $\mathcal{P}$ defines a polytope: geometrically it constitutes the \textit{feasible region} and the \textit{vertices} are the points that do not lie on a stright line between two other points in the set. Algebraically, the vertices of the feasible set $\mathcal{P}$ are exactly the basic feasible points.\\ According to the Fundamental theorem, we can restrict our attention to the vertices of this polytope and it implies that we can explore only at most  ${m}\choose{n}$ points.\\[0.5cm]
+A LP problem is simple to state and visualize. In fact, very simple graphic techniques have enough power to tiny models. They also yield helpful intuition about properties and soultion methods for model of more realistic size.\\ The set $\mathcal{P}$ defines a polytope: geometrically it constitutes the \textit{feasible region} and the \textit{vertices} are the points that do not lie on a stright line between two other points in the set. Algebraically, the vertices of the feasible set $\mathcal{P}$ are exactly the basic feasible points.\\ According to the Fundamental theorem, we can restrict our attention to the vertices of this polytope and it implies that we can explore only at most  ${n}\choose{m}$ points.\\[0.5cm]
 Considering the following simple LP:
 \begin{align*}
 \min\limits_{(x_{1},x_{2},x_{3})\in\mathbb{R}^{3}} -&x_{1}+ x_{2}-4x_{3}\\
 \text{subject to }&x_{1}+x_{2}+x_{3}=1,\\
  \text{\; with\;} &x_{1}, x_{2}, x_{3} \geq 0,
 \end{align*}
-the tetrahedron in \ref{tetra} is a geometric rappresentetion of the feasible set $\mathcal{P}$: the verteces ${x}_{B_{1}}$, ${x}_{B_{2}}$ and ${x}_{B_{3}}$ are feasible basic points respect to the the basis $B_{1} =\{1\}$,  $B_{2} =\{2\}$,  $B_{3} =\{3\}$.
+the tetrahedron in Figure \ref{tetra} is a geometric rappresentetion of the feasible set $\mathcal{P}$: the verteces ${x}_{B_{1}}$, ${x}_{B_{2}}$ and ${x}_{B_{3}}$ are feasible basic points respect to the the basis $B_{1} =\{1\}$,  $B_{2} =\{2\}$,  $B_{3} =\{3\}$.\\
+\textcolor{red}{Questo piccolo esempio di problema lineare verrà richiamato anche nei metodi IPM per mostrare graficamente l'approccio con cui questi ultimi cercano una soluzione ottimale.}
 \begin{figure}[h]\caption{\label{tetra}}
 \begin{center}
 \begin{tikzpicture}[y={(1cm,0cm)}, x={( -0.5cm, -0.5cm)}, z={(0cm,1cm)}] % s i s t e m a di r i f e r i m e n t o t i k z 3 d
@@ -344,7 +345,7 @@ where $f$ and $c_{i}$ are smooth, real-valued functions defined on subset of $\m
 \begin{defn}
 	Given a point x, $\mathcal{A}(x)= \mathcal{E}\cup\left\lbrace i\in\mathcal{I}\;|\;c_{i}(x) =0\right\rbrace$ is called \textit{active set} and we say that the linear independence constraint qualification, $LICQ$, holds if the set of active constraint gradients $\left\lbrace \nabla c_{i}(x),,i\in\mathcal{A}(x)\right\rbrace$ is linear indipendent.
 \end{defn}
-We define the \textit{Lagrangian function} for the general problem \ref{NLP} 
+We define the \textit{Lagrangian function} for the general problem (\ref{NLP}) 
 \begin{equation*}
 \mathcal{L}\left(x,\lambda\right)=f(x)-\sum_{i\in\mathcal{E}\cup\mathcal{I}}\lambda_{i}c_{i}(x).
 \end{equation*}
@@ -373,8 +374,8 @@ x&\geq 0,\tag{2.5c}\\
 s&\geq 0,\tag{2.5d}\\
 x_{i}s_{i}&=0,\; for\;i= 1,2,...,n.\label{CC} \tag{2.5e}
 \end{align} 
-The complementary conditions \ref{CC} show that at least one of the components $x_{i}$ and $s_{i}$ must be zero for each $i=0,1,2,...,n$.\\
- Convexity of the problem ensures that these conditions are also sufficient for a global minimum, hence the KKT conditions are also \textit{sufficient}: if we have a primal feasible vector $x\in\mathcal{P}$, and another vector $(\lambda, s)$ such that the equations are satisfied, then $x$ is the solution of \ref{(Prim)}. We can prove this claim directly by taking an arbitrary primal feasible vector $\bar{x}$ and showing that its objective value is no smaller than $c^{T}x$:
+The complementary conditions (\ref{CC}) show that at least one of the components $x_{i}$ and $s_{i}$ must be zero for each $i=0,1,2,...,n$.\\
+ Convexity of the problem ensures that these conditions are also sufficient for a global minimum, hence the KKT conditions are also \textit{sufficient}: if we have a primal feasible vector $x\in\mathcal{P}$, and another vector $(\lambda, s)$ such that the equations are satisfied, then $x$ is the solution of (\ref{(Prim)}). We can prove this claim directly by taking an arbitrary primal feasible vector $\bar{x}$ and showing that its objective value is no smaller than $c^{T}x$:
 \begin{equation*}
 c^{T}\bar{x}=(A^{T}\lambda+s)^{T}\bar{x}=b^{T}\lambda+s^{T}\bar{x}\geq b^{T}\lambda= c^{T}x.
 \end{equation*}
@@ -382,7 +383,7 @@ We conclude that the KKT conditions are both necessary and sufficient for optima
 \begin{equation*}
 	c^{T}x^{*}=\left(A^{T}\lambda^{*}+s^{*}\right)^{T}x^{*}=\left(Ax^{*}\right)^{T}\lambda^{*}=b^{T}\lambda^{*}.
 \end{equation*}
-With this equality, we can formulate the \textit{dual problem} of \ref{(Prim)}
+With this equality, we can formulate the \textit{dual problem} of (\ref{(Prim)})
 \begin{equation}\label{Dual}
 \begin{split}
 &\text{maximize\;} b^{T}\lambda,\\
@@ -393,11 +394,11 @@ We can restate this problem in a standard form introducing the slack variables a
 \begin{equation}\tag{D}\label{(Dual)}
 \begin{split}
 &\text{maximize\;}b^{T}\lambda,\\
-&\text{subject\; to\;}A^{T}\lambda+s=c\\ &\text{and\;} s\geq0.
+&\text{subject\; to\;}A^{T}\lambda+s=c,\\ &\text{and\;} s\geq0.
 \end{split}
 \end{equation}
 
-Note that in \ref{Lagrangian} the Lagrange multipliers are the unknowns variables in (D). In fact, the primal-dual relationship is symmetric: by taking the dual of the dual problem, we recover the original problem \ref{(Prim)} that we briefly call \textit{primal} problem (P). In the following theorem is described this relationship:
+Note that in (\ref{Lagrangian}) the Lagrange multipliers are the unknowns variables in (D). In fact, the primal-dual relationship is symmetric: by taking the dual of the dual problem, we recover the original problem (\ref{(Prim)}) that we briefly call \textit{primal} problem (P). In the following theorem is described this relationship:
 \begin{thm}[\textbf{Strong duality}] 
 	\begin{itemize}
 		\
@@ -411,7 +412,7 @@ Let us define the \textit{dual feasible set} $\mathcal{D}=\{(\lambda,s)\in\mathb
 This result leads to the definition of \textit{dual gap} the value $g = c^{T}x - b^{T}y$: since $c^{T}x\geq b^{T}\lambda$ when both primal and dual variables are feasible, we see:\begin{center}
 	if $\exists(x,\lambda,s)\in\mathcal{P}\times\mathcal{D}$, then $g= x^{T}s \geq0$.
 \end{center}
-At a solution, the duality gap $g$ between primal and dual decreases to zero, as we show in the complementary slackness theorem: it is an important premise (foundation) in the development of the IPM illustrated in the Chapter ().
+At one solution, the duality gap $g$ between primal and dual decreases to zero, as we show in the complementary slackness theorem: it is an important premise (foundation) in the development of the IPM illustrated in the Chapter 4.
 \begin{thm}[\textbf{Complementary slackness}] \ \\
 	Let $(x^{*},\lambda^{*},s^{*})\in\mathcal{P}\times\mathcal{D}$. The following are equivalent:
 	\begin{itemize}
@@ -435,7 +436,7 @@ Obviously, $\mathcal{B}$ and $\mathcal{N}$ are disjoint and form a partition of 
 The set $\mathcal{B}$ does not necessarily contain $m$ elements, that is the number of the rows of the matrix $A$. This set must not be confused with the set of the basic variables $B$, by the definition (2.1). In the following example, for istance, we have $|\mathcal{B}|= 2$ and three basis sets $B = \{1\}, \{2\}, \{3\}$.
 \begin{ex}
 Consider
-\begin{center} $\min\limits_{x\in\mathbb{R}^{3}} x_{1} \text{\;subject to\;} x_{1}+x_{2}+x_{3} = 1,\; x\geq 0$.\end{center}
+\begin{center} $\min\limits_{(x_{1},x_{2},x_{3})\in\mathbb{R}^{3}} x_{1} \text{,\;subject to\;} x_{1}+x_{2}+x_{3} = 1,\; x\geq 0$.\end{center}
 The primal solution is $x^{*}=(0, t, 1-t)$, for $t\in(0,1)$. 	
 \end{ex} 
 
@@ -446,11 +447,11 @@ The multipliers $(\lambda,s)$ indicate the sensitivity of the optimal objective 
 and, by the theorem, we have that the optimal values for both the original and perturbated problems (P) and (D) equal, so
 
 \begin{align*}
-&c^{T}x=b^{T}\lambda  &c^{T}(x + \Delta x)=\left(b+\Delta b\right)^{T}\left(\lambda+\Delta \lambda\right),
+&c^{T}x=b^{T}\lambda,  &c^{T}(x + \Delta x)=\left(b+\Delta b\right)^{T}\left(\lambda+\Delta \lambda\right),
 \end{align*}
 with the feasibility of $x + \Delta x$ and $\lambda+\Delta \lambda$:
 \begin{align*}
-&A(x + \Delta x)=b+\Delta b
+&A(x + \Delta x)=b+\Delta b,
 &A^{T}\Delta\lambda=-\Delta s.
 \end{align*}
 Hence, the change in optimal value due to the perturbation is as follows:
@@ -464,7 +465,7 @@ c^{T}\Delta x&=\left(b+\Delta b\right)^{T}\left(\lambda+\Delta \lambda\right) - 
 In particular, if $\Delta b = \epsilon e_{j}$, we have that $c^{T}\Delta x+\epsilon \lambda_{j}$ and it shows that the change in optimal value is $\lambda_{j}$ times the perturbation to $b_{j}$.
 
 After having delineated the basic tools of the multipliers in terms of sensitivity, the sensitivity analysis is developed later, examining the optimal results obtained by the methods designed.\\
-
+\textcolor{red}{Sensitivity analysis: il professore ha detto di dare priorità all'analisi comparativa dei metodi, se poi c'è tempo va bene trattare anche questo argomento. Io ho già inserito questa introduzione teorica.}
 %
 %  CAPITOLO 2
 %
@@ -472,7 +473,7 @@ After having delineated the basic tools of the multipliers in terms of sensitivi
 The simplex method was introduced in 1947 by George Dantzig \cite{DAN1}. The discover of this method happened simultaneously with the realization of LP as an efficient modeling tool for practical decision making and, after 60 years later, it remains one of the most important algorithms in mathematical programming and
 optimization, in general.\\
 The method exploits the insight provided by the fundamental theorem
-\ref{Fund}, which states that if it exists an optimal solution of the LP, it is at one of the vertices of the feasible polytope. \\
+(\ref{Fund}), which states that if it exists an optimal solution of the LP, it is at one of the vertices of the feasible polytope. \\
 The idea of the simplex method is to proceed from one basic feasible point of the feasible set $\mathcal{P}$ to another, in such a way as to continually decrease the value of the objective
 function until a minimum is reached.\\ Consider the general LP problem presented in standard form as in (\ref{(Prim)}).
 We assume for the remainder of the chapter that the matrix $A$ has full row rank: in practice, a preprocessing phase is applied to the user-supplied data to remove some
@@ -553,21 +554,21 @@ In \textit{phase I} we solve the following problem, with unit vector $e= (1,\dot
 \end{split}
 \end{equation} \\
 Using \textit{artificial variables} $u_{i}$ in each violated constraint, it is easier to complete a starting feasible point. Since they are restricted to be nonnegative, the objective value is as well. If this last one is zero, then the \textit{phase I} terminates and we compute a second linear programming (\textit{Phase II}).\\
-The point $(x,u)$, defined by $x = 0$ and $u_{j} = |b_{j}| \text{\;for\;}j =\{1,2,...,n\}$, is a basic initial feasible point, corresponding to the basis $B = \{n-m,...,n\}$.\\ We can see that at any feasible point for \ref{IIPH}, $u$ represents the amounts by which the constraints $Ax = b$ are violated by the $x$ component and the objective function is the sum of these violations. \\
+The point $(x,u)$, defined by $x = 0$ and $u_{j} = |b_{j}| \text{\;for\;}j =\{1,2,...,n\}$, is a basic initial feasible point, corresponding to the basis $B = \{n-m,...,n\}$.\\ We can see that at any feasible point for (\ref{IIPH}), $u$ represents the amounts by which the constraints $Ax = b$ are violated by the $x$ component and the objective function is the sum of these violations. \\
 The \textit{phase I} minimizes this sum and it has an optimal objective value of zero if and only if the original LP is feasible. In fact we have two cases at the optimal solution $\bar{u}$: 
 \begin{itemize}
 	\item[-]$1^{T}\bar{u}$ is zero: the simplex method finds a solution $(\bar{x},\bar{u})$ with $\bar{u}=0$ and it starts the \textit{phase II} step with initial point $\bar{x}$;
 	\item[-]$1^{T}\bar{u}$ is positive and the original problem is unfeasible.
 \end{itemize}
 If we are in the first case, after dropped all the artificial variables $\bar{u}$, we proceed with the second phase: it consists on an implementation of the simplex method, with starting feasible point $\bar{x}$.\\ 
-While two-phases method deals with feasibility and optimality separately, the \textit{Big-M} method combines these activities in a single search and the key is a composite objective function: the original one added the artificial variable sum times  large positive multiplier M:\\
+While two-phases method deals with feasibility and optimality separately, the \textit{Big-M} method combines these activities in a single search and the key is a composite objective function: the original one added the artificial variable sum times  large positive multiplier $\mathbf{M}$:\\
 \begin{equation}
 \text{minimize\;}\mathbf{c^{T}x+M \sum_{i}{u}_{i}}\\
 \end{equation}
-The simplex code \ref{app:A.1} implemented in this research performs the II phase steps.
+The simplex code in Appendix \ref{app:A.1} implemented in this research performs the II phase steps.
  \section{Degenerate steps}
 The simplex method may encounter situations in which $d_{r} = \left( A_{B}^{-1}A_{s}\right)_{r} > 0$ but $(A_{B}^{-1}b)_{s}= 0$. At this step, called \textit{degenerate step}, the objective function $c^{T}x$ may not decrease and, after a number of successive degenerate steps, we may return to the original basis $B$. \\
-A. Charnes \cite{Lexico2} developed a technique of perturbation, that resulted in a finite simplex algorithm. This algorithm turned out to be equivalent to the lexicographic rule. The \textit{perturbation strategy} avoids this cycling: it consists on adding a small perturbation to the right-hand side of constraints, as follows:
+A. Charnes \cite{Lexico2} developed a technique of perturbation, that resulted in a finite simplex algorithm. This algorithm turned out to be equivalent to the lexicographic rule, \textcolor{red}{sketched in the appendix}. The \textit{perturbation strategy} avoids this cycling: it consists on adding a small perturbation to the right-hand side of constraints, as follows:
 \begin{equation*}
 b(\epsilon) \vcentcolon= b + A_{B}
 \begin{bmatrix}
@@ -577,30 +578,30 @@ b(\epsilon) \vcentcolon= b + A_{B}
 where $\epsilon$ is a very small positive number. This perturbation in the components of the basic solution vector; we have
 \begin{equation*}x_{B}(\epsilon) \vcentcolon= x_{B} + A_{B}
 \begin{bmatrix}
-\epsilon\\\epsilon^{2}\\\vdots\\\epsilon^{m}
+\epsilon\\\epsilon^{2}\\\vdots\\\epsilon^{m}.
 \end{bmatrix}
 \end{equation*}
 Hence, we have that for all $\epsilon$ sufficiently small, $(x_{B^{+}})>0$. The basis is nondegenerate for the perturbed problem and we can perform a step of the simplex method that produces a nonzero decrease of the object value.\\
-The question remains of how to choose $\epsilon$ small enough at the point at which the original degenerate basis B is encountered. The \textit{lexicographic strategy} finesses this issue by not making an explicit choice of $\epsilon$, but rather keeping track of the dependence of each basic variable on each power of $\epsilon$. When it comes to selecting the leaving variable, it chooses the index $s$ that minimizes $x_{B}(\epsilon)_{i}/d_{i}$ over all variables in the basis, for a sufficient small $\epsilon$.\\
+The question remains of how to choose $\epsilon$ small enough at the point at which the original degenerate basis B is encountered. The \textit{lexicographic strategy} solves this issue by not making an explicit choice of $\epsilon$, but rather keeping track of the dependence of each basic variable on each power of $\epsilon$. When it comes to selecting the leaving variable, it chooses the index $s$ that minimizes $x_{B}(\epsilon)_{i}/d_{i}$ over all variables in the basis, for a sufficient small $\epsilon$.\\
 Another method that avoids this cycling is the \textit{Bland's rule}. In the algorithm it selects:
 \begin{itemize}
-	\item the index that leaves the nonbasis $s$ such that $\min\limits_{i}\{c_{i}\leq0\}$
-\item the index that leaves the basis $r$ such that $\bar{x}_{r} = \min\limits_{q}\{\bar{x}_{q}\;|\;\bar{x}_{q}^{+} \text{\;satisfies the ratio test} \}$ \end{itemize} 
+	\item the index that leaves the nonbasis $s$ such that $\min\limits_{i}\{c_{i}\leq0\}$;
+\item the index that leaves the basis $r$ such that $\bar{x}_{r} = \min\limits_{q}\{\bar{x}_{q}\;|\;\bar{x}_{q}^{+} \text{\;satisfies the ratio test} \}$. \end{itemize} 
 \begin{theorem*}
 	The simplex method always terminates provided that both the entering and the leaving variable are chosen according to the Bland's rule.
 \end{theorem*}
 \begin{proof}
 to write ~\cite{LP} pagg. 36-37	
 \end{proof}
-In the simplex Algorithm \ref{Alg:1} it is implemented the Bland's rule (shown in Appendix \ref{A.1}) and in the following example is illustrated the results:
+In the simplex method (shown in Appendix \ref{A.1}) it is implemented the Bland's rule and in the following example is illustrated the results:
 \begin{ex}
 	We apply the method to the Beale's problem (1955): %~\cite{}:
 	\begin{alignat*}{4}
 	\min -\frac{3}{4}x_{1}&+150x_{2}&-\frac{1}{50}x_{3}&+6x_{4}&\\
-	\text{such that\;}\frac{1}{4}x_{1}&-60x_{2}&-\frac{1}{25}x_{3}&+9x_{4}&\leq 0\\
-	\frac{1}{2}x_{1}&-90x_{2}&-\frac{1}{50}x_{3}&+3x_{4}&\leq 0\\
-	&\;&x_{3}&\;&\leq 1\\
-	x&\;&\;&\;&\geq 0\\
+	\text{such that\;}\frac{1}{4}x_{1}&-60x_{2}&-\frac{1}{25}x_{3}&+9x_{4}&\leq 0,\\
+	\frac{1}{2}x_{1}&-90x_{2}&-\frac{1}{50}x_{3}&+3x_{4}&\leq 0,\\
+	&\;&x_{3}&\;&\leq 1,\\
+	x&\;&\;&\;&\geq 0.\\
 	\end{alignat*}
 	
 Applying Bland's rule, we find optimal solution at $x^{*} = [0.04, 0,  1,   0,  0.03, 0,   0  ]$ in the basis $B = [0, 2, 4]$ after 7 iterations: the optimal cost value is $c^{T}x^{*} = -0.05$.\\
@@ -672,10 +673,10 @@ vertices:
 A specific case is that for $n = 3$, giving:
 \begin{alignat*}{2}
 \text{minimize\;}\; 100& x_1+10x_2+ x_3&&\\[2mm]
-\text{subject\;to\;\;\;\;} &x_1+&&\leq 1\\
-						20& x_1+x_2&&\leq 100\\
-200 &x_1 +20x_2 +x_{3}&&\leq 10000\\
-\text{and}\;& x_1\geq 0,x_2\geq 0,x_3&&\geq 0.
+\text{subject\;to\;\;\;\;} &x_1+&&\leq 1,\\
+						20& x_1+x_2&&\leq 100,\\
+200 &x_1 +20x_2 +x_{3}&&\leq 10000,\\
+\text{and}\;& x_1\geq 0,x_2\geq 0,x_3&&\geq 0,
 \end{alignat*}
 with 3 constraints and 3 variables (along with their nonnegativity constraints).\\
 The Python implementation solves the problem in $2^{3} - 1 = 7$ pivot steps without the Bland's rule: this confirms that the general problem requires $2^{n}- 1$ iterations and this is in fact
@@ -779,7 +780,7 @@ the strict feasibility condition can be written concisely as $(x,\lambda,s)\in\m
 However, some LP have \textit{no} strictly feasible points, that is $\mathcal{F}^{o}=\emptyset$, although hey still may be feasible $(\mathcal{F}=0)$ and still may have finite optimal solutions, as we see in this example.
 \begin{ex}
 	\begin{equation*}
-	\min\limits_{x\in\mathbb{R}^{3}} x_{1} \text{ subject to }x_{1} + x_{3} = 0, x\geq0.
+	\min\limits_{(x_{1},x_{2},x_{3})\in\mathbb{R}^{3}} x_{1} \text{ subject to }x_{1} + x_{3} = 0, x\geq0.
 	\end{equation*}
 
 and its dual is 
@@ -1044,7 +1045,7 @@ The following Lemma shows the properties of this sequence in $\mathcal{N}_{-\inf
 We see the Lemma assert the sequence is bounded (see \ref{B}) and hence the existence of the limit is verified.\\
 We can introduce an extension of $\mathcal{N}_{-\infty}(\gamma)$ that includes infeasible points. This neighborhood is defined by
 \begin{equation}\label{neigh3}
-\mathcal{N}_{-\infty}(\gamma,\beta) =\Bigg\{(x, \lambda, s) | \frac{\lVert(r_{b}, r_{c})\rVert_{2}}{\mu} \leq \beta\frac{\lVert(r_{b}^{0}, r_{c}^{0})\rVert_{2}}{\mu^{0}},\; (x, s)>0,\; x_{i}s_{i} \geq \gamma\mu,\;i = 1,\dots, n \Bigg\}
+\mathcal{N}_{-\infty}(\gamma,\beta) =\Bigg\{(x, \lambda, s) | \frac{\lVert(r_{b}, r_{c})\rVert_{2}}{\mu} \leq \beta\frac{\lVert(r_{b}^{0}, r_{c}^{0})\rVert_{2}}{\mu^{0}},\; (x, s)>0,\; x_{i}s_{i} \geq \gamma\mu,\;i = 1,\dots, n \Bigg\},
 \end{equation}
 where $\gamma\in(0,1)$ and $\beta \geq 1$ are given parameters and the residuals $(r_{b}^{0}, r_{c}^{0})$ and $\mu_{0}$ are evaluated at the starting point. Notice that we must have $\beta \geq 1$ to ensure that the initial point $(x^{0}, \lambda^{0}, s^{0})\in\mathcal{N}(\gamma,\beta)$.\\
 When LPF algorithm works with $\mathcal{N}_{-\infty}(\gamma,\beta)$, the search direction is obtained solving:
@@ -1058,7 +1059,7 @@ r_{c}^{k}\\r_{b}^{k}\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
 \end{bmatrix}.
 \end{equation*}
 \section{Asymptotic convergence}
-We examine the asymptotic behavior of these two methods, that are of significant theoretical interest: the following complexity results state that IPM converge arbitrarily close to an optimal solution linearly respect to the duality measure $\mu$. We show, too, LPF algorithm can be accelereted so that its sequence of duality measure $\{\mu_{k}\}$ converges almost quadratically to 0.\\
+We examine the asymptotic behavior of these two methods, that are of significant theoretical interest: the following complexity results state that IPM converge arbitrarily close to an optimal solution linearly respect to the duality measure $\mu$. We will develop a modification of the LPF algorithm, in order to be accelereted so that its sequence of duality measure $\{\mu_{k}\}$ converges almost quadratically to 0. This modified method is depicted in Section 4.5.2.\\
 \subsection{Affine-scaling method}
 In this analysis we set that $(x, \lambda, s)\in\mathcal{F}^{0}$, hence, the affine-scaling direction $(\Delta x, \Delta \lambda, \Delta s)$ satisfies the following matricial system:\\
 \begin{equation}\label{5.1}
@@ -1201,7 +1202,7 @@ A result similar to Theorem~\ref{(Z)} holds for steps of infeasible IPM algorith
 \end{proof}
 The implementation realized in this research computes the infeasible with two heuristic techniques, which we depict later.\\
 \subsection{LPF method analysis}
-Here an analysis for the feasible longstep path-following algorithm is done; in this context, the search direction $(\Delta x, \Delta \lambda, \Delta s)$ is found by solving (\ref{Pb}) with the residuals $r_{c}^{k}$ and $r_{b}^{k}$ null.
+Here an analysis for the feasible long-step path-following algorithm is done; in this context, the search direction $(\Delta x, \Delta \lambda, \Delta s)$ is found by solving (\ref{Pb}) with the residuals $r_{c}^{k}$ and $r_{b}^{k}$ null.
 The following is a technical lemma in order to provide a bound on $\lVert\Delta X\Delta S e\rVert_{2}$.
 \begin{lem}\label{lem1}
 	Let u and v be any two vectors in $\mathbb{R}^{n}$ with $u^{T}v \geq 0$. Then, 
@@ -1327,7 +1328,7 @@ We complete the analysis theory with the following theorem which shows that a re
 	\mu^{k}/\mu^{0}\leq\epsilon.
 	\end{equation*}	
 \end{proof}
-This marginal per-itertion reduction of $\mu^{k}$ is enough to deliver a polynomial complexity of the lgorithm \cite{25y}.\\
+This marginal per-itertion reduction of $\mu^{k}$ is enough to deliver a polynomial complexity of the logarithm \cite{25y}.\\
 In the general framework Algorithm 3 we have not specified how the centering parameter is chosen: different interior-point algorithms use a peculiar method to select $\sigma_{k}$.\\
 Now we see two heuristic choices of $\sigma_{k}$ at the $k^{th}$ iteration of the algorithm; the first one decreases at each iteration and the second one is fixed: 
 \begin{align}
@@ -1341,7 +1342,7 @@ with $\mu_{k}$ the duality measure of the current primal-dual point and $n$ is t
 \includegraphics[width=9 cm]{timeLPF12}\caption{Log plot time storage: test problems for comparing the two centering parameters.} 
 \end{center}
 \end{figure}
-Analyzing the graphic in Figure 4.1 we state that the LPF with the centering parameter (\ref{LPF1}), \textit{LPF 1}, requires a less number of iterations and less time storage then  with (\ref{LPF2}), \textit{LPF2}, to find a LP solution, indipendently to the characteristic of the problem data. The storage time refers to the time required to solve LP problems with LPF codes I have implemented and outlined in the Appendix A.3.\\
+Analyzing the graphic in Figure 4.1 we state that the LPF with the centering parameter (\ref{LPF1}), \textit{LPF 1}, requires a less number of iterations and less time storage then  with (\ref{LPF2}), \textit{LPF2}, to find a LP solution, indipendently to the characteristic of the problem data. The storage time refers to the time required to solve LP problems with LPF codes I have implemented and outlined in the Appendix A.3.\\[1 cm]
 From these excellent theoretical properties, we design a modified LPF algorithm: it exploits the fact that all iterates belong to $\mathcal{N}_{-\infty}(\gamma,\beta)$ of the central path, but with techniques, presented in the next section, it may accelerate its performance. 
 
 
@@ -1507,7 +1508,7 @@ A^{T}\lambda+s-c \\Ax-b \\XSe
 \end{equation}
 The tangent to this trajectory is the affine-scaling direction, as for $\mathcal{H}$, but the curvature can be identified with the combined centering-corrector step rather than the corrector component alone. The trajectory $\mathcal{H}_{\sigma}$ approximates more the central path than $\mathcal{H}$. Despite the closer relationship between $\mathcal{H}_{\sigma}$  and MPC algorithm, we can not qualify it as a second-order trajectory-following algorithm because it still searches along a linear direction rather than a quadratic path.  
 \subsection{A predictor-corrector LPF method}
-In this research it is proposed a predictor-corrector long-path following method (PC-LPF) in which the centering parameter $\sigma$ is computed adaptively, equal to (\ref{CP}).\\
+In this research it is proposed a predictor-corrector long-path following method (PC-LPF) in which the centering parameter $\sigma$ is computed adaptively, equal to Mehrotra's method.\\
 This predictor-corrector algorithm below is a definite improvement over the long-path following algorithm because of the adaptivity that is built into the choice of the predictor step. We will discuss if eventually this potential
 technique may further accelerate the performance of the LPF method.
 The values of the step lengths and the centering parameter are performed in order to guarantee that the next iteration $(x^{k}, \lambda^{k}, s^{k})$ is in $\mathcal{N}_{-\infty}(\gamma,\beta)$:
@@ -1518,7 +1519,7 @@ To measure the efficiency of the affine-scaling direction, we define $\mu_{\text
 \begin{equation*}
 \mu_{\text{aff}}= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n.
 \end{equation*}
-\begin{algorithm}\caption{\label{alg:pc}PC-LPF algorithm}
+\begin{algorithm}\caption{\label{alg:pc}PC-LPF Algorithm}
 \begin{tabbing}
 	\\
 	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})$ with $(x^{0}, s^{0})> 0$; \\
@@ -1531,7 +1532,7 @@ To measure the efficiency of the affine-scaling direction, we define $\mu_{\text
 	\textbf{end}
 \end{tabbing}
 \end{algorithm}
-.
+\newpage
 \section{IPM algorithms performance}
 In this section we develop an empirical study of the IPM algorithms performace. \\
 We rate the number of iterations $T$ required to solve a LP to the number of constraints $m$ and/or the number of variables $n$ in the LP problem. We may assume that $T$ can be approximated by a function of the form 
@@ -1563,7 +1564,7 @@ Now we compute $T$ related to the IPM methods proposed in this thesis: long-path
 \end{bmatrix}.
 \end{equation}
 
-In the Table \ref{tab:numite} we give the numerical results about the number of iterations $T_{k}$ required to compute the algorithms on $k =30$ standard LP with model data $A\in\mathbb{R}^{m,n}$, $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$ (see in the \textbf{Appendix}).
+In the Table \ref{tab:numite} we give the numerical results about the number of iterations $T_{k}$ required to compute the algorithms on $k =30$ standard LP with model data $A\in\mathbb{R}^{m\times n}$, $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$.
 
 \begin{table}[]\caption{\label{tab:numite}Number of iterations required to solve standard LP problems with $n$ variables and $n$ constraints.}
 	\begin{center}
@@ -1650,12 +1651,11 @@ These outcomes confirm the practical success of the IPM, proving their polynomia
 %\end{center}
 %\end{table}
 
-\newpage
-\section{Asymptotic convergence}
-The algorithms studied generate a sequence of improving primal-dual points $(x^{k},\lambda^{k}, s^{k})$ to the exact solution and in this section we describe the convergence rate of each of them. \\
-The codes implemented in this research solve linear programming problems with a starting infeasible point, as we will delineate in the chapter 7. Then, we can determine the order of convergence checking the convergence to the feasible set $\mathcal{F}$, hence to the exact solution.\\
-We define the residual function $r$ that converts the vector sequence into a real number sequence.
 \chapter{Implementation details}
+\begin{center}
+\textcolor{red}{DA COMPLETARE}	
+\end{center}
+
 There are several important issues concerning interior-point algorithms
 for linear programs.
 \section*{Initialization and termination}
@@ -1843,6 +1843,9 @@ The problem data are ten little scale LP problems formulated in canonical form. 
 
 
 \chapter{Numerical experiments}
+\begin{center}
+\textcolor{red}{DA COMPLETARE}\\
+\end{center}
 In this chapter it is developed a comprehensive analysis of the results obtained by some practical implementations. It is presented three LP problems: the forest service allocation, Swedish steel model, ...\\
 The fictitious data used to test the LP methods come from \cite{RR}.
 \section{Forest service allocation} 
@@ -2076,7 +2079,8 @@ With the ONB case we have a slight complication in covering requirements. Work a
 In this section, we give a comparison between the results given by the infeasible prima-dual algorithms and the LPF predictor-corrector described in the previous chapter.\\ We compute the methods to solve the LP problems before illustrated. Then a study of the numerical results will be discussed.
 
 
-\chapter{Conclusion}
+\chapter{Conclusion\textcolor{red}{ DA COMPLETARE}}
+
  First point: All variables $(x, \lambda, s)$ change at each iteration and the linear algebra operations which are required to update them have to involve the complete matrix $A$. This makes a single iteration of the interior point method significantly more expensive than that of the simplex method.\\
  Second point: while the neighborhood $\mathcal{N}_{-\infty}$ ensures that some products do not approach zero too early as with the pure affine scaling method, it does not prevent products from becoming too large with respect to the average. Hence, it does not provide a complete picture of centrality of the iterate.
 
@@ -2123,13 +2127,12 @@ Long path following method predictor-corrector:
 	\bibitem{25y} Gondzio J, \textit{ "Interior Point Methods 25 yeears later."}, European Journal of Operational Research 218, Issue 3, pp: 587-601, (2011).	
 	
 % K
-		\bibitem{MINTY} Klee, V., Minty, G., \emph{ "How good is the simplex algorithm?"} in O. Shisha, ed.,
-	‘Inequalities–III’, Academic Press, New York, pp: 159–175, (1972).
-
 		\bibitem{ONB}Based on Krajewski L. J., McKenzie P., Ritzman L. P., \textit{ "Shift Scheduling in Banking Operations: A Case Appllication"}, Interfaces, 10:12, (1980).
-		\bibitem{Lem} Lemke C.E, \textit{ "The dual method of solving the linear programming problem."} Naval Research Logistics Quarterly, John Wiley and Sons, (1954).
 		\bibitem{Kar} Karmarkar N. K.,\emph{ "A new polynomial-time algorithm for linear programming"}, Combinatorica, (1984).
 		\bibitem{(Natural)} Kent B., Bare B. B., Field R. C., Bradley G. A., \textit{"Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN".}, OR, 39, pp: 13-27, (1991).
+				\bibitem{Lem} Lemke C.E, \textit{ "The dual method of solving the linear programming problem."} Naval Research Logistics Quarterly, John Wiley and Sons, (1954).
+						\bibitem{MINTY} Klee, V., Minty, G., \emph{ "How good is the simplex algorithm?"} in O. Shisha, ed.,
+				‘Inequalities–III’, Academic Press, New York, pp: 159–175, (1972).
 		\bibitem{LNP}Luenberger David G., Yinyu Ye, \emph{"Linear and Nonlinear Programming"}, Springer Science+Business Media, 3, pp: 136-140, (2008).
 		\bibitem{LMS} Lustig I. J., Marsten E., Shanno D. F., \emph{ Computational experience with a primal-dual interior point method for linear programming}, Linear algebra and its applications, pp. 191-222, (1991).
 		\bibitem{ComTeq} Maros I., \emph{ "Computational Techniques of the Simplex Method}, first ed., Kluwer
@@ -2144,7 +2147,7 @@ Long path following method predictor-corrector:
 	%
 	\bibitem{W}Nocedal J., Wright J. S., \emph{\;"Numerical Optimization"}, Springer Series in OR, Springer, New York, (2006).
 
-	%\bibitem{Lexico2}  Charnes A. \emph{ Optimality and degeneracy in linear programming}, 1952. pp: 160-170. 
+	\bibitem{Lexico2}  Charnes A. \emph{ Optimality and degeneracy in linear programming}, 1952. pp: 160-170. 
 
 \bibitem{RR} Rardin Ronald L., \textit{" Optimization in operations reseasch"}, Pearson Education (US), Second edition, University of Arkansas, (2017).
 
