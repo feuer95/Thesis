@@ -47,7 +47,7 @@ def cent_meas(x, u, label, plot = 1):
     dfu['sm'] = sm # Duality measure   
     pf = []
     for i in range(len(u)):
-        r = max(u[i][4])
+        r = np.linalg.norm(u[i][4], 2)
         pf.append('%.5f'% r)
 
     dfu['pf'] = pf # Dataframe with feasibility
