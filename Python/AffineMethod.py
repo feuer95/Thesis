@@ -4,9 +4,11 @@ Created on Mon Apr 29 13:49:50 2019
 
 @author: Elena
 """
+
+from starting_point import sp           # Function to find the initial infeasible point
+from starting_point2 import sp2         # Function to find the initial infeasible point
 from stdForm import stdForm             # Standard form transform
 from print_boxed import print_boxed     # Print pretty info box
-from starting_point import sp           # Find initial infeasible points
 from input_data import input_data       # Problem data
 from term import term                   # Compute the conditions of termination
 import numpy as np                      # Vectors
@@ -29,7 +31,7 @@ Output data: x: primal solution
              u: list: iteration, dual gas, Current x, Current s, Feasibility x, Feasibility s
 '''
 
-def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500):
+def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, ip = 0):
         
     print('\n\tCOMPUTATION OF PRIMAL-DUAL AFFINE SCALING ALGORITHM')
     
@@ -53,8 +55,11 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500):
     
     """ Initial points: Initial infeasible positive (x,y,s) and initial gap g """
     
-    (x, y, s) = sp(A, c, b)    
-    g = np.dot(c, x) - np.dot(y, b)
+    if ip == 0:
+        (x, y, s) = sp(A, c, b)
+    else:
+        (x, y, s) = sp2(A, c, b)        
+    g = np.dot(c,x) - np.dot(y,b)    
     
     print('\nInitial primal-dual point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))    
     print('Dual initial gap: {}.\n'.format("%10.3f"%g))      
@@ -107,15 +112,17 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500):
         # Update step
         x += min(T,1)*x1            # Current x
         y += min(T,1)*y1            # Current y
-        s += min(T,1)*s1            # Current s   
+        s += min(T,1)*s1            # Current s  
+        rb = b - np.dot(A, x)
+        rc = c - np.dot(A.T, y) - s
         z = np.dot(c, x)            # Current optimal solution
-        g = z - np.dot(y, b)        # Current gap 
+        g = np.abs(z - np.dot(y, b))# Current gap 
         it += 1
-        u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()])       
+        u.append([it, g.copy(), x.copy(), s.copy(), rb.copy(), rc.copy()])       
                 
         # Termination elements
-        tm = term(it, b, c, rb, rc, z, g)
-      
+        m, n, q = term(it, b, c, rb, rc, z, g)
+        tm = max(m, n, q)
         if it == max_it:
             raise TimeoutError("Iterations maxed out") 
 
@@ -126,7 +133,7 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500):
         
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n".format(x) +
                 "Dual gap: {}\n".format("%10.6f"%g) +
-                "Optimal cost: {}\n".format("%10.3f"%z) +
+                "Optimal cost: {}\n".format("%.6E" %z) +
                 "Number of iterations: {}".format(it))
     return x, s, u
 
@@ -143,4 +150,4 @@ if __name__ == "__main__":
         
     x, s, u = affine(A, b, c, max_it = 1000)
     
-    aa, up = cent_meas(x, u, 'Affine', plot = 0)
+    up = cent_meas(x, u, 'Affine', plot = 0)

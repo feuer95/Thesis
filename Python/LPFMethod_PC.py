@@ -127,6 +127,9 @@ def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, i
        x += t*x1            # Current x
        y += t*y1            # Current y
        s += t*s1            # Current s
+       rb = b - np.dot(A, x)
+       rc = c - np.dot(A.T, y) - s
+       
        z = np.dot(c, x)     # Current optimal solution
        g = z - np.dot(y, b) # Current gap 
        it += 1
@@ -134,8 +137,8 @@ def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, i
        sig.append(Sigma)
 
        # Termination elements
-       tm = term(it, b, c, rb, rc, z, g)
-
+       m, n, q = term(it, b, c, rb, rc, z, g)
+       tm = max(m, n, q)
        if it == max_it:
            raise TimeoutError("Iterations maxed out")
           

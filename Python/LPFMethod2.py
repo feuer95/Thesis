@@ -134,6 +134,9 @@ def longpath2(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, in
         x += t*x1            # Current x
         y += t*y1            # Current y
         s += t*s1            # Current s
+        rb = b - np.dot(A, x)
+        rc = c - np.dot(A.T, y) - s
+
         z = np.dot(c, x)     # Current opt. solution
         g = z - np.dot(y, b) # Current gap
         it += 1
@@ -141,8 +144,8 @@ def longpath2(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, in
         sig.append([cp])
 
         # Termination elements
-        tm = term(it, b, c, rb, rc, z, g)
-        
+        m, n, q = term(it, b, c, rb, rc, z, g)
+        tm = max(m, n, q)
         if it == max_it:
             raise TimeoutError("Iterations maxed out") 
         if info == 0:    
@@ -153,7 +156,7 @@ def longpath2(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, in
         
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
                 "Dual gap: {}\n".format("%2.2e"%g) +
-                "Optimal cost: {}\n".format("%10.3f"%z) +
+                "Optimal cost: {}\n".format("%10.6E"%z) +
                 "Number of iteration: {}".format(it))
     return x, s, u, sig
 
