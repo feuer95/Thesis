@@ -83,8 +83,8 @@ if __name__ == "__main__":
     
     (A, b, c) = ssteel1()
     
-    x_a, s_a , u_a = affine(A, b, c, c_form = 1)
-    dfu = cent_meas(x_a, u_a, label = 'Affine') # 17 it
+    x_a, s_a , u_a = affine(A, b, c, c_form = 1, info = 1, ip = 1)
+    dfu = cent_meas(x_a, u_a, label = 'Affine', plot = 0) # 17 it
     
     """                             LPF1                                    """
     #                        161 iterations
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     """                             LPF2                                    """
     #                             13 it
     start = time.time()
-    x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, c_form = 1, info = 1, ip = 0) 
+    x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, c_form = 1, info = 1, ip = 1) 
     time_lpf2 = time.time()-start
     print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf2))
     
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     """                    LPF predictor corrector                          """
     #                          14 iterations
     start = time.time()
-    x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, c_form = 1, info = 1, ip = 0)
+    x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, c_form = 1, info = 1, ip = 1)
     time_lpfpc = time.time()-start
     print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpfpc))
     
@@ -138,5 +138,5 @@ if __name__ == "__main__":
     #
     #u2 = np.array([75, 13, 717.503, 177.555, 16.084, 0.857, 0])
     #
-    #x = linprog(c, method = 'simplex', A_eq = A, b_eq = b)    # Exact solution
-    #x = linprog(c2, method = 'simplex', A_ub = A2, b_ub = b2) # Exact solution in 17 iterations
+    x = linprog(c, method = 'simplex', A_eq = A, b_eq = b)    # Exact solution
+    x = linprog(c2, method = 'simplex', A_ub = A2, b_ub = b2) # Exact solution in 17 iterations

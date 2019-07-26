@@ -133,7 +133,7 @@ def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, i
        z = np.dot(c, x)     # Current optimal solution
        g = z - np.dot(y, b) # Current gap 
        it += 1
-       u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()]) 
+       u.append([it, g.copy(), x.copy(), s.copy(), rb.copy(), rc.copy()]) 
        sig.append(Sigma)
 
        # Termination elements
@@ -150,7 +150,7 @@ def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, i
 
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
             "Dual gap: {}\n".format("%2.2e"%g) +
-            "Optimal cost: {}\n".format("%10.3f"%z) +
+            "Optimal cost: {}\n".format("%10.8E"%z) +
             "Number of iteration: {}".format(it))
 
     return x, s, u, sig

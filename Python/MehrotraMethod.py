@@ -190,7 +190,7 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 1):
         
     print_boxed("Found optimal solution of the standard problem at\n x* = {}.\n\n".format(x) +
                 "Dual gap: {}\n".format(g) +
-                "Optimal cost: {}\n".format("%10.3f"%z) +
+                "Optimal cost: {}\n".format("%10.8E"%z) +
                 "Number of iteration: {}".format(it))
     
     return x, s, u, sig

@@ -156,7 +156,7 @@ def longpath2(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, in
         
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
                 "Dual gap: {}\n".format("%2.2e"%g) +
-                "Optimal cost: {}\n".format("%10.6E"%z) +
+                "Optimal cost: {}\n".format("%10.8E"%z) +
                 "Number of iteration: {}".format(it))
     return x, s, u, sig
 

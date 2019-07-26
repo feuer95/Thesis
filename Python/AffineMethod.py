@@ -5,8 +5,8 @@ Created on Mon Apr 29 13:49:50 2019
 @author: Elena
 """
 
-from starting_point import sp           # Function to find the initial infeasible point
-from starting_point2 import sp2         # Function to find the initial infeasible point
+from starting_point import sp           # Function to find the initial point with MIP 
+from starting_point2 import sp2         # Function to find the initial point with STP1
 from stdForm import stdForm             # Standard form transform
 from print_boxed import print_boxed     # Print pretty info box
 from input_data import input_data       # Problem data
@@ -18,20 +18,22 @@ from cent_meas import cent_meas         # Plot dual gap and centering measure
 np.set_printoptions(precision = 4, threshold = 20, edgeitems = 4, linewidth = 120, suppress = True)
 
 
-'''                           ===
+'''                  =====================
                      AFFINE-SCALING METHOD
-                              ===
+                     =====================
 
 Input data: np.arrays of matrix A, cost vector c, vector b of the LP
             c_form: canonical form -> default 0
             w = tollerance -> default 10^(-8)
+            info: print info of the iterates
+            ip: initial point strategy
             
 Output data: x: primal solution
              s: dual solution
              u: list: iteration, dual gas, Current x, Current s, Feasibility x, Feasibility s
 '''
 
-def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, ip = 0):
+def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 0):
         
     print('\n\tCOMPUTATION OF PRIMAL-DUAL AFFINE SCALING ALGORITHM')
     
@@ -61,8 +63,9 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, ip = 0):
         (x, y, s) = sp2(A, c, b)        
     g = np.dot(c,x) - np.dot(y,b)    
     
-    print('\nInitial primal-dual point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))    
-    print('Dual initial gap: {}.\n'.format("%10.3f"%g))      
+    if info == 0:
+        print('\nInitial primal-dual point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))    
+        print('Dual initial gap: {}.\n'.format("%10.3f"%g))      
     
    #%%
         
@@ -76,7 +79,7 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, ip = 0):
     
     while tm > w:
         
-        print("\tIteration: {}\n".format(it))
+        
         
         """ Pure Newton's method with with normal equations: find the direction vector (y1, s1, x1)"""
         
@@ -100,7 +103,9 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, ip = 0):
         s1 = rc - np.dot(A.T, y1)
         x1 = np.dot(S_inv, rxs) - np.dot(W1,s1)
         
-        print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),y1.round(decimals = 3),s1.round(decimals = 3)))
+        if info == 0:
+            print("\tIteration: {}\n".format(it))
+            print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),y1.round(decimals = 3),s1.round(decimals = 3)))
         
         """ Compute the largest step length & increment of the points and the iteration"""
         
@@ -125,15 +130,16 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, ip = 0):
         tm = max(m, n, q)
         if it == max_it:
             raise TimeoutError("Iterations maxed out") 
-
-        print('Current point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))
-        print('Dual next gap: {}.\n'.format("%10.3f"%g))
+        
+        if info == 0:
+            print('Current point:\n x = {} \n lambda = {} \n s = {}.\n'.format(x, y, s))
+            print('Dual next gap: {}.\n'.format("%10.3f"%g))
         
 #%%
         
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n".format(x) +
                 "Dual gap: {}\n".format("%10.6f"%g) +
-                "Optimal cost: {}\n".format("%.6E" %z) +
+                "Optimal cost: {}\n".format("%.8E" %z) +
                 "Number of iterations: {}".format(it))
     return x, s, u
 
@@ -148,6 +154,6 @@ if __name__ == "__main__":
     
     (A, b, c) = input_data(0)
         
-    x, s, u = affine(A, b, c, max_it = 1000)
+    x, s, u = affine(A, b, c, max_it = 1000, info = 1)
     
     up = cent_meas(x, u, 'Affine', plot = 0)
