@@ -45,10 +45,10 @@ def cent_meas(x, u, label, plot = 1):
         
     dfu['cd'] = cm # Dataframe with centering deviation
     dfu['sm'] = sm # Duality measure   
-    pf = []
+    pf = np.zeros(len(u))
     for i in range(len(u)):
         r = np.linalg.norm(u[i][4], 2)
-        pf.append('%.5f'% r)
+        pf[i] = r
 
     dfu['pf'] = pf # Dataframe with feasibility
     
@@ -66,17 +66,16 @@ def cent_meas(x, u, label, plot = 1):
         plt.plot(dfu['it'], dfu['Current g'], label = 'Current g', c = 'C1', marker = '.')
         plt.plot(dfu['it'], dfu['cd'], label = 'Centering deviation', c = 'b', marker = '.')
         plt.grid(b = True, which = 'major')
-        locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
+#        locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
         
-#        plt.title(label+' method')
         plt.xlabel('iterations')
         plt.yscale('log')
         plt.legend()
-        
+       
         plt.figure()
-        plt.plot(dfu['it'], pf)
-#        plt.title(label+' method: rate of convergence')
+        plt.yscale('log')   
         plt.xlabel('iterations')
         plt.ylabel('error')
-        plt.yscale('log') 
+        plt.plot(pf, c = 'b')
+#        locs, labels = plt.xticks(np.arange(0, len(u), step = 1))    
     return dfu

@@ -51,7 +51,7 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 0):
     if c_form == 0:
         A, c = stdForm(A, c)    
     r_A, c_A = A.shape
-    if not np.linalg.matrix_rank(A) == r_A: # Check full rank matrix:Remove ld rows:
+    if not np.linalg.matrix_rank(A) == r_A: # Check full rank matrix: Remove ld rows
         A = A[[i for i in range(r_A) if not np.array_equal(np.linalg.qr(A)[1][i, :], np.zeros(c_A))], :]
         r_A = A.shape[0]  # Update no. of rows
     
@@ -77,9 +77,7 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 0):
     u = [] # Construct list of info elements 
     u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
     
-    while tm > w:
-        
-        
+    while tm > w:               
         
         """ Pure Newton's method with with normal equations: find the direction vector (y1, s1, x1)"""
         
@@ -152,7 +150,7 @@ def affine(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 0):
 '''
 if __name__ == "__main__": 
     
-    (A, b, c) = input_data(0)
+    (A, b, c) = input_data(5)
         
     x, s, u = affine(A, b, c, max_it = 1000, info = 1)
     

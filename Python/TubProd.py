@@ -49,14 +49,14 @@ if __name__ == "__main__":
     (A, b, c) = tubprod() # canonical form!
     """                              Affine                                 """
     #                                 29 it
-    x_a, s_a , u_a = affine(A, b, c)
-    dfu = cent_meas(x_a, u_a, label = 'Affine')
+    x_a, s_a , u_a = affine(A, b, c, ip = 1)
+    dfu = cent_meas(x_a, u_a, label = 'Affine', plot = 0)
     
     
     """                            LPF1                                     """
     #                              IT DOESN'T WORK!!!
     #start = time.time()
-    #x_l, s_l, u_l = longpath1(A, b, c, info = 1, ip = 0)
+    x_l, s_l, u_l = longpath1(A, b, c, info = 1, ip = 1)
     #time_lpf1 = time.time() - start
     #print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf1))
     
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     """                        Mehrotra                                     """
     #                             10 iterations
     start = time.time()
-    x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, info = 1, ip = 1)
+    x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, info = 1, ip = 0)
     time_mer = time.time()-start
     print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_mer))
     
@@ -95,4 +95,5 @@ if __name__ == "__main__":
     #P, u = SimplexMethod(A, b, c, rule = 1) # 51 it
     # it doesn't work with rule = 0
     #dfu = pd.DataFrame(u)
+    x = linprog(c, method = 'simplex', A_ub = A, b_ub = b)    # Exact solution
 

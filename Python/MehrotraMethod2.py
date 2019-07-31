@@ -173,8 +173,8 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 0)
         u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()]) 
         sig.append([Sigma])               
         # Termination elements
-        tm = term(it, b, c, rb, rc, z, g)
-        
+        m, n, q = term(it, b, c, rb, rc, z, g)
+        tm = max(m,n,q)
         if info == 0:
             
             print('Tollerance: {}.\n'.format("%10.3f"%tm))
@@ -184,7 +184,7 @@ def mehrotra2(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 0)
         
     print_boxed("Found optimal solution of the standard problem at\n x* = {}.\n\n".format(x) +
                 "Dual gap: {}\n".format("%2.2e"%g) +
-                "Optimal cost: {}\n".format("%10.3f"%z) +
+                "Optimal cost: {}\n".format("%2.8E"%z) +
                 "Number of iteration: {}".format(it))
     
     return x, s, u, sig
