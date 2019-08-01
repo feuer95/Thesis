@@ -66,7 +66,7 @@ dfu = cent_meas(x, u, label = 'LPF', plot = 0)
 
 """                                 LPF2                                    """
 #                                  16 it
-x, s, u, sigma_l2 = longpath2(A, b, c, c_form = 0, info = 1, ip = IP) 
+x, s, u, sigma_l2 = longpath2(A, b, c, c_form = 0, info = 1, ip = 1) 
 
 """                        LPF predictor corrector                          """
 #                            41 iterations / 17 iterations ip = 1

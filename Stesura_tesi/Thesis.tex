@@ -1656,19 +1656,23 @@ These outcomes confirm the practical success of the IPM, proving their polynomia
 \begin{center}
 \textcolor{red}{DA COMPLETARE}	
 \end{center}
-There are several important issues concerning interior-point algorithms
-for LP problems.
+We have implemented the algorithms proposed in Python code. in each algorithm a sequence of primal-dual iterates $(x^{k},\lambda^{k},s^{k})$ is computed and at each iteration $k$ the duality measure $\mu^{k}$ is set.\\
+We will see that also the duality gap $|c^{T}x^{k}-b^{T}\lambda^{k}|$ is paid particular attention in the practical implemtentations: it is important for the termination criteria ad also it gives informations about the infeasibiliy of the iterates. In fact, as we know, if $(x,\lambda,s) \notin \mathcal{F}$, then we have the residuals $r_{b}$ and $r_{c}$ not null, and: 
+\begin{align*}
+|c^{T}x-b^{T}\lambda|=|y^{T}Ax+s^{T}x-r_{c}^{T}x+r_{b}^{T}\lambda-x^{T}A^{T}\lambda|\geq |s^{T}x|.
+\end{align*}
+In this chapter we guide the reader through the issues of implementation of IPMs. As we have already seen, the IPM code needs to initialize and terminate the algorithms in a reasonable way: we see several techniques which their effect on the algorithms in the numerical experiments elaborated in Chapter 6.  
 \section*{Initialization and termination}
-In the theoretical analysis of IPM it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})$ is feasible respect to the linear equations (\ref{DF}) and (\ref{PF}).\\
-IPMs are sensitive to the choice of an initial primal-dual point, as we see later. In fact, a "poor" starting points may drastically reduce the steps toward the solutions, giving significant effect on the robustness of the algorithm; therefore, the choice of good initial values is an important issue in the implementation of the methods. A common way to deal with this issue is to use heuristic-based strategies that try to keep the infeasibility small while ensuring that nonnegative variables are far enough from zero.\\
+In the theoretical analysis of IPM it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})$ satisfies the linear equations (\ref{DF}) and (\ref{PF}).\\In practice there is no need to impose the feasibility of all iterates and force the algorithm to stay in the primal-dual feasible set $\mathcal{F}$.\\
+It is already proved that IPMs are sensitive to the choice of an initial primal-dual point, as we see later; in fact, a "poor" starting points may drastically reduce the steps toward the solution, giving significant impact on the robustness of the algorithm. Therefore, the choice of good initial values is an important issue in the implementation of the methods. A common way to deal with this issue is to use heuristic-based strategies that try to keep the infeasibility small while ensuring that nonnegative variables are far enough from zero.\\
 Since most of IPM attempt to follow the central path $\mathcal{C}$, a very simple choice for the starting point would be to set the nonnegative variables to one and the others to zero. It is guaranteed that the point is perfectly centered, that is all pairwise complementarity products are equal to $\mu$ and the nonnegative variables are sufficiently bounded away from zero. However, this point be far from satisfying the constraints \cite{VAN}.\\
 Another strategy, that does not require the starting point is both well centerd and not too infeasible, is presented by Mehrotra \cite{MER}; we will briefly call it as \textit{Mehrotra's initial point} method (MIP). This popular heuristic approach for finding $(x^{0}, \lambda^{0}, s^{0})$ consists on computing least squares solutions to the equations corresponding to the linear constraints of the LP and then shifting the values of the variables to ensure that they are kept away from their lower bound of zero. \\
-The construction starts by calculating $(\tilde{x}, \tilde{\lambda}, \tilde{s})$ as solution of two least-squares problems:
+The construction starts by calculating $(\tilde{x}, \tilde{\lambda}, \tilde{s})$ as solution of the two least-squares problems outlined below:
 \begin{align*}
 \min\limits_{x} \lVert x \rVert ^{2} &\text{ subject to }Ax = b,\\
-\min\limits_{(\lambda,s)} \lVert s \rVert ^{2} &\text{ subject to } A^{T}\lambda +s = c.
+\min\limits_{(\lambda,s)} \lVert s \rVert ^{2} &\text{ subject to } A^{T}\lambda +s = c,
 \end{align*}
-That is, $\tilde{x}$ and $\tilde{s}$ are the vectors of least norm that are in the feasible set and they are computed using the following formulas:
+with $A$, $b$ and $c$ given from ($\ref{(Prim)}$). That is, $\tilde{x}$ and $\tilde{s}$ are the vectors of least norm that are in $\mathcal{F}$ and they are computed using the following formulas:
 \begin{equation}\label{71}
 \tilde{x} = A^{T}(AA^{T})^{-1}b,\;\;\;\tilde{\lambda}=(AA^{T})^{-1}Ac,\;\;\; \tilde{s} = c- A^{T}\tilde{\lambda}.
 \end{equation}
@@ -1676,7 +1680,7 @@ In general, $\tilde{x}$ and $\tilde{s}$ are not positive, so we we define
 \begin{equation*}
 \delta_{x} = \max\{-(3/2)\min\limits_{i}\tilde{x}_{i},0\},\;\;\; \delta_{s} = \max\{-(3/2)\min\limits_{i}\tilde{s}_{i},0\},
 \end{equation*}
-and define the positive vectors $\hat{x}= \tilde{x}+\delta_{x}e$ and $\hat{s}= \tilde{s}+\delta_{s}e$, where $e$ is the unit vector. To ensure that the initial points $x^{0}$ and $s^{0}$ are not too close to zero, we add two more scalars defined as follow:
+to compute the positive vectors $\hat{x}= \tilde{x}+\delta_{x}e$ and $\hat{s}= \tilde{s}+\delta_{s}e$, where $e$ is the unit vector. To ensure that the initial points $x^{0}$ and $s^{0}$ are not too close to zero, we add two more scalars defined as follows:
 \begin{align}\label{72}
 \tilde{\delta}_{x}= \frac{1}{2}\frac{\hat{x}^{T}\hat{s}}{e^{T}\hat{s}},\;\;\;\tilde{\delta}_{s} =\frac{1}{2}\frac{\hat{x}^{T}\hat{s}}{e^{T}\hat{x}}.
 \end{align}
@@ -1708,10 +1712,10 @@ The starting point is then defined as
 		\end{boxedminipage}
 		} \quad
 \end{figure}
-The logical basis of this strategy (outlined in Figure \ref{fig:STP1}) is that many LPF methods are able to perform long steps toward the solution and to drive the infeasibility to zero at least at the same rate as the duality gap, by keeping the iterates in the central path neighbourhood $\mathcal{N}_{-\infty}(\gamma,\beta)$, see (\ref{neigh3}),  \cite{SPS}.\\[1 cm]
+The logical basis of this strategy (outlined in Figure \ref{fig:STP1}) is that many LPF methods are able to perform long steps toward the solution and to drive the infeasibility to zero at least at the same rate as the duality gap, by keeping the iterates in the neighbourhood defined $\mathcal{N}_{-\infty}(\gamma,\beta)$ in (\ref{neigh3}), \cite{SPS}.\\[1 cm]
 The second starting-point strategy is suggested by the convergence theory of the Potential Reduction method. The starting point can be chosen as \begin{equation*}
 (x^{0}, \lambda^{0}, s^{0}) = \eta \tilde{w},
-\end{equation*}where $\tilde{w} = (e,0,e)$ and $\eta$ is the value such that the residuals of this starting point satisfy the following:
+\end{equation*}where $\tilde{w} = (e,0,e)$ and $\eta$ is the value such that the residuals$r_{b}^{0}$ and $r_{c}^{0}$ and the dualitiy measure $\mu_{0}$ of this starting point satisfy the following:
 
 \begin{equation}\label{su}
 \frac{\lVert(r^{0}_{b},r^{0}_{c})\rVert_{2}}{\mu_{0}}\leq \tau<1. 
@@ -1727,7 +1731,7 @@ This method strategy, labeled with STP1 (\cite{SPS}), is summarized in the Figur
 	\centering
 	{\noindent\begin{boxedminipage}{1\linewidth}
 			\begin{tabbing}
-			choose $\tau < 1$; \\
+			choose $\tau < 1$;  \\
 			$\tilde{w}=(e,0,e)$;\\
 			$\tilde{\sigma}= \lVert\tilde{r}_{b},\tilde{r}_{c})\rVert_{2}$;\\
 			$\tilde{\mu}= n$;\\
@@ -1735,7 +1739,7 @@ This method strategy, labeled with STP1 (\cite{SPS}), is summarized in the Figur
 			\> $(x^{0}, \lambda^{0}, s^{0}) = \tilde{w}$;\\
 			\textbf{else}\>\\
 			\> $\tilde{\mu}=\tilde{\sigma}/(\tau n)$; \\
-			\> $(x^{0}, \lambda^{0}, s^{0}) = \eta \tilde{w}$;\\
+			\> $(x^{0}, \lambda^{0}, s^{0}) = \eta \tilde{w}$;\tab \\
 			\textbf{end}
 			\end{tabbing}
 \end{boxedminipage}
@@ -2242,6 +2246,11 @@ x_{12}^{*} &=  8.57, & x_{13}^{*}&=  12.86, & y_{12}^{*} &= 4.29, & z_{14}^{*} &
 z_{17}^{*} &= 7.50, & z_{18}^{*}&= 0.71,  & w_{12}^{*} &= 10, & w_{13}^{*} &= 12.43, &w_{14}^{*} &=  6.00,\\
 w_{14}^{*} &=  6.00, & w_{18}^{*}&=  2.29, & w_{19}^{*} &= 20, & w_{20}^{*} &= 17,71, &w_{21}^{*} &= 9.71.\\
 \end{align*}
+From the Table \ref{table:ONB} it is again confirmed the big computational cost for LPF1 and the weakness of the affine method, since it doesn't work with the STP1 strategy. In this case study the LPF2 requires a less number of iterations respect to the other long-path following algorithms, leading a contraddiction to the conjecture of the efficiency of the PC type.\\ 
+We look that only the predictor-corrector algorithms work differently using the two initial point strategies.
+Hence, we plotted the performance of PC-LPF and Mehrotra's algorithms with both strategies MIP and STP1, in order to compare them. The rule of the adaptive choice of the centering parameter $\sigma$ is noticeable in Mehrotra's algorithm with MIP, as showm in (e): in the 6th iteration the centering deviation increases because an acceleration of the sequence $\{\mu_{k}\}$ is required; the graphic (f) illustrates this improvement. The STP1 strategy gives a good initial point for Mehrotra's method: in fact we see that in the computation the sequence tends to the solution with a big order of convergence and the $\sigma$ rule is not appealed.\\
+In (a) and in (c) we observe that the neighborhood $\mathcal{N}_{-\infty}$ prevents the sequence moves away from the $\mathcal{C}$ , making the power of the adaptive $\sigma$ impraticable.\\  
+
 \begin{table}[]\caption{\label{table:ONB}Numerical results obtained by the codes.}
 	\begin{tabular}{cclcll}
 		\hline		\textbf{} & \textbf{Initial point} & \multicolumn{1}{c}{\textbf{Optimal value}} & \textbf{Iterations number} & \multicolumn{1}{c}{\textbf{$\mu$}} & \multicolumn{1}{c}{\textbf{Residual} Res} \\ \hline
@@ -2257,7 +2266,7 @@ w_{14}^{*} &=  6.00, & w_{18}^{*}&=  2.29, & w_{19}^{*} &= 20, & w_{20}^{*} &= 1
 		\multicolumn{1}{c|}{} & STP1 & 2.83607143E+03  & 13 & 9.607693E-09 & 2.437934E-11 \\ \hline
 	\end{tabular}
 \end{table}
-\begin{figure}\caption{\label{figure:onb}Execution of the IPMs tubular production LP model:}
+\begin{figure}\caption{\label{figure:onb}Execution of the IPMs on ONB model:}
 	\subfloat[Affine algorithm with MIP]{\includegraphics[width= 7 cm]{onb_aff1}} \qquad%
 	\subfloat[Affine algorithm with MIP]{\includegraphics[width= 7 cm]{onb_aff2}}\\
 	\subfloat[LPF 1 algorithm ]{\includegraphics[width= 7 cm]{onb_LPF1}} \qquad%
@@ -2265,7 +2274,7 @@ w_{14}^{*} &=  6.00, & w_{18}^{*}&=  2.29, & w_{19}^{*} &= 20, & w_{20}^{*} &= 1
 	\subfloat[LPF 2 algorithm ]{\includegraphics[width= 7 cm]{onb_LPF2}} \qquad%
 	\subfloat[LPF 2 algorithm]{\includegraphics[width= 7 cm]{onb_LPF2b}}\\
 \end{figure}
-\begin{figure}\caption{\label{figure:onb2}Execution of predictor-corrector IPMs tubular production LP model:}
+\begin{figure}\caption{\label{figure:onb2}Execution of predictor-corrector IPMs on ONB model:}
 	\subfloat[PC LPF algorithm with MIP]{\includegraphics[width= 7 cm]{onb_PCLPF}} \qquad%
 	\subfloat[PC LPF algorithm with MIP]{\includegraphics[width= 7 cm]{onb_PCLPFb}}\\
 	\subfloat[PC LPF algorithm with STP1]{\includegraphics[width= 7 cm]{onb_PCLPF2}} \qquad%
@@ -2284,7 +2293,8 @@ In this section, we give a comparison between the results given by the infeasibl
  First point: All variables $(x, \lambda, s)$ change at each iteration and the linear algebra operations which are required to update them have to involve the complete matrix $A$. This makes a single iteration of the interior point method significantly more expensive than that of the simplex method.\\
  Second point: while the neighborhood $\mathcal{N}_{-\infty}$ ensures that some products do not approach zero too early as with the pure affine scaling method, it does not prevent products from becoming too large with respect to the average. Hence, it does not provide a complete picture of centrality of the iterate.
 If the centering parameter is left fixed, then the behavior of the
-algorithm became unstable.
+algorithm became unstable.\\
+Third point: The use of the predictor-corrector technique is advantageous in long-path foloowing metho: it leads to significant saving in the number of iterations. we show that the proposed correcting scheme in LPF method can occasionally fail: you can opt for weel-suited the neighborood parameters to remedy such difficulties.
 %\begin{appendices}
 \appendix
 \chapter*{Appendix}	
