@@ -49,44 +49,28 @@ if __name__ == "__main__":
     (A, b, c) = tubprod() # canonical form!
     """                              Affine                                 """
     #                                 29 it
-    x_a, s_a , u_a = affine(A, b, c, ip = 1)
-    dfu = cent_meas(x_a, u_a, label = 'Affine', plot = 0)
+    x, s, u = affine(A, b, c, ip = 1)
+    dfu = cent_meas(x, u, label = 'Affine', plot = 0)
     
     
     """                            LPF1                                     """
     #                              IT DOESN'T WORK!!!
-    #start = time.time()
-    x_l, s_l, u_l = longpath1(A, b, c, info = 1, ip = 1)
-    #time_lpf1 = time.time() - start
-    #print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf1))
-    
-    #dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) 
+#    x_l, s_l, u_l = longpath1(A, b, c, info = 1, ip = 1)
     
     """                            LPF2                                     """
     #                              21 it
-    start = time.time()
-    x_c, s_c, u_c, sigma_l2 = longpath2(A, b, c, info = 1, ip = 0) 
-    time_lpf2 = time.time()-start
-    print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf2))
+    x, s, u, sigma_l2 = longpath2(A, b, c, info = 1, ip = 0) 
+    dfc = cent_meas(x, u, label = 'LPF2', plot = 0)
     
-    dfc = cent_meas(x_c, u_c, label = 'LPF2', plot= 0)
-    
-    """                b  LPF predictor corrector                           """
+    """                 LPF predictor corrector                           """
     #                          20 iterations
-    start = time.time()
-    x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, c, info = 1, ip = 1)
-    time_lpfpc = time.time()-start
-    print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpfpc))
-    
-    dfpc = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) 
+    x, s, u, sigma_pc = longpathPC(A, b, c, info = 1, ip = 0)
+    dfpc = cent_meas(x, u, label = 'LPF PC', plot = 0) 
     
     """                        Mehrotra                                     """
     #                             10 iterations
     start = time.time()
-    x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, info = 1, ip = 0)
-    time_mer = time.time()-start
-    print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_mer))
-    
+    x_m, s_m, u_m, sigma_m = mehrotra(A, b, c, info = 1, ip = 1) 
     dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0)
     plt.plot(sigma_m)
     

@@ -76,6 +76,6 @@ def cent_meas(x, u, label, plot = 1):
         plt.yscale('log')   
         plt.xlabel('iterations')
         plt.ylabel('error')
-        plt.plot(pf, c = 'b')
+        plt.plot(dfu['pf'], c = 'b')
 #        locs, labels = plt.xticks(np.arange(0, len(u), step = 1))    
     return dfu
