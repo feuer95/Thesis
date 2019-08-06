@@ -173,14 +173,16 @@
 \chapter*{Abstract}
 The concept of optimization is now well rooted as a principle underlying the analysis
 of many complex decisions or allocation problems: Linear Programming (LP) is one of the simplest ways to perform optimization.
-This thesis introduces the two major types of methods: the Simplex method and the Interior-Point Methods (IPM).
+This thesis introduces the two major types of methods: the Simplex method and the Interior-Point Methods (IPMs).
 We show that the significant difference between them is reflected not only on the theoretical background but also in the practical implementation.\\
 %The efficiency and vast applicability of the IPM algorithms was proven by applying it to various case studies.
 The research addresses the role of the combined predictor-corrector step in Mehrotra's IPM method and builds  a new algorithm obtained applying this technique to the Long-step Path-Following methods (LPF), that displays an extensive theoretical complexity and uses the nested neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
 First, a brief description of these methods is given,
 %: the simplex method, that is known to be very efficient practically, and the primal-dual %interior-point
 then we outline a comprehensive convergence analysis of three important IPM: the primal-dual affine scaling, the LPF and the Mehrotra's methods. \\
-After introducing the basic theoretical framework, we exhibit a comparison of these competitors, testing them on some real models. We investigate whether the corrector approach of the new (new?) LPF presented in this work improves the efficiency of the algorithm.\\
+After introducing the basic theoretical framework, we exhibit a comparison of these competitors, testing them on some real models. The numerical
+results demonstrate the benefits of corrector approach in LPF method as well as the reliability of the
+method.
 The programs that implement these algorithms are written in Python. 
 %\addcontentsline{toc}{chapter}{Abstract}
 \chapter*{Sommario}
@@ -745,7 +747,9 @@ strategy, is among the most efficient IPM and has became the back bones
 of several optimization packages \cite{matlab}.\\ 
 After a brief introduction of the primal-dual methods, we study three important algorithms: the \textit{primal-dual affine scaling}, the \textit{long-step path-following} and the \textit{Mehrotra predictor-corrector} methods.\\
 An overview of the details of the first two interior-point algorithms are given in the following chapter, instead no convergence theory is availabe for the third one . \\
-In this research is proposed a new long-path following algorithm labeled as \textit{predictor-corrector long-path following algorithm}, based on a new centering parameter computation. With practical implementations a comparison will be discussed.
+In this research is proposed a new long-path following algorithm labeled as \textit{predictor-corrector long-path following algorithm}, based on a new centering parameter computation. 
+. The initial point choice and the
+termination criteria will be explained in the next chapter. With practical implementations a comparison will be discussed.
 %The lack of theoretical analysis of the Mehrotra's algorithm leads to a study  their reliability both in theory and in practice will be shown 
 %The great success of Mehrotra's approach in practice warrants further theoretical studies
 %on its convergence properties, particularly its computational complexity, which have so far
@@ -816,11 +820,11 @@ where $\mathit{J}$ is the Jacobian of the linear mapping $\mathit{F}$. If the cu
 0&A^{T}&I \\A&0&0\\S&0&X
 	\end{bmatrix}\begin{bmatrix}
 	\Delta x\\\Delta\lambda \\\Delta s
-	\end{bmatrix}=\begin{bmatrix}
-	c-A^{T}\lambda-s\\b-Ax\\XSe
-	\end{bmatrix}.
+	\end{bmatrix}=-\begin{bmatrix}
+	r_{c}\\r_{b}\\XSe
+	\end{bmatrix},
 \end{equation}
-
+where $r_{c}= A^{T}\lambda+s-c$ and $r_{b}= Ax-b$.\\
 A full step along this direction usually is not permissible, since it would violate the bound $(x,s)>0$. To avoid this difficulty, we perform a line search along the Newton direction so that the new iterate is
 \begin{equation*}
 	(x,\lambda,s) +\alpha (\Delta x,\Delta \lambda,\Delta s),
@@ -839,7 +843,7 @@ Adler and Resende \cite{MARE}.\\
 	\textbf{for} \= $k = 0, 1, 2,...$ \\
 	\> solve
 	\end{tabbing}
-\begin{equation}\label{mtx:aff}\tag{4.1b}	
+\begin{equation}\label{mtx:aff}\tag{4.2b}	
 \begin{bmatrix}
 0&A^{T}&I \\A& 0&0\\X^{k}&0&S^{k}
 \end{bmatrix}\begin{bmatrix}
@@ -1053,7 +1057,7 @@ We can introduce an extension of $\mathcal{N}_{-\infty}(\gamma)$, that includes 
 \end{equation}
 where $\gamma\in(0,1)$ and $\beta \geq 1$ are given parameters and the residuals $(r_{b}^{0}, r_{c}^{0})$ and $\mu_{0}$ are evaluated at the starting point. Notice that we must have $\beta \geq 1$ to ensure that the initial point $(x^{0}, \lambda^{0}, s^{0})\in\mathcal{N}(\gamma,\beta)$.\\
 When LPF algorithm works with $\mathcal{N}_{-\infty}(\gamma,\beta)$, the search direction is obtained solving:
-	\begin{equation*}
+\begin{equation}\label{matrix:LPF}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
 \end{bmatrix}\begin{bmatrix}
@@ -1061,7 +1065,7 @@ When LPF algorithm works with $\mathcal{N}_{-\infty}(\gamma,\beta)$, the search 
 \end{bmatrix}=-\begin{bmatrix}
 r_{c}^{k}\\r_{b}^{k}\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
 \end{bmatrix},
-\end{equation*}
+\end{equation}
 since the feasibility of the iterates is not guaranteed.
 \section{Asymptotic convergence}
 We examine the asymptotic behavior of these two methods, that are of significant theoretical interest: the following complexity results state that IPM converge arbitrarily close to an optimal solution linearly respect to the duality measure $\mu$. We will develop a modification of the LPF algorithm, in a way that the sequence $\{\mu_{k}\}$ converges almost quadratically to 0. This modified method is depicted in Section 4.5.2.\\
@@ -1537,8 +1541,8 @@ To measure the efficiency of the affine-scaling direction, we define $\mu_{\text
 \end{algorithm}
 \newpage
 \section{IPM algorithms performance}
-In this section we develop an empirical study of the IPM algorithms performace. \\
-We rate the number of iterations $T$ required to solve a LP to the number of constraints $m$ and/or the number of variables $n$ in the LP problem. We may assume that $T$ can be approximated by a function of the form 
+In this section we develop an empirical study of the IPM algorithms performace. Let us compare the proposed methods with the implementation reported in Appendix. \\
+Given a general LP, we rate the number of iterations $T$ required to solve it to the number of constraints $m$ and the number of variables $n$. We may assume that $T$ can be approximated by a function of the form 
 \begin{equation*}
 	T \approx 2^{\alpha}(m+n)^{\beta},
 \end{equation*}
@@ -1567,7 +1571,7 @@ Now we compute $T$ related to the IPM methods proposed in this thesis: long-path
 \end{bmatrix}.
 \end{equation}
 
-In the Table \ref{tab:numite} we give the numerical results about the number of iterations $T_{k}$ required to compute the algorithms on $k =30$ standard LP with model data $A\in\mathbb{R}^{m\times n}$, $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$.
+We test the algorithms on 30 small scale LP problems in standard form with model data $A\in\mathbb{R}^{m\times n}$, $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$. In the Table \ref{tab:numite} we collect statistics from the runs, summarizing the number of iterations $T_{k}$ with $k =1,\dots,30$.
 
 \begin{table}[]\caption{\label{tab:numite}Number of iterations required to solve standard LP problems with $n$ variables and $m$ constraints.}
 	\begin{center}
@@ -1607,11 +1611,11 @@ In the Table \ref{tab:numite} we give the numerical results about the number of 
 	\end{tabular}
 \end{center}
 \end{table}
-These performance profil provides an estimate of the expected performance difference
+These performance profiles provide an estimate of the expected performance difference
 between solvers.
 \begin{figure}\label{figure:T}
 	\begin{center}
-		\includegraphics[width= 13 cm]{numberiterations}\caption{log–log plot of T vs. $m + n$ and the L1 regression lines.}
+		\includegraphics[width= 17 cm]{numberiterations}\caption{log–log plot of T vs. $m + n$ and the L1 regression lines.}
 	\end{center}
 \end{figure}
 %\ref{figure:T}
@@ -1658,18 +1662,18 @@ These outcomes confirm the practical success of the IPM, proving their polynomia
 \begin{center}
 \textcolor{red}{DA COMPLETARE}	
 \end{center}
-We have implemented the algorithms proposed in Python code. in each algorithm a sequence of primal-dual iterates $(x^{k},\lambda^{k},s^{k})$ is computed and at each iteration $k$ the duality measure $\mu^{k}$ is set.\\
-We will see that also the duality gap $|c^{T}x^{k}-b^{T}\lambda^{k}|$ is paid particular attention in the practical implemtentations: it is important for the termination criteria ad also it gives informations about the infeasibiliy of the iterates. In fact, as we know, if $(x,\lambda,s) \notin \mathcal{F}$, then we have the residuals $r_{b}$ and $r_{c}$ not null, and: 
+We have implemented the algorithms and in each of them a sequence of primal-dual iterates $(x^{k},\lambda^{k},s^{k})$ is computed and at each iteration $k$ the duality measure $\mu_{k}$ is set.\\
+Also the value absolute of te duality gap $g^{k}$ at the $k$th iteration is paid particular attention in the practical implemtentations: it is important for the termination criteria ad also it gives informations about the infeasibiliy of the iterates. In fact, as we know, if $(x,\lambda,s) \notin \mathcal{F}$, then we have the residuals $r_{b}$ and $r_{c}$ not null, and: 
 \begin{align*}
 |g|=|c^{T}x-b^{T}\lambda|=|y^{T}Ax+s^{T}x-r_{c}^{T}x+r_{b}^{T}\lambda-x^{T}A^{T}\lambda|\geq |s^{T}x|.
 \end{align*}
-In this chapter we guide the reader through the issues of implementation of IPMs. As we have already seen, the IPM code needs to initialize and terminate the algorithms in a reasonable way: we see several techniques which their effect on the algorithms in the numerical experiments elaborated in Chapter 6.  
+In this chapter we guide the reader through the issues and details of implementation of IPMs. As we have already seen, the general IPM code needs to initialize and terminate the algorithm in a reasonable way: we see several techniques which their effect in some numerical experiments are investigated in Chapter 6.  
 \section*{Initialization and termination}
-In the theoretical analysis of IPM it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})$ satisfies the linear equations (\ref{DF}) and (\ref{PF}), hence theoretically the algorithms begin in the interior of the feasible region and travel on
-a path towards the the boundary, converging at the optimum.\\In practice there is no need to impose the feasibility of all iterates and force the algorithm to stay in the primal-dual feasible set $\mathcal{F}$.\\
-It is already proved that IPMs are sensitive to the choice of an initial primal-dual point, as we see later; in fact, a "poor" starting points may drastically reduce the steps toward the solution, giving significant impact on the robustness of the algorithm. Therefore, the choice of good initial values is an important issue in the implementation of the methods. A common way to deal with this issue is to use heuristic-based strategies that try to keep the infeasibility small while ensuring that nonnegative variables are far enough from zero.\\
-Since most of IPM attempt to follow the central path $\mathcal{C}$, a very simple choice for the starting point would be to set the nonnegative variables to one and the others to zero. It is guaranteed that the point is perfectly centered, that is all pairwise complementarity products are equal to $\mu$ and the nonnegative variables are sufficiently bounded away from zero. However, this point be far from satisfying the constraints \cite{VAN}.\\
-Another strategy, that does not require the starting point is both well centerd and not too infeasible, is presented by Mehrotra \cite{MER}; we will briefly call it as \textit{Mehrotra's initial point} method (MIP). This popular heuristic approach for finding $(x^{0}, \lambda^{0}, s^{0})$ consists on computing least squares solutions to the equations corresponding to the linear constraints of the LP and then shifting the values of the variables to ensure that they are kept away from their lower bound of zero. \\
+In the theoretical analysis of IPM it is assumed the starting point $(x^{0}, \lambda^{0}, s^{0})\in\mathcal{F}^{0}$, hence the algorithms begin in the interior of the feasible region and travel on
+a path towards the the boundary, converging at the optimal solution. In practice there is no need to impose the feasibility of all iterates and force the algorithm to stay in the interior of the primal-dual feasible set $\mathcal{F}$.\\
+It is already proved that IPMs are sensitive to the choice of an initial primal-dual point; in fact, "poor" starting points may drastically reduce the steps toward the solution, giving significant impact on the robustness of the algorithm. Therefore, the choice of good initial values is an important issue in the implementation of the methods. A common way to deal with it is to use heuristic-based strategies that try to keep the infeasibility small while ensuring that nonnegative variables are far enough from zero.\\
+Since most of IPM attempt to follow the central path $\mathcal{C}$, a very simple choice for the starting point would be to set the nonnegative variables to one and the others to zero. It is guaranteed that the point is perfectly centered, that is all pairwise complementarity products are equal to $\mu$ and the nonnegative variables are sufficiently bounded away from zero:$(x^{0},\lambda^{0},s^{0})=(e, 0, e)$, with $e$ and $0$ respectively unit and null vectors with appropriate dimensions. However, this point be far from satisfying the constraints \cite{VAN}.\\
+Another strategy, that does not require the starting point is both well centerd and not too infeasible, is presented by Mehrotra \cite{MER}, that we will briefly call it as \textit{Mehrotra's initial point} method (MIP). This popular heuristic approach for finding $(x^{0}, \lambda^{0}, s^{0})$ consists on computing least squares solutions of the equations corresponding to the linear constraints of the LP and then shifting the values of the variables to ensure that they are kept away from their lower bound of zero. \\
 The construction starts by calculating $(\tilde{x}, \tilde{\lambda}, \tilde{s})$ as solution of the two least-squares problems outlined below:
 \begin{align*}
 \min\limits_{x} \lVert x \rVert ^{2} &\text{ subject to }Ax = b,\\
@@ -1683,7 +1687,7 @@ Since in general $\tilde{x}$ and $\tilde{s}$ are not positive, we compute
 \begin{equation*}
 \delta_{x} = \max\{-(3/2)\min\limits_{i}\tilde{x}_{i},0\},\;\;\; \delta_{s} = \max\{-(3/2)\min\limits_{i}\tilde{s}_{i},0\},
 \end{equation*}
-to define the positive vectors $\hat{x}= \tilde{x}+\delta_{x}e$ and $\hat{s}= \tilde{s}+\delta_{s}e$, where $e$ is the unit vector. To ensure that the initial points $x^{0}$ and $s^{0}$ are not too close to zero, we add two more scalars defined as follows:
+to define the positive vectors $\hat{x}= \tilde{x}+\delta_{x}e$ and $\hat{s}= \tilde{s}+\delta_{s}e$, whit $e$ the unit vector. To ensure that the initial points $x^{0}$ and $s^{0}$ are not too close to zero, we add two more scalars defined as follows:
 \begin{align}\label{72}
 \tilde{\delta}_{x}= \frac{1}{2}\frac{\hat{x}^{T}\hat{s}}{e^{T}\hat{s}},\;\;\;\tilde{\delta}_{s} =\frac{1}{2}\frac{\hat{x}^{T}\hat{s}}{e^{T}\hat{x}}.
 \end{align}
@@ -1715,7 +1719,7 @@ The starting point is then defined as
 		\end{boxedminipage}
 		} \quad
 \end{figure}
-The logical basis of this strategy (outlined in Figure \ref{fig:STP1}) is that many LPF methods are able to perform long steps toward the solution and to drive the infeasibility to zero at least at the same rate as the duality gap, by keeping the iterates in the neighbourhood $\mathcal{N}_{-\infty}(\gamma,\beta)$ defined in (\ref{neigh3}), \cite{SPS}.\\[1 cm]
+The logical basis of this strategy (outlined in Figure \ref{fig:STP1}) is that many LPF methods are able to perform long steps toward the solution and to drive the infeasibility to zero at least at the same rate as the duality gap, by keeping the iterates in the neighbourhood $\mathcal{N}_{-\infty}(\gamma,\beta)$ defined in (\ref{neigh3}) \cite{SPS}.\\[1 cm]
 The second starting-point strategy is suggested by the convergence theory of the Potential Reduction method. The starting point can be chosen as \begin{equation*}
 (x^{0}, \lambda^{0}, s^{0}) = \eta \tilde{w},
 \end{equation*}where $\tilde{w} = (e,0,e)$ and $\eta$ is the value such that the residuals $r_{b}^{0}$ and $r_{c}^{0}$ and the duality measure $\mu_{0}$ corresponding to this starting point satisfy the following:
@@ -1729,27 +1733,27 @@ It easy to verify that, since $\mu_{0}$ increases quadratically and $\lVert(r^{0
 \end{equation*}
 where $\lVert(\tilde{r}_{b},\tilde{r}_{c})\rVert_{2}$ and $\tilde{\mu}$ are respectively the infeasibility error norm and the duality measure associated with $\tilde{w}$ (in this case $\tilde{\mu} = n$). \\
 We notice that $(x^{0},\lambda^{0},s^{0})$ is perfectly centered and all its components with lower bound 0 are "sufficient" positive, but even if the ratio in (\ref{su}) is small, the duality gap and the infeasibility may very large, slowing the progress toward the solution.\\
-This method strategy, labeled with STP1 (\cite{SPS}), is summarized in the Figure \ref{fig:STP2}.\\
-\begin{figure}\caption{\label{fig:STP2}Starting point strategy STP1.}
+This method strategy, labeled with STP (\cite{SPS}), is summarized in the Figure \ref{fig:STP2}.\\
+\begin{figure}\caption{\label{fig:STP2}Starting point strategy STP.}
 	\centering
 	{\noindent\begin{boxedminipage}{1\linewidth}
 			\begin{tabbing}
-			choose $\tau < 1$;  \\
-			$\tilde{w}=(e,0,e)$;\\
-			$\tilde{\sigma}= \lVert\tilde{r}_{b},\tilde{r}_{c})\rVert_{2}$;\\
-			$\tilde{\mu}= n$;\\
-			\textbf{If} \= $\tilde{\sigma}/n\leq \tau$ then\\
-			\> $(x^{0}, \lambda^{0}, s^{0}) = \tilde{w}$;\\
-			\textbf{else}\>\\
+			$\;$choose $\tau < 1$;  \\
+			$\;\tilde{w}=(e,0,e)$;\\
+			$\;\tilde{\sigma}= \lVert\tilde{r}_{b},\tilde{r}_{c})\rVert_{2}$;\\
+			$\;\tilde{\mu}= n$;\\
+			\textbf{ If} \= $\tilde{\sigma}/n\leq \tau$ then\\
+			\> $(x^{0}, \lambda^{0}, s^{0}) = \tilde{w}$;$\;\;\;\;\;\;$\\
+			\textbf{ else}\>\\
 			\> $\tilde{\mu}=\tilde{\sigma}/(\tau n)$; \\
 			\> $(x^{0}, \lambda^{0}, s^{0}) = \eta \tilde{w}$;\tab \\
-			\textbf{end}
+			\textbf{ end}
 			\end{tabbing}
 \end{boxedminipage}
 } \quad
 \end{figure}
 
-Now we obtain the infeability error norms and the duality gaps corresponding to the starting points computed with MIP and STP1 for small size LP problems.\\
+%Now we obtain the infeasibility error norms and the duality gaps corresponding to the starting points computed with MIP and STP for small size LP problems.\\
 \begin{table}[!h]\caption{\label{fig:STP1} Analysis of the starting-point strategies.}	
 	\begin{tabular}{llllllllll}
 		\hline
@@ -1787,23 +1791,25 @@ Now we obtain the infeability error norms and the duality gaps corresponding to 
 		10 & 24 &  & 1.49e+05 & -1.70e+04 & -8.78 &  & 2.77e+09 & -3.15e+08 & -8.77e+00 \\ \hline
 	\end{tabular}\caption{Infeasibility equal to $\lVert (r_{b}, r_{c})\rVert_{2}$, duality measure ${\mu}$ and their ratios corresponding to MIP and STP1.}
 \end{table}
-We see that it is not a evident peculiar behaviour of the infeasibility error and the duality gap obtained by each strategy. Even if the ratio is smaller for the STP1 initial points, the duality measure and the infeasibility error are competitive and they don't lead to an effective comparison.\\ 
+Now we examinate the two strategies testing each IPM on 30 small size LP problems.\\ 
+It is confirmed that it is not a evident peculiar behaviour of the infeasibility error and the duality gap obtained by each strategy. For istance, it is reported the numerical results obtained by Mehrotra's method. Even if the ratio is smaller for the STP initial points, the duality measure and the infeasibility error are competitive and they don't lead to an effective comparison. \\Eventually, we can't a priori determine the best initial values, but in the numerical tests in Chapter 6 it is worth distinguish the two cases corresponding to the two strategies adopted in the IPM codes. 
 \newpage
-Now we deal on the termination criteria; unlike the simplex method, primal-dual algorithms never find an exact solution of the LP.\\ All the algorithms studied in this research have in common a finite termination phase that reports an approximate solution for which the residuals $r_{b}$ and $r_{c}$a nd the duality gap $g$ are sufficiently small. After determinated a small tollerance $\epsilon$, the algorithms terminate when the following conditions on the relative primal and dual residuals and the relative duality gap are satisfied:
+Now we deal on the termination criteria; unlike the simplex method, IPM algorithms never find an exact solution of the LP.\\ All the algorithms studied in this research have in common a finite termination phase that reports an approximate solution for which the residuals $r_{b}$ and $r_{c}$ and the duality gap $g$ are sufficiently small. After determinated a small tollerance $\epsilon$, the algorithms terminate when the following conditions on the relative primal and dual residuals and the relative duality gap are satisfied:
 \begin{align}\label{TermC}
 \frac{\lVert r_{b}\rVert_{2}}{1+ \lVert b \rVert_{2}}\leq \epsilon, && \frac{\lVert r_{c}\rVert_{2}}{1 + \lVert c \rVert_{2}}\leq \epsilon, &&\frac{|g|}{1+b^{T}y}\leq \epsilon,
 \end{align}
-where $g$ is the dual gap defined in (\ref{dualgap}). The tollerance value $\epsilon > 0$, usually of the order $10^{-8}$, as required both in the literature and in practice \cite{Wright}. It is rare that the third condition is satisfied and at the same time
-other conditions do not hold. Consequently, the most important and perhaps
-the only condition that really has to be checked is the third condition, \cite{ADL}.
+The tollerance value $\epsilon > 0$ is usually of the order $10^{-8}$, as required both in the literature and in practice \cite{Wright}. It is rare that the third condition is satisfied and at the same time
+other conditions do not hold; consequently, the most important and perhaps
+the only condition that really has to be checked is the third condition \cite{ADL}.\\
+That is confirmed across the obtained numerical results stated in Chapter 6: reporting the behaviour of $g$ and $\lVert r_{b},r_{c}\rVert_{2}$, it occurs that the first moves slower than the second value in the iterations to the tollerance $\epsilon$.\\
 \section*{The coefficient matrix / Solving the linear system}
-We focus on the core linear algebra operation in primal-dual interior-point methods for LP: the solution of the system of linear equations (\ref{(5.1)})
+We focus on the core linear algebra operation in primal-dual IPM: the solution of the linear equations system (\ref{(5.1)})
 whose coefficient matrix is large, sparse, and symmetric. In existing codes, the linear
 system is formulated in two different ways which we now outline.\\
-Let us to reformulate
-these equations as system with a more compact symmetric coefficient matrix, which
-is easier and cheaper to factor than the original form; since the current point $(x, \lambda, s)$ has $x$ and $s$ strictly
-positive, the diagonal matrices $X$ and $S$ are nonsingular. Hence, by eliminating $\Delta s$, we obtain the following equivalent system, called \textit{augmented system}:
+Let us consider the matrix (\ref{matrix:LPF}), that incorporates the affine method's matrix just getting $\sigma=0$.
+Now we formulate it with a new more compact symmetric coefficient matrix, which
+is easier and cheaper to factor than the original form. Since the current point $(x, \lambda, s)$ has $x$ and $s$ strictly
+positive, the diagonal matrices $X$ and $S$ are nonsingular; hence, by eliminating $\Delta s$, we obtain the following equivalent system, called \textit{augmented system}:
 \begin{align*}
 \begin{bmatrix}
 0&A\\A^{T}&-D^{2}
@@ -1822,12 +1828,15 @@ AD^{2}A^{T}\Delta\lambda &= -r_{b}+A(-S^{-1}Xr_{c}+ x - \sigma\mu S^{-1}e),\\
 \Delta x &= -x + \sigma \mu S^{-1}e-S^{-1}X\Delta s.
 \end{align*}
 \\
-This form often is called the \textit{normal equations} form and a direct sparse Cholesky algorithm is applied to factor the matrix $AD^{2}A^{T}$. \\Both forms are performed and ill conditioning is often observed during the final steps of the LPF algorithms with the normal equations, when the elements of the diagonal weighting
+This form often is called the \textit{normal equations} form and a direct sparse Cholesky algorithm is applied to factor the matrix $AD^{2}A^{T}$. \\Both forms are performed and ill-conditioning is often observed during the final steps of the LPF algorithms with the normal equations, when the elements of the diagonal weighting
 matrix $D^{2}$ takes on both huge and tiny values.
-Then, in the codes is took in consideration only the second variant: from our observations the effort of the augmented system is not different respect to using (\ref{(5.1)}), except for the Mehrotra's algorithm in finding the solution of the ONB problem, depicted in the next chapter. In fact, the whole system can give sparsity problems. 
+Then, in the codes it is took in consideration only the second variant: from our observations the effort of the augmented system is not different respect to using (\ref{(5.1)}), except for the Mehrotra's algorithm in finding the solution of the ONB problem, depicted in the next chapter. In fact, the whole system can give sparsity problems. 
 \section*{Geometric viewpoint}
-Now we outline the geometric viewpoint of the simplex method and the primal-dual methods, assuming the LP problem is in canonical form.\\
-We already stated that the simplex method generates a sequence of basic feasible primal points of the solution set; hence, it creates a path along the boundary of the polytope, checking the cost value at each vertex.\\Instead, the primal-dual IPMs approach the solution through the interior of the feasible polytope, generating the central path $\mathcal{C}$, rather than working around the boundary.\\ The main idea of the path-following method is to follow $\mathcal{C}$ in the direction of decreasing $\tau$; we have already seen that, indeed, they do not necessarily stay exactly on the path but within a loose and well-defined neighoborhood of $\mathcal{C}$ while steadily reducing the duality measure $\mu$ to zero. Each search direction is computed with a Newton's step toward a point for which the duality measure $\tau$ is equal to or smaller than the current duality measure $\mu$, as we know $\tau=\sigma\mu$. \\
+Now we outline the geometric viewpoint of the simplex method and the IPMs, assuming the LP problem is in canonical form.\\
+We already stated that the simplex method generates a sequence of basic feasible primal points of the feasible set $\mathcal{P}$: it picks a vertex of the polytope, then it checks the neighbors of this vertex; if there is a neighbor that gives a
+better solution with respect to the objective function, it pivots to that new vertex.
+It follows this procedure until the optimal solution is reached and none of its neighboring vertices will give
+a better solution.\\Instead, the primal-dual IPMs travel within the interior of the feasible polypole to search for an optimal solution, generating the central path $\mathcal{C}$, rather than working around the boundary.\\ The main idea of the path-following method is to follow $\mathcal{C}$ in the direction of decreasing $\tau$; we have already seen that, indeed, they do not necessarily stay exactly on the path but within a loose and well-defined neighoborhood of $\mathcal{C}$ while steadily reducing the duality measure $\mu$ to zero. Each search direction is computed with a Newton's step toward a point for which the duality measure $\tau$ is equal to or smaller than the current duality measure $\mu$, as we know $\tau=\sigma\mu$. \\
 The affine-scaling method, based on pure Newton's steps, sets the central parameter $\sigma= 0$ in the system;
 %In fact, the gap between neighborhood boundaries is wide enough to allow this step to make significant progress in reducing $\mu$. 
 even if it makes significant progress, it also tends to worsen the centrality measure (condition of having all pairwise products $x_{i}s_{i}$ equal). Then, the step length $\alpha$ is the maximum value such that the next primal-dual point remain in the feasible set and often is really small
