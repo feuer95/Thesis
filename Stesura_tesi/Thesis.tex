@@ -897,9 +897,9 @@ The conditions (4.3) are also the optimality conditions for the following \texti
 \end{split}
 \end{equation}
 In fact, the Lagrangian function for (\ref{log}), with Lagrange multipliers $\lambda$ for the equality constraint and $s$ for the inequality one, is
-\begin{equation}
+\begin{equation*}
 \mathcal{L}(x,\lambda,s)=c^{T}x- \tau\sum_{i=0}^{n}\ln{x_{i}}-\lambda^{T}\left(Ax-b\right)-s^{T}x
-\end{equation}
+\end{equation*}
 and the corresponding \textit{KKT} conditions, from the Theorem \ref{thm:kkt}, are:
 \begin{align*}
 c_{i} - \dfrac{\tau}{x_{i}} - A^{T}_{i}\lambda&= 0,\; \text{for}\;i = 1,2,...,n,\\
@@ -937,8 +937,8 @@ Then, Newton steps toward points on $\mathcal{C}$ are computed as following:
  0&A^{T}&I \\A&0&0\\S&0&X
  \end{bmatrix}\begin{bmatrix}
  \Delta x\\\Delta\lambda \\\Delta s
- \end{bmatrix}=\begin{bmatrix}
- 0\\0\\-XSe + \tau e
+ \end{bmatrix}=-\begin{bmatrix}
+ 0\\0\\XSe + \tau e
  \end{bmatrix}.
  \end{equation}
  Path-following methods follow $\mathcal{C}$ in the direction of decreasing $\tau$ to the solution set but they do not necessarily stay exactly on $\mathcal{C}$ or even particularly close to it. In fact they compute the target value $\tau = \sigma \mu$, where $\sigma = [0,1]$ is called \textit{centering parameter} and $\mu$ the \textit{duality measure}, defined by
@@ -1413,8 +1413,8 @@ When a full step is taken, the pairwise product $x_{i}s_{i}$ transforms to $\Del
 \end{equation}
 where
 \begin{align*}
-\Delta X^{\text{cor}}& = \text{diag}(\Delta x_{1}^{\text{aff}}, \Delta x_{2}^{\text{aff}},\dots,\Delta x_{n}^{\text{aff}}),\\
-\Delta S^{\text{cor}}& = \text{diag}(\Delta s_{1}^{\text{aff}}, \Delta s_{2}^{\text{aff}},\dots,\Delta s_{n}^{\text{aff}}).
+\Delta X^{\text{aff}}& = \text{diag}(\Delta x_{1}^{\text{aff}}, \Delta x_{2}^{\text{aff}},\dots,\Delta x_{n}^{\text{aff}}),\\
+\Delta S^{\text{aff}}& = \text{diag}(\Delta s_{1}^{\text{aff}}, \Delta s_{2}^{\text{aff}},\dots,\Delta s_{n}^{\text{aff}}).
 \end{align*}
 To assess the effect of the corrector component, we examine the pairwise product obtained from a full step along the combined affine-scaling/corrector direction. From (\ref{(B)}), we have:
 \begin{equation*}
@@ -1453,7 +1453,7 @@ Although we need to solve at each iteration two linear systems instead of one, t
 	\> $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{pri}}=\arg\max\{\alpha\geq0\;|\;x^{k} +\alpha\Delta x^{k}\geq 0\}$,\\
 	\> $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{dual}}=\arg\max\{\alpha\geq0\;|\;s^{k} +\alpha\Delta s^{k}\geq 0\}$,\\
 	\>\\
-	\> set $\alpha_{k}^{\text{pri}}=\min(0.99\ast\alpha_{\text{max}}^{\text{pri}},1)$ and $\alpha_{k}^{\text{dual}}=\min(0.99\ast\alpha_{\text{max}}^{\text{dual}},1)$;\\
+	\> set $\alpha_{k}^{\text{pri}}=\min\{0.99\ast\alpha_{\text{max}}^{\text{pri}},1\}$ and $\alpha_{k}^{\text{dual}}=\min\{0.99\ast\alpha_{\text{max}}^{\text{dual}},1\}$;\\
 	\> set\\
 	\> $\;\;\;\;\;\;\;x^{k+1} = x^{k} + \alpha_{k}^{\text{pri}}\Delta x^{k}$;\\
 	\>$\;\;\;\;\;\;\;(\lambda^{k+1},s^{k+1}) = (\lambda^{k},s^{k}) + \alpha_{k}^{\text{dual}}\Delta (\lambda^{k},\Delta s^{k})$;\\
@@ -1523,16 +1523,16 @@ The values of the step lengths and the centering parameter are performed in orde
 \alpha_{\text{aff}}^{\text{pri}}=\arg\max\{\alpha\in[0,1]\;|\;(x^{k}, \lambda^{k}, s^{k})+ \alpha(\Delta x^{\text{aff}}, \Delta\lambda^{\text{aff}}, \Delta s^{\text{aff}})\in\mathcal{N}_{-\infty}(\gamma,\beta)\}
 \end{align}
 To measure the efficiency of the affine-scaling direction, we define $\mu_{\text{aff}}$ as the hypothetical value of $\mu$ resulting from a full step to the boundary, that is,
-\begin{equation*}
+\begin{equation}\label{QWz}
 \mu_{\text{aff}}= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n.
-\end{equation*}
+\end{equation}
 \begin{algorithm}\caption{\label{alg:pc}PC-LPF Algorithm}
 \begin{tabbing}
 	\\
 	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})$ with $(x^{0}, s^{0})> 0$; \\
 	\textbf{for} \= $k = 0, 1, 2,...$ \\
 	\> solve (\ref{(A)}) for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;\\
-	\> calculate $\alpha_{\text{pre}}^{\text{pri}}$ and $\mu_{\text{aff}}$ as in ($\ref{QWw}$);\\
+	\> calculate $\alpha_{\text{pre}}^{\text{pri}}$ and $\mu_{\text{aff}}$ as in ($\ref{QWw}$) and in (\ref{QWz});\\
 	\> set centering parameter to $\sigma_{k} = (\mu_{\text{aff}}/\mu)^{3}$; \\
 	\> solve (\ref{Pb}) for $(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})$;\\
 	\> choose the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma,\beta)$;\\
@@ -1659,9 +1659,6 @@ These outcomes confirm the practical success of the IPM, proving their polynomia
 %\end{table}
 
 \chapter{Implementation details}
-\begin{center}
-\textcolor{red}{DA COMPLETARE}	
-\end{center}
 We have implemented the algorithms and in each of them a sequence of primal-dual iterates $(x^{k},\lambda^{k},s^{k})$ is computed and at each iteration $k$ the duality measure $\mu_{k}$ is set.\\
 Also the value absolute of te duality gap $g^{k}$ at the $k$th iteration is paid particular attention in the practical implemtentations: it is important for the termination criteria ad also it gives informations about the infeasibiliy of the iterates. In fact, as we know, if $(x,\lambda,s) \notin \mathcal{F}$, then we have the residuals $r_{b}$ and $r_{c}$ not null, and: 
 \begin{align*}
@@ -1757,7 +1754,7 @@ This method strategy, labeled with STP (\cite{SPS}), is summarized in the Figure
 \begin{table}[!h]\caption{\label{fig:STP1} Analysis of the starting-point strategies.}	
 	\begin{tabular}{llllllllll}
 		\hline
-		\textbf{Size} &  &  & \textbf{MIP}&&  &  & \multicolumn{3}{l}{\textbf{      STP1}} \\ \cline{1-2} \cline{4-6} \cline{8-10} 
+		\textbf{Size} &  &  & \textbf{MIP}&&  &  & \multicolumn{3}{l}{\textbf{      STP}} \\ \cline{1-2} \cline{4-6} \cline{8-10} 
 		m & n &  & infeasibility & duality measure & ratio &  & infeasibility & duality measure & ratio \\ \hline
 		1 & 2 &  & 2.07e+01 & -1.98e-01 & -104.65 &  & 2.73e+01 & -1.12e+00 & -2.43e+01 \\
 %		2 & 2 &  & 8.05e+00 & 6.25e-01 & 12.87 &  & 9.17e+00 & 9.71e-01 & 9.45e+00 \\
@@ -1831,46 +1828,55 @@ AD^{2}A^{T}\Delta\lambda &= -r_{b}+A(-S^{-1}Xr_{c}+ x - \sigma\mu S^{-1}e),\\
 This form often is called the \textit{normal equations} form and a direct sparse Cholesky algorithm is applied to factor the matrix $AD^{2}A^{T}$. \\Both forms are performed and ill-conditioning is often observed during the final steps of the LPF algorithms with the normal equations, when the elements of the diagonal weighting
 matrix $D^{2}$ takes on both huge and tiny values.
 Then, in the codes it is took in consideration only the second variant: from our observations the effort of the augmented system is not different respect to using (\ref{(5.1)}), except for the Mehrotra's algorithm in finding the solution of the ONB problem, depicted in the next chapter. In fact, the whole system can give sparsity problems. 
-\section*{Geometric viewpoint}
-Now we outline the geometric viewpoint of the simplex method and the IPMs, assuming the LP problem is in canonical form.\\
+\section*{Geometric point of view}
+Now we outline the geometric viewpoint of the simplex method and the IPMs, assuming the LP problem is in standard form.\\
 We already stated that the simplex method generates a sequence of basic feasible primal points of the feasible set $\mathcal{P}$: it picks a vertex of the polytope, then it checks the neighbors of this vertex; if there is a neighbor that gives a
 better solution with respect to the objective function, it pivots to that new vertex.
 It follows this procedure until the optimal solution is reached and none of its neighboring vertices will give
-a better solution.\\Instead, the primal-dual IPMs travel within the interior of the feasible polypole to search for an optimal solution, generating the central path $\mathcal{C}$, rather than working around the boundary.\\ The main idea of the path-following method is to follow $\mathcal{C}$ in the direction of decreasing $\tau$; we have already seen that, indeed, they do not necessarily stay exactly on the path but within a loose and well-defined neighoborhood of $\mathcal{C}$ while steadily reducing the duality measure $\mu$ to zero. Each search direction is computed with a Newton's step toward a point for which the duality measure $\tau$ is equal to or smaller than the current duality measure $\mu$, as we know $\tau=\sigma\mu$. \\
-The affine-scaling method, based on pure Newton's steps, sets the central parameter $\sigma= 0$ in the system;
+a better solution.\\Instead, the primal-dual IPMs travel within the interior of the feasible set $\mathcal{F}$ to search for an optimal solution, generating the central path $\mathcal{C}$, rather than working around the boundary.\\ The main idea of the path-following methods is to follow $\mathcal{C}$ in the direction of decreasing $\tau$ in (4.3); actually they do not necessarily stay exactly on the path but within a loose and well-defined neighoborhood of $\mathcal{C}$ while steadily reducing the duality measure $\mu$ to zero. Each search direction is computed with a Newton's step toward a point for which the duality measure $\tau$ is equal to or smaller than the current duality measure $\mu$, as we know $\tau=\sigma\mu$. \\
+The affine-scaling method, based on pure Newton's steps, sets the central parameter $\sigma= 0$ in the system (\ref{Pb}):
 %In fact, the gap between neighborhood boundaries is wide enough to allow this step to make significant progress in reducing $\mu$. 
-even if it makes significant progress, it also tends to worsen the centrality measure (condition of having all pairwise products $x_{i}s_{i}$ equal). Then, the step length $\alpha$ is the maximum value such that the next primal-dual point remain in the feasible set and often is really small
-such that the step along the search direction before violating the condition; hence, the affine scaling direction, often does not allow us to make much progress toward a solution.\\ 
-The long-path following method doesn't create a sequence that moves strongly to the solution, indeed, computes at the $k$th iteration the search direction with $\sigma_{k}$ between two fixed limits $\sigma_{\text{min}}$ and $\sigma_{\text{max}}$, in order to improve the centrality measure. The lower bound $\sigma_{\text{min}}$ ensures that each search direction start by moving off the boundary of $\mathcal{N}_{-\infty}(\gamma)$ and into the interior of the neighborhood. Unit steps along the search direction takes the next point outside the neighborhood, since the error of approximating the nonlinear KKT system by the linear equations becomes more pronounced as $\alpha$ increases. Then, it selects $\alpha_{k}$ as large a possible subject to the next point remains $\mathcal{N}_{-\infty}(\gamma)$. The restriction of $\sigma_{k}\in(0,1)$ achieves the twin goals of improving centrality and reducing the duality measure into a single step.\\
-Alternatively, the PC IPMs consist geometrically on two movements for each iteration. The predictor step, which start in the inner neighborhood and moves along the affine-scaling direction to the boundary of the outer neighborhood. Between these predictor steps, the algorithm takes corrector steps, computing $\sigma = 1$ and $\alpha= 1$, in order to come back inside the inner neighborhood to prepare for the next predictor corrector step. The Mehrotra's algorithm chooses the centering parameter adaptively: first calculates the affine-scaling direction, then assesses its usefulness as a search direction. If this direction yields a large reduction in $\mu$ without violating the positivity condition $(x, s)> 0$, the algorithm concludes that little centering is needed, so it chooses $\sigma$ close to zero and computes a centered search direction with small value \textcolor{red}{(?)}. Otherwise, it enforces a larger amount of centering by choosing $\sigma$ close to 1. As we see in the description of the Mehrotra's algorithm, the computation of the centered direction and the corrector step are combined, so adaptive centering does not add further to the cost of each iteration. 
+even if it makes significant progress at each iteration, it also tends to worsen the centrality measure (condition of having all pairwise products $x_{i}s_{i}$ equal). Therefore, the step length $\alpha$ is often really small, in order to garantee the next primal-dual point remains in $\mathcal{F}$; hence, the affine scaling direction does not allow us to make much progress toward a solution.\\ 
+The long-path following method doesn't create a sequence that moves strongly to the solution, indeed, computes at the $k$th iteration the search direction with $\sigma_{k}$ between two fixed limits $\sigma_{\text{min}}$ and $\sigma_{\text{max}}$, in order to improve the centrality measure. The lower bound $\sigma_{\text{min}}$ ensures that each search direction start by moving off the boundary of $\mathcal{N}_{-\infty}(\gamma)$ and into the interior of the neighborhood. It is easy to prove that unit steps length along the search direction would take the next point outside the neighborhood, since the error of approximating the nonlinear KKT system by the linear equations becomes more pronounced as $\alpha$ increases. Then, it is selected $\alpha$ as large a possible subject to the next point remains $\mathcal{N}_{-\infty}(\gamma)$. In this research we set $\sigma_{\text{min}}=0$ and $\sigma_{\text{max}}=1$: this restriction achieves the twin goals of improving centrality and reducing the duality measure into a single step.\\
+Alternatively, the PC IPMs consist geometrically on two movements for each iteration. 
+%The predictor step, which start in the inner neighborhood and moves along the affine-scaling direction to the boundary of the outer neighborhood. Between these predictor steps, the algorithm takes corrector steps, computing $\sigma = 1$ and $\alpha=1$, in order to come back inside the inner neighborhood to prepare for the next predictor corrector step; in this way the centering paramter $\sigma$ is chosen adaptively instead of a priori. 
+The Mehrotra's algortihm first calculates the affine-scaling direction, then assesses its usefulness. If this direction yields a large reduction in $\mu$ without violating the positivity condition $(x, s)> 0$, the algorithm concludes that little centering is needed, so it chooses $\sigma$ close to zero and computes a centered search direction with small value. Otherwise, it enforces a larger amount of centering by choosing $\sigma$ close to 1 because we can move only a short distnace along the affine-scaling direction before violating the positivity constraints. As we see in the description of the Mehrotra's algorithm, the computation of the centering and the corrector directions are combined, so adaptive centering parameter does not add further to the cost of each iteration. \\
+The function of the predictor-corrector strategy in the LPF algorithm designed in this research is not different as in Mehrotra's algorithm but it ensures that the iterates are in the neighborhood $\mathcal{N}_{-\infty}(\gamma, \beta)$.
 
 \section*{The centering measure}
-Now we examinate the motion of the sequence computed by the IPM algorithms respect to the path $\mathcal{C}$, at which all the pairwise products are $x_{i}s_{i}$ are identical to $\mu$. To value this \textit{centering deviation} from $\mathcal{C}$, we compare the pairwise products with their duality measure $\mu = x^{T}s/n$ using a scaled 2-norm defined by: 
+Here it is introduced tools useful to examinate the motion of the sequence computed by the IPM algorithms respect to the path $\mathcal{C}$, at which all the pairwise products are $x_{i}s_{i}$ are identical to $\mu$. To value this \textit{centering deviation} from $\mathcal{C}$, we compare the pairwise products with their duality measure $\mu = x^{T}s/n$ using a scaled 2-norm defined by: 
 \begin{equation}\label{cendev}
 \frac{1}{\mu}\lVert XSe - \mu e \rVert_{2}.
 \end{equation}
 With the centering deviation we are able to check the gap between the primal-dual point and $\mathcal{C}$, that gives informations about the behaviour of each IPM described in this research.\\  
-Instead, the residual \textit{Res} defined as follows:
+Instead, the resiual feasibility error defined as follows:
 \begin{equation*}
-Res = \frac{\lVert (r_{b},r_{c})\rVert_{2}}{\lVert (b,c) \rVert_{2}},
+\frac{\lVert (r_{b},r_{c})\rVert_{2}}{\lVert (b,c) \rVert_{2}},
 \end{equation*} 
- is computed in each LP problem modelled in this research, in order to see the accuracy of the solution.
+ is computed in each LP problem modelled in the next chapter, in order to see the feasibility error of the iterates.
 \chapter{Numerical testing}
 %\begin{center}
 %\textcolor{red}{DA COMPLETARE}\\
 %\end{center}
 %In this chapter it is developed a comprehensive analysis of the results obtained by the practical implementations 
 In this second part, the algorithm outlined in this research are implemented and tested in order to get an initial insight of how the methods might
-perform in practice; htey are recalled with the tags labelled in Chapter 5. We present four LP problems: the forest service allocation, the Swedish steel model, tubular products operations planning and Ohio National Planning.\\
+perform in practice; they are recalled with the tags labelled in Chapter 5 as following:
+\begin{itemize}
+	\item Affine method
+	\item LPF 1
+	\item LPF 2
+	\item PC LPF
+	\item Mehrotra
+\end{itemize}\\ We present four LP problems: the forest service allocation, the Swedish steel model, the tubular products operations planning and the Ohio national planning.\\
 The fictitious data used to test the algorithms come from \cite{RR}.
-For each LP model we test the implementations with the two initial point schemes outlined previously. Then we list the optimal cost, the number of iterations, the dual gap and the residual valued at the $\epsilon$-optimal solution, with $\epsilon= 10^{-8}$. To gain a better understanding of the performance of the algorithms, the results of numerical testing were additionally analysed with two graphics. The first one illustrates the behaviour of the duality measure, the dual gap and the centering deviation, defined respectively in (\ref{eq:dm}), in (\ref{dualgap}) and in (\ref{cendev}). The second one illustrate the convergence of the iterates to the feasible set $\mathcal{F}$.\\
-In this study, our goal is to ascertain the effects of using predictor-corrector method in place of a fixed function to find $\sigma$ in an LPF setting. 
+For each LP model we test the implementations with the two initial point schemes outlined previously. Then we list the optimal cost, the number of iterations, the dual gap and the residual valued at the $\epsilon$-optimal solution, with $\epsilon= 10^{-8}$. To gain a better understanding of the performance of each algorithm, the results of numerical testing are additionally analysed with two graphics. The first one illustrates the behaviour of the duality measure, the dual gap and the centering deviation, defined respectively in (\ref{eq:dm}), in (\ref{dualgap}) and in (\ref{cendev}). The second one illustrates the convergence of the iterates to the feasible set $\mathcal{F}$, determining the residual .\\
+In this study, our goal is to see the effects of using predictor-corrector method in place of a fixed function to compute $\sigma$ in an LPF setting. 
 \section{Forest service allocation} 
-The first model proposed is the \textit{Forest service allocation}. It is part of model class in which the main issue is how to divide or allocate a valuable resource among competing needs and the resource may be for example land, capital, time or fuel. We will see how U.S Forest Service has used this model to address the sensitive task of managing 191 million acres of national forestland \cite{(Natural)}.\\
-The Forest Service is one of the major Federal land managing agencies. It has been part of the Department of Agricolture since 1905 and over the past 10 years significant administrative and legal challenges have plagued national forest management \cite{ForSer}. Resource simulation models are the principal technologies used for estimating ecological and enviromental responses to activities. These models try to qualify relationships among resources and results of management actions. Simulations such as timber growth-and-yeld models and sediment yield models often examine consequences of management activities for a singele resource. The regional diversity of forest resources has led to many unique, local models rather than universal models. The Forest Service, in 1979, designed FORPLAN as its principal tool for national forest: it is an LP system, used to analyze the temporal aspects of the forest output. FORPLAN was chosen because it addressed two key issues in forest plnning: cost efficiency and an allowable timber sale quantity. Besides, these models have been used by each national forest structure with input that represent their problem.\\
+The first model proposed is the \textit{Forest service allocation}. It is part of model class in which the main issue is how to divide or allocate a valuable resource among competing needs and the resource may be for example land, capital, time or fuel. We will see how U.S Forest Service, one of the major Federal land managing agencies, has used this model to address the sensitive task of managing 191 million acres of national forestland \cite{(Natural)}.\\
+It has been part of the Department of Agricolture since 1905 and over the past 10 years significant administrative and legal challenges have plagued national forest management \cite{ForSer}. Resource simulation models are the principal technologies used for estimating ecological and enviromental responses to activities. These models try to qualify relationships among resources and results of management actions. Simulations such as timber growth-and-yeld models and sediment yield models often examine consequences of management activities for a singele resource. The regional diversity of forest resources has led to many unique, local models rather than universal models. In 1979 the Forest Service designed FORPLAN as its principal tool for national forest: it is an LP system, used to outline the temporal aspects of the forest output. FORPLAN was chosen because it addressed two key issues in forest plnning: cost efficiency and an allowable timber sale quantity. Besides, these models have been used by each national forest structure with input that represent their problem.\\
 % This is a strengh of LP. \\
 The models of a forest begin by dividing land into homogeneous analysis area, then several prescriptions or land management policies are then proposed and evaluated for each. \\The optimization seeks the best possible allocation of land in the analysis areas to particular prescriptions, subject to forest-wide restrictions on land use.
-We model, hypotetically, 788 thousand acre Wagonho National Forest, that is assumed to have 7 analysis areas, each subject to 3 different prescriptions. The first prescription encourages timbering, the second grazing and the third preserves the land as wilderness. Then we indices the variables as well:
+We model, hypotetically, 788 thousand acre Wagonho National Forest, that is assumed to have 7 analysis areas, each subject to 3 different prescriptions. The first prescription encourages timbering, the second grazing and the third preserves the land as wilderness. Then we index the variables as well:
 \begin{itemize}
 	\item \textit{i} is the analysis area number and \textit{j} is the prescription number;
 	\item $s_{i}$ is the size of area $i$ in thousands of acres;
@@ -1879,7 +1885,7 @@ We model, hypotetically, 788 thousand acre Wagonho National Forest, that is assu
 	\item $g_{i,j}$ is the projected grazing capability (in animal unit months per acre) of analysis area $i$ if managed under prescription $j$;
 	\item $w_{i,j}$ is the wilderness index rating, from 0 to 100, of analysis area $i$ if manages under prescription $j$.
 \end{itemize}
-We want to find an allocation that minimizes net present value while producing 40 million board feet of timber, 5 thousand animal unit months of grazing, and keeping average wilderness index at least 70.\\
+We want to find an allocation that minimizes NPV while producing 40 million board feet of timber, 5 thousand animal unit months of grazing, and keeping average wilderness index at least 70.\\
 The formulation of the model in a LP problem can be written as follows:
 \begin{align*}
 \max&\sum_{i=1}^{7}\sum_{j=1}^{3} p_{i,j}x_{i,j}&(\text{present value})\\
@@ -1925,21 +1931,21 @@ x_{3,1}^{*} &= 140, & x_{3,2}^{*}&= 0, & x_{3,3}^{*} &= 0, & x_{4,1}^{*} &= 0, &
 x_{5,1}^{*} &= 0, & x_{5,2}^{*}&= 154, & x_{5,3}^{*} &= 58, & x_{6,1}^{*} &= 0, & x_{6,2}^{*} &= 0, & x_{6,3}^{*} &= 98,\\
  x_{7,1}^{*}&= 0,&x_{7,2}^{*} &= 0, & x_{7,3}^{*} &= 113. & & & &  & & \\
 \end{align*}
-The numerical results are shown in Table \ref{table:PNV}: we have performed the five algorithms described in the previous chapter to solve this LP model.\\ 
+After performed the five algorithms outlined in the previous chapter to solve this LP model are performed, the numerical results are shown in Table \ref{table:PNV}.\\ 
 %We study the duality measure $\mu = \frac{x^{*}^{T}s^{*}}{24}$ with $x^{*}$ and $s^{*}$ the primal and dual approssimative solution, respectively.
 We can see that almost all of the numerical optimal cost values are very close to the exact one, except for LPF 1; note that the number of iterations depends on the starting point only for the affine and the PC LPF methods.\\
-The fastest long-path following methods, in term of iterations, are LPF 2 and PC LPF, but the latter achieves a smaller duality measure.\\
-The Mehrotra's method has the best iteration complexity than the others, even if its \textit{Res} is not small as the LPF's ones; also its $\mu$ is not the smallest one, as we may suppose. 
-But giving an overview analysis, we can observe that the predictor-corrector algorithms find an optimal primal-dual solution whose duality measure $\mu$ is smaller but the residuals $Res$ are higher values.\\
+The fastest long-path following methods, in term of iterations, are LPF 2 and PC LPF, but the latter achieves a smaller duality measure, asserting the advantage of the predictor-corrector scheme.\\
+The Mehrotra's method has the best iteration complexity than the others, even if \textit{Res-err} and $\mu$ are not small as the LPF's ones, as we may suppose. 
+Eventually, giving a general overview, we can observe that the predictor-corrector algorithms find an optimal primal-dual solution whose duality measure $\mu$ is smaller but the residuals $Res$ have higher values.\\
 In fact, the smallest residuals are computed by the solutions of the LPF 1 and LPF 2 methods: we can state that not choosing the centering parameter adaptively, the primal-dual sequence approaches to the feasible region $\mathcal{F}$ with more speed respect to the duality gap speed, recalling the termination conditions delineated in (\ref{TermC}).\\
 \begin{figure}\caption{\label{figure:for}Execution of the IPM to solve the forest service allocation LP model: }
 \subfloat[Affine algorithm with MIP]{\includegraphics[width= 7 cm]{for_aff1}} \qquad%
 \subfloat[Affine algorithm with MIP]{\includegraphics[width= 7 cm]{for_aff2}}\\
-\subfloat[Affine algorithm with STP 1]{\includegraphics[width= 7 cm]{for_aff3}} \qquad%
-\subfloat[Affine algorithm with STP 1]{\includegraphics[width= 7 cm]{for_aff4}}\\
-\subfloat[LPF 1 algorithm ]{\includegraphics[width= 7 cm]{for_LPF1}} \qquad%
+\subfloat[Affine algorithm with STP]{\includegraphics[width= 7 cm]{for_aff3}} \qquad%
+\subfloat[Affine algorithm with STP]{\includegraphics[width= 7 cm]{for_aff4}}\\
+\subfloat[LPF 1 algorithm with MIP and with STP]{\includegraphics[width= 7 cm]{for_LPF1}} \qquad%
 \subfloat[LPF 1 algorithm]{\includegraphics[width= 7 cm]{for_LPF1b}}\\
-\subfloat[LPF 2 algorithm ]{\includegraphics[width= 7 cm]{for_LPF2}} \qquad%
+\subfloat[LPF 2 algorithm with MIP and with STP]{\includegraphics[width= 7 cm]{for_LPF2}} \qquad%
 \subfloat[LPF 2 algorithm]{\includegraphics[width= 7 cm]{for_LPF2b}}\\
 \end{figure}
 \begin{figure}\caption{\label{figure:for2}Execution of the predictor-corrector IPMs to solve the forest service allocation LP model: }
@@ -1960,25 +1966,25 @@ In fact, the smallest residuals are computed by the solutions of the LPF 1 and L
 		\multicolumn{1}{c|}{} & STP1 & 3.22514998E+05 & 183 & 1.340977E-04 & 1.835235E-16 \\ \hline
 		\multicolumn{1}{c|}{\multirow{2}{*}{\textbf{LPF 2}}} & MIP & 3.225150E+05 & 15 & 2.006163E-06 & 9.476658E-17 \\
 		\multicolumn{1}{c|}{} & STP1 & 3.225150E+05 & 15 & 2.006163E-06 & 9.476658E-17 \\ \hline
-		\multicolumn{1}{r|}{\multirow{2}{*}{\textbf{PC-LPF}}} & MIP & 3.225150E+05 & 17 & 1.857490E-08 & 7.722891E-10 \\
+		\multicolumn{1}{r|}{\multirow{2}{*}{\textbf{PC LPF}}} & MIP & 3.225150E+05 & 17 & 1.857490E-08 & 7.722891E-10 \\
 		\multicolumn{1}{r|}{} & STP1 & 3.225150E+05 & 15 & 1.946073E-08 & 5.089058E-15 \\ \hline
 		\multicolumn{1}{c|}{\multirow{2}{*}{\textbf{Mehrotra}}} & MIP & 3.225150E+05 & 9 & 9.526700E-06 & 6.072557E-13 \\
 		\multicolumn{1}{c|}{} & STP1 & 3.225150E+05 & 9 & 9.526700E-06 & 3.739456E-13 \\ \hline
 	\end{tabular}
 \end{table}
 With Figure \ref{figure:for} and Figure \ref{figure:for2} this conjecture it is illustrated.\\ 
-The affine algorithm with STP 1 computes a primal-dual sequence that achieves the feasible region with more velocity but, the behaviour is similar with both strategies (see graphic (b) and (d)). Instead, the sequence computed by LPF 1 reaches the feasible region after 25 iterations, then the performance gets worse;  in fact, although the computational cost is high, the rate of speed of the dual gap $g$ doesn't improve.  
-In the LPF 2 the improvement of $g$ is noticeable: when the priaml-dual point sequence approaches to the central path $\mathcal{C}$ and to $\mathcal{F}$, $\mu$ tends to 0 with more velocity.\\ 
-Now we look at the predictor-corrector methods: the performance of choosing $\sigma$ adaptively is evident in Mehrotra's algorithm.
-We check that when the centering deviation grows (and the primal-dual iterate moves away from $\mathcal{C}$), the duality gap's velocity increases. Alternatively, in the LPF method, the predictor-corrector strategy can't improve the duality gap since there is the restriction of the neighborhood $\mathcal{N}_{-\infty}$.\\
-It is interesting looking that PC LPF and the Affine method compute primal-dual points that have a similar behaviour to the convergence to the feasible set $\mathcal{F}$, see the graphics (b) of Figure \ref{figure:for} and (b) and (d) of Figure \ref{figure:for2}.\\
+The affine algorithm achieves the solution in fiewer iterations with STP 1 but the velocity to reach the feasible region is similar with both strategies (see graphic (b) and (d)). Instead, the sequence computed by LPF 1 reaches the feasible region after less than 25 iterations, then the performance gets worse;  in fact, although the computational cost is high, the rate of speed of the dual gap $g$ doesn't improve.  
+In the LPF 2 the improvement of $g$ is noticeable: when the primal-dual point sequence approaches to $\mathcal{F}$, $\mu$ tends to 0 with more velocity.\\ 
+Now we look at the predictor-corrector methods in Figure \ref{figure:for2}: the performance of choosing $\sigma$ adaptively is evident in Mehrotra's algorithm.
+In fact we see that, when the centering deviation grows (and the primal-dual iterate moves away from $\mathcal{C}$), the duality gap's velocity increases. Alternatively, in the LPF method, the predictor-corrector strategy can't improve the duality gap since there is the restriction of the neighborhood $\mathcal{N}_{-\infty}$.\\
+It is interesting looking that PC LPF and the Affine method compute primal-dual points that have a similar behaviour to the convergence to the feasible set $\mathcal{F}$, as we can see in the graphics (b) of Figure \ref{figure:for} and (b) and (d) of Figure \ref{figure:for2}.\\
 We conclude that the power of Mehrotra's method is clear in (f) of Figure \ref{figure:for2}: the speed of convergence is almost linear.
 \newpage
 \section{Swedish steel model}
-As allocation models split a resource, instead blending models combine them. Various applications blend everything from chemicals, to diets, to metals, to animal food: these problems are formulated in a LP model in which you have to decide what mix of ingredients best fulfills specified output requirements. In this section we propose the Swedish steel problem.\\
+As allocation models split a resource, instead blending models combine them. Various applications blend everything from chemicals, to diets, to metals, to animal food: these problems are formulated in a LP model in which you have to decide what mix of ingredients best fulfills specified output requirements. In this section the Swedish steel problem is proposed.\\
 The steel industry confronts a blending problem when it melts materials in high-temperature furnaces to manufacture new alloys from scrap. Fagersta AB of Fagersta, in Sweden, is one of many companies that have used mathematical programming to plan this steel blending \cite{SSM}.\\
-An optimization arises when a furnace is charged. Scrap in the available inventory is combined with a pure additives to produce a blend having the required percentages of various chemical elements. It is critical to make maximum use of scrap because addittives are much more expensive. In this research we assess that the Swedish steel making will produce a 1000-kilogram furnace charge. The table \ref{table:carbon} with fictitious data shows the much smaller fractions of carbon, nickel, chromium, and molybdenum in the four available supplies of scrap. It also shows the three higher-cost additives that can be used and the acceptable ranges for the resulting blend.\\
-\begin{table}[h]\caption{\label{table:carbon}Data for Swedish Steel LP model}
+An optimization arises when a furnace is charged. Scrap in the available inventory is combined with a pure additives to produce a blend having the required percentages of various chemical elements. It is critical to make maximum use of scrap because addittives are much more expensive. In this research we assess that the Swedish steel making will produce a 1000-kilogram furnace charge. Table \ref{table:carbon} with fictitious data shows the much smaller fractions of carbon, nickel, chromium, and molybdenum in the four available supplies of scrap. It also shows the three higher-cost additives that can be used and the acceptable ranges for the resulting blend.\\
+\begin{table}[h]\caption{\label{table:carbon}Data for Swedish Steel LP model.}
 \begin{center}
 	\begin{tabular}{@{}lllllll@{}}
 		\toprule
@@ -2019,18 +2025,18 @@ ingredient\\
 		the blend\\
 	\end{tabular}
 	\Bigg)
-	\sum\limits_{j}\Big(\begin{tabular}{l}
+\Big(\begin{tabular}{l}
 		blend\\
 		total\\
 	\end{tabular}
 	\Big).
 \end{equation*}		
-The compostion constraints have been simplified by taking the blend total weight fixed at 1000 kilograms. Collecting all the elements, the LP model of the Swedish example is: 
+The compostion constraints have been simplified by taking the blend total weight fixed at 1000 kilograms, in parenthesis in the formulation below. Collecting all the elements, the LP model of the Swedish example is: 
 \begin{align*}
 \min16x_{1}+10x_{2}+8x_{3}+9x_{4}+48x_{5}+60x_{6}+53x_{7}& &\text{(cost)}&\\
 x_{1}+x_{2}+x_{3}+x_{4}+x_{5}+x_{6} + x_{7}&= 1000&\text{(weight)}&\\
-0.008x_{1}+0.007x_{2}+0.0085x_{3}+0.004x_{4}x_{7}&\geq 0.0065(1000)&\text{(carbon)}&\\
-0.008x_{1}+0.007x_{2} + 0.0085x_{3} + 0.004x_{4}x_{7}&\leq 0.0075(1000)&\\
+0.008x_{1}+0.007x_{2}+0.0085x_{3}+0.004x_{4}&\geq 0.0065(1000)&\text{(carbon)}&\\
+0.008x_{1}+0.007x_{2} + 0.0085x_{3} + 0.004x_{4}&\leq 0.0075(1000)&\\
 0.180x_{1}+0.032x_{2} + 1.0x_{5}&\geq 0.030(1000)& \text{(nickel)}&\\
 0.180x_{1}+0.032x_{2} + 1.0x_{5}&\leq 0.035(1000)&\\
 0.120x_{1}+0.011x_{2} + 1.0x_{6}&\geq 0.010(1000)& \text{(chromium)}&\\
@@ -2041,7 +2047,7 @@ x_{1}&\leq 75&\text{(available)}&\\
 x_{2}&\leq 250 &&\\
 x_{1},\dots, x_{7}\geq 0.\\
 \end{align*}
-According to \cite{RR} and confirmed by the tests illustrated below, the total cost of an optimal charge is 9953.72 kr, with the optimal solution:
+According to \cite{RR} and confirmed by the results of the codes, the total cost of an optimal charge is 9953.72 kr, with the optimal solution:
 \begin{align*}
 x_{1}^{*} &=  75\text{ kg,} & x_{2}^{*}&=  90.91\text{ kg,} & x_{3}^{*} &= 672.28 \text{ kg,} & x_{4}^{*} &= 137.31 \text{ kg,}\\
 x_{5}^{*} &= 13.59 \text{ kg,}& x_{6}^{*}&= 0\text{ kg,}  & x_{7}^{*} &= 10.91 \text{ kg.} &&\\
@@ -2055,37 +2061,37 @@ x_{5}^{*} &= 13.59 \text{ kg,}& x_{6}^{*}&= 0\text{ kg,}  & x_{7}^{*} &= 10.91 \
 		\multicolumn{1}{c|}{} & STP1 & 9.95367173E+03 & 161 & 5.835742E-06 & 2.193332E-16 \\ \hline
 		\multicolumn{1}{c|}{\multirow{2}{*}{\textbf{LPF 2}}} & MIP & 9.95367173E+03 & 13 & 2.265246E-06 & 1.120302E-16 \\
 		\multicolumn{1}{c|}{} & STP1 & 9.95367172E+03 & 13 & 2.265246E-06 & 1.120302E-16 \\ \hline
-		\multicolumn{1}{r|}{\multirow{2}{*}{\textbf{PC-LPF}}} & MIP & 9.95367172E+03 & 14 & 1.037639E-08 & 8.081460E-14 \\
+		\multicolumn{1}{r|}{\multirow{2}{*}{\textbf{PC LPF}}} & MIP & 9.95367172E+03 & 14 & 1.037639E-08 & 8.081460E-14 \\
 		\multicolumn{1}{r|}{} & STP1 & 9.95367172E+03 & 15 & 1.797854E-09 & 7.265413E-15 \\ \hline
 		\multicolumn{1}{c|}{\multirow{2}{*}{\textbf{Mehrotra}}} & MIP & 9.95367172E+03 & 8 & 8.932283E-07 & 6.682737E-12 \\
 		\multicolumn{1}{c|}{} & STP1 & 9.95367172E+03 & 10 & 1.822205E-07 & 8.825683E-15 \\ \hline
 	\end{tabular}
 \end{table}
 Now it is developed an analysis that leads to 
-some different results respect to the previous one. First of all, we observe in Table \ref{table:SWE} that the starting point strategy is indifferent, except for the affine and the two predictor-corrector algorithms.\\As already occured, the LPF 1 requires a huge computational cost respect to the others and, after achieved the boundary of the feasible set, the duality measure $\mu$ is far to satisfy the termination conditions. In this case the number of iterations computing LPF 1 is the smallest comparing to the other LPF's ones, but the $\mu$ reveals that it is not the most accurate in term of convergence.\\
+some different results respect to the previous one. First of all, we observe in Table \ref{table:SWE} that the starting point strategy is indifferent, except for the Affine and the both predictor-corrector algorithms.\\As already occured, the LPF 1 requires a huge computational cost respect to the others and, after achieved the boundary of the feasible set, the duality measure $\mu$ is far to satisfy the termination conditions. In this case the number of iterations computing LPF 2 is the smallest comparing to the other LPF's ones, but the $\mu$ reveals that it is not the most accurate in term of convergence.\\
 In Figure \ref{figure:swe} the graphics (e) and (f) confirm the bad behaviour of LPF1 and (h) disproves the asymptotic convergence in LPF 2: in the last iterates it computes points that move away from the feasible set.\\
-In the Figure \ref{figure:swe2}, it is clear that the predictor-corrector IPM perform better with STP 1. In fact there is an anomaly in the graphic (c), where the dual gap doesn't decrease with regularity, even if the sketch of the feasiblity error speed (d) shows a linear progression. \\
-Also in this case it is clear that Mehrotra's method is the fastest and the most accurate, even if the centering deviation $\sigma$ doesn't increase and hence it is not necessary an adaptive $\sigma$ to obtain aggressive reduction of $\mu$, as we see in (e) and in (g).\\
+In Figure \ref{figure:swe2}, it is clear that the predictor-corrector IPM perform better with STP 1. In fact there is an anomaly in the graphic (c), where the dual gap doesn't decrease with regularity, even if the sketch of the feasiblity error speed (d) shows a linear progression. \\
+Now we investigate the Mehrotra's method: since the centering deviation $\sigma$ doesn't increase and hence it is not necessary an adaptive $\sigma$ to obtain aggressive reduction of $\mu$, as we see in (e) and in (g), it seems superior.\\
 It is not gathered the effectiveness of the heuristic choice of $\sigma$ in a geometric point of view in the Mehrotra's iterates: they stay particularly close to the central path $\mathcal{C}$ while steadily going to the optimal solution. 
 Although this, we can state the important rule of the adaptive centering parameter in long-path following method: even if PC LPF requires more iterations, it does not generate a irregular convergence. \\The optimal cost value solutions in Table \ref{table:SWE} reassert the power of the predictor-corrector algorithms.   
 \begin{figure}\caption{\label{figure:swe}Execution of the IPMs to solve Swedish steel LP model:}
 	\subfloat[Affine algorithm with MIP]{\includegraphics[width= 7 cm]{swe_aff1}} \qquad%
 	\subfloat[Affine algorithm with MIP]{\includegraphics[width= 7 cm]{swe_aff2}}\\
-	\subfloat[Affine algorithm with MIP]{\includegraphics[width= 7 cm]{swe_aff3}} \qquad%
-	\subfloat[Affine algorithm with MIP]{\includegraphics[width= 7 cm]{swe_aff4}}\\
-	\subfloat[LPF 1 algorithm ]{\includegraphics[width= 7 cm]{swe_LPF1}} \qquad%
-	\subfloat[LPF 1 algorithm]{\includegraphics[width= 7 cm]{swe_LPF1b}}\\
-	\subfloat[LPF 2 algorithm ]{\includegraphics[width= 7 cm]{swe_LPF2}} \qquad%
-	\subfloat[LPF 2 algorithm]{\includegraphics[width= 7 cm]{swe_LPF2b}}\\
+	\subfloat[Affine algorithm with STP]{\includegraphics[width= 7 cm]{swe_aff3}} \qquad%
+	\subfloat[Affine algorithm with STP]{\includegraphics[width= 7 cm]{swe_aff4}}\\
+	\subfloat[LPF 1 algorithm with MIP and STP]{\includegraphics[width= 7 cm]{swe_LPF1}} \qquad%
+	\subfloat[LPF 1 algorithm with MIP and STP]{\includegraphics[width= 7 cm]{swe_LPF1b}}\\
+	\subfloat[LPF 2 algorithm with MIP and STP]{\includegraphics[width= 7 cm]{swe_LPF2}} \qquad%
+	\subfloat[LPF 2 algorithm with MIP and STP]{\includegraphics[width= 7 cm]{swe_LPF2b}}\\
 \end{figure}
 \begin{figure}\caption{\label{figure:swe2}Execution of predictor-corrector IPMs to solve Swedish steel LP model:}
-	\subfloat[PC LPF algorithm ]{\includegraphics[width= 7 cm]{swe_PCLPF}} \qquad%
-	\subfloat[PC LPF algorithm]{\includegraphics[width= 7 cm]{swe_PCLPFb}}\\
-	\subfloat[PC LPF algorithm ]{\includegraphics[width= 7 cm]{swe_PCLPF2}} \qquad%
-	\subfloat[PC LPF algorithm]{\includegraphics[width= 7 cm]{swe_PCLPF2b}}\\
-	\subfloat[Mehrotra's algorithm]{\includegraphics[width= 7 cm]{swe_MER}} \qquad%
-	\subfloat[Mehrotra's algorithm]{\includegraphics[width= 7 cm]{swe_MERb}}\\	\subfloat[Mehrotra's algorithm]{\includegraphics[width= 7 cm]{swe_MER2}} \qquad%
-	\subfloat[Mehrotra's algorithm]{\includegraphics[width= 7 cm]{swe_MER2b}}\\
+	\subfloat[PC LPF algorithm with MIP]{\includegraphics[width= 7 cm]{swe_PCLPF}} \qquad%
+	\subfloat[PC LPF algorithm with MIP]{\includegraphics[width= 7 cm]{swe_PCLPFb}}\\
+	\subfloat[PC LPF algorithm with STP]{\includegraphics[width= 7 cm]{swe_PCLPF2}} \qquad%
+	\subfloat[PC LPF algorithm with STP]{\includegraphics[width= 7 cm]{swe_PCLPF2b}}\\
+	\subfloat[Mehrotra's algorithm with MIP]{\includegraphics[width= 7 cm]{swe_MER}} \qquad%
+	\subfloat[Mehrotra's algorithm with MIP]{\includegraphics[width= 7 cm]{swe_MERb}}\\	\subfloat[Mehrotra's algorithm with STP]{\includegraphics[width= 7 cm]{swe_MER2}} \qquad%
+	\subfloat[Mehrotra's algorithm with STP]{\includegraphics[width= 7 cm]{swe_MER2b}}\\
 \end{figure}
 \newpage
 \section{Tubular products operations planning}
@@ -2170,8 +2176,8 @@ In the end it is interesting observe the superlinear convergence of the Mehrotra
 \begin{figure}\caption{\label{figure:tub}Execution of the IPMs tubular production LP model:}
 	\subfloat[Affine algorithm with MIP]{\includegraphics[width= 7 cm]{tub_aff1}} \qquad%
 	\subfloat[Affine algorithm with MIP]{\includegraphics[width= 7 cm]{tub_aff2}}\\
-	\subfloat[Affine algorithm with STP1]{\includegraphics[width= 7 cm]{tub_aff3}} \qquad%
-	\subfloat[Affine algorithm with STP1]{\includegraphics[width= 7 cm]{tub_aff4}}\\
+	\subfloat[Affine algorithm with STP]{\includegraphics[width= 7 cm]{tub_aff3}} \qquad%
+	\subfloat[Affine algorithm with STP]{\includegraphics[width= 7 cm]{tub_aff4}}\\
 	\subfloat[LPF 2 algorithm ]{\includegraphics[width= 7 cm]{tub_LPF2}} \qquad%
 	\subfloat[LPF 2 algorithm]{\includegraphics[width= 7 cm]{tub_LPF2b}}\\
 \end{figure}
@@ -2318,7 +2324,10 @@ In this section, we give a comparison between the results given by the infeasibl
  Second point: while the neighborhood $\mathcal{N}_{-\infty}$ ensures that some products do not approach zero too early as with the pure affine scaling method, it does not prevent products from becoming too large with respect to the average. Hence, it does not provide a complete picture of centrality of the iterate.
 If the centering parameter is left fixed, then the behavior of the
 algorithm became unstable.\\
-Third point: the use of the predictor-corrector technique is advantageous in long-path following method: it leads to significant saving in the number of iterations. We believe that significant improvements to the algorithm can and will be made over time.
+Third point: The one
+unmistakable conclusion, with or without iterative refinement, is that the predictorcorrector algorithm is substantially superior to the pure primal-dual algorithm and
+that this superiority grows with problem size and complexity.
+ the use of the predictor-corrector technique is advantageous in long-path following method: it leads to significant saving in the number of iterations. We believe that significant improvements to the algorithm can and will be made over time.
 However, we personally were both gratified and somewhat surprised at how robust and
 efficient this PC LPF code has proved to be, even when geometrically is not evident. 
 Fourth point: it is indicated an interesting
