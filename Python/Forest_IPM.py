@@ -76,7 +76,7 @@ time of the algorithm
 if __name__ == "__main__":
     
     (A, b, c) = forest() # already in standard form
-    IP = 1
+    IP = 0
     """                           Affine                                    """
     #                              29 it
     x, s , u = affine(A, b, -c, c_form = 1, ip = IP)

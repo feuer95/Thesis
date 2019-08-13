@@ -97,12 +97,12 @@ if __name__ == "__main__":
     
     """                    LPF predictor corrector                          """
     #                          14 iterations
-    x, s, u, sigma_pc = longpathPC(A, b, c, c_form = 1, info = 1, ip = 1)
+    x, s, u, sigma_pc = longpathPC(A, b, c, c_form = 1, info = 1, ip = 0)
     dfpc = cent_meas(x, u, label = 'LPF PC', plot = 0) 
     
     """                          Mehrotra                                   """
     #                            8 iterations
-    x, s, u, sigma_m = mehrotra(A, b, c, c_form = 1, info = 1, ip = 0)
+    x, s, u, sigma_m = mehrotra(A, b, c, c_form = 1, info = 1, ip = 1)
     dfm = cent_meas(x, u, label = 'Mehrotra', plot = 0) 
 
 

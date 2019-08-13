@@ -173,16 +173,15 @@
 \chapter*{Abstract}
 The concept of optimization is now well rooted as a principle underlying the analysis
 of many complex decisions or allocation problems: Linear Programming (LP) is one of the simplest ways to perform optimization.
-This thesis introduces the two major types of methods: the Simplex method and the Interior-Point Methods (IPMs).
+This thesis introduces the two major types of methods to solve LP problems: the Simplex method and the Interior-Point Methods (IPMs).
 We show that the significant difference between them is reflected not only on the theoretical background but also in the practical implementation.\\
 %The efficiency and vast applicability of the IPM algorithms was proven by applying it to various case studies.
-The research addresses the role of the combined predictor-corrector step in Mehrotra's IPM method and builds  a new algorithm obtained applying this technique to the Long-step Path-Following methods (LPF), that displays an extensive theoretical complexity and uses the nested neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
+The research addresses the role of the combined predictor-corrector step in Mehrotra's IPM and builds a new algorithm obtained applying this technique to the Long-step Path-Following methods (LPF), that displays an extensive theoretical complexity and uses the nested neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
 First, a brief description of these methods is given,
 %: the simplex method, that is known to be very efficient practically, and the primal-dual %interior-point
-then we outline a comprehensive convergence analysis of three important IPM: the primal-dual affine scaling, the LPF and the Mehrotra's methods. \\
+then we outline a comprehensive convergence analysis of three important IPMs: the primal-dual affine scaling, the LPF and the Mehrotra's methods. \\
 After introducing the basic theoretical framework, we exhibit a comparison of these competitors, testing them on some real models. The numerical
-results demonstrate the benefits of corrector approach in LPF method as well as the reliability of the
-method.
+results demonstrate the benefits of the predictor-corrector approach in the context of path-following methods in regard to the iteration complexity bound.
 The programs that implement these algorithms are written in Python. 
 %\addcontentsline{toc}{chapter}{Abstract}
 \chapter*{Sommario}
@@ -196,16 +195,18 @@ I metodi sono implementati con il linguaggio di programmazione Python.
 
 
 \chapter{Introduction to the linear programming}
-Optimization is a fundamental tool for understanding nature, science, engineering, economics and mathematics: a large number of real world problems can be treated as optimization problems, in which the goal is to select values that maximize or minimize a given \textit{objective function}, subject to certain \textit{constraints}.\\ The process of identifying objective, variables and constraints for a given problem is knows as \textit{modeling}. Construction of an appropriate model is the first step and, once it is formulated, an optimization algorithm can be used to find its solution.\\ There is a collection of algorithms, each of them is tailored to a particular type of optimization problem. Linear Programming (LP) problems remain one of the most well-studied optimization problems: it consists in maximizing or minimizing a linear function over a certain domain, defined by a set of linear constraints.\\
-Numerical methods for LP have been extensively studied by a huge number of authors: the two major computational one are the Simplex Method and the Interior Point Methods (IPM).
-For several decades the simplex algorithm was the only method available to solve LP \cite{1}. Regarding the theoretical complexity of this method, it has proved that the expected number of iterations in the solution of a linear problem is polynomial but the worst case complexity has exponential behavior. In fact, it has been observed that the simplex algorithm performs sufficiently well in practice, especially on small or medium sized LPs, but its performance is not satisfactory in large-scale LPs. By its design, the method visits the vertices of the polytope defined by the constraints, and it is exposed to the possibility of having to visit many of them, before to reach the optimal one.\\ Another weakness of simplex algorithm is due to the stalling and cycling problem but many anti-cycling pivoting rules have been introduced in the past, as we see later.\\
+Optimization is a fundamental tool for understanding nature, science, engineering, economics and mathematics: a large number of real world problems can be treated as optimization problems, in which the goal is to select values that maximize or minimize a given \textit{objective function}, subject to certain \textit{constraints}.\\ The process of identifying objective, variables and constraints for a given problem is knows as \textit{modelling}. Construction of an appropriate model is the first step and, once it is formulated, an optimization algorithm can be used to find its solution.\\ There is a collection of algorithms, each of them is tailored to a particular type of optimization problem. Linear Programming (LP) problems remain one of the most well-studied optimization problems: it consists in maximizing or minimizing a linear function over a certain domain, defined by a set of linear constraints.\\
+Different numerical methods for LP have been extensively studied by a huge number of authors: the two major computational one are the Simplex method and the Interior Point Methods.
+For several decades the simplex algorithm was the only method available to solve LP problems \cite{1}. Regarding the theoretical complexity of this method, it has proved that the expected number of iterations in the solution of a linear problem is polynomial but the worst case complexity has exponential behavior. In fact, it has been observed that the simplex algorithm performs sufficiently well in practice, especially on small or medium sized LP models, but its performance is not satisfactory in large-scale size. By its design, the method visits the vertices of the polytope defined by the constraints and it is exposed to the possibility of having to visit many of them, before to reach the optimal one.\\ Another weakness of simplex algorithm is due to the stalling and cycling problem but many anti-cycling pivoting rules have been introduced in the past, as we see later.\\
 In the 1980s the monopoly of the simplex algorithm in the solution of the LP has been challenged. Since Dantzig's initial contribution, researchers have made many efforts in order to enhance the performance of simplex algorithm: Interior Point Methods were the result of subsequent research and their performance has been more satisfactory compared to the simplex algorithm. The main idea of IPMs is that the computation of the optimal solution can be achieved by moving inside the feasible region, defined by the constraints.\\
 Although the fundamentals of IPM had been established several years before that Leonid Khachiyan (in 1979) and then Narendra Karmarkar (in 1984) proposed their algorithms for solving LP, it is true that \textit{Khachiyan’s ellipsoid algorithm} was the first algorithm for LP to be actually proven to be theoretically efficient. Nevertheless, although the simplex method is highly inefficient for some pathological examples (we outline the Klee-Minty example), it is turned out that it was clearly superior on average in comparison to the ellipsoid method and, in particular, on essentially any practical problem that would occur in a real-life context. This state changed with \textit{Karmarkar’s algorithm} that is both efficient in theory and practice and nowadays widely considered the first interior-point method for LP.\\
 The equivalence between Karmarkar's projective method and the Newton barrier method increased interest in the role of barrier functions in the theory of IPM, but currently it is broadly accepted that the \textit{primal-dual} IPM are the most efficient interior point methods.\\
 Over the last 25 years later, the developed simplex method and IPM are both widely used and continue to compete between each other \cite{25y}. \\
-This thesis is organized as follow: an introductory section summarizes the basic theory of the LP. In the Chapter 3 we delineate the simplex method. The Chapter 4 is dedicated to the primal-dual interior point methods, taking particular attention to the primal-dual LPF method. It is also examined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\
-Then, an infeasible primal-dual long-step path-following algorithm is proposed: with numerical results, we discuss the technique responsable for its practical efficiency.\\
-Concluding, in the last chapter we give an overview of the work realized in this thesis and comment on possible developments on IPM. 
+The thesis is partitioned into four main chapters.
+In the next chapter it gives an overview of the theoretical foundations in linear programming. In the Chapter 3 we delineate the simplex method. The Chapter 4 is dedicated to the primal-dual interior point methods, taking particular attention to the primal-dual LPF method. It is also examined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\
+Then, an infeasible primal-dual long-step path-following algorithm is proposed: with numerical results reported in Chapter 5, we discuss the technique responsable for its practical efficiency.\\
+The numerical testing are formulated in Chapter 6.\\
+Concluding, in the last chapter we give an overview of the work realized in this thesis and comment on possible developments on IPMs. 
 
 %
 % CAPITOLO 1
@@ -218,9 +219,8 @@ To complete the model, we need the objective functions that quantify the decisio
 \section{Linear programming model}
 
 Since 1950, generations of workers in management, economics, finance and engineerng have been trained in the techniques of formulating linear models that,
-as the name implies, are characterized by linear objective function and constraints formulated with linear equalities or linear inequalities.
-Then, the feasible set satisfying the constraints is a \textit{polytope}, i.e. a convex and connected set with polygonal faces. We say that the LP is \textit{infeasible} if the feasible set $\mathcal{P}$ is empty and \textit{unbounded} if the objective function, minimization function for istance, may be improved indefinitely without violating the constraints and bounds of the feasible region.\\
-We consider the LP in the following \textit{standard form}:
+as the name implies, are characterized by linear objective function and constraints formulated with linear equalities or linear inequalities. Therefore the problem can always be written
+in the following \textit{standard form}:
 \begin{alignat*}{1}\label{eq:stdform}
 \text{minimize\;}\; &c_1 x_1 + c_2 x_2+ ... c_n x_n\\[1.8mm]
 \text{subject\;to\;} &a_{11} x_1 + a_{12} x_2+ ... +a_{1n}x_n = b_1,\\
@@ -237,12 +237,12 @@ where the $b_{j}$, $c_{i}$ \text{and} $a_{ij}$ are fixed real costants, with $i 
 \text{subject\;to\;}&Ax= b\;\\\text{and\;}&x\geq0
  \end{split}
 \end{equation}
-with $x$ an \textit{n}-dimensional column vector of decision variables, $c^
+with $x$ an \textit{n}-dimensional column real vector of decision variables, $c^
 {T}$ a \textit{n}-dimensional vector, \textit{A} a $m \times n$ real matrix, and \textit{b} a \textit{m}-dimensional column vector (Kantorovich L., 1939).
-Throughgout the thesis these notations are used.\\
-If $x$ satisfies the constraints $Ax = b$, $x\geq0$, then it is called \textit{feasible point}; the set of all feasible points is the \textit{feasible set}, indicated by $\mathcal{P}=\lbrace x\in\mathbb{R}^{n,m}\; |\; Ax = b , x \geq0\rbrace$. The feasible point that attains the desired minimum is
-called \text{optimal solution}.\\ If a LP problem has no feasible point, then the problem itself is called infeasible.
-In the case the constraints set is determined entirely by linear inequalites $Ax \leq b$, which in the literature (see \cite{W}) is said to be a \textit{canonical form}, the problem may be alternatively expressed as:
+Throughgout the thesis these notations are used and the objective function will be always formulated as minimization.\\
+All vectors $x$ satisfy the equality $Ax = b$, $x\geq0$ are called \textit{feasible points} and the set of all feasible points is the \textit{feasible set}, indicated by $\mathcal{P}=\lbrace x\in\mathbb{R}^{n}\; |\; Ax = b , x \geq0\rbrace$. The feasible set satisfying the constraints is a \textit{polytope}, i.e. a convex and connected set with polygonal faces: the LP problem is said \textit{infeasible} when $\mathcal{P}$ is empty and \textit{unbounded} when the objective function, minimization function for istance, may be improved indefinitely without violating the constraints and bounds of the feasible region.\\The feasible points that attain the desired minimum is
+called \textit{optimal solutions}.\\
+In the case the constraints set is determined entirely by linear inequalites, $Ax \leq b$, which in the literature (see \cite{W}) is said to be a \textit{canonical form}, the problem may be alternatively expressed as:
 \begin{alignat*}{3}
 \text{minimize\;}&c_1 x_1 + c_2 x_2+ ...+c_n x_n&&&\\[1.8mm]
 \text{subject\;to\;}&a_{11} x_1 +a_{12}x_2 + ... +a_{1n}x_n +y_{1}&&&= b_1,\\
@@ -251,8 +251,8 @@ In the case the constraints set is determined entirely by linear inequalites $Ax
 &a_{m1}x_1+a_{m2}x_2+ ... +a_{mn}x_n+&&&y_{m}=b_m,\\
 \text{and} \;& x_{i} \geq 0;\;\; y_{j} \geq 0; \text{\;\;for }i = 1,...,n&\text{ and }j&=&1,...,m.
 \end{alignat*}
-The new positive variables $\mathit{y_{i}}$, $\;i \in \{1, ..., n\}$ introduced to convert the inequalities into identities, are called \textit{slack variables} and the problem has the standard form with $n+m$ unknowns variables $x_{i}, y_{j}, i =1, ..., m$ and $j=1, ..., n$.\\ The new matrix that now describes the linear equality constraints, assumes the form $\left[\begin{matrix}A\;\vert\; I\;\end{matrix}\right]$, with $A$ the $m \times n$ matrix of the original canonical LP and the identity matrix $I$ associated to the slack variables, and has dimension $m \times (n + m)$.\\
-Considering the system of equalities (\ref{(Prim)}), we can identify a set of \textit{m} linearly independent columns from the \textit{n} columns of  $A$ and create a $m \times m$ submatrix called \textit{basis matrix} ($A_{B}$) with the index set of the columns ($B$) called \textit{basis} of matrix $A$. Then, using a partition $(B, N)$, with basis $B$ and $N$ its complementary set, the \textit{nonbasis} set, we can formaulate the standard LP as following:
+The new positive variables $\mathit{y_{i}}$, $\;i=1, ..., n$ introduced to convert the inequalities into identities, are called \textit{slack variables} and the problem has the standard form with $n+m$ unknowns variables $x_{i},\; y_{j}, \text{ for }i =1, ..., m$ and $j=1, ..., n$.\\ The new matrix that now describes the linear equality constraints, assumes the form $\left[\begin{matrix}A\;\vert\; I\;\end{matrix}\right]$, with $A$ the $m \times n$ matrix of the original canonical LP and the identity matrix $I$ associated to the slack variables, and it has dimension $m \times (n + m)$.\\
+Considering the system of equalities in (\ref{(Prim)}), we can identify a set of \textit{m} linearly independent columns from the \textit{n} columns of  $A$ and create a $m \times m$ submatrix called \textit{basis matrix} ($A_{B}$) with the index set of the columns ($B$) called \textit{basis} of matrix $A$. Then, using a partition $(B, N)$, with $B$ the basis and $N$ its complementary set, named \textit{nonbasis} set, we can formaulate the standard LP as following:
 \begin{equation}\label{(Prim1)}
 \begin{split}
 \min\;&c_{B}^{T}x_{B}+c_{N}^{T}x_{N}\\
@@ -264,11 +264,11 @@ Since $A_{B}$ is nonsingular, we may uniquely solve the equation $A_{B}x_{B} = b
 
 	We define the solution $x$ above as \textit{basic point} with respect to the basis $B$, the basic point is \textit{feasible} if $x_{B}\geq 0$. \\The components of $x$ associated with columns of $A_{B}$ are called \textit{basic variables} and components associated to the complementry set $N$ are the \textit{nonbasic variables}.\\
 	A basis $B$ is \textit{degenerate} if $x_{i}= 0$ for some $i\in B$.\\
-	A LP is said to be \textit{degenerate} if it has at least one degenerate basis.
+	A LP problem is \textit{degenerate} if it has at least one degenerate basis.
 \end{defn}
 For the standard formulation, when $m \geq n$ the feasible region is empty or consists in a single point.\\
- We will assume throughout that $m < n$, hence the $m$ rows are linear indipendent: there is at least one basic point and, accordingly, one solution of the standard equality system in (\ref{(Prim)}). Certainly, if the LP problem is in canonical form, then the extended $m \times (n+m)$ matrix $[A\;|\;I]$ with slack variables satisfies this property. \\
-Now we outline the importance of basic feasible points in solving LP with the simplex method.
+ We will assume throughout that $m < n$, hence we can find $m$ rows linear indipendent: there is at least one basic point and, accordingly, one solution of the standard equality system in (\ref{(Prim)}). Certainly, if the LP problem is in canonical form, then the extended $m \times (n+m)$ matrix $[A\;|\;I]$ with slack variables satisfies this dimension inequality (?). \\
+Now we outline the importance of basic feasible points in solving LP problems with the simplex method.
 Throw the following theorem, we state that it is necessary only to consider basic feasible
 vectors when seeking an optimal solution because the optimal
 value is always achieved at such a solution.\\ The method to prove the theorem is in many respects as important as the result itself, since it represents the beginning of the development of the simplex
@@ -276,27 +276,27 @@ method.
 \begin{thm}[\textbf{Fundamental theorem of liner programming}]\label{Fund}
 \begin{enumerate}
 	\
-\item If there is a feasible point for \ref{(Prim)}, then there is a basic feasible point.
-\item If \ref{(Prim)} has solutions, then at least one such solution is a basic optimal point.
-\item If \ref{(Prim)} is feasible and bounded, then it has an optimal solution.
+\item If there is a feasible point for (\ref{(Prim)}), then there is a basic feasible point.
+\item If (\ref{(Prim)}) has solutions, then at least one such solution is a basic optimal point.
+\item If (\ref{(Prim)}) is feasible and bounded, then it has an optimal solution.
 \end{enumerate}
 \end{thm}
 \begin{proof}
-	See \cite{LP}
+	See \cite{LP}.
 \end{proof}
-Thus, it describes a peculiar feature of the LP: reducing the task of solving it to searching over basic feasible points the solutions. Since for a problem having $n$ variables and $m$ constraints there are at most ${n}\choose{m}$ basic points (corresponding to the number of ways of selecting m of n columns of $A$), there are only a finite number of possibilities. 
+Thus, it describes a peculiar feature of the LP: reducing the task of solving it to searching over basic feasible points the solutions. Since for a problem having $n$ variables and $m$ constraints there are at most ${n}\choose{m}$ basic points (corresponding to the number of ways of selecting $m$ of $n$ columns of $A$), there are only a finite number of possibilities. 
 
 \subsection*{A geometric approach}
-A LP problem is simple to state and visualize. In fact, very simple graphic techniques have enough power to tiny models. They also yield helpful intuition about properties and soultion methods for model of more realistic size.\\ The set $\mathcal{P}$ defines a polytope: geometrically it constitutes the \textit{feasible region} and the \textit{vertices} are the points that do not lie on a stright line between two other points in the set. Algebraically, the vertices of the feasible set $\mathcal{P}$ are exactly the basic feasible points.\\ According to the Fundamental theorem, we can restrict our attention to the vertices of this polytope and it implies that we can explore only at most  ${n}\choose{m}$ points.\\[0.5cm]
+A LP problem is simple to state and visualize. In fact, very simple graphic techniques have enough power to tiny models. They also yield helpful intuition about properties and solution methods for models of more realistic size.\\ As we have already sais, the set $\mathcal{P}$ defines a polytope: geometrically it constitutes the \textit{feasible region} and the \textit{vertices} are the points that do not lie on a stright line between two other points in the set. Algebraically, the vertices of $\mathcal{P}$ are exactly the basic feasible points defined before.\\ According to the Fundamental theorem, we can restrict our attention to the vertices of this polytope and it implies that we can explore only at most  ${n}\choose{m}$ points.\\[0.5cm]
 Considering the following simple LP:
 \begin{align*}
 \min\limits_{(x_{1},x_{2},x_{3})\in\mathbb{R}^{3}} -&x_{1}+ x_{2}-4x_{3}\\
 \text{subject to }&x_{1}+x_{2}+x_{3}=1,\\
- \text{\; with\;} &x_{1}, x_{2}, x_{3} \geq 0,
+ \text{\; with\;} &x_{1}, x_{2}, x_{3} \geq 0.
 \end{align*}
-the tetrahedron in Figure \ref{tetra} is a geometric rappresentetion of the feasible set $\mathcal{P}$: the verteces ${x}_{B_{1}}$, ${x}_{B_{2}}$ and ${x}_{B_{3}}$ are feasible basic points respect to the the basis $B_{1} =\{1\}$,  $B_{2} =\{2\}$,  $B_{3} =\{3\}$.\\
+the tetrahedron in Figure \ref{tetra} is a geometric rappresentation of the feasible set $\mathcal{P}$: the verteces ${x}_{B_{1}}$, ${x}_{B_{2}}$ and ${x}_{B_{3}}$ are the feasible basic points respect to the the basis $B_{1} =\{1\}$,  $B_{2} =\{2\}$,  $B_{3} =\{3\}$.\\ The optimal solution is ${x}_{B_{3}}=(0,0,1)$ in which we find the optimal cost equal to $-4$.
 \textcolor{red}{Questo piccolo esempio di problema lineare verrà richiamato anche nei metodi IPM per mostrare graficamente l'approccio con cui questi ultimi cercano una soluzione ottimale.}
-\begin{figure}[h]\caption{\label{tetra}}
+\begin{figure}[h]\caption{\label{tetra}Feasible set $\mathcal{P}$ defined by the equation above with the three extreme points, corresponding to the three feasible basic solutions.} 
 \begin{center}
 \begin{tikzpicture}[y={(1cm,0cm)}, x={( -0.5cm, -0.5cm)}, z={(0cm,1cm)}] % s i s t e m a di r i f e r i m e n t o t i k z 3 d
 
@@ -337,18 +337,19 @@ node[right] {${x}_{B_{3}}$};
 %[\textit{con una illustrazione grafica del poliedro si mostra l'insieme dei vertici presi in considerazione e candidati punti ottimali}]
 
 \section{Optimality and duality in LP}
-In this section we introduce the optimality and duality theory and investigate the important relationship between primal and dual LP, that provide algorithm strategies.\\ 
-Optimality conditions for the LP can be derived from the theory of the constrained optimization related to a general non linear problem (NLP), defined as follow:
+Associated with any linear programming problem there is another one called \textit{dual}, which consists of the same data objects arranged in a different way.\\In this section, after introduced the optimality and duality theory, we investigate the important relationship between primal and dual LP problems, which will make the later algorithms
+much easier to understand.\\ 
+The optimality conditions for the LP can be derived from the theory of the constrained optimization related to a general Non Linear Programming problem (NLP), defined as follows:
 
 \begin{equation}\label{NLP}
-\min f(x)\text{\;subject\;to\;}\begin{cases} c_{i}(x) = 0 &i \in \mathcal{E}\\ c_{i}(x)\leq 0 &i\in \mathcal{I}\end{cases}
+\min\limits_{x\in\mathbb{R}^{n}} f(x)\text{\;subject\;to\;}\begin{cases} c_{i}(x) = 0, &i \in \mathcal{E}\\ c_{i}(x)\leq 0, &i\in \mathcal{I}\end{cases}
 \end{equation}
 \\
-where $f$ and $c_{i}$ are smooth, real-valued functions defined on subset of $\mathbb{R}^{n}$ and $\mathcal{E}$ and $\mathcal{I}$ are two finite sets of indices in $\mathbb{N}$.\\Let us recall only the necessary conditions, essential to explain the duality results for the linear case, after introducing the following definition of specific regular conditions, defined below:
+where $f$ and $c_{i}$ are smooth, real-valued functions defined on subset of $\mathbb{R}^{n}$ and $\mathcal{E}$ and $\mathcal{I}$ are nonintersecting index sets in $\mathbb{N}$.\\Let us recall only the necessary conditions, that are essential to explain the duality results for the linear case, after introducing the following definition of specific regular conditions, defined below:
 \begin{defn}
-	Given a point x, $\mathcal{A}(x)= \mathcal{E}\cup\left\lbrace i\in\mathcal{I}\;|\;c_{i}(x) =0\right\rbrace$ is called \textit{active set} and we say that the linear independence constraint qualification, $LICQ$, holds if the set of active constraint gradients $\left\lbrace \nabla c_{i}(x),,i\in\mathcal{A}(x)\right\rbrace$ is linear indipendent.
+	Given a point x, we define \textit{active set} $\mathcal{A}(x)= \mathcal{E}\cup\left\lbrace i\in\mathcal{I}\;|\;c_{i}(x) =0\right\rbrace$ and we say that the linear independence constraint qualification, $LICQ$, holds if the set of active constraint gradients $\left\lbrace \nabla c_{i}(x),,i\in\mathcal{A}(x)\right\rbrace$ is linear indipendent.
 \end{defn}
-We define the \textit{Lagrangian function} for the general problem (\ref{NLP}) 
+We call \textit{Lagrangian function} for the general problem (\ref{NLP}) as 
 \begin{equation*}
 \mathcal{L}\left(x,\lambda\right)=f(x)-\sum_{i\in\mathcal{E}\cup\mathcal{I}}\lambda_{i}c_{i}(x).
 \end{equation*}
@@ -365,11 +366,11 @@ c_{i}(x^{*})&\geq 0, &&\;\;\;\;\forall i\in\mathcal{I}\\
 \end{alignat*} 
 \end{thm}
 
-These equalites are called \textit{Karush-Kuhn-Tucker} conditions, or \textit{KKT} conditions for short and the last equality is the \textit{complementary condition}.\\ Though this theorem requires LICQ, the result continues to hold for \textit{dependent} constraints provided they are linear, as in the case of the standard LP \cite{W}. The LP Lagrangian function is:\\
+These equalites are called \textit{Karush-Kuhn-Tucker} conditions, or \textit{KKT} conditions for short and the last equality is the \textit{complementary condition}.\\ Though this theorem requires LICQ, the result continues to hold for \textit{dependent} constraints provided they are linear, as in the case of the standard LP \cite{W}. Now we can illustrate the first-order necessary conditions in a linear case: let us assume that the matrix $A\in\mathbb{R}^{m,n}$, the vectors $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$ construct a standard LP. The Lagrangian function is:\\
 \begin{equation}\label{Lagrangian}
 \mathcal{L}(x,\lambda,s)=c^{T}x-\lambda^{T}\left(Ax-b\right)-s^{T}x.
 \end{equation}
-Now we illustrate the first-order necessary conditions: let us assume that the matrix $A\in\mathbb{R}^{m,n}$, the vectors $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$ construct a standard LP. A vector $x^{*}$ is a solution if and only if exist Lagrange multipliers $\lambda^{*},\;s^{*}$ such that the \textit{primal-dual solution} $\left( x^{*},\lambda^{*},s^{*}\right)\in\mathbb{R}^{n}\times\mathbb{R}^{m}\times\mathbb{R}^{n}$ satisfies these conditions: 
+Frome the Theroem we know that a vector $x^{*}$ is a solution if and only if exist Lagrange multipliers $\lambda^{*},\;s^{*}$ such that the \textit{primal-dual solution} $\left( x^{*},\lambda^{*},s^{*}\right)\in\mathbb{R}^{n,m,n}$ satisfies these conditions: 
 \begin{align}
 A^{T}\lambda+s&=c,\tag{2.5a}\\ \label{DF}
 Ax&=b,\tag{2.5b}\\ \label{PF}
@@ -393,7 +394,7 @@ With this equality, we can formulate the \textit{dual problem} of (\ref{(Prim)})
 &\text{subject\;to\;}A^{T}\lambda \leq c.
 \end{split}
 \end{equation} 
-We can restate this problem in a standard form introducing the slack variables as follows:
+We can restate this problem in a standard form introducing nonnegative slack variables $s$ that convert the dual constraints into equalities :
 \begin{equation}\tag{D}\label{(Dual)}
 \begin{split}
 &\text{maximize\;}b^{T}\lambda,\\
@@ -401,7 +402,7 @@ We can restate this problem in a standard form introducing the slack variables a
 \end{split}
 \end{equation}
 
-Note that in (\ref{Lagrangian}) the Lagrange multipliers are the unknowns variables in (D). In fact, the primal-dual relationship is symmetric: by taking the dual of the dual problem, we recover the original problem (\ref{(Prim)}) that we briefly call \textit{primal} problem (P). In the following theorem is described this relationship:
+Note that in (\ref{Lagrangian}) the Lagrange multipliers are the unknowns variables in (D). In fact, this primal-dual relationship is symmetric: by taking the dual of the dual problem, we recover the original problem (\ref{(Prim)}) that we briefly call \textit{primal} problem (P). This relationship is stated in the following theorem:
 \begin{thm}[\textbf{Strong duality}] 
 	\begin{itemize}
 		\
@@ -411,43 +412,45 @@ Note that in (\ref{Lagrangian}) the Lagrange multipliers are the unknowns variab
 \end{thm}
 (\textit{le dimostrazioni: riferimento: in [1] capitolo 12}).\\[0.5 cm] Hence, by examining the KKT conditions from both the primal and the dual viewpoints, we conclude that the vector $(x^{*},\lambda^{*},s^{*})$ is a primal-dual solution if ond only if $x^{*}$ solves (P) and $(\lambda^{*},s^{*})$ solves (D).\\[1cm]
 %\onehalfspacing
-Let us define the \textit{dual feasible set} $\mathcal{D}=\{(\lambda,s)\in\mathbb{R}^{m+n}| A^{T}\lambda+s|= c,\;s>0\}$, then for every $x\in\mathcal{P}$ and $\left(\lambda,s\right)\in\mathcal{D}$, we have that $c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x \geq0$.\\
-This result leads to the following definition: we call \textit{dual gap} the diffenrence between the primal and the dual solution. The value is labelled with $g$, hence
+Let us define the \textit{dual feasible set} $\mathcal{D}=\{(\lambda,s)\in\mathbb{R}^{m+n}|\;A^{T}\lambda+s= c,\;s>0\}$, then we have that $c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x \geq0$ for every $x\in\mathcal{P}$ and $\left(\lambda,s\right)\in\mathcal{D}$.\\
+This result leads to the following definition: we call \textit{dual gap} the diffenrence between the primal and the dual optimal cost value. It is labelled with $g$, hence
 \begin{equation}\label{dualgap}
-g = c^{T}x - b^{T}y.
+g = c^{T}x - b^{T}\lambda.
 \end{equation}
-Since $c^{T}x\geq b^{T}\lambda$ when both primal and dual variables are feasible, we see:\begin{center}
-	if $\exists(x,\lambda,s)\in\mathcal{P}\times\mathcal{D}$, then $g= x^{T}s \geq0$.
+Since $c^{T}x\geq b^{T}\lambda$ when both primal and dual variables are feasible, we see that:\begin{center}
+	if $(x,\lambda,s)\in\mathcal{P}\times\mathcal{D}$, then $g= x^{T}s \geq0$.
 \end{center}
-At one solution, the duality gap $g$ between primal and dual decreases to zero, as we show in the complementary slackness theorem: it is an important premise (foundation) in the development of the IPM illustrated in the Chapter 4.
+At the primal-dual solutions, the duality gap $g$ between primal and dual decreases to zero, as we show in the complementary slackness theorem: an important premise (foundation) in the development of the IPMs.
 \begin{thm}[\textbf{Complementary slackness}] \ \\
 	Let $(x^{*},\lambda^{*},s^{*})\in\mathcal{P}\times\mathcal{D}$. The following are equivalent:
 	\begin{itemize}
 		\item $x^{*}$ is an optimal solution to (P) and $(\lambda^{*},s^{*})$ is an optimal solution to (D);
 		\item $g^{*} = (x^{*})^{T}s^{*}=0$;
 		\item $x^{*}_{j}s^{*}_{j}=0,\;\forall\; j=0,...,n$;
-		\item If $s^{*}_{j} > 0$ then $x^{*}_{j}= 0,\;\forall\; j=0,...,n$.
+		\item If $s^{*}_{j} > 0$ then $x^{*}_{j}= 0,\;for all\; j=0,...,n$.
 	\end{itemize}
 \end{thm}
 
-For every KKT solution $(x^{*}, \lambda^{*}, s^{*})$ we have $x_{j}^{*}= 0$ and/or $s_{j}^{*}= 0$ for all $j=0,1,\dots,m$.\\
+For every KKT solution $(x^{*}, \lambda^{*}, s^{*})$ we have $x_{j}^{*}= 0$ and/or $s_{j}^{*}= 0$ for all $j=0,1,\dots,n$.\\
 We can define two index sets $\mathcal{B}$ and $\mathcal{N}$ as follows:
 \begin{equation}\label{index}
 \mathcal{B} =\{j\in\{1,\dots,n\}\;|\; x^{*} \not= 0\}, \;
 \mathcal{N} =\{j\in\{1,\dots,n\}\;|\; s^{*} \not= 0\}.
 \end{equation}  
 Obviously, $\mathcal{B}$ and $\mathcal{N}$ are disjoint and form a partition of the indices. Now we state an important theorem:
-\begin{thm}[Goldman-Tucker]
+\begin{thm}[\textbf{Goldman-Tucker}]
 	There is at least one solution $(x^{*}, \lambda^{*}, x^{*})$ such that $x^{*}+s^{*}\geq0$.
 \end{thm}
-The set $\mathcal{B}$ does not necessarily contain $m$ elements, that is the number of the rows of the matrix $A$. This set must not be confused with the set of the basic variables $B$, by the definition (2.1). In the following example, for istance, we have $|\mathcal{B}|= 2$ and three basis sets $B = \{1\}, \{2\}, \{3\}$.
+The set $\mathcal{B}$ does not necessarily contain $n$ elements, that is the number of the rows of the matrix $A$. This set must not be confused with the set of the basic variables $B$, by the definition (2.1). In the following example, for istance, we have $|\mathcal{B}|= 2$ and three basis sets $B$ are $\{1\}, \{2\}, \{3\}$ respectively.
 \begin{ex}
 Consider
-\begin{center} $\min\limits_{(x_{1},x_{2},x_{3})\in\mathbb{R}^{3}} x_{1} \text{,\;subject to\;} x_{1}+x_{2}+x_{3} = 1,\; x\geq 0$.\end{center}
-The primal solution is $x^{*}=(0, t, 1-t)$, for $t\in(0,1)$. 	
+\begin{align*} \min\limits_{(x_{1},x_{2},x_{3})\in\mathbb{R}^{3}} &x_{1}\\ \text{\;subject to\;} &x_{1}+x_{2}+x_{3} = 1,\; \\
+ \text{\; with\;} &x_{1}, x_{2}, x_{3} \geq 0.
+ \end{align*}
+The primal optimal solution is $x^{*}=(0, t, 1-t)$, for $t\in(0,1)$, with optimal cost value null. 	
 \end{ex} 
 
-The multipliers $(\lambda,s)$ indicate the sensitivity of the optimal objective value  to perturbations in the constraints and the process of finding them is called \textit{sensitivity analysis}. \\ In fact, let we assume a small perturbation of input data, for example $b + \Delta b$. If $\Delta x$ and $\Delta s$ have zero in the same entries as $x$ and $s$ respectively, then
+It is importante to see that the multipliers $(\lambda,s)$ indicate the sensitivity of the optimal objective value to perturbations in the constraints and the process of finding them is called \textit{sensitivity analysis}. \\ In fact, let we assume a small perturbation of input data, for example $b + \Delta b$. If $\Delta x$ and $\Delta s$ have zero in the same entries as $x$ and $s$ respectively, then
 \begin{equation*}
 0=x^{T}s=x^{T}\Delta s= \left( \Delta x\right)^{T}s=\left( \Delta x\right)^{T}\Delta s
 \end{equation*}
@@ -775,8 +778,8 @@ Note that $\mathit{F}$ is linear in the first two equations and mildly nonlinear
 The general IPM algorithm generates iterates $(x^{k},\lambda^{k},s^{k})$ with the following properties:
 \begin{itemize}
 	\item $x^{k}$ and $s^{k}$ are nonnegative and strictly positive at each iteration (this requisite leads to the term \textit{interior point});
-	\item the 2-norm of the residuals $r_{b}^{k} = Ax^{k} - b$ and $r_{c}^{k} =A^{T}\lambda^{k} +s^{k} - c$, that we call \textit{infeasiblity error}, decrease at each iteration;
-	\item the duality measure $\mu_{k} = \frac{x^{T}_{k}s_{k}}{n}$ decreases at each iteration;
+	\item the 2-norm of the residuals $r_{b} = Ax - b$ and $r_{c} =A^{T}\lambda +s - c$, that we call \textit{infeasiblity error}, valued in $(x^{k},\lambda^{k},s^{k})$ decrease at each iteration;
+	\item the duality measure $\mu = \frac{x^{T}s}{n}$ decreases at each iteration;
 	\item the next iterate $(x^{k+1},\lambda^{k+1},s^{k+1})$ is computed by an increment of a modified Newton's direction.
 \end{itemize}
 If we define the primal-dual \textit{feasible set} $\mathcal{F}$ and \textit{strictly feasible set} $\mathcal{F}^{0}$ by
@@ -1051,7 +1054,7 @@ The following Lemma shows the properties of this sequence in $\mathcal{N}_{-\inf
 	~\cite{Wright} pag. 101
 \end{proof}
 We see the Lemma assert the sequence is bounded (see \ref{B}) and hence the existence of the limit is verified.\\
-We can introduce an extension of $\mathcal{N}_{-\infty}(\gamma)$, that includes also infeasible points. This neighborhood is defined by
+We can introduce an extension of $\mathcal{N}_{-\infty}(\gamma)$, that includes also infeasible pointsvThis neighborhood is defined by
 \begin{equation}\label{neigh3}
 \mathcal{N}_{-\infty}(\gamma,\beta) =\Bigg\{(x, \lambda, s) | \frac{\lVert(r_{b}, r_{c})\rVert_{2}}{\mu} \leq \beta\frac{\lVert(r_{b}^{0}, r_{c}^{0})\rVert_{2}}{\mu^{0}},\; (x, s)>0,\; x_{i}s_{i} \geq \gamma\mu,\;i = 1,\dots, n \Bigg\},
 \end{equation}
@@ -1066,7 +1069,8 @@ When LPF algorithm works with $\mathcal{N}_{-\infty}(\gamma,\beta)$, the search 
 r_{c}^{k}\\r_{b}^{k}\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
 \end{bmatrix},
 \end{equation}
-since the feasibility of the iterates is not guaranteed.
+since the feasibility of the iterates is not guaranteed. It is well known that the theoretical complexity of large neighbourhood algorithms is
+worse than that of small neighbourhood algorithms, but the former perform better in practice than the latter. This discrepancy is known as ‘irony of IPMs’ \cite{rene}. 
 \section{Asymptotic convergence}
 We examine the asymptotic behavior of these two methods, that are of significant theoretical interest: the following complexity results state that IPM converge arbitrarily close to an optimal solution linearly respect to the duality measure $\mu$. We will develop a modification of the LPF algorithm, in a way that the sequence $\{\mu_{k}\}$ converges almost quadratically to 0. This modified method is depicted in Section 4.5.2.\\
 \subsection{Affine-scaling method}
@@ -1356,30 +1360,29 @@ From these excellent theoretical properties, it is designed a modified LPF algor
 
 
 \section{Predictor-corrector algorithms}\label{sec:pc}
-In the late 80s, Mehrotra and indipendently Lustig, Marsten, Shanno and their collaborators made impressive progress in the implementation of IPM. Two particular techniques have proved particulary successful in accelerating the IPM convergence: Mehrotra's predictor-corrector algorithm and multiple centrality correctors. Since these two methods were developed, there have been a number of attempts to investigate their behaviour rigorosly but, even if are successful in practice, they are hard to analyse theoretically \cite{25y}.\\
-In the research we will present a predictor-corrector LPF algorithm based on Mehrotra's method, in which the centering parameter $\sigma$ is chosen adaptively.\\
+In the late 80s, Mehrotra and indipendently Lustig, Marsten, Shanno and their collaborators made impressive progress in the implementation of IPMs \cite{Mehr}. Two particular techniques have proved particulary successful in accelerating the IPM convergence: Mehrotra's predictor-corrector algorithm and multiple centrality correctors. \\Since these two methods were developed, there have been a number of attempts to investigate their behaviour rigorosly but they are hard to analyse theoretically \cite{25y}, even if they are successful in practice: in fact several powerful methods have been developed and most implementations are based on a variant of Mehrotra's algorithm.\\
 %Most interior-point software written since 1990s have been based on Mehrotra's predictor-corrector algorithm (MPC).\\
-%Since Karmarkar's landmark paper \cite{Kar}, IPM became one of the most active research area that produced a large amount of research results. Moreover, several powerful methods have been developed: predictor-corrector methods are among the most efficient and most implementations are based on a variant of Mehrotra's algorithm. \\
+%Since Karmarkar's landmark paper \cite{Kar}, IPM became one of the most active research area that produced a large amount of research results. Moreover, . \\
 The Mehrotra's contribution was to combine the work developed by Montiero, Adles and Resende \cite{MARE} and the infeasible-interior-point path-following approach implemented by Lustig, Marsten and Shanno \cite{LMS}. 
-The method incorporates these algorithmic devices that contribute to its practical success, including the use of different step lengths for the primal and dual variables and a heuristic choice of the step lengths that is designed to speed the asymptotic convergence.\\
+The method incorporates these algorithmic devices that contribute to its practical success, including the use of different step lengths for the primal and dual variables and a heuristic choice of the step lengths that is designed to speed the asymptotic convergence.\\In the research we will present a predictor-corrector LPF algorithm based on Mehrotra's approach outlined in \cite{Wright}. 
 \subsection{Mehrotra's method}
-In this section we start by outline a single iteration and then we define the method.\\
+We begin delineating a single iteration of the algorithm. It is not quite the same as the original algorithm from \cite{MER} but it is similar to the variant that is implemented in codes such as LIPSOL, LOQO and PCx (see Chapter 11 of \cite{Wright}): through this thesis we label simply as Mehrotra's method (MPC).\\
 It generates sequence of infeasible iterates $(x^{k},\lambda^{k},s^{k})$ for which $(x^{k},s^{k})>0$. The search direction at each iteration consists of three components:
 \begin{enumerate}
 	\item an affine-scaling "predictor" direction;
 	\item a centering term whose size is governed by the adaptively chosen centering parameter $\sigma$;
 	\item a "corrector" direction that attempts to compensate for some of the nonlinearity in the affine-scaling direction.
 	\end{enumerate}
-The affine-scaling component is calculated before the centering component. By arranging the computations in this way, we gain a key advantage: the ability to choose the centering parameter $\sigma$ adaptively rather then a priori, as in the algorithm LPF.\\
-If the affine-scaling direction makes good progress in reducing the duality measure $\mu$ while remaining inside the positive hyperplane defined by $(x,s)>0$, we conclude that little centering is needed, so we choose $\sigma$ close to 1.\\
-Given a point $(x, \lambda, s)$ with $(x, s)> 0$, we compute the affine-scaling direction:
+The affine-scaling component is calculated before the centering component; by arranging the computations in this way, we gain a key advantage: the ability to choose the centering parameter $\sigma$ adaptively rather then a priori, as in the algorithm LPF.\\
+If the affine-scaling direction makes good progress in reducing the duality measure $\mu$ while remaining inside the positive hyperplane defined by $(x,s)>0$, we conclude that little centering is needed, so we choose $\sigma$ close to 0. If, on the other hand, we can move only short distance along thte affine-scaling direction before violating the positivity constraints, we conclude that a significant amount of centering is needed, sowe choose $\sigma$ closer to 1.\\
+Given a point $(x, \lambda, s)$ with $(x, s)> 0$, first af all we compute the affine-scaling direction, solving:
 \begin{equation}\label{(A)}\tag{4.21}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\X&0&S
 \end{bmatrix}\begin{bmatrix}
 \Delta x^{\text{aff}}\\\Delta\lambda^{\text{aff}}\\\Delta s^{\text{aff}}
 \end{bmatrix}=-\begin{bmatrix}
-A^{T}\lambda+s-c\\Ax-b\\XSe
+r_{c}\\r_{b}\\XSe
 \end{bmatrix}.
 \end{equation}
 Now we find the step lengths to the boundary along this direction, performing separate calculations for the primal and dual components as follow:
@@ -1387,12 +1390,12 @@ Now we find the step lengths to the boundary along this direction, performing se
 \alpha_{\text{aff}}^{\text{pri}}=\arg\max\{\alpha\in[0,1]\;|\;x +\alpha\Delta x^{\text{aff}}\geq 0\}, \\
 \alpha_{\text{aff}}^{\text{dual}}=\arg\max\{\alpha\in[0,1]\;|\;s +\alpha\Delta s^{\text{aff}}\geq 0\}\tag{4.22b}.
 \end{align}
-To measure the efficacy of the affine-scaling direction, we define $\mu_{\text{aff}}$ as the hypothetical value of $\mu$ resulting from a full step to the boundary, that is,
+To measure the efficacy of the affine-scaling direction, it is defined $\mu_{\text{aff}}$ as the hypothetical value of $\mu$ resulting from a full step to the boundary, that is,
 \begin{equation}\tag{4.22c}
 	\mu_{\text{aff}}= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n.
 \end{equation}
-If $\mu_{\text{aff}}\ll\mu$, the affine-scaling direction is a good search direction that permits significant progress to be made in reducing $\mu$, so we choose the centering parameter $\sigma$ close to 0. If $\mu_{\text{aff}}$ is just a little smaller than $\mu$, we choose $\sigma$ closer to 1. This choice has the effect of moving us closer  to the central path $\mathcal{C}$, so that the algorithm is in a better position to achieve a substantial decrease in $\mu$ on the next iteration.\\
-Mehrotra \cite{MER} suggests the following heuristic, which has proved to be effective in exhaustive computational testing:
+If $\mu_{\text{aff}}\ll\mu$, the affine-scaling direction is a good search direction that permits significant progress to be made in reducing $\mu$, so we choose the centering parameter $\sigma$ close to 0. Instead, if $\mu_{\text{aff}}$ is just a little smaller than $\mu$, we choose $\sigma$ closer to 1. This choice has the effect of moving us closer  to the central path $\mathcal{C}$, so that the algorithm is in a better position to achieve a substantial decrease in $\mu$ on the next iteration.\\
+Mehrotra suggests the following heuristic in \cite{MER}, which is effective in exhaustive computational testing:
 \begin{equation*}\label{CP}
 \sigma = \bigg(\frac{\mu_{\text{aff}}}{\mu}\bigg)^{3}.
 \end{equation*}
@@ -1420,13 +1423,12 @@ To assess the effect of the corrector component, we examine the pairwise product
 \begin{equation*}
 (x_{i}+\Delta x_{i}^{\text{aff}}+\Delta x_{i}^{\text{cor}})(s_{i}+\Delta s_{i}^{\text{aff}}+\Delta s_{i}^{\text{cor}})= \Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{cor}}+\Delta x_{i}^{\text{cor}}\Delta s_{i}^{\text{aff}}+\Delta x_{i}^{\text{cor}}\Delta s_{i}^{\text{cor}}.
 \end{equation*}
-This result yelds to a better reduction of the duality measure: in fact it results:
-\begin{center} 
-$\lVert(\Delta x^{\text{aff}},\Delta s^{\text{aff}}) \rVert = \mathcal{O}(\mu)$ and $\lVert(\Delta x^{\text{cor}},\Delta s^{\text{cor}}) \rVert = \mathcal{O}(\mu^{2})$.
-\end{center}
+This result yelds to a better reduction of the duality measure, in fact
+\begin{align*} 
+\lVert(\Delta x^{\text{aff}},\Delta s^{\text{aff}}) \rVert &= \mathcal{O}(\mu)\text{ and}\\\lVert(\Delta x^{\text{cor}},\Delta s^{\text{cor}}) \rVert &= \mathcal{O}(\mu^{2}).
+\end{align*}
 When the limiting matrix is singular, the corrector step may no longer be smaller in norm than the affine-scaling step, ideed, it is often larger. Even in this situation, the use of the corrector component usually enhances the overall efficiency of the algorithm in practice.\\
-Since the centering and corrector components are obtained by solving linear system with the same coefficient matrix and they are indipendent each other, we can merge them into a single direction by adding their corresponding right-hand sides and compute the combined direction. 
-We obtain the combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \lambda^{\text{cc}}, \Delta s^{\text{cc}})$ solving the following system:
+Since the centering and corrector components are obtained by solving linear system with the same coefficient matrix and they are indipendent each other, we merge them into a single direction by adding their corresponding right-hand sides and compute the combined direction. We obtain the combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \lambda^{\text{cc}}, \Delta s^{\text{cc}})$ solving the following system:
 \begin{equation}\label{(C)}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\X&0&S
@@ -1437,8 +1439,8 @@ We obtain the combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \
 \end{bmatrix}.
 \end{equation}
 Although we need to solve at each iteration two linear systems instead of one, the marginal cost is not great because the systems have the same coeffifient matrix and then we need only modify the right-hand side. \\
- Having described the essential elements of Mehrotra'a approach, the algorithm is structured as follows:
-\begin{algorithm}\caption{Mehrotra's algorithm}
+ Having described the essential elements of the method's approach, the algorithm is structured as follows:
+\begin{algorithm}[H]\caption{Mehrotra's algorithm}
 \begin{tabbing}
 	\\
 	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})$ with $(x^{0}, s^{0})> 0$ ; \\
@@ -1450,46 +1452,48 @@ Although we need to solve at each iteration two linear systems instead of one, t
 	\> compute the search direction and step to boundary from: \\
 	\> \\
 	\> $\;\;\;\;\;\;\;(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})=(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+(\Delta x^{cc},\Delta  \lambda^{cc},\Delta s^{cc})$;\\
-	\> $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{pri}}=\arg\max\{\alpha\geq0\;|\;x^{k} +\alpha\Delta x^{k}\geq 0\}$,\\
-	\> $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{dual}}=\arg\max\{\alpha\geq0\;|\;s^{k} +\alpha\Delta s^{k}\geq 0\}$,\\
+	\> $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{pri}}=\arg\max\{\alpha\geq0\;|\;x^{k} +\alpha\Delta x^{k}\geq 0\}$;\\
+	\> $\;\;\;\;\;\;\;\alpha_{\text{max}}^{\text{dual}}=\arg\max\{\alpha\geq0\;|\;s^{k} +\alpha\Delta s^{k}\geq 0\}$;\\
 	\>\\
-	\> set $\alpha_{k}^{\text{pri}}=\min\{0.99\ast\alpha_{\text{max}}^{\text{pri}},1\}$ and $\alpha_{k}^{\text{dual}}=\min\{0.99\ast\alpha_{\text{max}}^{\text{dual}},1\}$;\\
+	\> set $\alpha_{k}^{\text{pri}}=\min\{0.99\ast\alpha_{\text{max}}^{\text{pri}},1\}$;\\
+	\> set $\alpha_{k}^{\text{dual}}=\min\{0.99\ast\alpha_{\text{max}}^{\text{dual}},1\}$;\\
 	\> set\\
-	\> $\;\;\;\;\;\;\;x^{k+1} = x^{k} + \alpha_{k}^{\text{pri}}\Delta x^{k}$;\\
-	\>$\;\;\;\;\;\;\;(\lambda^{k+1},s^{k+1}) = (\lambda^{k},s^{k}) + \alpha_{k}^{\text{dual}}\Delta (\lambda^{k},\Delta s^{k})$;\\
+	\> $\;\;\;\;\;\;x^{k+1} = x^{k} + \alpha_{k}^{\text{pri}}\Delta x^{k}$;\\
+	\>$\;\;\;\;\;\;(\lambda^{k+1},s^{k+1}) = (\lambda^{k},s^{k}) + \alpha_{k}^{\text{dual}}\Delta (\lambda^{k},\Delta s^{k})$;\\
 \textbf{end}
 \end{tabbing}
 \end{algorithm}
+It is worth noting that here it needed two step length parameters $\alpha$ instead of only one per iteration in the long-path following algorithms.
 \newpage
 \subsection*{Analysis of MPC}
-In order to study the performance of the Mehrotra's algorithm, we introduce the trajectory-following methods from ODEs. These one define a trajectory from the current point, we say $(x,\lambda,s)$, to the solution set $\Omega$. There are infinitely many trajectories to choose from, but in this case it is obtained from a linear scaling of the function (\ref{F}).\\ Denoting this trajectory by $\mathcal{H}$ and parametrizing it by $\tau\in[0,1)$, we find that each point $(\hat{x},\hat{\lambda},\hat{s})_{\tau}\in\mathcal{H}$ is a solution of the following nonlinear system:
+In order to study the performance of the Mehrotra's algorithm, we introduce the trajectory-following methods from ODEs. These one define a trajectory from the current point, we say $(x,\lambda,s)$, to the solution $(x^{*},\lambda^{*},s^{*})$. There are infinitely many trajectories to choose from, but in this case it is obtained from a linear scaling of the function (\ref{F}).\\ Denoting this trajectory by $\mathcal{H}$ and parametrizing it by $\tau\in[0,1)$, we find that each point $(\hat{x},\hat{\lambda},\hat{s})_{\tau}\in\mathcal{H}$ is a solution of the following nonlinear system:
 \begin{equation}\label{T}
 \begin{bmatrix}
-A^{T}\lambda+\hat{s}-c \\A\hat{x}-b \\\hat{X}\hat{S}e
-\end{bmatrix}=-\begin{bmatrix}
-(1-\tau)r_{c}\\(1-\tau)r_{b}\\-(1-\tau)XSe
+A^{T}\hat{\lambda}+\hat{s}-c \\A\hat{x}-b \\\hat{X}\hat{S}e
+\end{bmatrix}=\begin{bmatrix}
+(1-\tau)r_{c}\\(1-\tau)r_{b}\\(1-\tau)XSe
 \end{bmatrix}, (\hat{x},\hat{s})\geq0,
 \end{equation}
-with $r_{c}$ and $r_{b}$ residuals respect to the initial point. We see that $(\hat{x},\hat{\lambda},\hat{s})_{\tau}$ with $\tau = 0$ is exactly the initial point and that $\lim\limits_{\tau\to\infty}(\hat{x},\hat{\lambda},\hat{s})_{\tau} = (x^{*},\lambda^{*},s^{*})$, if the limit exists.\\
-To move along the trajectory $\mathcal{H}$, we can form a Taylor series approximation to $(x_{\tau},\lambda_{\tau},s_{\tau})$ by expanding about the initial point  $(x,\lambda,s)$ as follows:
+with $r_{c}$ and $r_{b}$ residuals respect to the initial point. We see that $(\hat{x},\hat{\lambda},\hat{s})_{\tau}$ with $\tau = 0$ is exactly the initial point and that $\lim\limits_{\tau\to1}(\hat{x},\hat{\lambda},\hat{s})_{\tau} = (x^{*},\lambda^{*},s^{*})$, if the limit exists.\\
+To move along the trajectory $\mathcal{H}$, we can formulate a Taylor series approximation to $(x_{\tau},\lambda_{\tau},s_{\tau})$ by expanding about the initial point  $(x,\lambda,s)$ as follows:
 \begin{equation*}
 (x_{\tau},\lambda_{\tau},s_{\tau})=(x_{0},\lambda_{0},s_{0})+\tau(x_{0}^{'},\lambda_{0}^{'},s_{0}^{'})+\frac{1}{2}\tau^{2}(x_{0}^{"},\lambda_{0}^{"},s_{0}^{"})+\dots = \sum_{j=0}^{\infty}\frac{\tau^{j}}{j!}(x_{0}^{j},\lambda_{0}^{j},s_{0}^{j}).
 \end{equation*}
-Here, $(x_{0}^{j},\lambda_{0}^{j},s_{0}^{j})$ is the derivative of $(x_{\tau},\lambda_{\tau},s_{\tau})$ with respect to $\tau$, evaluated in $\tau = 0$. We can find these derivatives by implicity differenziating (\ref{T}). Setting $\tau=0$, we have:
+Here, $(x_{0}^{j},\lambda_{0}^{j},s_{0}^{j})$ is the derivative of $(x_{\tau},\lambda_{\tau},s_{\tau})$ with respect to $\tau$, evaluated in $\tau = 0$. We can find these derivatives by implicity differentiating (\ref{T}). Setting $\tau=0$, we have:
 \begin{equation*}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\X&0&S
 \end{bmatrix}\begin{bmatrix}
 x_{0}^{'}\\\lambda_{0}^{'}\\s_{0}^{'}
-\end{bmatrix}=\begin{bmatrix}
--r_{c}\\-r_{b}\\XSe
+\end{bmatrix}=-\begin{bmatrix}
+r_{c}\\r_{b}\\XSe
 \end{bmatrix},
 \end{equation*}
-which is exactly the same system as the affine-scaling step equation.\\
+which is exactly the same system as (\ref{(5.1)}).\\
 Hence, we can make the identification $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})=(x^{'}_{0},\lambda^{'}_{0},s^{'}_{0})$. Differentiating again with respect to $\tau$, we obtain the second derivative solving
 \begin{equation*}
 \begin{bmatrix}
-0&A^{T}&I \\A&0&0\\X&0&S
+0&A^{T}&I \\A&0&0\\\hat{X}_{0}&0&\hat{S}_{0}
 \end{bmatrix}\begin{bmatrix}
 x_{0}^{''}\\\lambda_{0}^{''}\\s_{0}^{''}
 \end{bmatrix}=-\begin{bmatrix}
@@ -1500,33 +1504,32 @@ and we see that $(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\Delta s^{\t
 \begin{equation*}
 (x_{\tau},\lambda_{\tau}, s_{\tau})\approx(x, \lambda, s)+ \tau(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+\tau^{2}(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\Delta s^{\text{cor}}).
 \end{equation*}
-If we ignore the centering term  by setting $\sigma =0$ and, hence, constrain the primal and dual step lengths to be identical, then the algorithm searches the successive point along the line
+Now let us compare this approximation to the Mehrotra's iteration: ignoring the centering term by setting $\sigma =0$, if we constrain the primal and dual step lengths to be identical, we see in the algorithm the successive point will be
 \begin{equation}
 (x_{\tau},\lambda_{\tau}, s_{\tau})\approx(x, \lambda, s)+ \tau(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+\tau(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\Delta s^{\text{cor}}),
 \end{equation} 
-that is, the $\tau^{2}$ coefficient in the last term is replaced by $\tau$. Instead when we account for the centering parameter, the correspondence between the derivatives of the trajectory and the MPC search direction no longer holds. \\
-Then we introduce the modified trajectory $\mathcal{H}_{\sigma}$ for which the correspondence continues to hold even in the presence of $\sigma$. Also $\mathcal{H}_{\sigma}$ starts at $(x, \lambda, s)$ and aims at the solution set $\Omega$. All $(x_{\tau},\lambda_{\tau},s_{\tau})$ in this trajectory satisfy:
+in which the $\tau^{2}$ coefficient in the last term is replaced by $\tau$. Instead when we account for the centering parameter, the correspondence between the derivatives of the trajectory and the MPC search direction no longer holds. \\
+Then we introduce the modified trajectory $\mathcal{H}_{\sigma}$ for which the correspondence continues to hold even in the presence of $\sigma$. Also $\mathcal{H}_{\sigma}$ starts at $(x, \lambda, s)$ and aims at the solution $(x^{*},\lambda^{*},s^{*})$ and all $(x_{\tau},\lambda_{\tau},s_{\tau})$ in this trajectory satisfy:
 \begin{equation}\label{Tt}
 \begin{bmatrix}
 A^{T}\lambda+s-c \\Ax-b \\XSe
-\end{bmatrix}=-\begin{bmatrix}
-(1-\tau)r_{c})\\(1-\tau)r_{b}\\-(1-\tau)XSe+\tau^{2}(1-\tau)\sigma\mu e
+\end{bmatrix}=\begin{bmatrix}
+(1-\tau)r_{c}\\(1-\tau)r_{b}\\(1-\tau)XSe+\tau^{2}(1-\tau)\sigma\mu e
 \end{bmatrix},(x,s)\geq0.
 \end{equation}
 The tangent to this trajectory is the affine-scaling direction, as for $\mathcal{H}$, but the curvature can be identified with the combined centering-corrector step rather than the corrector component alone. The trajectory $\mathcal{H}_{\sigma}$ approximates more the central path than $\mathcal{H}$. Despite the closer relationship between $\mathcal{H}_{\sigma}$  and MPC algorithm, we can not qualify it as a second-order trajectory-following algorithm because it still searches along a linear direction rather than a quadratic path.  
 \subsection{A predictor-corrector LPF method}
-In this research it is proposed a predictor-corrector long-path following method (PC-LPF) in which the centering parameter $\sigma$ is computed adaptively, equal to Mehrotra's method.\\
+In this research it is proposed a predictor-corrector long-path following method (PC-LPF) in which the centering parameter $\sigma$ is computed adaptively, equal to the Mehrotra's method.\\
 This predictor-corrector algorithm below is a definite improvement over the long-path following algorithm because of the adaptivity that is built into the choice of the predictor step. We will discuss if eventually this potential
-technique may further accelerate the performance of the LPF method.
-The values of the step lengths and the centering parameter are performed in order to guarantee that the next iteration $(x^{k}, \lambda^{k}, s^{k})$ is in $\mathcal{N}_{-\infty}(\gamma,\beta)$:
-\begin{align}\label{QWw}
-\alpha_{\text{aff}}^{\text{pri}}=\arg\max\{\alpha\in[0,1]\;|\;(x^{k}, \lambda^{k}, s^{k})+ \alpha(\Delta x^{\text{aff}}, \Delta\lambda^{\text{aff}}, \Delta s^{\text{aff}})\in\mathcal{N}_{-\infty}(\gamma,\beta)\}
+technique may further accelerate the performance of the LPF methods compared previously.\\
+
+Let suppose we have computed the $k$th iterate, it follows a predictor step in which we compute the affine-scaling direction: with $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$ the following predictor step length $\alpha_{\text{aff}}^{\text{pre}}$ is necessary to find $\mu_{\text{aff}}$, as we can see below:
+\begin{align}
+\alpha_{\text{aff}}^{\text{pre}}&=\arg\max\{\alpha\in[0,1]\;|\;(x^{k}, \lambda^{k}, s^{k})+ \alpha(\Delta x^{\text{aff}}, \Delta\lambda^{\text{aff}}, \Delta s^{\text{aff}})\in\mathcal{N}_{-\infty}(\gamma,\beta)\}\label{QWw}\\
+\mu_{\text{aff}}&= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n.\label{QWz}
 \end{align}
-To measure the efficiency of the affine-scaling direction, we define $\mu_{\text{aff}}$ as the hypothetical value of $\mu$ resulting from a full step to the boundary, that is,
-\begin{equation}\label{QWz}
-\mu_{\text{aff}}= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n.
-\end{equation}
-\begin{algorithm}\caption{\label{alg:pc}PC-LPF Algorithm}
+in which $\mu_{\text{aff}}$ measure the efficiency of the affine-scaling direction.
+\begin{algorithm}[H]\caption{\label{alg:pc}PC-LPF Algorithm}
 \begin{tabbing}
 	\\
 	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})$ with $(x^{0}, s^{0})> 0$; \\
@@ -1539,6 +1542,8 @@ To measure the efficiency of the affine-scaling direction, we define $\mu_{\text
 	\textbf{end}
 \end{tabbing}
 \end{algorithm}
+Instead the corrector step consits on solving \\
+ then the values of the step lengths and the centering parameter are performed in order to guarantee that the next iterate $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma,\beta)$ are:
 \newpage
 \section{IPM algorithms performance}
 In this section we develop an empirical study of the IPM algorithms performace. Let us compare the proposed methods with the implementation reported in Appendix. \\
@@ -1743,7 +1748,7 @@ This method strategy, labeled with STP (\cite{SPS}), is summarized in the Figure
 			\> $(x^{0}, \lambda^{0}, s^{0}) = \tilde{w}$;$\;\;\;\;\;\;$\\
 			\textbf{ else}\>\\
 			\> $\tilde{\mu}=\tilde{\sigma}/(\tau n)$; \\
-			\> $(x^{0}, \lambda^{0}, s^{0}) = \eta \tilde{w}$;\tab \\
+stated			\> $(x^{0}, \lambda^{0}, s^{0}) = \eta \tilde{w}$;\tab \\
 			\textbf{ end}
 			\end{tabbing}
 \end{boxedminipage}
@@ -1846,14 +1851,19 @@ The function of the predictor-corrector strategy in the LPF algorithm designed i
 \section*{The centering measure}
 Here it is introduced tools useful to examinate the motion of the sequence computed by the IPM algorithms respect to the path $\mathcal{C}$, at which all the pairwise products are $x_{i}s_{i}$ are identical to $\mu$. To value this \textit{centering deviation} from $\mathcal{C}$, we compare the pairwise products with their duality measure $\mu = x^{T}s/n$ using a scaled 2-norm defined by: 
 \begin{equation}\label{cendev}
-\frac{1}{\mu}\lVert XSe - \mu e \rVert_{2}.
+\delta(xs, \mu)=\frac{1}{\mu}\lVert XSe - \mu e \rVert_{2}=\frac{1}{\mu} \Bigg\lVert\Bigg[\begin{array}{c}
+x_{1}s_{1}\\
+...\\
+x_{n}s_{n}\\
+\end{array}
+\Bigg]-\Bigg(\frac{x^{T}s}{n}\Bigg)e\Bigg\rVert_{2}.
 \end{equation}
 With the centering deviation we are able to check the gap between the primal-dual point and $\mathcal{C}$, that gives informations about the behaviour of each IPM described in this research.\\  
-Instead, the resiual feasibility error defined as follows:
+Instead, the residual feasibility error is defined as follows:
 \begin{equation*}
-\frac{\lVert (r_{b},r_{c})\rVert_{2}}{\lVert (b,c) \rVert_{2}},
+Res(x,\lambda,s)=\frac{\lVert (r_{b},r_{c})\rVert_{2}}{\lVert (b,c) \rVert_{2}},
 \end{equation*} 
- is computed in each LP problem modelled in the next chapter, in order to see the feasibility error of the iterates.
+ with $r_{b}$ and $r_{c}$ the residuals valued in $(x,\lambda,s)$. This framework facilitates a unified analysis of most IPMs: in fact the feasibility error of the iterates computed by each algorithm is studied in the next chapter.
 \chapter{Numerical testing}
 %\begin{center}
 %\textcolor{red}{DA COMPLETARE}\\
@@ -2192,7 +2202,7 @@ In the end it is interesting observe the superlinear convergence of the Mehrotra
 \end{figure}
 \newpage
 \section{Ohio National Bank shift scheduling}
-Operations planning models decide what work to undertake so that available resources are used efficiently. In shift scheduling or staff planning models the work is already fixed. We must now plan the resources to accomplish it.\\
+Operations planning models decide what work to undertake so that available resources are used efficiently and in shift scheduling or staff planning models the work is already fixed but it is necessary to plan the resources to accomplish it.\\
 The Ohio National Bank (ONB) confronted such a problem in staffing its check processing center \cite{ONB}. Checks received by the bank already have account numbers and other identifying information encoded on them. Machine operators in the check processing center key the dollar  amount of the check, which is then imprinted with the other information for computerized processing.\\Checks arrive through the business day in volumes peaking in the early evening. The fictious version will assume the arrivals printed in Table \ref{table:shiftscheduling}, in thousand. \\
 \begin{table}[h]\caption{\label{table:shiftscheduling}Possible ONB arrivals schedule}
 	\begin{center}
@@ -2208,10 +2218,10 @@ The Ohio National Bank (ONB) confronted such a problem in staffing its check pro
 	\end{tabular}
 \end{center}
 \end{table}
-Uncollected checks cost the bank money in lost interest. Thus it is essential that all checks be processed in time for collection on the next business day. ONB decided to enforce a requirement that all checks be completed by 22:00. Furthermore, the number unprocessed at any hour should not exceed 20 thousand. \\
+Uncollected checks cost the bank money in lost interest: thus it is essential that all checks be processed in time for collection on the next business day. ONB decided to enforce a requirement that all checks be completed by 22:00. Furthermore, the number unprocessed at any hour should not exceed 20 thousand. \\
 Two types of employees can perform the check processing task. Full-time employees work an 8-hour shift with a 1-hour lunch break in the middle. Part-time employees work only 4 hour per day with no lunch. Both types of shifts can begin at any hour of the day and full-time employees can be assigned an hour of overtime.\\
 In the analysis we assume that full-time employees receive \$ 11 per hour in pay and benefits, plus an extra \$ 1 per hour in "night differential" for time after 18:00 and 150\% pay for daily overtime. Part-time employees are paid \$ 7 per hour, plus \$ 1 per hour night differential after 18:00. Also, to keep overtime under control, we require that no more than half the full-time employees on any shift work overtime and that the total number of scheduled overtime hours not exceed 20 per day.\\
-If we consider that full-time employees work faster than part-timers, than we will assume that full-time operators process 1000 checks per hour and part-timers only 800.\\
+If we consider that full-time employees work faster than part-timers, than we will assume for istance that full-time operators process 1000 checks per hour and part-timers only 800.\\
 One final complication is encoding stations: the number of machines available limits the number of employees who can work at any one time; let us assume the center will have 35 machines.\\
 
 \begin{table}[]\caption{\label{table:Shiftscheduling2}Possible Shifts in ONB Example: R is regular duty, O is possible overtime, instead N night differential.}
@@ -2240,20 +2250,20 @@ Using the index $h$ corresponding the shift start time, we define the following 
 	\item $y_{h}$ is the number of full-time employees with shift beginning at hour $h$ who overtime, for $h=11, 12$;
 	\item $z_{h}$ corresponds to the number of part-time employees beginning a shift at hour $h=11, \dots, 18$.
 \end{itemize}
-In the Table \ref{table:shiftscheduling} it is required that no more than 35 operators are on duty at any time. Then, we simply constrain the sum of full-time, overtime and part-time employees on duty in each hour:
+As we can see in Table \ref{table:shiftscheduling} it is required that no more than 35 operators are on duty at any time. \\Then, we simply constrain the sum of full-time, overtime and part-time employees on duty in each hour:
 \begin{align*}
-x_{11}&        &         &+z_{11}&        &&        &= 1000&\text{(11:00 machines)}&\\
-x_{11}&+x_{1,2}&         &+z_{11}&+z_{12}&&        &\leq 35&\text{(12:00 machines)}&\\
-&&&&\vdots&&&\\
-y_{11}&+x_{12}&+x_{13}&         &&+z_{17}&+z_{18}&\leq35&\text{(20:00 machines)}&\\
-y_{12}&        &+x_{13}&         &        &&+z_{18}&\leq35&\text{(21:00 machines)}&\\
+x_{11}+z_{11}&= 1000&&\text{(11:00 machines)}&\\
+x_{11}+x_{12}+z_{11}+z_{12}&\leq 35&&\text{(12:00 machines)}&\\
+&\vdots&&\\
+y_{11}+x_{12}+x_{13}+z_{17}+z_{18}&\leq35&&\text{(20:00 machines)}&\\
+y_{12}+x_{13}+z_{18}&\leq35&&\text{(21:00 machines)}&\\
 \end{align*}
 Now we add the overtime limits, that can not exceed half of any full-time shift or total more than 20 hours per day. These limits lead us to the following constraints:
-\begin{alignat*}{6}
-y_{11}&       &&\leq \frac{1}{2}x_{11}&&\text{         (11-shift overtime)}&\\
-      &+y_{12}&&\leq \frac{1}{2}x_{12}&&\text{         (12-shift overtime)}&\\
-y_{11}&+y_{12}&&\leq 20               &&\text{         (total overtime)}&\\
-\end{alignat*}
+\begin{align*}
+y_{11}&\leq \frac{1}{2}x_{11}&&\text{(11-shift overtime)}\\
+      y_{12}&\leq \frac{1}{2}x_{12}&&\text{(12-shift overtime)}\\
+y_{11}+y_{12}&\leq 20&&\text{(total overtime)}\\
+\end{align*}
 To complete the model we have to compute the covering contraints, that assure that the shifts chosen provide enough worker output to cover requiremenets over each time period; that is:
 \begin{equation*}
 \sum\limits_{\text{shifts}}(\text{output/worker})(\text{number on duty})\leq(\text{period requirement}).
@@ -2262,7 +2272,7 @@ With the ONB case we have a slight complication in covering requirements. Work a
 \begin{itemize}
 	\item $w_{h}$ as not clompeted work backlog at hour $h$ (in thousands).
 \end{itemize}
-Then the ONB covering constraints take the form
+Then, the ONB covering constraints take the form
 \begin{align*}
 x_{11}+0.8z_{11}&\geq 10 - w_{12}&(11:00 \text{ cover})&\\
 x_{11}+x_{12}+0.8z_{11}+0.8z_{12}&\geq11 +w_{12}-w_{13}&(12:00 \text{ cover})&\\
@@ -2270,45 +2280,45 @@ x_{11}+x_{12}+0.8z_{11}+0.8z_{12}&\geq11 +w_{12}-w_{13}&(12:00 \text{ cover})&\\
 y_{11}+x_{12}+x_{13}+0.8z_{17}+0.8z_{18}&\geq 20 +w_{20}-w_{21}&(20:00 \text{ cover})&\\
 y_{12}+x_{13}+0.8z_{18}&\geq 8 +w_{21}.&(21:00 \text{ cover})&\\
 \end{align*}
-Combining all these constraints with suitable variables (\textcolor{red}{non riporto il problema lineare perchè è troppo complesso}), with upper bounds of 20 on all backlog variables $w_{h}$, we can compute the full ONB shift scheduling LP. The optimal cost value is \$ 2836.07 per day and the optimal solution is:
+Combining all these constraints with suitable variables, with upper bounds of 20 on all backlog variables $w_{h}$, we can compute the full ONB shift scheduling LP. Here the model is not delineated, since this combination of constraints is made by Python codes, skipping the modelling step. The optimal cost value is \$ 2836.07 per day and the optimal solution is:
 \begin{align*}
 x_{12}^{*} &=  8.57, & x_{13}^{*}&=  12.86, & y_{12}^{*} &= 4.29, & z_{14}^{*} &= 13.57, &z_{16}^{*} &= 5.36,\\
 z_{17}^{*} &= 7.50, & z_{18}^{*}&= 0.71,  & w_{12}^{*} &= 10, & w_{13}^{*} &= 12.43, &w_{14}^{*} &=  6.00,\\
 w_{14}^{*} &=  6.00, & w_{18}^{*}&=  2.29, & w_{19}^{*} &= 20, & w_{20}^{*} &= 17,71, &w_{21}^{*} &= 9.71.\\
 \end{align*}
-From the Table \ref{table:ONB} it is again confirmed the big computational cost for LPF1 and the weakness of the affine method, since it doesn't work with the STP1 strategy. In this case study the LPF2 requires a less number of iterations respect to the other long-path following algorithms, leading a contraddiction to the conjecture of the efficiency of the PC type.\\ 
+From Table \ref{table:ONB} it is again confirmed the big computational cost for LPF1 and the weakness of the Affine method, since it doesn't work with the STP strategy. In this case study the LPF2 requires a less number of iterations respect to the other long-path following algorithms, leading a contraddiction to the conjecture of the efficiency of the PC type.\\ 
 We look that only the predictor-corrector algorithms work differently using the two initial point strategies.
-Hence, we plotted the performance of PC-LPF and Mehrotra's algorithms with both strategies MIP and STP1, in order to compare them. The rule of the adaptive choice of the centering parameter $\sigma$ is noticeable in Mehrotra's algorithm with MIP, as showm in (e): in the 6th iteration the centering deviation increases because an acceleration of the sequence $\{\mu_{k}\}$ is required; the graphic (f) illustrates this improvement. The STP1 strategy gives a good initial point for Mehrotra's method: in fact we see that in the computation the sequence tends to the solution with a big order of convergence and the $\sigma$ rule is not appealed.\\
-In (a) and in (c) we observe that the neighborhood $\mathcal{N}_{-\infty}$ prevents the sequence moves away from the $\mathcal{C}$ , making the power of the adaptive $\sigma$ impraticable.\\  
+Hence, we plotted the performance of PC LPF and Mehrotra's algorithms with both strategies MIP and STP, in order to compare them. The rule of the adaptive choice of the centering parameter $\sigma$ is noticeable in Mehrotra's algorithm with MIP, as showm in (e): in the 6th iteration the centering deviation increases because an acceleration of the sequence $\{\mu_{k}\}$ is required; the graphic (f) illustrates this improvement. The STP1 strategy gives a good initial point for Mehrotra's method: in fact we see that in the computation the sequence tends to the solution with a big order of convergence and the $\sigma$ rule is not appealed.\\
+In (a) and in (c) we observe that the neighborhood $\mathcal{N}_{-\infty}$ prevents the sequence moves away from the $\mathcal{C}$, making the power of the adaptive $\sigma$ impraticable.\\  
 
 \begin{table}[]\caption{\label{table:ONB}Numerical results obtained by the codes.}
 	\begin{tabular}{cclcll}
 		\hline		\textbf{} & \textbf{Initial point} & \multicolumn{1}{c}{\textbf{Optimal value}} & \textbf{Iterations number} & \multicolumn{1}{c}{\textbf{$\mu$}} & \multicolumn{1}{c}{\textbf{Residual} Res} \\ \hline
 		\multicolumn{1}{c|}{\multirow{2}{*}{\textbf{Affine}}} & MIP & 2.83607143E+03 & 21 & 7.943122E-08 & 1.461187E-10 \\
-		\multicolumn{1}{c|}{} & STP1 & - & - & - & - \\ \hline
+		\multicolumn{1}{c|}{} & STP & - & - & - & - \\ \hline
 		\multicolumn{1}{c|}{\multirow{2}{*}{\textbf{LPF 1}}} & MIP & 2.83607144E+03 & 307 & 4.660729E-07 & 4.943016E-16 \\
-		\multicolumn{1}{c|}{} & STP1 & 2.83607144E+03 & 307 & 4.660729E-07 & 4.943016E-16 \\ \hline
+		\multicolumn{1}{c|}{} & STP & 2.83607144E+03 & 307 & 4.660729E-07 & 4.943016E-16 \\ \hline
 		\multicolumn{1}{c|}{\multirow{2}{*}{\textbf{LPF 2}}} & MIP & 2.83607143E+03 & 16 & 6.253924E-10 & 1.022786E-15 \\
-		\multicolumn{1}{c|}{} & STP1 & 2.83607143E+03 & 16 & 6.253924E-10 & 1.022786E-15 \\ \hline
-		\multicolumn{1}{r|}{\multirow{2}{*}{\textbf{PC-LPF}}} & MIP & 2.83607140E+03 & 18 & 1.280794E-06 & 5.051947E-09 \\
-		\multicolumn{1}{r|}{} & STP1 & 2.83607143E+03 & 25 & 1.675101E-07 & 4.966188E-10 \\ \hline
+		\multicolumn{1}{c|}{} & STP & 2.83607143E+03 & 16 & 6.253924E-10 & 1.022786E-15 \\ \hline
+		\multicolumn{1}{r|}{\multirow{2}{*}{\textbf{PC LPF}}} & MIP & 2.83607140E+03 & 18 & 1.280794E-06 & 5.051947E-09 \\
+		\multicolumn{1}{r|}{} & STP & 2.83607143E+03 & 25 & 1.675101E-07 & 4.966188E-10 \\ \hline
 		\multicolumn{1}{c|}{\multirow{2}{*}{\textbf{Mehrotra}}} & MIP & 2.83607143E+03 & 10 & 8.293070E-09 & 1.716557E-10 \\
-		\multicolumn{1}{c|}{} & STP1 & 2.83607143E+03  & 13 & 9.607693E-09 & 2.437934E-11 \\ \hline
+		\multicolumn{1}{c|}{} & STP & 2.83607143E+03  & 13 & 9.607693E-09 & 2.437934E-11 \\ \hline
 	\end{tabular}
 \end{table}
 \begin{figure}\caption{\label{figure:onb}Execution of the IPMs on ONB model:}
 	\subfloat[Affine algorithm with MIP]{\includegraphics[width= 7 cm]{onb_aff1}} \qquad%
 	\subfloat[Affine algorithm with MIP]{\includegraphics[width= 7 cm]{onb_aff2}}\\
-	\subfloat[LPF 1 algorithm ]{\includegraphics[width= 7 cm]{onb_LPF1}} \qquad%
-	\subfloat[LPF 1 algorithm]{\includegraphics[width= 7 cm]{onb_LPF1b}}\\	
-	\subfloat[LPF 2 algorithm ]{\includegraphics[width= 7 cm]{onb_LPF2}} \qquad%
-	\subfloat[LPF 2 algorithm]{\includegraphics[width= 7 cm]{onb_LPF2b}}\\
+	\subfloat[LPF 1 algorithm with MIP and with STP]{\includegraphics[width= 7 cm]{onb_LPF1}} \qquad%
+	\subfloat[LPF 1 algorithm with MIP and with STP]{\includegraphics[width= 7 cm]{onb_LPF1b}}\\	
+	\subfloat[LPF 2 algorithm with MIP and with STP]{\includegraphics[width= 7 cm]{onb_LPF2}} \qquad%
+	\subfloat[LPF 2 algorithm with MIP and with STP]{\includegraphics[width= 7 cm]{onb_LPF2b}}\\
 \end{figure}
 \begin{figure}\caption{\label{figure:onb2}Execution of predictor-corrector IPMs on ONB model:}
 	\subfloat[PC LPF algorithm with MIP]{\includegraphics[width= 7 cm]{onb_PCLPF}} \qquad%
 	\subfloat[PC LPF algorithm with MIP]{\includegraphics[width= 7 cm]{onb_PCLPFb}}\\
-	\subfloat[PC LPF algorithm with STP1]{\includegraphics[width= 7 cm]{onb_PCLPF2}} \qquad%
-	\subfloat[PC LPF algorithm with STP1]{\includegraphics[width= 7 cm]{onb_PCLPF2b}}\\
+	\subfloat[PC LPF algorithm with STP]{\includegraphics[width= 7 cm]{onb_PCLPF2}} \qquad%
+	\subfloat[PC LPF algorithm with STP]{\includegraphics[width= 7 cm]{onb_PCLPF2b}}\\
 	\subfloat[Mehrotra's algorithm with MIP]{\includegraphics[width= 7 cm]{onb_MER}} \qquad%
 	\subfloat[Mehrotra's algorithm with MIP]{\includegraphics[width= 7 cm]{onb_MERb}}\\	\subfloat[Mehrotra's algorithm with STP1]{\includegraphics[width= 7 cm]{onb_MER2}} \qquad%
 	\subfloat[Mehrotra's algorithm with STP1]{\includegraphics[width= 7 cm]{onb_MER2b}}\\
@@ -2320,6 +2330,18 @@ In this section, we give a comparison between the results given by the infeasibl
 
 \chapter{Conclusion}
 \textcolor{red}{ DA COMPLETARE}\\
+\\
+We have shown that the generic predictor-corrector framework leads to a variety of interior point methods for solving the linear complementarity
+problem. Even if all of these methods have the same iteration complexity, the
+predictor direction used by these methods distinguishes them.
+It is important to perform computational tests to find which of these methods
+is most effective. We have performed some tests on four real
+problems with fictitious data. These results indicate that Mehrotra's method takes
+fewer iterations than the predictor-corrector LPF
+method. The number of iterations required by this method appears similar to the
+number of iterations taken by LPF 2.
+
+The present thesis aimed to develop and analyze a practical interior-point algorithm for the solution of LP.\\
  First point: all variables $(x, \lambda, s)$ change at each iteration and the linear algebra operations which are required to update them have to involve the complete matrix $A$. This makes a single iteration of the interior point method significantly more expensive than that of the simplex method.\\
  Second point: while the neighborhood $\mathcal{N}_{-\infty}$ ensures that some products do not approach zero too early as with the pure affine scaling method, it does not prevent products from becoming too large with respect to the average. Hence, it does not provide a complete picture of centrality of the iterate.
 If the centering parameter is left fixed, then the behavior of the
@@ -2357,6 +2379,26 @@ Predictor-Corrector Long-Path Following method:
  \lstinputlisting[language=Python]{term.py}
 	\chapter*{Newton's method}
 	\textcolor{red}{NON SO SE AGGIUNGERE LA DESCRIZIONE DEL METODO DI NEWTON}\\
+	Let be $f \colon \mathbb{R}^{n} \to \mathbb{R}^{n}$ a continuously differentiable function and let $J(x)$ be
+	the Jacobi matrix attached to $f$. Consider the system:
+\begin{equation*}
+f(x)=0.
+\end{equation*}
+Suppose we are given the vector $x^{0}$, then we obtain a sequence of points
+using the formula:
+\begin{equation*}
+x^{k+1} = x^{k} - J(x^{k})^{-1}f(x^{k}).
+\end{equation*}
+If we introduce a step direction vector $\Delta x^{k}$, thus
+\begin{equation*}
+x^{k+1} = x^{k} + \Delta x^{k},
+\end{equation*}
+and we have
+\begin{equation*}
+J(x^{k})\Delta x^{k} = −f(x^{k}).
+\end{equation*}
+If $x^{0}$ is sufficiently close to a solution of f, then this sequence is convergent.
+The Newton’s method is very important to solve the linear system associated with the IPMs.
 %\end{appendices}
 \begin{thebibliography}{9}
 	
@@ -2364,7 +2406,7 @@ Predictor-Corrector Long-Path Following method:
 	\bibitem{MARE} Adler I., Monteiro R. D. C., Resende M. G. C., \emph{"A polynomial-time primal-dual affine scaling algorithm for linear and convex quadratic programming and its power serier extension."}, Math. of OR, 15, pp: 191-214, (1990).
 	\bibitem{ADL} Adler I., Monteiro R. D. C., \emph{ "Limiting behaviour of the affine scaling continuous trajectories for linear programming problems."}, Mathematical Programming, pp: 29-51, (1991).
 	\bibitem{2} Andersen E. D., Ye Y.,  \textit{"Combining interior-point and pivoting algorithms for Linear Programming"}, (1996).
-	\bibitem{ADL} Andersen E. D.,Gondzio J., Mèszàros C., Xu X., \textit{"Implementation of interior point methods for large scale linear programming"}, Technical report, HEC,
+	\bibitem{ADL} Andersen E. D., Gondzio J., Mèszàros C., Xu X., \textit{"Implementation of interior point methods for large scale linear programming"}, Technical report, HEC,
     University of Ginevra, (1996).
 	\bibitem{SPS} D'Apuzzo M., De Simone V., di Serafino D., \emph{ "Starting-point strategies for an infeassible potential reduction method."}, Springer-Verlag, D. Optim Lett, 4, pp: 131-146, (2010).
 	\bibitem{DAN1}Dantzig, G. B.,\textit{ "Maximization of a linear function of variables subject to linear
@@ -2380,7 +2422,7 @@ Predictor-Corrector Long-Path Following method:
 	\bibitem{25y} Gondzio J, \textit{ "Interior Point Methods 25 yeears later."}, European Journal of Operational Research 218, Issue 3, pp: 587-601, (2011).	
 	
 % K
-		\bibitem{ONB}Krajewski L. J., McKenzie P., Ritzman L. P., \textit{ "Shift Scheduling in Banking Operations: A Case Appllication"}, Interfaces, 10:12, (1980).
+		\bibitem{ONB}Krajewski L. J., McKenzie P., Ritzman L. P., \textit{ "Shift Scheduling in Banking Operations: A Case Application"}, Interfaces, 10:12, (1980).
 		\bibitem{Kar} Karmarkar N. K.,\emph{ "A new polynomial-time algorithm for linear programming"}, Combinatorica, (1984).
 		\bibitem{(Natural)} Kent B., Bare B. B., Field R. C., Bradley G. A., \textit{"Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN".}, OR, 39, pp: 13-27, (1991).
 		\bibitem{Lem} Lemke C.E, \textit{ "The dual method of solving the linear programming problem."} Naval Research Logistics Quarterly, John Wiley and Sons, (1954).
@@ -2393,6 +2435,7 @@ Predictor-Corrector Long-Path Following method:
 	\bibitem{MER} Mehrotra S., \emph{ "On the implementation of a primal-dual interior point method."}, SIAM Journal on Optimization. 2, pp: 575-601, (1992).
 	\bibitem{MUR} Mehrotra S., \emph{ Advanced Linear Programming: Computation and
 	Practice. } McGraw-Hill New York, New York, (1981).
+\bibitem{Mehr} Mehrotra S., \emph{"Generalized predictor-corrector methods and their performance"}, Technical Report 90-93, Department of Industrial Engineering and Management Sciences, Northwestern University, Evanston, Illinois, (1991).
 		\bibitem{5}Mizuno S., Todd M.J., Y. Ye,\emph{\;On adaptive-step primal-dual interior-point algorithms for linear programming}, Math. of OR, vol. 18, pp. 964-981, (1993). 
 	%	
 	%N
@@ -2402,7 +2445,8 @@ Predictor-Corrector Long-Path Following method:
 	\bibitem{Lexico2}  Charnes A. \emph{ "Optimality and degeneracy in linear programming"}, 1952. pp: 160-170. 
 
 \bibitem{RR} Rardin Ronald L., \textit{"Optimization in operations reseasch"}, Pearson Education (US), Second edition, University of Arkansas, (2017).
-
+\bibitem{rene}Renegar J., \textit{ "A Mathematical View of Interior-Point Methods in Convex Optimization"}, MPS/SIAM
+Ser. Optim., SIAM, Philadelphia, 2001.
 \bibitem{ForSer} \emph{"Forest Service planning: accommodating uses, producing outputs, and sustaining ecosystems."}, Congress of the United States-Office of technology assessment.
 \bibitem {VAN} Vanderbei J. Robert, \emph{\;"An interior point code for quadratic programming"}, Optim. Methods Software, 1, pp: 451-484, (1999). 
 \bibitem {LP} Vanderbei J. Robert, \emph{\;"Linear programming:
@@ -2413,7 +2457,7 @@ Princeton University, Springer Science + Business Media, (2001).
 
 \bibitem{SSM} Westerberg, C.-H., Bjorklund B., Hultman E., \emph{"An Application of Mixed Integer Programming in a Swedish Steel Mill" }, Interfaces, 7:2, pp: 39-43, (1977).
 \bibitem {Wright} Wright J. Stephen, \emph{\;"Primal-Dual Interior Point Methods".} SIAM: society for industrial and applied mathematics. Philadelphia, pag 134, (1997).
-\bibitem{WWW}Wright M. H.,\textit{ “Interior methods for constrained optimization”}, Acta Numerica, Cambridge Univ. Press, Cambridge, UK, pp: 341–407, (1992).
+\bibitem{WWW}Wright M. H.,\textit{ “Interior point methods for constrained optimization”}, Acta Numerica, Cambridge Univ. Press, Cambridge, UK, pp: 341–407, (1992).
 \bibitem{XY}Xiaojie Xu, Yinyu Ye, \emph{"A generalized homogeneous and self-dual algorithm for linear programming"}, Operations Research Letters, 17, pp: 181-190, (1995).
 \bibitem{matlab}Zhang Y.,\textit{ "Solving large-scale linear programs by inteior point methods under
 the Matlab enviroment"}, Optimization Methods and Software, 10, pp: 1-31, (1999).

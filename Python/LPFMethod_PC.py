@@ -33,7 +33,7 @@ Output data: vector x primal solution
             
 '''
 
-def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 0):
+def longpathPC(A, b, c, gamma = 0.1, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 0):
         
     print('\n\tLPF predictor-corrector')       
             
@@ -99,6 +99,7 @@ def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, i
        v = np.arange(0, 1.0000, 0.0001)
        i = len(v)-1       
        while i >= 0:
+        gamma = 10**-8
         if (E(v[i]) > 0).all():
             t = v[i]
 #            print('Largest step length:{}'.format("%10.3f"%t))
