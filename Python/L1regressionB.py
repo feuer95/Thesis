@@ -108,10 +108,10 @@ Z = np.asarray(Z)
 d = {'row': M, 'columns':N, 'Mehrotra':B, 'LPF PC':Z, 'LPF 1':O, 'LPF 2':P}
 df = pd.DataFrame(d)
 #df.to_excel("itertations_analysis.xlsx", index = False)  
-'''
+
 plt.figure()
 
-plt.plot(np.log(Y), np.log(B), 'o', color='red', label = 'Mehrotra iterations')
+plt.plot(np.log(M+N), np.log(B), 'o', color='red', label = 'Mehrotra iterations')
 #plt.plot(Y, W, '<', color='red', label = 'Simplex')
 plt.plot(np.log(Y), np.log(Z), '>', color = 'cyan', label = 'LPF predictorCorr iterations')
 plt.plot(np.log(Y), np.log(O), '>', color = 'green', label = 'LPF 1 iterations')
@@ -158,13 +158,13 @@ plt.plot(x,yl, c = 'cyan', linewidth = 2)
 #%%
 
 # L1 regression of the function |Ax - b|
-#r_A, c_A = np.shape(A)
-#A1 = np.hstack((A, -np.identity(r_A)))
-#A2 = np.hstack((-A, -np.identity(r_A)))
-#
-#A = np.vstack((A1, A2))
-#b =  np.concatenate((-B, B))
-#c = np.concatenate((np.zeros(c_A),np.ones(r_A)))
-#
-#xm, sm, um, sigmam = mehrotra(A, b, c)
+r_A, c_A = np.shape(A)
+A1 = np.hstack((A, -np.identity(r_A)))
+A2 = np.hstack((-A, -np.identity(r_A)))
+
+A = np.vstack((A1, A2))
+b =  np.concatenate((-B, B))
+c = np.concatenate((np.zeros(c_A),np.ones(r_A)))
+
+xm, sm, um, sigmam = mehrotra(A, b, c)
 '''

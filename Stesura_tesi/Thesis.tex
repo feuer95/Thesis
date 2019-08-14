@@ -149,7 +149,7 @@
 
 \vskip 0.7cm
 
-\centerline {\Large {\bf A predictor-corrector LPF Method}}
+\centerline {\Large {\bf A Predictor-Corrector LPF Method}}
 
 \vskip 1.7cm
 
@@ -294,8 +294,8 @@ Considering the following simple LP:
 \text{subject to }&x_{1}+x_{2}+x_{3}=1,\\
  \text{\; with\;} &x_{1}, x_{2}, x_{3} \geq 0.
 \end{align*}
-the tetrahedron in Figure \ref{tetra} is a geometric rappresentation of the feasible set $\mathcal{P}$: the verteces ${x}_{B_{1}}$, ${x}_{B_{2}}$ and ${x}_{B_{3}}$ are the feasible basic points respect to the the basis $B_{1} =\{1\}$,  $B_{2} =\{2\}$,  $B_{3} =\{3\}$.\\ The optimal solution is ${x}_{B_{3}}=(0,0,1)$ in which we find the optimal cost equal to $-4$.
-\textcolor{red}{Questo piccolo esempio di problema lineare verrà richiamato anche nei metodi IPM per mostrare graficamente l'approccio con cui questi ultimi cercano una soluzione ottimale.}
+the tetrahedron in Figure \ref{tetra} is a geometric rappresentation of the feasible set $\mathcal{P}$: the verteces ${x}_{B_{1}}$, ${x}_{B_{2}}$ and ${x}_{B_{3}}$ are the feasible basic points respect to the the basis $B_{1} =\{1\}$,  $B_{2} =\{2\}$,  $B_{3} =\{3\}$.\\ The optimal solution is ${x}_{B_{3}}=(0,0,1)$ in which we find the optimal cost equal to $-4$.\\
+\textcolor{red}{Questo piccolo esempio di problema lineare verrà richiamato anche nei metodi IPM per mostrare graficamente l'approccio con cui questi ultimi cercano la soluzione ottimale.}
 \begin{figure}[h]\caption{\label{tetra}Feasible set $\mathcal{P}$ defined by the equation above with the three extreme points, corresponding to the three feasible basic solutions.} 
 \begin{center}
 \begin{tikzpicture}[y={(1cm,0cm)}, x={( -0.5cm, -0.5cm)}, z={(0cm,1cm)}] % s i s t e m a di r i f e r i m e n t o t i k z 3 d
@@ -370,14 +370,14 @@ These equalites are called \textit{Karush-Kuhn-Tucker} conditions, or \textit{KK
 \begin{equation}\label{Lagrangian}
 \mathcal{L}(x,\lambda,s)=c^{T}x-\lambda^{T}\left(Ax-b\right)-s^{T}x.
 \end{equation}
-Frome the Theroem we know that a vector $x^{*}$ is a solution if and only if exist Lagrange multipliers $\lambda^{*},\;s^{*}$ such that the \textit{primal-dual solution} $\left( x^{*},\lambda^{*},s^{*}\right)\in\mathbb{R}^{n,m,n}$ satisfies these conditions: 
-\begin{align}
-A^{T}\lambda+s&=c,\tag{2.5a}\\ \label{DF}
-Ax&=b,\tag{2.5b}\\ \label{PF}
+Frome the Theroem we know that a vector $x^{*}$ is a solution if and only if exist Lagrange multipliers $\lambda^{*},\;s^{*}$ such that the \textit{primal-dual solution} $\left( x^{*},\lambda^{*},s^{*}\right)\in\mathbb{R}^{n+m+n}$ satisfies these conditions: 
+\begin{align*}
+A^{T}\lambda+s&=c,\tag{2.5a}\label{DF}\\ 
+Ax&=b,\tag{2.5b}\label{PF}\\ 
 x&\geq 0,\tag{2.5c}\\
 s&\geq 0,\tag{2.5d}\\
 x_{i}s_{i}&=0,\; for\;i= 1,2,...,n.\label{CC} \tag{2.5e}
-\end{align} 
+\end{align*} 
 The complementary conditions (\ref{CC}) show that at least one of the components $x_{i}$ and $s_{i}$ must be zero for each $i=0,1,2,...,n$.\\
  Convexity of the problem ensures that these conditions are also sufficient for a global minimum, hence the KKT conditions are also \textit{sufficient}: if we have a primal feasible vector $x\in\mathcal{P}$, and another vector $(\lambda, s)$ such that the equations are satisfied, then $x$ is the solution of (\ref{(Prim)}). We can prove this claim directly by taking an arbitrary primal feasible vector $\bar{x}$ and showing that its objective value is no smaller than $c^{T}x$:
 \begin{equation*}
@@ -479,7 +479,8 @@ After having delineated the basic tools of the multipliers in terms of sensitivi
 %
 %  CAPITOLO 2
 %
-\chapter{The simplex method}
+\chapter{The simplex method}\\
+\textcolor{red}{In questo capitolo viene trattato il metodo del simplesso. Ho notato che nella ricerca non viene approfondito abbastanza, poiché è stata elaborato un confronto empirico solo tra i metodi del punto interno. Il professore mi ha detto di inserire nella tesi questo metodo in quanto è importante in letteratura: provvederò a svolgere un'analisi e un confronto tra il metodo del simplesso e i metodi del punto interno nei prossimi capitoli.}\\
 The simplex method was introduced in 1947 by George Dantzig \cite{DAN1}. The discover of this method happened simultaneously with the realization of LP as an efficient modeling tool for practical decision making and, after 60 years later, it remains one of the most important algorithms in mathematical programming and
 optimization, in general.\\
 The method exploits the insight provided by the fundamental theorem
@@ -731,28 +732,27 @@ It has to be said, however, that it is only a theoretical drawback and in practi
 
 
 \chapter{Interior point methods}
-In the 60 years of research since the introduction of the simplex method, this algorithm has been carefully optimized to perform extremely well in practice. However, a problem arose in the 1970s: it turns out that we cannot guarantee that it will work well on all possible linear programs ~\cite{3}.
-In fact, the Klee and Minty's example confirms that the simplex method may need an exponential number of iterations to find the optimal solution of a LP. \\
+In the 60 years of research since the introduction of the simplex method, this algorithm has been carefully optimized to perform extremely well in practice. However, a problem arose in the 1970s: it turns out that we cannot guarantee that it will work well on all possible linear programs ~\cite{MINTY}.
+In fact, the Klee and Minty's example, designed previously, confirms that the simplex method may need an exponential number of iterations to find the optimal solution of a LP. \\
 This problem led to the introduction of the interior point methods for solving LP, which is the argument of this chapter.\\
-The interior point methods is a family of algorithms solving linear programs which come along with an efficient performance guarantee. They share common features that distinguish them from the simplex method: each interior point iteration is expensive to compute but can make significant progress toward the solution, while the simplex method usually requires a larger number of inexpensive iterations. Geometrically, the simplex method works around the boundary of the feasible polytope, testing a sequence of vertices in turn until it finds the optimal one. Instead, interior point methods approach the boundary of the feasible set only in the region, but they never actually lie on the boundary of the feasible set.\\
+The set of the interior point methods is a family of algorithms solving linear programs which come along with an efficient performance guarantee. They share common features that distinguish them from the simplex method: each interior point iteration is expensive to compute but can make significant progress toward the solution, while the simplex method usually requires a larger number of inexpensive iterations. Geometrically, the simplex method works around the boundary of the feasible polytope, testing a sequence of vertices in turn until it finds the optimal one. Instead, interior point methods approach the boundary of the feasible set only in the region but they never actually lie on the boundary of the feasible set.\\
 Although the fundamentals of interior-point methods had been established several years
 before, Leonid Khachiyan (in 1979) and then Narendra Karmarkar (in 1984) proposed their algorithms for solving linear programs \cite{WWW}. It is true that Khachiyan’s ellipsoid algorithm was the first algorithm for LP to be actually proven to
 be theoretically efficient, but in comparison to it, the simplex method was clearly superior on average and, in particular, on essentially any practical
-problem that would occur in a real-life context. The state changed when N. Karmarkar introduced the new interior-point algorithms \cite{Kar}; both efficient in theory and practice, nowadays are widely considered the first commercial interior-point
+problem that would occur in a real-life context. The state changed when N. Karmarkar introduced the new interior point algorithms \cite{Kar}; both efficient in theory and practice, nowadays are widely considered the first commercial interior-point
 method for linear programming.\\
 %The new algorithms can be divided in two main classes, \textit{affine-scaling} and \textit{projective-scaling} algorithms.
 %The first ones are easy to describe but hard to analyze, in fact they have very simple, geometrically descriptions, but they don't have a strong convergence theory behind.
 %Instead, the second class, that includes the original algorithm studied by Karmakar, involves technicalities such as logarithmic barrier functions and the analysis proceeds to a proof of polynomial-time convergence~\cite{4}.
-By the early 1990s, a subclass of IPMs called \textit{primal-dual methods} had distinguished themselves as the most efficient practical approaches. The primal-dual interior point algorithm was introduced by Megiddo \cite{meg} who used logarithmic barrier methods to solve
+By the early 1990s, the \textit{primal-dual methods}, a subclass of IPMs, had distinguished themselves as the most efficient practical approaches. The primal-dual interior point algorithms were introduced by Megiddo \cite{meg} who used logarithmic barrier methods to solve
 the primal and dual problems simultaneously. An efficient
-high-order primal-dual method was proposed by Mehrotra \cite{MER}: with his  predictor-corrector
-strategy, is among the most efficient IPM and has became the back bones
+high-order primal-dual method was proposed by Mehrotra \cite{MER}: with his predictor-corrector
+strategy, it is among the most efficient IPM and has became the back bones
 of several optimization packages \cite{matlab}.\\ 
-After a brief introduction of the primal-dual methods, we study three important algorithms: the \textit{primal-dual affine scaling}, the \textit{long-step path-following} and the \textit{Mehrotra predictor-corrector} methods.\\
-An overview of the details of the first two interior-point algorithms are given in the following chapter, instead no convergence theory is availabe for the third one . \\
-In this research is proposed a new long-path following algorithm labeled as \textit{predictor-corrector long-path following algorithm}, based on a new centering parameter computation. 
-. The initial point choice and the
-termination criteria will be explained in the next chapter. With practical implementations a comparison will be discussed.
+After a brief introduction of the primal-dual methods, we study three important algorithms: the \textit{primal-dual Affine Scaling}, the \textit{long-step path-following} and the \textit{Mehrotra predictor-corrector} methods.\\
+An overview of the details of the first two interior-point algorithms are given in the following chapter, instead no convergence theory is availabe for the third one. \\
+In this research is proposed a new long-path following algorithm called \textit{predictor-corrector long-path following algorithm}, based on a new centering parameter computation. The initial point choice and the
+termination criteria will be explained in the next Chapter 5, then a comparison will be discussed with practical implementations .
 %The lack of theoretical analysis of the Mehrotra's algorithm leads to a study  their reliability both in theory and in practice will be shown 
 %The great success of Mehrotra's approach in practice warrants further theoretical studies
 %on its convergence properties, particularly its computational complexity, which have so far
@@ -760,12 +760,12 @@ termination criteria will be explained in the next chapter. With practical imple
 %described a few potential functions along with a 'fall-back' search direction. 
 
 \newpage
-\section{Introduction to primal-dual methods}
+\section{Introduction to the primal-dual methods}
 We consider the LP problem formulated in a standard form. \\
-Following a fundamentally different approach from the simplex method, IPM avoid the boundary of the polytope until optimality and focus on the KKT conditions, solving the primal and dual LP currently.\\
+Following a fundamentally different approach from the simplex method, IPMs avoid the boundary of the polytope until optimality and focus on the KKT conditions, solving the primal and dual LP currently.\\
 \\
 \\
-The primal-dual methods find primal-dual solutions $(x^{*},\lambda^{*},s^{*})$ by applying variants of Newton's search direction method to the three optimatility conditions (\ref{DF}), (\ref{PF}), (\ref{CC}) and modifying the search directions and the step lengths so that the inequality $(x,s)>0$ is satisfied.\\
+The primal-dual methods find primal-dual solutions $(x^{*},\lambda^{*},s^{*})\in\mathbb{R}^{n+m+n}$ by applying variants of Newton's search direction method (see Appendix) to the three optimatility conditions (\ref{DF}), (\ref{PF}), (\ref{CC}) and modifying the search directions and the step lengths so that the inequality $(x,s)>0$ is satisfied.\\
 
  Let restate the optimality conditions by a mapping $\mathit{F}$ from $\mathbb{R}^{2n+m}$ to $\mathbb{R}^{2n+m}$:
 \begin{equation}\label{F}
@@ -775,11 +775,11 @@ The primal-dual methods find primal-dual solutions $(x^{*},\lambda^{*},s^{*})$ b
 \end{equation}
 with $(x,s)\geq0$, where $X = diag(x_{1}, x_{2},...,x_{n})$ and $S = diag(s_{1}, s_{2},...,s_{n})$.\\
 Note that $\mathit{F}$ is linear in the first two equations and mildly nonlinear in the last equation. 
-The general IPM algorithm generates iterates $(x^{k},\lambda^{k},s^{k})$ with the following properties:
+The general IPM algorithm generates iterates $(x^{k},\lambda^{k},s^{k})$ such that:
 \begin{itemize}
 	\item $x^{k}$ and $s^{k}$ are nonnegative and strictly positive at each iteration (this requisite leads to the term \textit{interior point});
 	\item the 2-norm of the residuals $r_{b} = Ax - b$ and $r_{c} =A^{T}\lambda +s - c$, that we call \textit{infeasiblity error}, valued in $(x^{k},\lambda^{k},s^{k})$ decrease at each iteration;
-	\item the duality measure $\mu = \frac{x^{T}s}{n}$ decreases at each iteration;
+	\item the duality measure $\mu^{k} = \frac{{x^{k}}^{T}s^{T}}{n}$ decreases at each iteration;
 	\item the next iterate $(x^{k+1},\lambda^{k+1},s^{k+1})$ is computed by an increment of a modified Newton's direction.
 \end{itemize}
 If we define the primal-dual \textit{feasible set} $\mathcal{F}$ and \textit{strictly feasible set} $\mathcal{F}^{0}$ by
@@ -1519,7 +1519,7 @@ A^{T}\lambda+s-c \\Ax-b \\XSe
 \end{equation}
 The tangent to this trajectory is the affine-scaling direction, as for $\mathcal{H}$, but the curvature can be identified with the combined centering-corrector step rather than the corrector component alone. The trajectory $\mathcal{H}_{\sigma}$ approximates more the central path than $\mathcal{H}$. Despite the closer relationship between $\mathcal{H}_{\sigma}$  and MPC algorithm, we can not qualify it as a second-order trajectory-following algorithm because it still searches along a linear direction rather than a quadratic path.  
 \subsection{A predictor-corrector LPF method}
-In this research it is proposed a predictor-corrector long-path following method (PC-LPF) in which the centering parameter $\sigma$ is computed adaptively, equal to the Mehrotra's method.\\
+In this research it is proposed a predictor-corrector long-path following method (PC LPF) in which the centering parameter $\sigma$ is computed adaptively, equal to the Mehrotra's method.\\
 This predictor-corrector algorithm below is a definite improvement over the long-path following algorithm because of the adaptivity that is built into the choice of the predictor step. We will discuss if eventually this potential
 technique may further accelerate the performance of the LPF methods compared previously.\\
 
@@ -1528,22 +1528,25 @@ Let suppose we have computed the $k$th iterate, it follows a predictor step in w
 \alpha_{\text{aff}}^{\text{pre}}&=\arg\max\{\alpha\in[0,1]\;|\;(x^{k}, \lambda^{k}, s^{k})+ \alpha(\Delta x^{\text{aff}}, \Delta\lambda^{\text{aff}}, \Delta s^{\text{aff}})\in\mathcal{N}_{-\infty}(\gamma,\beta)\}\label{QWw}\\
 \mu_{\text{aff}}&= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n.\label{QWz}
 \end{align}
-in which $\mu_{\text{aff}}$ measure the efficiency of the affine-scaling direction.
+in which $\mu_{\text{aff}}$ measures the efficiency of the affine-scaling direction.
+
+Instead the corrector step consists on solving the general linear system with the centering parameter equal to \begin{center*}
+$\sigma = (\mu_{\text{aff}}/\mu)^{3}$, as in MPC.
+\end{center*}\\
 \begin{algorithm}[H]\caption{\label{alg:pc}PC-LPF Algorithm}
-\begin{tabbing}
-	\\
-	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})$ with $(x^{0}, s^{0})> 0$; \\
-	\textbf{for} \= $k = 0, 1, 2,...$ \\
-	\> solve (\ref{(A)}) for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;\\
-	\> calculate $\alpha_{\text{pre}}^{\text{pri}}$ and $\mu_{\text{aff}}$ as in ($\ref{QWw}$) and in (\ref{QWz});\\
-	\> set centering parameter to $\sigma_{k} = (\mu_{\text{aff}}/\mu)^{3}$; \\
-	\> solve (\ref{Pb}) for $(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})$;\\
-	\> choose the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma,\beta)$;\\
-	\textbf{end}
-\end{tabbing}
+	\begin{tabbing}
+		\\
+		\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})$ with $(x^{0}, s^{0})> 0$; \\
+		\textbf{for} \= $k = 0, 1, 2,...$ \\
+		\> solve (\ref{(A)}) for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;\\
+		\> calculate $\alpha_{\text{pre}}^{\text{aff}}$ and $\mu_{\text{aff}}$ as in ($\ref{QWw}$) and in (\ref{QWz});\\
+		\> set centering parameter to $\sigma_{k} = (\mu_{\text{aff}}/\mu)^{3}$; \\
+		\> solve (\ref{Pb}) for $(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})$;\\
+		\> choose the largest value in $\alpha_{k}\in[0,1]$ so that $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma,\beta)$;\\
+		\textbf{end}
+	\end{tabbing}
 \end{algorithm}
-Instead the corrector step consits on solving \\
- then the values of the step lengths and the centering parameter are performed in order to guarantee that the next iterate $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma,\beta)$ are:
+ Then the value of the step length is performed in order to guarantee that the next iterate $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma,\beta)$, as we have already noticed the step length selection is different from the one in the MPC.
 \newpage
 \section{IPM algorithms performance}
 In this section we develop an empirical study of the IPM algorithms performace. Let us compare the proposed methods with the implementation reported in Appendix. \\
@@ -1555,7 +1558,7 @@ for a pair of real numbers $\alpha$ and $\beta$. This multiplicative representat
 \begin{equation*}
 \log T \approx \alpha \log 2 +\beta \log (m+n) +\epsilon.
 \end{equation*}
-Now we compute $T$ related to the IPM methods proposed in this thesis: long-path following algorithms with centering parameter $\sigma_{k}^{1}$ and with $\sigma_{k}^{2}$, LPF PC and Mehrotra's algorithms. In order to find $\alpha$ and $\beta$  for each method, we introduce the following regression model, with $k$ observations:\\
+Now we compute $T$ related to the IPM methods proposed in this thesis: long-path following algorithms with centering parameter $\sigma_{k}^{1}$ and with $\sigma_{k}^{2}$ formulated respctively in (\ref{LPF1}) and in (\ref{LPF2}), PC LPF and Mehrotra's algorithms. In order to find $\alpha$ and $\beta$  for each method, we introduce the following regression model, with $k$ observations:\\
 \begin{equation}
 \begin{bmatrix}
 \log T_{1}\\\log T_{2}\\\dots\\\log T_{k}\\
@@ -1575,14 +1578,12 @@ Now we compute $T$ related to the IPM methods proposed in this thesis: long-path
 \epsilon_{k}
 \end{bmatrix}.
 \end{equation}
-
-We test the algorithms on 30 small scale LP problems in standard form with model data $A\in\mathbb{R}^{m\times n}$, $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$. In the Table \ref{tab:numite} we collect statistics from the runs, summarizing the number of iterations $T_{k}$ with $k =1,\dots,30$.
-
-\begin{table}[]\caption{\label{tab:numite}Number of iterations required to solve standard LP problems with $n$ variables and $m$ constraints.}
+We test the algorithms on 30 small scale LP problems in standard form with model data $A\in\mathbb{R}^{m,n}$, $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$. In Table \ref{tab:numite} the statistics from the runs is collected, summarizing the number of iterations $T_{k}$ required to solve the $k$th example, with $k =1,\dots,30$.
+\begin{table}[h]\caption{\label{tab:numite}Number of iterations required to solve standard LP problems with $n$ variables and $m$ constraints.}
 	\begin{center}
 	\begin{tabular}{cccccc}
 		\hline
-		\textbf{rows $m$} & \textbf{columns $n$} & \textbf{Mehrotra $T_{k}$} & \textbf{LPF PC $T_{k}$} & \textbf{LPF 1 $T_{k}$} & \textbf{LPF 2 $T_{k}$} \\ \hline
+		\textbf{rows $m$} & \textbf{columns $n$} & \textbf{MPC $T_{k}$} & \textbf{PC LPF $T_{k}$} & \textbf{LPF 1 $T_{k}$} & \textbf{LPF 2 $T_{k}$} \\ \hline
 		1 & 2 & 6 & 7 & 60 & 8 \\
 		2 & 2 & 6 & 7 & 66 & 8 \\
 		4 & 2 & 6 & 7 & 83 & 10 \\
@@ -1620,19 +1621,18 @@ These performance profiles provide an estimate of the expected performance diffe
 between solvers.
 \begin{figure}\label{figure:T}
 	\begin{center}
-		\includegraphics[width= 17 cm]{numberiterations}\caption{log–log plot of T vs. $m + n$ and the L1 regression lines.}
+		\includegraphics[width= 18 cm]{numberiterations}\caption{log–log plot of T vs. $m + n$ and the $L^{1}$ regression lines.}
 	\end{center}
 \end{figure}
 %\ref{figure:T}
-The Figure 4.2 shows a log-log plot of $T$ versus $m + n$ and the $L^{1}$ regression lines for all methods.
-We can conclude that the algorithm codes used in this research solve LP problems after T iterations approximated by
+The Figure 4.2 shows a log-log plot of $T$ versus $m + n$ and the $L^{1}$ regression lines for all methods: we can conclude that the algorithm codes used in this research solve LP problems after T iterations approximated by
 \begin{align*}
 T& \approx 2^{0.1657}(m + n)^{1.5394} \text{ with Mehrotra's method,}\\
-T &\approx 2^{0.313}(m + n)^{3.9349} \text{ with LPF1 method,}\\
-T& \approx 2^{0.2898}(m + n)^{1.6157} \text{ with LPF2 method,}\\
+T &\approx 2^{0.313}(m + n)^{3.9349} \text{ with PC LPF method,}\\
+T& \approx 2^{0.2898}(m + n)^{1.6157} \text{ with LPF1 method,}\\
 T& \approx 2^{0.3955}(m + n)^{1.3784} \text{ with LPF2 method.}\\
 \end{align*}
-These outcomes confirm the practical success of the IPM, proving their polynomial complexity. 
+These outcomes confirm the practical success of the IPM, proving their polynomial complexity. Besides, it evinces the superiority of the Mehrotra's method. 
 %\lstinputlisting[language=py,caption=applicationContext.py]{Forest.py}
 
 %\begin{table}[]
@@ -2356,7 +2356,7 @@ Fourth point: it is indicated an interesting
 topic for the future research: you can opt for weel-suited the neighborood parameters to remedy such difficulties or investigate whether changing $\gamma$ PC LPF outperforms the Mehrtora's algorithm.
 %\begin{appendices}
 \appendix
-\chapter*{Appendix}	
+\chapter{Appendix A}	
  Let us present the codes I have implemented with Python's programming language for the analysis and the study of the algorithms.
  \section*{Simplex method code}\label{app:A.1}
  \lstinputlisting[language=Python]{SimplexMethodIIphases.py}
@@ -2377,29 +2377,46 @@ Predictor-Corrector Long-Path Following method:
  \lstinputlisting[language=Python]{starting_point2.py}
 \section*{Termination code}
  \lstinputlisting[language=Python]{term.py}
-	\chapter*{Newton's method}
+	\chapter*{Appendix B}
+	\section*{Newton's method}
 	\textcolor{red}{NON SO SE AGGIUNGERE LA DESCRIZIONE DEL METODO DI NEWTON}\\
-	Let be $f \colon \mathbb{R}^{n} \to \mathbb{R}^{n}$ a continuously differentiable function and let $J(x)$ be
-	the Jacobi matrix attached to $f$. Consider the system:
+	Let $F \colon \mathbb{R}^{n} \to \mathbb{R}^{n}$ be a continuously differentiable function, with $F(x) = [F_{1}(x),\dots,F_{n}(x)] $. Consider the common problem to find a point $x^{*}\in\mathbb{R}^{n}$ for which:
 \begin{equation*}
-f(x)=0.
+F(x^{*})=0.
 \end{equation*}
-Suppose we are given the vector $x^{0}$, then we obtain a sequence of points
-using the formula:
-\begin{equation*}
-x^{k+1} = x^{k} - J(x^{k})^{-1}f(x^{k}).
-\end{equation*}
-If we introduce a step direction vector $\Delta x^{k}$, thus
-\begin{equation*}
-x^{k+1} = x^{k} + \Delta x^{k},
-\end{equation*}
-and we have
-\begin{equation*}
-J(x^{k})\Delta x^{k} = −f(x^{k}).
-\end{equation*}
-If $x^{0}$ is sufficiently close to a solution of f, then this sequence is convergent.
-The Newton’s method is very important to solve the linear system associated with the IPMs.
-%\end{appendices}
+Newton's method is an iterative method for solving this problem. One step of the method is defined as follows. Given any point $x\in\mathbb{R}^{n}$, it is computed a step direction $\Delta x$ for which $F(x + \Delta x)=0$. Obviously, for a nonlinear function $F$ it is not possible to find such a step direction. Hence, it is approximated by the first two terms of its Taylor's series expansion,
+\begin{center}
+	$F(x+\Delta x)\approx F(x) + F'(x)\Delta x$,
+\end{center}
+where
+\begin{align*}
+F'(x)= \begin{bmatrix}\frac{dF_{1}(x)}{dx_{1}}&\frac{dF_{1}(x)}{dx_{2}}&\dots&\frac{dF_{1}(x)}{dx_{n}}\\
+\frac{dF_{2}(x)}{dx_{1}}&\frac{dF_{2}(x)}{dx_{2}}&\dots&\frac{dF_{2}(x)}{dx_{n}}\\
+\vdots&\vdots&\dots&\vdots\\
+\frac{dF_{n}(x)}{dx_{1}}&\frac{dF_{n}(x)}{dx_{2}}&\dots&\frac{dF_{n}(x)}{dx_{n}}\\
+\end{bmatrix}.
+\end{align*}
+The approximation is linear in $\Delta x$. Hence, equating it to zero gives a linear system to solve for the step direction:
+\begin{center}
+	$F'(x)\Delta x = -F(x)$.
+\end{center}
+Given $\Delta x$, Newton's method updates the current solution $x$ by replacing it with $x+\Delta x$. The process continues until the current solution is approximately a root (i.e., $F(x)\approx0$). \\
+The Newton’s method is very important to solve the linear system associated with the IPMs and it is applied in order to find a point on the central path $\mathcal{C}$, that is a vector $(x,\lambda, s)$ such that
+ \begin{center}
+	$\mathit{F}(x,\lambda,s)= \begin{bmatrix}
+	A^{T}\lambda+s-c \\Ax-b \\XSe-\tau e
+	\end{bmatrix}=0$, with $(x,s)\geq0$.
+\end{center}The matrix of derivatives of $F$ is given by
+ \begin{equation*}
+ F'(x,\lambda,s)=\begin{bmatrix}
+ 0&A^{T}&I \\A&0&0\\X&0&S
+ \end{bmatrix}.
+ \end{equation*}
+With the matrix defined above the Newton direction $(\Delta x, \Delta \lambda, \Delta s)$ is computed but we see that a full step along this direction usually is not permissible, since it would violate the bound $(x,s)\leq 0 $. To avoid this difficulty, it is performed a line search along the Newton direction so that the new iterate is
+\begin{center}
+	$(x,\lambda,s)+\alpha (\Delta x, \Delta \lambda, \Delta s)$
+\end{center}
+for some line search parameter $\alpha\in(0,1]$, labelled as \textit{step length parameter}.
 \begin{thebibliography}{9}
 	
 	% A
