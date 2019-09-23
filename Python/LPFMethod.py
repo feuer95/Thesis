@@ -82,7 +82,7 @@ def longpath1(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, in
     u = []        # Construct list of info elements 
     u.append([it, g, x, s, b - np.dot(A,x), c - np.dot(A.T, y) - s])
     
-    cp = 1 - 0.5/math.sqrt(c_A)
+    cp = 1 - 0.5/math.sqrt(c_A) # sigma1
     while tm > w:
         
         """ Modified Newton's method with with normal equations: find the direction vector (y1, s1, x1)"""

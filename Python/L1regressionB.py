@@ -25,11 +25,12 @@ import pandas as pd             # Export to excel
 
 """ 
 it = []        
-B = []
-m = []
-n = []
-Y = []
-W = []
+
+m = [] # Number of rows
+n = [] # Number of columns
+B = [] # Number of iterations Mehrotra's method
+Y = [] # Sum (m + n)
+W = [] # Number of iterations Simplex method
 Z = []
 O = []
 P = []
@@ -103,7 +104,7 @@ N = np.asarray(n)
 B = np.asarray(B)
 #W = np.asarray(W)
 Z = np.asarray(Z)
-
+Y = M+N
 #%%
 d = {'row': M, 'columns':N, 'Mehrotra':B, 'LPF PC':Z, 'LPF 1':O, 'LPF 2':P}
 df = pd.DataFrame(d)
@@ -111,7 +112,7 @@ df = pd.DataFrame(d)
 
 plt.figure()
 
-plt.plot(np.log(M+N), np.log(B), 'o', color='red', label = 'Mehrotra iterations')
+plt.plot(np.log(Y), np.log(B), 'o', color='red', label = 'Mehrotra iterations')
 #plt.plot(Y, W, '<', color='red', label = 'Simplex')
 plt.plot(np.log(Y), np.log(Z), '>', color = 'cyan', label = 'LPF predictorCorr iterations')
 plt.plot(np.log(Y), np.log(O), '>', color = 'green', label = 'LPF 1 iterations')
@@ -167,4 +168,3 @@ b =  np.concatenate((-B, B))
 c = np.concatenate((np.zeros(c_A),np.ones(r_A)))
 
 xm, sm, um, sigmam = mehrotra(A, b, c)
-'''

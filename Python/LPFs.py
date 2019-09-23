@@ -21,8 +21,8 @@ time_longpath1 = []
 it2 = []
 time_longpath2 = []
 
-it3 = []
-time_longpathPC = []
+#it3 = []
+#time_longpathPC = []
 
 # for to fill the lists
 
@@ -41,20 +41,20 @@ for i in range(30):
         time_longpath2.append(time.time() - start)
         it2.append(len(u2))
         
-        start = time.time()
-        x3, s3, u3, sig3 = longpathPC(A, b, c, info = 1)
-        time_longpathPC.append(time.time() - start)
-        it3.append(len(u3))
+#        start = time.time()
+#        x3, s3, u3, sig3 = longpathPC(A, b, c, info = 1)
+#        time_longpathPC.append(time.time() - start)
+#        it3.append(len(u3))
 
 
 # Plot the times    
 plt.figure()
 plt.plot(time_longpath1, 'ro', label = 'time LPF 1')
 plt.plot(time_longpath2,'b<', label = 'time LPF 2')
-plt.plot(time_longpathPC, 'g>', label = 'time LPF PC')
+#plt.plot(time_longpathPC, 'g>', label = 'time LPF PC')
 ax = plt.axes()
 ax.grid(True)
-ax.set_xticks(range(22))
+ax.set_xticks(range(26))
 ax.set_yticks(time_longpath1+time_longpath2)
 plt.yscale('log')
 plt.legend()
@@ -69,10 +69,10 @@ dfu = pd.DataFrame(d)
 plt.figure()
 plt.plot(it1, 'ro', label = 'it LPF 1')
 plt.plot(it2,'b<', label = 'it LPF 2')
-plt.plot(it3, 'g>', label = 'it LPF PC')
+#plt.plot(it3, 'g>', label = 'it LPF PC')
 ax = plt.axes()
 ax.set_xticks(range(22))
-ax.set_yticks(it1+it2+it3)
+ax.set_yticks(it1+it2)
 plt.yscale('linear')
 ax.grid(True)
 plt.legend()

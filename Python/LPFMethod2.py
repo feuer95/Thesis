@@ -91,7 +91,7 @@ def longpath2(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, in
     sig = []
     
     while tm > w:
-        cp = min(0.1, 100*np.dot(x,s)/c_A)
+        cp = min(0.1, 100*np.dot(x,s)/c_A) # sigma2
         
         if info == 0:
             print("\tIteration: {}\n".format(it), end='')
