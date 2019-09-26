@@ -484,7 +484,7 @@ In particular, if $\Delta b = \epsilon e_{j}$, we have that $c^{T}\Delta x+\epsi
 %\textcolor{red}{In questo capitolo viene trattato il metodo del simplesso. Ho notato che nella ricerca non viene approfondito abbastanza, poiché è stata elaborato un confronto empirico solo tra i metodi del punto interno. Il professore mi ha detto di inserire nella tesi questo metodo in quanto è importante in letteratura: provvederò a svolgere un'analisi e un confronto tra il metodo del simplesso e i metodi del punto interno nei prossimi capitoli.}\\
 The simplex method was introduced in 1947 by George Dantzig \cite{DAN1}. The discover of this method happened simultaneously with the realization of LP as an efficient modeling tool for practical decision making and, after 60 years later, it remains one of the most important algorithms in mathematical programming and
 optimization, in general.\\
-The method exploits the insight provided by the fundamental theorem
+The method exploits the insight provided by the fundamental theorem, Theorem
 (\ref{Fund}), which states that if it exists an optimal solution of the LP, it is at one of the vertices of the feasible polytope. \\
 The idea of the simplex method is to proceed from one basic feasible point of the feasible set $\mathcal{P}$ to another, in such a way as to continually decrease the value of the objective
 function until a minimum is reached.\\ Consider the general LP problem presented in standard form as in (\ref{(Prim)}).
@@ -499,7 +499,7 @@ redundancies from the given constraints and eliminate some of the variables.\\Gi
  %with \textit{n} elements corresponding to the basic feasible point we are starting from.
  \\Note that for any $x$, the basic variables $x_{B}$ can be written as a function of the nonbasic variables $x_{N}$ and hence, $x_{B}=A_{B}^{-1}b-A_{B}^{-1}A_{N}x_{N}$. \\Similarly, the objective function can be written as $c^{T}x=c_{B}^{T}A_{B}^{-1}b+(c_{N}-A_{N}^{T}A_{B}^{-T}c_{B})^{T}x_{N}$, denoting the \textit{reduced cost} by \begin{center}
  	$\widetilde{c}=c_{N}-A_{N}^{T}A_{B}^{-T}c_{B}$.
- \end{center}Since we are dealing only with basic feasible points, we can consider the relative basic feasible point $x$ with $x_{N}= 0$, then the cost value it is exactly $\widetilde{c}$.\\
+ \end{center}Since we are dealing only with basic feasible points, we can consider the relative basic feasible point $x$ with $x_{N}= 0$, then the cost value it is exactly $c_{B}^{T}A_{B}^{-1}b$.\\
  We can choose the dual points $(\lambda,s)$ such that $(x, \lambda, s)$ satisfies the KKT condition as well: from (\ref{CC}) we set $s_{B}= 0$ for the complementary condition, therefore we get $s_{N}= c_{N}- A_{N}^{T}\lambda$ from (\ref{DF}). Besides, since $A_{B}$ is not singular, this equality uniquely defines $\lambda$ as $\lambda = A_{B}^{-T}c_{B}$ and we can state that the reduced cost $\tilde{c}$ is identical to $s_{N}$ in the feasible basic point.\\  
  
  If there exists a $j \in N$ such that $\widetilde{c}_{j} \leq 0$, then by increasing $x_{j}$ up from zero, we will decrease the value of the objective function.\\
@@ -528,7 +528,7 @@ Having defined $ \lambda=A_{B}^{-T}c_{B}$ and $A^{T}_{s}\lambda = c_{s}-s_{s}$,
 \end{align*}
 Since $x_{N}=0$, we have $c^{T}x=c^{T}_{B}x_{B}$ and therefore 
 \begin{align*}
-  &=c^{T}\bar{x} = c^{T}x - s_{s}\bar{x}_{s}.
+&=c^{T}\bar{x} = c^{T}x - s_{s}\bar{x}_{s}.
 \end{align*}
 We have covered most of the mechanics of taking a single step of the simplex method. The computational procedure is the following:
 \\
@@ -553,7 +553,7 @@ We have covered most of the mechanics of taking a single step of the simplex met
 \end{algorithm}
 
 Summarizing, the simplex algorithm moves from basic feasible solution to another one and it moves from one vertex to an adjacent one, for which the basis $B$ differs in exactly one component.\\ Each iteration begins by checking the sign of the coefficients of the reduced cost $\widetilde{c}$ on non-basic variables: if none is negative, then the current basic fesible point is optimal. \\
-As we see, it is required a basic feasible starting point $x$ with initial basis $B \in \left\{ 1,2,..., n \right\}$ such that $|B|=m$, $A_{B}$ non singular, $A_{B}^{-1}b=x_{B} \geq 0$ and $x_{N}=0$.\\[1cm]
+As we see, it is required a basic feasible starting point $x$ with initial basis $B \subseteq \left\{ 1,2,..., n \right\}$ such that $|B|=m$, $A_{B}$ non singular, $A_{B}^{-1}b=x_{B} \geq 0$ and $x_{N}=0$.\\[1cm]
 Now we see that a basic feasible point is immediately available for some LP.\\ For example, in LP problems with constraints in canonical form and with $b > 0$, a basic feasible point corresponding to the standard form is provided by the slack variables as feasible basic ones: $x =\left(0_{[m]},b\right)$.\\Sometimes the problem of finding an initial point and a basis may be itself nontrivial but the \textit{two-phases} method deals with this difficulty. The idea is to add artificial variables in order to give a basic feasible initial point for a second phase in which we can extract easily the solution of the original problem.\\
 In \textit{phase I} we solve the following problem, with unit vector $e= (1,\dots,1)^{T}$:
 \begin{equation}\label{IIPH}
@@ -594,7 +594,7 @@ where $\epsilon$ is a very small positive number. This perturbation in the compo
 \end{bmatrix}
 \end{equation*}
 Hence, we have that for all $\epsilon$ sufficiently small, $(x_{B^{+}})>0$. The basis is nondegenerate for the perturbed problem and we can perform a step of the simplex method that produces a nonzero decrease of the object value.\\
-The question remains of how to choose $\epsilon$ small enough at the point at which the original degenerate basis B is encountered. The \textit{lexicographic strategy} solves this issue by not making an explicit choice of $\epsilon$, but rather keeping track of the dependence of each basic variable on each power of $\epsilon$. When it comes to selecting the leaving variable, it chooses the index $s$ that minimizes $x_{B}(\epsilon)_{i}/d_{i}$ over all variables in the basis, for a sufficient small $\epsilon$.\\
+The question remains of how to choose $\epsilon$ small enough at the point at which the original degenerate basis B is encountered. The \textit{lexicographic strategy} solves this issue by not making an explicit choice of $\epsilon$ but rather keeping track of the dependence of each basic variable on each power of $\epsilon$. When it comes to selecting the leaving variable, it chooses the index $s$ that minimizes $x_{B}(\epsilon)_{i}/d_{i}$ over all variables in the basis, for a sufficient small $\epsilon$.\\
 Another method that avoids this cycling is the \textit{Bland's rule}. In the algorithm it selects:
 \begin{itemize}
 	\item the index that leaves the nonbasis $s$ such that $\min\limits_{i}\{c_{i}\leq0\}$;
@@ -603,7 +603,7 @@ Another method that avoids this cycling is the \textit{Bland's rule}. In the alg
 	The simplex method always terminates provided that both the entering and the leaving variable are chosen according to the Bland's rule.
 \end{theorem*}
 \begin{proof}
-to write ~\cite{LP} pagg. 36-37	
+See \cite{LP} pagg. 36-37.	
 \end{proof}
 In the simplex method (shown in Appendix A) it is implemented the Bland's rule and in the following example is illustrated the results:
 \begin{ex}
@@ -616,20 +616,20 @@ In the simplex method (shown in Appendix A) it is implemented the Bland's rule a
 	x&\;&\;&\;&\geq 0.\\
 	\end{alignat*}
 	
-Applying Bland's rule, we find optimal solution at $x^{*} = [0.04, 0,  1,   0,  0.03, 0,   0  ]$ in the basis $B = [0, 2, 4]$ after 7 iterations: the optimal cost value is $c^{T}x^{*} = -0.05$.\\
+Applying Bland's rule, we find optimal solution at $x^{*} = ()[0.04, 0,  1,   0,  0.03, 0,   0  )$ in the basis $B = {0, 2, 4}$ after 7 iterations: the optimal cost value is $c^{T}x^{*} = -0.05$.\\
 
 \begin{table}[h]
 	\begin{center}
 	\begin{tabular}{cccc}
 		\hline
 		\textbf{Iteration} & \textbf{Current Basis} & \textbf{Current x} & \textbf{Current cost value} \\ \hline
-		1 & [4, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
-		2 & [0, 5, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
-		3 & [0, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
-		4 & [2, 1, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
-		5 & [2, 3, 6] & [0, 0, 0, 0, 0, 0, 1] & 0 \\
-		6 & [2, 3, 0] & [0.016, 0, 1, 0.004, 0, 0, 0] & 0.008 \\
-		7 & [2, 4, 0] & [0.04, 0, 1, 0, 0.03, 0, 0] & -0.05 \\ \hline
+		1 & [4, 5, 6] & (0, 0, 0, 0, 0, 0, 1] & 0 \\
+		2 & [0, 5, 6] & (0, 0, 0, 0, 0, 0, 1) & 0 \\
+		3 & [0, 1, 6] & (0, 0, 0, 0, 0, 0, 1) & 0 \\
+		4 & [2, 1, 6] & (0, 0, 0, 0, 0, 0, 1) & 0 \\
+		5 & [2, 3, 6] & (0, 0, 0, 0, 0, 0, 1) & 0 \\
+		6 & [2, 3, 0] & (0.016, 0, 1, 0.004, 0, 0, 0) & 0.008 \\
+		7 & [2, 4, 0] & (0.04, 0, 1, 0, 0.03, 0, 0) & -0.05 \\ \hline
 	\end{tabular}\caption{Simplex algorithm result with Bland's rule.}
 \end{center}
 \end{table}
@@ -673,7 +673,7 @@ the problem starting from a basic feasible solution is typically a small multipl
 $n$: usually between $2n$ and $3n$. At one time researchers believed (and attempted to prove) that the simplex algorithm always requires a number of iterations that is
 bounded by a polynomial expression in the problem size. In fact, Dantzig observed that for problems with
 $m \leq 50$ and $n \leq 200$ the number of iterations is ordinarily less than $\frac{3}{2}n$ \cite{DAN}.
-\\ However, in 1972, Victor Klee and George Minty exhibited a class of linear programs each of which requires an
+\\ However, in 1972 Victor Klee and George Minty exhibited a class of linear programs each of which requires an
 exponential number in the size of the problem of iterations when solved by the simplex method.\\
 One form of the Klee–Minty example is the following whose feasible polytope has $2^{n}$
 vertices:
@@ -692,21 +692,21 @@ A specific case is that for $n = 3$, giving:
 \end{alignat*}
 with 3 constraints and 3 variables (along with their nonnegativity constraints).\\
 The Python implementation solves the problem in $2^{3} - 1 = 7$ pivot steps without the Bland's rule: this confirms that the general problem requires $2^{n}- 1$ iterations and this is in fact
-the number of vertices minus $1$.\cite{MINTY}\\ It is illustrated also the result obtained applying the simplex method with the Bland's rule, in this case the number of iterations is only $5$.  \\
+the number of vertices minus $1$ \cite{MINTY}.\\ It is illustrated also the result obtained applying the simplex method with the Bland's rule, in this case the number of iterations is only $5$.  \\
 
 \begin{table}[h]
 	\begin{center}
 	\begin{tabular}{|c|c|c|c|}
 		\hline
 		\textbf{Iteration} & \textbf{Current basis} & \textbf{Current x} & \textbf{Current cost value} \\ \hline
-		0 & [3, 4, 5] & [0, 0, 0, 1, 100, 10000] & 0 \\ 
-		1 & [0, 4, 5] & [1, 0, 0, 0, 80, 9800] & -100 \\
-		2 & [0, 1, 5] & [1, 80, 0, 0, 0, 8200] & -900 \\
-		3 & [3, 1, 5] & [0, 100, 0, 1, 0, 8000] & -1000 \\ 
-		4 & [0, 1, 5] & [0, 100, 8000, 1, 0, 0] & -9000 \\ 
-		5 & [0, 1, 2] & [1, 80, 8200, 0, 0, 0] & -9100 \\
-		6 & [0, 4, 2] & [1, 0, 9800, 0, 80, 0] & -9900 \\ 
-		7 & [3, 4, 2] & [0, 0, 10000, 1, 100, 0] & -10000 \\ \hline
+		0 & [3, 4, 5] & (0, 0, 0, 1, 100, 10000) & 0 \\ 
+		1 & [0, 4, 5] & (1, 0, 0, 0, 80, 9800) & -100 \\
+		2 & [0, 1, 5] & (1, 80, 0, 0, 0, 8200) & -900 \\
+		3 & [3, 1, 5] & (0, 100, 0, 1, 0, 8000) & -1000 \\ 
+		4 & [0, 1, 5] & (0, 100, 8000, 1, 0, 0) & -9000 \\ 
+		5 & [0, 1, 2] & (1, 80, 8200, 0, 0, 0) & -9100 \\
+		6 & [0, 4, 2] & (1, 0, 9800, 0, 80, 0) & -9900 \\ 
+		7 & [3, 4, 2] & (0, 0, 10000, 1, 100, 0) & -10000 \\ \hline
 	\end{tabular}
 \end{center}
 \end{table}
@@ -716,12 +716,12 @@ the number of vertices minus $1$.\cite{MINTY}\\ It is illustrated also the resul
 		\begin{tabular}{|c|c|c|c|}
 			\hline
 			\textbf{Iteration} & \textbf{Current basis} & \textbf{Current x} & \textbf{Current cost value} \\ \hline
-			0 & [3, 4, 5] & [0, 0, 0, 1, 100, 10000] & 0 \\
-			1 & [0, 4, 5] & [1, 0, 0, 0, 80, 9800] & -100 \\
-			2 & [0, 1, 5] & [1, 80, 0, 0, 0, 8200] & -900 \\
-			3 & [0, 1, 2] & [1, 80, 8200, 0, 0, 0] & -9100 \\
-			4 & [0, 4, 2] & [1, 0, 9800, 0, 80, 0] & -9900 \\
-			5 & [3, 4, 2] & [0, 0, 10000, 1, 100, 0] & -10000 \\ \hline
+			0 & [3, 4, 5] & (0, 0, 0, 1, 100, 10000) & 0 \\
+			1 & [0, 4, 5] & (1, 0, 0, 0, 80, 9800) & -100 \\
+			2 & [0, 1, 5] & (1, 80, 0, 0, 0, 8200) & -900 \\
+			3 & [0, 1, 2] & (1, 80, 8200, 0, 0, 0) & -9100 \\
+			4 & [0, 4, 2] & (1, 0, 9800, 0, 80, 0) & -9900 \\
+			5 & [3, 4, 2] & (0, 0, 10000, 1, 100, 0) & -10000 \\ \hline
 		\end{tabular}
 	\end{center}
 \end{table}
@@ -736,7 +736,7 @@ It has to be said, however, that it is only a theoretical drawback and in practi
 In the 60 years of research since/after the introduction of the Simplex method, this algorithm has been carefully optimized to perform extremely well in practice. However, a problem arose in the 1970s: it turns out that we cannot guarantee that it will work well on all possible linear programs ~\cite{MINTY}.
 In fact, the Klee and Minty's example, designed in the previous chapter, confirms that we may need an exponential number of iterations to find the optimal solution with the simplex method. \\
 This problem led to the introduction of the interior-point methods for solving LP, which is the argument of this chapter.\\
-The set of the interior-point methods is a family of algorithms solving LP that they share common features that distinguish themselves from the simplex method. The last one moves from vertex to vertex, usually improving the objective function
+The set of the Interior-Point Methods is a family of algorithms solving LP that they share common features that distinguish themselves from the simplex method. The last one moves from vertex to vertex, usually improving the objective function
 one each step; by contrast, the most successful interior-point approaches focus on the KKT conditions. Although each interior-point iteration is expensive to compute, it can make significant progress toward the solution and they come along with an efficient performance guarantee, while the simplex method usually requires a larger number of inexpensive iterations.\\
 Geometrically speaking, the simplex method works its way around
 the boundary of the feasible polytope, testing a sequence of vertices in turn until it finds the
@@ -782,11 +782,11 @@ The primal-dual methods find primal-dual solutions $(x^{*},\lambda^{*},s^{*})\in
 \end{equation}
 with $(x,s)\geq0$, where $X = diag(x_{1}, x_{2},...,x_{n})$ and $S = diag(s_{1}, s_{2},...,s_{n})$.\\
 Note that $\mathit{F}$ is linear in the first two equations and mildly nonlinear in the last equation. 
-The general IPM algorithm generates iterates $(x^{k},\lambda^{k},s^{k})$ such that:
+The general IPMs algorithm generates iterates $(x^{k},\lambda^{k},s^{k})$ such that:
 \begin{itemize}
 	\item $x^{k}$ and $s^{k}$ are nonnegative and strictly positive at each iteration (this requisite leads to the term \textit{interior-point});
-	\item the 2-norm of the residuals $r_{b} = Ax - b$ and $r_{c} =A^{T}\lambda +s - c$, which we call \textit{infeasiblity error}, valued in $(x^{k},\lambda^{k},s^{k})$ decrease at each iteration;
-	\item the duality measure $\mu^{k} = \frac{{x^{k}}^{T}s^{T}}{n}$ decreases at each iteration;
+	\item the 2-norm of the residuals $r_{b} = Ax - b$ and $r_{c} =A^{T}\lambda +s - c$, which we call \textit{infeasiblity errors}, valued in $(x^{k},\lambda^{k},s^{k})$ decrease at each iteration;
+	\item the duality measure $\mu^{k} = \frac{{x^{k}}^{T}{s^{k}}^{T}}{n}$ decreases at each iteration;
 	\item the next iterate $(x^{k+1},\lambda^{k+1},s^{k+1})$ is computed by an increment of a modified Newton's direction.
 \end{itemize}
 If we define the primal-dual \textit{feasible set} $\mathcal{F}$ and \textit{strictly feasible set} $\mathcal{F}^{0}$ by
@@ -842,7 +842,7 @@ A full step along this direction is not always permissible, since it would viola
 \begin{equation*}
 	(x,\lambda,s) +\alpha (\Delta x,\Delta \lambda,\Delta s),
 \end{equation*} 
-for some line search parameter $\alpha \in (0,1]$ called \textit{step length parameter}; in case $\alpha = 1$ the full step is recalled as \textit{unit step}.\\We maintain the positivity conditions of the vector $(x,s)$ at all iterates for two reasons. First, vectors that solve $\mathit{F}$ that have negative components are of no interest in terms of solving the primal and dual problems (P) and (\ref{(Dual)}). Second, when the matrix $A$ has linearly indipendent rows, the Jacobian $J$ is guaranteed to be nonsingular whenever $x>0$ and $s>0$ hold, and so the solution is guaranteed. %Since \begin{align*}
+for some line search parameter $\alpha \in (0,1]$ called \textit{step length parameter}; in case $\alpha = 1$ and the full step is accepted then we have a \textit{unit step}.\\We maintain the positivity conditions of the vector $(x,s)$ at all iterates for two reasons. First, vectors that solve $\mathit{F}$ that have negative components are of no interest in terms of solving the primal and dual problems (P) and (\ref{(Dual)}). Second, when the matrix $A$ has linearly indipendent rows, the Jacobian $J$ is guaranteed to be nonsingular whenever $x>0$ and $s>0$ hold, and so the solution is guaranteed. %Since \begin{align*}
 %(x + \Delta x)^{T}(s +\Delta s) &= xs + x \Delta s + s \Delta x + \Delta x \Delta s\\ &\text{and} \\S \Delta x + X &\Delta s + XS = 0,
 %\end{align*} by the last row of (\ref{(5.1)}) we can state that $\Delta x\Delta s = 0$.
 \\
@@ -906,7 +906,7 @@ r_{c}^{k}\\r_{b}^{k}\\X^{k}S^{k}e
 	\\$\;\;\;\;\;$\=
 	\>\textbf{set} \=$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$
 	\\
-	\>\> with $\alpha_{k}\in(0,1)$ such that $(x^{k+1}, s^{k+1})>0$; \\
+	\>\> with $\alpha_{k}\in(0,1]$ such that $(x^{k+1}, s^{k+1})>0$; \\
 	\textbf{end}
 \end{tabbing}
 \caption{\label{alg:AS}Affine-scaling algorithm}
@@ -918,7 +918,7 @@ Then, we need to choose the step length parameter $\alpha_{k}$ such that
 x^{k}_{i} + \alpha_{k} \Delta x^{k}_{i} &>0 \text{ and}\\
 s^{k}_{i} + \alpha_{k} \Delta s^{k}_{i} &>0,\text{ for\;} i = 1,...,n. 
 \end{align*}
-The largest value of $\alpha_{k}$ that satisfies these inequalities is obtained by the following formula, which is similar to the ratio test used by the Simplex method. 
+The largest value of $\alpha_{k}$ that satisfies these inequalities is obtained by the following formula, which is similar to the ratio test used by the Simplex method:
 \begin{align*}
 \alpha_{\text{max}} = \min\biggl\{\min_{i|\Delta x^{k}_{i}<0}\frac{x^{k}_{i}}{\Delta x^{k}_{i}}, \min_{i|\Delta s^{k}_{i}<0}\frac{s^{k}_{i}}{\Delta s^{k}_{i}}\biggr\}.
 \end{align*} 
@@ -932,7 +932,7 @@ Most primal-dual methods use less aggressive Newton search direction, making a p
 
 %Another method for solving LP is to follow a path from a given initial primal-dual point.\\
 Primal-dual path-following methods consist an
-important branch in the field of interior point methods to solve a large wide of LP problems.
+important branch in the field of interior-point methods to solve a large wide of LP problems.
 The theoretical success of these methods is incontestable, however, in practice, they present a crucial obstacle
 to find a strictly centered feasible starting point to initiate their algorithms. In fact, infeasible path-following algorithms are implemented as an alternative to overcome this difficulty, not following the algorithm presented below.\\ Assuming $\mathcal{F}^{0}\neq \emptyset $, the \textit{central path} $\mathcal{C}$ is an arc of strictly feasible points that play an important role in these methods. \\It is parametrized by a scalar $\tau  > 0$ and each point $(x_{\tau}, \lambda_{\tau}, s_{\tau})\in \mathcal{C}$ satisfies the following equations:
 \begin{align}
@@ -977,7 +977,7 @@ for which $\tau = 0$ in (4.3e), may have multiple solutions).
 If the sets $\mathcal{P}^{0}$ and $\mathcal{D}^{0}$ are non-empty, then the problem (P$_{\tau}$) (and consequently the relative KKT conditions) has a unique solution $(x(\tau),\lambda(\tau),s(\tau))$, for all $\tau>0$. 
 \end{cor}
 Let $(x(\tau), \lambda(\tau), s(\tau))$ be on the primal-dual path $\mathcal{C}$, then the non negative duality gap is:
-\begin{equation}\tag{4.5}
+\begin{equation}
 g = c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x=\sum_{i=1}^{n} x_{i}s_{i} = n\tau.
 \end{equation}
 It means that $g$ provides a measure of closeness to optimality that is the progress of the algorithm, and so it is sufficient to halt when $\tau$ is small. Hence both $x(\tau)$ and
@@ -990,7 +990,7 @@ It means that $g$ provides a measure of closeness to optimality that is the prog
  \end{center}
 recalling that it is an approxiamtion of (4.1) corresponding
 to a specific choice of $\tau$. Then, the Newton steps toward the points on $\mathcal{C}$ as following:
- \begin{equation}\label{new}
+ \begin{equation}\label{new}\tag{4.5}
  \begin{bmatrix}
  0&A^{T}&I \\A&0&0\\S&0&X
  \end{bmatrix}\begin{bmatrix}
@@ -1000,7 +1000,7 @@ to a specific choice of $\tau$. Then, the Newton steps toward the points on $\ma
  \end{bmatrix}.
  \end{equation}
  Path-following methods follow $\mathcal{C}$ in the direction of decreasing $\tau$ to the solution set but they do not necessarily stay exactly on $\mathcal{C}$ or even particularly close to it. In fact, they compute the target value $\tau = \sigma \mu$, where $\sigma = [0,1]$ is the \textit{centering parameter} and $\mu$ is the duality measure that recalled again below:
- \begin{equation}\label{eq:dm}\tag{4.4}
+ \begin{equation}\label{eq:dm}\tag{4.6}
  \mu = \frac{1}{n}\sum_{i=1}^{n} x_{i}s_{i} = \frac{x^{T}s}{n}.
  \end{equation}\\
  The perturbation $\sigma\mu$ guarantees progress in reducing $\mu$ and hence the duality gap $g = x^{T}s$ at each iteration.
@@ -1042,7 +1042,7 @@ The general long path-following algorithm is:
 		\textbf{for} \= $k = 0, 1, 2,...$ \\
 		\> let $\sigma_{k}\in[\sigma_{\text{min}},\sigma_{\text{max}}]$ and solve
 	\end{tabbing}
-	\begin{equation}\label{Pb}\tag{4.5}
+	\begin{equation}\label{Pb}\tag{4.7}
 	\begin{bmatrix}
 	0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
 	\end{bmatrix}\begin{bmatrix}
@@ -1115,12 +1115,12 @@ The proof can be found in	~\cite{Wright}, pag. 101.
 
 The Lemma asserts that the sequence is bounded (see the inequality (\ref{B})) and hence the existence of the limit is verified.\\
 We can introduce an extension of $\mathcal{N}_{-\infty}(\gamma)$, that includes also infeasible points. This neighborhood is defined by
-\begin{equation}\label{neigh3}\tag{4.6}
+\begin{equation}\label{neigh3}\tag{4.8}
 \mathcal{N}_{-\infty}(\gamma,\beta) =\Bigg\{(x, \lambda, s) | \frac{\lVert(r_{b}, r_{c})\rVert_{2}}{\mu} \leq \beta\frac{\lVert(r_{b}^{0}, r_{c}^{0})\rVert_{2}}{\mu^{0}},\; (x, s)>0,\; x_{i}s_{i} \geq \gamma\mu,\;i = 1,\dots, n \Bigg\},
 \end{equation}
 where $\gamma\in(0,1)$ and $\beta \geq 1$ are given parameters and the residuals $(r_{b}^{0}, r_{c}^{0})$ and $\mu_{0}$ are evaluated at the starting point. Notice that $\beta$ must be greater than 1 to ensure that the initial point $(x^{0}, \lambda^{0}, s^{0})\in\mathcal{N}(\gamma,\beta)$.\\
 When LPF algorithm works using $\mathcal{N}_{-\infty}(\gamma,\beta)$, the search direction is obtained solving:
-\begin{equation}\label{matrix:LPF}\tag{4.7}
+\begin{equation}\label{matrix:LPF}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
 \end{bmatrix}\begin{bmatrix}
@@ -1136,7 +1136,7 @@ We examine the asymptotic behavior of these two methods, that are of significant
  With a modification of the LPF method we develop a new algorithm, depicted in Section 4.5.2., in a way that the sequence of $\{\mu_{k}\}$ converges almost quadratically to 0.\\
 \subsection{Affine-scaling method convergence}
 In the following analysis we set the current point $(x, \lambda, s)\in\mathcal{F}^{0}$, and so the affine-scaling direction $(\Delta x, \Delta \lambda, \Delta s)$ satisfies:\\
-\begin{equation}\label{5.1}\tag{4.8}
+\begin{equation}\label{5.1}\tag{4.9}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\S&0&X
 \end{bmatrix}\begin{bmatrix}
@@ -1196,13 +1196,13 @@ The next lemma is due essentially to Adler and Montiero \cite{ADL}.  Let us deno
 	Suppose that the assumption of the Lemma \ref{(T)} holds. Then
 	\begin{enumerate}
 		\item $u = \Delta x_{B}$ is the unique solution of the following convex quadratic problem
-		\begin{align} \label{(U)}\tag{4.8a}
+		\begin{align} \label{(U)}\tag{4.10a}
 		\min\limits_{u}\frac{1}{2}\lVert D_{\mathcal{B}}^{-1}u\rVert^{2}_{2} \text{ subject to }A_{\mathcal{B}}u = -A_{\mathcal{N}}\Delta x_{\mathcal{N}};
 		\end{align}
 		\item $(v, \pi) = (\Delta s_{N}, \Delta \lambda)$ is a solution of the convex quadratic problem
-		\begin{align}\tag{4.8b}
+		\begin{align}\tag{4.10b}
 		\min\limits_{(v, \pi)}\frac{1}{2}\lVert D_{\mathcal{N}}v\rVert^{2}_{2} \text{  subject to } &A_{\mathcal{B}}u = -A_{\mathcal{N}}\Delta x_{\mathcal{N}},\label{44}\\
-		&A_{\mathcal{N}^{T}}\pi+ v =0.\label{45}\tag{4.8c}		 
+		&A_{\mathcal{N}^{T}}\pi+ v =0.\label{45}\tag{4.10c}		 
 		\end{align}
 		The $\Delta s_{\mathcal{N}}$ component is unique.
 	\end{enumerate} 
@@ -1241,7 +1241,7 @@ The next lemma is due essentially to Adler and Montiero \cite{ADL}.  Let us deno
 	\pi = -(AA^{T})^{-1}(A_{\mathcal{N}}v +A_{\mathcal{B}}\Delta s_{\mathcal{B}}),
 	\end{equation*}
 	so the minimization problem can be formulated as
-	\begin{equation}\label{(V)}\tag{4.9}
+	\begin{equation}\label{(V)}\tag{4.11}
 	\min\limits_{v}\frac{1}{2}\lVert D_{\mathcal{N}}v\rVert^{2} \text{ subject to }
 	(I-A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{N}})v =A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\Delta s_{\mathcal{B}}.		 
 	\end{equation}
@@ -1255,13 +1255,13 @@ The next lemma is due essentially to Adler and Montiero \cite{ADL}.  Let us deno
 \end{thm}
 \begin{proof}
 	Since the diagonal of $D_{\mathcal{B}}$ is strictly positive, we can apply Lemma~\ref{(T)} directly to the convex quadratic problem (\ref{(U)}). Hence, there is a constant $\bar{C}$ depending on $A_{\mathcal{B}}$ such that
-	\begin{equation}
+	\begin{equation*}
 	\lVert \Delta x_{\mathcal{B}}\rVert_{2} \leq \bar{C}\lVert A_{\mathcal{N}}\Delta x_{\mathcal{N}}\rVert_{2}\leq \bar{C}\lVert A_{\mathcal{N}}\rVert_{2} C\mu,
-	\end{equation}
+	\end{equation*}
 	Similarly, from (\ref{(V)}), there is a constant $\bar{K}$ depending on $A$ such that
-	\begin{equation}
+	\begin{equation*}
 	\lVert \Delta s_{\mathcal{N}}\rVert_{2} \leq \bar{K}\lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert_{2}\lVert \Delta s_{\mathcal{B}}\rVert_{2} \leq\bar{K} \lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert_{2} C\mu.
-	\end{equation}
+	\end{equation*}
 	The result follows when we define K$\;=\bar{K} \lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert_{2} C$.
 \end{proof}
 A result similar to Theorem~\ref{(Z)} holds for steps of infeasible interior-point algorithms; we state it with the following theorem, that works (\textcolor{red}{?}) in the extended neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$ defined by (\ref{neigh3}) \cite{Wright}.\\
