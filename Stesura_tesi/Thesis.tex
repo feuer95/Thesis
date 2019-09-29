@@ -413,7 +413,7 @@ Note that in (\ref{Lagrangian}) the Lagrange multipliers are the unknowns variab
 \begin{proof}
 For the first point suppose that (\ref{(Prim)}) has a finite optimal solution $x^{*}$, then there is a vector $(\lambda^{*},s^{*})$ such that $\left( x^{*},\lambda^{*},s^{*}\right)$ satisfies (2.6). It follows that $\left(\lambda^{*},s^{*}\right)$ is optimal solution of (D) and $x^{*}^{T}s^{*}=0$. The equalities (\ref{Dual}) lead to the conclusion. 
 \end{proof}
-(\textit{le dimostrazioni: riferimento: in [1] capitolo 12}).\\[0.5 cm] Hence, by examining the KKT conditions from both the primal and the dual viewpoints, we conclude that the vector $(x^{*},\lambda^{*},s^{*})$ is a primal-dual solution if ond only if $x^{*}$ solves (P) and $(\lambda^{*},s^{*})$ solves (D).\\[1cm]
+\\[0.5 cm] Hence, by examining the KKT conditions from both the primal and the dual viewpoints, we conclude that the vector $(x^{*},\lambda^{*},s^{*})$ is a primal-dual solution if ond only if $x^{*}$ solves (P) and $(\lambda^{*},s^{*})$ solves (D).\\[1cm]
 %\onehalfspacing
 Let us define the \textit{dual feasible set} $\mathcal{D}=\{(\lambda,s)\in\mathbb{R}^{m+n}|\;A^{T}\lambda+s= c,\;s>0\}$, then we have that $c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x \geq0$ for every $x\in\mathcal{P}$ and $\left(\lambda,s\right)\in\mathcal{D}$.\\
 This result leads to the following definition: we call \textit{dual gap} the diffenrence between the primal and the dual optimal cost value. It is labelled with $g$, hence
@@ -424,6 +424,7 @@ Since $c^{T}x\geq b^{T}\lambda$ when both primal and dual variables are feasible
 	if $(x,\lambda,s)\in\mathcal{P}\times\mathcal{D}$, then $g= x^{T}s \geq0$.
 \end{center}
 At the primal-dual solutions, the duality gap $g$ between primal and dual decreases to zero, as we show in the complementary slackness theorem: an important premise (foundation) in the development of the IPMs.
+\newpage
 \begin{thm}[\textbf{Complementary slackness}] \ \\
 	Let $(x^{*},\lambda^{*},s^{*})\in\mathcal{P}\times\mathcal{D}$. The following are equivalent:
 	\begin{itemize}
@@ -453,7 +454,7 @@ Consider
 The primal optimal solution is $x^{*}=(0, t, 1-t)$, for $t\in(0,1)$, with optimal cost value null. 	
 \end{ex} 
 
-It is importante to see that the multipliers $(\lambda,s)$ indicate the sensitivity of the optimal objective value to perturbations in the constraints and the process of finding them is called \textit{sensitivity analysis}. \\ In fact, let we assume a small perturbation of input data, for example $b + \Delta b$. If $\Delta x$ and $\Delta s$ have zero in the same entries as $x$ and $s$ respectively, then
+It is important to see that the multipliers $(\lambda,s)$ indicate the sensitivity of the optimal objective value to perturbations in the constraints and the process of finding them is called \textit{sensitivity analysis}. \\ In fact, let we assume a small perturbation of input data, for example $b + \Delta b$. If $\Delta x$ and $\Delta s$ have zero in the same entries as $x$ and $s$ respectively, then
 \begin{equation*}
 0=x^{T}s=x^{T}\Delta s= \left( \Delta x\right)^{T}s=\left( \Delta x\right)^{T}\Delta s
 \end{equation*}
@@ -569,8 +570,8 @@ Using \textit{artificial variables} $u_{i}$ in each violated constraint, it is e
 The point $(x,u)$, defined by $x = 0$ and $u_{j} = |b_{j}| \text{\;for\;}j =\{1,2,...,n\}$, is a basic initial feasible point, corresponding to the basis $B = \{n-m,...,n\}$.\\ We can see that at any feasible point for (\ref{IIPH}), $u$ represents the amounts by which the constraints $Ax = b$ are violated by the $x$ component and the objective function is the sum of these violations. \\
 The \textit{phase I} minimizes this sum and it has an optimal objective value of zero if and only if the original LP is feasible. In fact we have two cases at the optimal solution $\bar{u}$: 
 \begin{itemize}
-	\item[-]$1^{T}\bar{u}$ is zero: the simplex method finds a solution $(\bar{x},\bar{u})$ with $\bar{u}=0$ and it starts the \textit{phase II} step with initial point $\bar{x}$;
-	\item[-]$1^{T}\bar{u}$ is positive and the original problem is unfeasible.
+	\item[-]$e^{T}\bar{u}$ is zero: the simplex method finds a solution $(\bar{x},\bar{u})$ with $\bar{u}=0$ and it starts the \textit{phase II} step with initial point $\bar{x}$;
+	\item[-]$e^{T}\bar{u}$ is positive and the original problem is unfeasible.
 \end{itemize}
 If we are in the first case, after dropped all the artificial variables $\bar{u}$, we proceed with the second phase: it consists on an implementation of the simplex method, with starting feasible point $\bar{x}$.\\ 
 While two-phases method deals with feasibility and optimality separately, the \textit{Big-M} method combines these activities in a single search and the key is a composite objective function: the original one added the artificial variable sum times  large positive multiplier $\mathbf{M}$:\\
@@ -580,7 +581,7 @@ While two-phases method deals with feasibility and optimality separately, the \t
 The simplex code in Appendix \ref{app:A.1} implemented in this research performs the II phase steps.
  \section{Degenerate steps}
 The simplex method may encounter situations in which $d_{r} = \left( A_{B}^{-1}A_{s}\right)_{r} > 0$ but $(A_{B}^{-1}b)_{s}= 0$. At this step, called \textit{degenerate step}, the objective function $c^{T}x$ may not decrease and, after a number of successive degenerate steps, we may return to the original basis $B$. \\
-A. Charnes \cite{Lexico2} developed a technique of perturbation, that resulted in a finite simplex algorithm. This algorithm turned out to be equivalent to the lexicographic rule, \textcolor{red}{sketched in the appendix}. The \textit{perturbation strategy} avoids this cycling: it consists on adding a small perturbation to the right-hand side of constraints, as follows:
+A. Charnes \cite{Lexico2} developed a technique of perturbation, that resulted in a finite simplex algorithm. This algorithm turned out to be equivalent to the lexicographic rule. The \textit{perturbation strategy} avoids this cycling: it consists on adding a small perturbation to the right-hand side of constraints, as follows:
 \begin{equation*}
 b(\epsilon) \vcentcolon= b + A_{B}
 \begin{bmatrix}
@@ -2445,7 +2446,6 @@ Predictor-Corrector Long-Path Following method:
  \lstinputlisting[language=Python]{term.py}
 	\chapter{Newton's method}
 	\section{}
-	\textcolor{red}{NON SO SE AGGIUNGERE LA DESCRIZIONE DEL METODO DI NEWTON}\\
 	Let $F \colon \mathbb{R}^{n} \to \mathbb{R}^{n}$ be a continuously differentiable function, with $F(x) = [F_{1}(x),\dots,F_{n}(x)] $. Consider the common problem to find a point $x^{*}\in\mathbb{R}^{n}$ for which:
 \begin{equation*}
 F(x^{*})=0.
@@ -2498,8 +2498,9 @@ for some line search parameter $\alpha\in(0,1]$, labelled as \textit{step length
 	\bibitem{Carta}Cartis C., \emph{"Some disadvantages of a Mehrotra-type primal–dual corrector interior-point algorithm
 	for linear programming"}, Technical report 04/27, Numerical Analysis Group, Computing Laboratory,
 	Oxford University, (2004).
+	\bibitem{Lexico2}  Charnes A., \emph{ "Optimality and degeneracy in linear programming"}, pp: 160-170, (1952).
 	\bibitem{Col}Colombo M, Gondzio J, \emph{"Further development of multiple centrality correctors for interior point
-	methods"}, Computational optimization and applications, vol. 41, no. 3, pp. 277-305, (2008).
+	methods"}, Computational optimization and applications, vol. 41, no. 3, pp: 277-305, (2008).
 
 	\bibitem{SPS} D'Apuzzo M., De Simone V., di Serafino D., \emph{"Starting-point strategies for an infeassible potential reduction method"}, Springer-Verlag, D. Optim Lett, 4, pp: 131-146, (2010).
 	\bibitem{DAN1}Dantzig, G. B., \emph{"Maximization of a linear function of variables subject to linear
@@ -2512,40 +2513,37 @@ for some line search parameter $\alpha\in(0,1]$, labelled as \textit{step length
 	
 	% G
 	
-	\bibitem{25y} Gondzio J, \textit{ "Interior Point Methods 25 years later"}, European Journal of Operational Research 218, Issue 3, pp. 587-601, (2011).	
+	\bibitem{25y} Gondzio J, \textit{ "Interior Point Methods 25 years later"}, European Journal of Operational Research 218, Issue 3, pp: 587-601, (2011).	
 	
 % K
 		\bibitem{ONB}Krajewski L. J., McKenzie P., Ritzman L. P.,\textit{ "Shift Scheduling in Banking Operations: A Case Application"}, Interfaces, 10:12, (1980).
 		\bibitem{Kar} Karmarkar N. K.,\emph{ "A new polynomial-time algorithm for linear programming"}, Combinatorica, (1984).
-		\bibitem{(Natural)} Kent B., Bare B. B., Field R. C., Bradley G. A., \textit{"Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN"}, OR, 39, pp. 13-27, (1991).
+		\bibitem{(Natural)} Kent B., Bare B. B., Field R. C., Bradley G. A., \textit{"Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN"}, OR, 39, pp: 13-27, (1991).
 		\bibitem{Lem} Lemke C.E,\textit{ "The dual method of solving the linear programming problem."} Naval Research Logistics Quarterly, John Wiley and Sons, (1954).
 		\bibitem{MINTY} Klee, V., Minty, G.,\emph{ "How good is the simplex algorithm?"} in O. Shisha, ed., ‘Inequalities–III’, Academic Press, New York, pp: 159–175, (1972).
 		\bibitem{LNP}Luenberger David G., Yinyu Ye, \emph{"Linear and Nonlinear Programming"}, Springer Science+Business Media, 3, pp: 136-140, (2008).
-		\bibitem{LMS} Lustig I. J., Marsten E., Shanno D. F.,\emph{ "Computational experience with a primal-dual interior point method for linear programming"}, Linear algebra and its applications, pp. 191-222, (1991).
+		\bibitem{LMS} Lustig I. J., Marsten E., Shanno D. F.,\emph{ "Computational experience with a primal-dual interior point method for linear programming"}, Linear algebra and its applications, pp: 191-222, (1991).
 		\bibitem{ComTeq} Maros I., \emph{"Computational Techniques of the Simplex Method"}, 1, Kluwer
 		Academic Publishers, Boston, (2003).
-		\bibitem{meg} Megiddo N., \emph{"Pathways to the optimal set in linear programming"}, in Progress in Mathematical Programming: Interior-Point and Related Methods, Springer-Verlag, New York, pp. 131-158, (1986).
+		\bibitem{meg} Megiddo N., \emph{"Pathways to the optimal set in linear programming"}, in Progress in Mathematical Programming: Interior-Point and Related Methods, Springer-Verlag, New York, pp: 131-158, (1986).
 	\bibitem{MER} Mehrotra S., \emph{ "On the implementation of a primal-dual interior point method"}, SIAM Journal on Optimization. 2, pp: 575-601, (1992).
 	\bibitem{MUR} Mehrotra S., \emph{ Advanced Linear Programming: Computation and
 	Practice. } McGraw-Hill New York, New York, (1981).
 \bibitem{Mehr} Mehrotra S., \emph{"Generalized predictor-corrector methods and their performance"}, Technical Report 90-93, Department of Industrial Engineering and Management Sciences, Northwestern University, Evanston, Illinois, (1991).
-		\bibitem{5}Mizuno S., Todd M.J., Y. Ye,\emph{\;On adaptive-step primal-dual interior-point algorithms for linear programming}, Math. of OR, vol. 18, pp. 964-981, (1993). 
+		\bibitem{5}Mizuno S., Todd M.J., Y. Ye,\emph{\;On adaptive-step primal-dual interior-point algorithms for linear programming}, Math. of OR, vol. 18, pp: 964-981, (1993). 
 	%	
 	%N
 	%
 	\bibitem{W}Nocedal J., Wright J. S., \emph{\;"Numerical Optimization"}, Springer Series in OR, Springer, New York, (2006).
-
-	\bibitem{Lexico2}  Charnes A., \emph{ "Optimality and degeneracy in linear programming"}, pp. 160-170, (1952). 
-
 \bibitem{RR} Rardin Ronald L., \textit{"Optimization in operations reseasch"}, Pearson Education (US), 2, University of Arkansas, (2017).
 \bibitem{rene}Renegar J., \textit{ "A Mathematical View of Interior-Point Methods in Convex Optimization"}, MPS/SIAM
-Ser. Optim., SIAM, Philadelphia, 2001.
+Ser. Optim., SIAM, Philadelphia, (2001).
 
 	%
 	%T
 	%
 	\bibitem{Topia} Tapia, R., Zhang, Y., Saltzman, M., Weiser, A.,\emph{The Mehrotra predictor–corrector interior-point
-	method as a perturbed composite Newton method}, SIAM J. Optim. 6, pp. 47–56, (1996).
+	method as a perturbed composite Newton method}, SIAM J. Optim. 6, pp: 47–56, (1996).
 \bibitem{ForSer} \emph{"Forest Service planning: accommodating uses, producing outputs, and sustaining ecosystems"}, Congress of the United States-Office of technology assessment.
 \bibitem {VAN} Vanderbei J. Robert, \emph{\;"An interior point code for quadratic programming"}, Optim. Methods Software, 1, pp: 451-484, (1999). 
 \bibitem {LP} Vanderbei J. Robert, \emph{\;"Linear programming:
@@ -2555,11 +2553,11 @@ Princeton University, Springer Science + Business Media, (2001).
 %W
 %
 \bibitem{SSM} Westerberg, C.-H., Bjorklund B., Hultman E., \emph{"An Application of Mixed Integer Programming in a Swedish Steel Mill" }, Interfaces, 7:2, pp: 39-43, (1977).
-\bibitem {Wright} Wright J. Stephen, \emph{\;"Primal-Dual Interior Point Methods"}, SIAM: society for industrial and applied mathematics. Philadelphia, pag 134, (1997).
-\bibitem{WWW}Wright M. H.,\textit{ “Interior point methods for constrained optimization”}, Acta Numerica, Cambridge Univ. Press, Cambridge, UK, pp. 341–407, (1992).
-\bibitem{XY}Xiaojie Xu, Yinyu Ye, \emph{"A generalized homogeneous and self-dual algorithm for linear programming"}, Operations Research Letters, 17, pp. 181-190, (1995).
+\bibitem {Wright} Wright J. Stephen, \emph{\;"Primal-Dual Interior Point Methods"}, SIAM: society for industrial and applied mathematics. Philadelphia, (1997).
+\bibitem{WWW}Wright M. H.,\textit{ “Interior point methods for constrained optimization”}, Acta Numerica, Cambridge Univ. Press, Cambridge, UK, pp: 341–407, (1992).
+\bibitem{XY}Xiaojie Xu, Yinyu Ye, \emph{"A generalized homogeneous and self-dual algorithm for linear programming"}, Operations Research Letters, 17, pp: 181-190, (1995).
 \bibitem{matlab}Zhang Y.,\textit{ "Solving large-scale linear programs by inteior point methods under
-the Matlab enviroment"}, Optimization Methods and Software, 10, pp. 1-31, (1999).
+the Matlab enviroment"}, Optimization Methods and Software, 10, pp: 1-31, (1999).
 \end{thebibliography}
 
 \end{document}
