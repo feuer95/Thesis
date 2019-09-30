@@ -417,7 +417,7 @@ For the first point suppose that (\ref{(Prim)}) has a finite optimal solution $x
 %\onehalfspacing
 Let us define the \textit{dual feasible set} $\mathcal{D}=\{(\lambda,s)\in\mathbb{R}^{m+n}|\;A^{T}\lambda+s= c,\;s>0\}$, then we have that $c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x \geq0$ for every $x\in\mathcal{P}$ and $\left(\lambda,s\right)\in\mathcal{D}$.\\
 This result leads to the following definition: we call \textit{dual gap} the diffenrence between the primal and the dual optimal cost value. It is labelled with $g$, hence
-\begin{equation}\label{dualgap}
+\begin{equation}\label{dualgap}\tag{2.8}
 g = c^{T}x - b^{T}\lambda.
 \end{equation}
 Since $c^{T}x\geq b^{T}\lambda$ when both primal and dual variables are feasible, we see that:\begin{center}
@@ -437,7 +437,7 @@ At the primal-dual solutions, the duality gap $g$ between primal and dual decrea
 
 For every KKT solution $(x^{*}, \lambda^{*}, s^{*})$ we have $x_{j}^{*}= 0$ and/or $s_{j}^{*}= 0$ for all $j=0,1,\dots,n$.\\
 We can define two index sets $\mathcal{B}$ and $\mathcal{N}$ as follows:
-\begin{equation}\label{index}
+\begin{equation}\label{index}\tag{2.9}
 \mathcal{B} =\{j\in\{1,\dots,n\}\;|\; x^{*} \not= 0\}, \;
 \mathcal{N} =\{j\in\{1,\dots,n\}\;|\; s^{*} \not= 0\}.
 \end{equation}  
@@ -827,7 +827,7 @@ The Newton's method forms a linear model for $\mathit{F}$ around the current poi
 	\Delta x\\\Delta\lambda \\\Delta s
 	\end{bmatrix}=-\mathit{F}(x,\lambda,s)$,
 \end{center}
-where $\mathit{J}$ is the Jacobian of the linear mapping $\mathit{F}$. If the current point $(x, \lambda, s)\notin\mathcal{F}$, the Newton step equations becomes
+where $\mathit{J}$ is the Jacobian of the linear mapping $\mathit{F}$ defined in (4.1). If the current point $(x, \lambda, s)\notin\mathcal{F}$, the Newton step equations becomes
 
 \begin{equation}\label{(5.1)}
 	\begin{bmatrix}
@@ -847,7 +847,7 @@ for some line search parameter $\alpha \in (0,1]$ called \textit{step length par
 %(x + \Delta x)^{T}(s +\Delta s) &= xs + x \Delta s + s \Delta x + \Delta x \Delta s\\ &\text{and} \\S \Delta x + X &\Delta s + XS = 0,
 %\end{align*} by the last row of (\ref{(5.1)}) we can state that $\Delta x\Delta s = 0$.
 \\
-In Figure \ref{fig:IPM} it is depicted the behaviour of an IPM: from an initial point, it reaches the optimal solution $x^{*}$ of the LP problem \label{LPexample} with the Newton's method, (to translate: considerando il problema duale allo stesso tempo, lavora in modo analogo nell'iperpiano $\mathcal{D}$)
+In Figure \ref{fig:IPM} it is depicted the behaviour of an IPM: from an initial point, it reaches the optimal solution $x^{*}$ of the LP problem \label{LPexample} with the Newton's method.
 \begin{figure}[h]\caption{\label{fig:IPM}Feasible set $\mathcal{P}$ and the IPM iterates, computed with step length parameter $\alpha_{0}=1$, $\alpha_{1}=0.8$, $\alpha_{2}=0.5$.} 
 	\begin{center}
 		\begin{tikzpicture}[y={(1cm,0cm)}, x={( -0.5cm, -0.5cm)}, z={(0cm,1cm)}] % s i s t e m a di r i f e r i m e n t o t i k z 3 d
@@ -913,7 +913,7 @@ r_{c}^{k}\\r_{b}^{k}\\X^{k}S^{k}e
 \caption{\label{alg:AS}Affine-scaling algorithm}
 \end{algorithm}
 
-The solution $\left(\Delta x^{k},\Delta\lambda^{k},\Delta s^{k}\right)$ of the system (\ref{mtx:aff}) is called \textit{affine scaling direction} and it has either $\Delta x_{i}^{k}<0$ or $\Delta s_{i}^{k}<0$ or both because we have $s^{k}_{i}\Delta x^{k}_{i} + x^{k}_{i}\Delta s^{k}_{i} = - x^{k}_{i}s^{k}_{i}$ by the last block row of this system, for $i=1,\dots,n$ and the positivity of $x^{k}$ and $s^{k}$.\\
+The solution $\left(\Delta x^{k},\Delta\lambda^{k},\Delta s^{k}\right)$ of the system (\ref{mtx:aff}) is called \textit{affine-scaling direction} and it has either $\Delta x_{i}^{k}<0$ or $\Delta s_{i}^{k}<0$ or both because we have $s^{k}_{i}\Delta x^{k}_{i} + x^{k}_{i}\Delta s^{k}_{i} = - x^{k}_{i}s^{k}_{i}$ by the last block row of this system, for $i=1,\dots,n$ and the positivity of $x^{k}$ and $s^{k}$.\\
 Then, we need to choose the step length parameter $\alpha_{k}$ such that
 \begin{align*}
 x^{k}_{i} + \alpha_{k} \Delta x^{k}_{i} &>0 \text{ and}\\
@@ -978,9 +978,9 @@ for which $\tau = 0$ in (4.3e), may have multiple solutions).
 If the sets $\mathcal{P}^{0}$ and $\mathcal{D}^{0}$ are non-empty, then the problem (P$_{\tau}$) (and consequently the relative KKT conditions) has a unique solution $(x(\tau),\lambda(\tau),s(\tau))$, for all $\tau>0$. 
 \end{cor}
 Let $(x(\tau), \lambda(\tau), s(\tau))$ be on the primal-dual path $\mathcal{C}$, then the non negative duality gap is:
-\begin{equation}
+\begin{equation*}
 g = c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x=\sum_{i=1}^{n} x_{i}s_{i} = n\tau.
-\end{equation}
+\end{equation*}
 It means that $g$ provides a measure of closeness to optimality that is the progress of the algorithm, and so it is sufficient to halt when $\tau$ is small. Hence both $x(\tau)$ and
  $(\lambda(\tau), s(\tau))$ approach to the common optimal values of the problems (P) and (D) respectively. The central path guides us to a solution along a route that maintains positivity of the $x$ and $s$ components and decreases the pairwise products $\{x_{i}s_{i}\},\;i = 1,2,...,n$ to zero at the same rate.\\
  Now we formulate the equations (4.3) imposing the function $\mathit{F}$ in this way:
@@ -1005,7 +1005,7 @@ to a specific choice of $\tau$. Then, the Newton steps toward the points on $\ma
  \mu = \frac{1}{n}\sum_{i=1}^{n} x_{i}s_{i} = \frac{x^{T}s}{n}.
  \end{equation}\\
  The perturbation $\sigma\mu$ guarantees progress in reducing $\mu$ and hence the duality gap $g = x^{T}s$ at each iteration.
-In fact, using $e^{T}e= n$ and the fact $s^{T}x=n\mu$ in the last n equations of (\ref{new})
+In fact, using $e^{T}e= n$ and the fact $s^{T}x=n\mu$ in the last n equations of (\ref{new}), we have:
 % in vectorial form and we add $\sigma$, we see that
  \begin{align*}
  (S\Delta x + X\Delta s)^{T}e &= s^{T}\Delta x + x^{T}\Delta s \text{ and}\\
@@ -1121,7 +1121,7 @@ We can introduce an extension of $\mathcal{N}_{-\infty}(\gamma)$, that includes 
 \end{equation}
 where $\gamma\in(0,1)$ and $\beta \geq 1$ are given parameters and the residuals $(r_{b}^{0}, r_{c}^{0})$ and $\mu_{0}$ are evaluated at the starting point. Notice that $\beta$ must be greater than 1 to ensure that the initial point $(x^{0}, \lambda^{0}, s^{0})\in\mathcal{N}(\gamma,\beta)$.\\
 When LPF algorithm works using $\mathcal{N}_{-\infty}(\gamma,\beta)$, the search direction is obtained solving:
-\begin{equation}\label{matrix:LPF}
+\begin{equation*}\label{matrix:LPF}\tag{4.9}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\X^{k}&0&S^{k}
 \end{bmatrix}\begin{bmatrix}
@@ -1129,7 +1129,7 @@ When LPF algorithm works using $\mathcal{N}_{-\infty}(\gamma,\beta)$, the search
 \end{bmatrix}=-\begin{bmatrix}
 r_{c}^{k}\\r_{b}^{k}\\-X^{k}S^{k}e + \sigma_{k}\mu_{k}e
 \end{bmatrix},
-\end{equation}
+\end{equation*}
 instead of (\ref{Pb}), since the feasibility of the iterates is not guaranteed. \\It is well known that the theoretical complexity of large neighbourhood algorithms is
 worse than that of small neighbourhood algorithms but the former perform better in practice than the latter; this discrepancy is known as ‘irony of IPMs’ \cite{rene}. 
 \section{Asymptotic convergence}
@@ -1137,7 +1137,7 @@ We examine the asymptotic behavior of these two methods, that are of significant
  With a modification of the LPF method we develop a new algorithm, depicted in Section 4.5.2., in a way that the sequence of $\{\mu_{k}\}$ converges almost quadratically to 0.\\
 \subsection{Affine-scaling method convergence}
 In the following analysis we set the current point $(x, \lambda, s)\in\mathcal{F}^{0}$, and so the affine-scaling direction $(\Delta x, \Delta \lambda, \Delta s)$ satisfies:\\
-\begin{equation}\label{5.1}\tag{4.9}
+\begin{equation}\label{5.1}\tag{4.10}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\S&0&X
 \end{bmatrix}\begin{bmatrix}
@@ -1146,9 +1146,9 @@ In the following analysis we set the current point $(x, \lambda, s)\in\mathcal{F
 0\\0\\XSe
 \end{bmatrix},
 \end{equation}\\
-with residuals $r_{b}$ and $r_{c}$ respect to the feasible point null.\\More precisely it is required that $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$.
+with residuals $r_{b}$ and $r_{c}$ respect to the feasible point in (4.2) are null.\\More precisely it is required that $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$.
 \begin{lem}
-	Suppose that $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$ and that the affine-scaling direction $(\Delta x,\Delta \lambda, \Delta s)$ is calculated. Then there is a costant $C$ such that
+	Suppose that $(x, \lambda, s)\in\mathcal{N}_{- \infty}(\gamma)$ and that the affine-scaling direction $(\Delta x,\Delta \lambda, \Delta s)$ is calculated in (4.10). Then there is a costant $C$ such that
 	\begin{equation*}
 	\lVert \Delta x_{\mathcal{N}} \rVert_{2} \leq C \mu \text{\;\;\;and\;\;\;} \lVert \Delta s_\mathcal{B} \rVert_{2} \leq C \mu,
 	\end{equation*}
@@ -1197,13 +1197,13 @@ The next lemma is due essentially to Adler and Montiero \cite{ADL}.  Let us deno
 	Suppose that the assumption of the Lemma \ref{(T)} holds. Then
 	\begin{enumerate}
 		\item $u = \Delta x_{B}$ is the unique solution of the following convex quadratic problem
-		\begin{align} \label{(U)}\tag{4.10a}
+		\begin{align} \label{(U)}\tag{4.11a}
 		\min\limits_{u}\frac{1}{2}\lVert D_{\mathcal{B}}^{-1}u\rVert^{2}_{2} \text{ subject to }A_{\mathcal{B}}u = -A_{\mathcal{N}}\Delta x_{\mathcal{N}};
 		\end{align}
 		\item $(v, \pi) = (\Delta s_{N}, \Delta \lambda)$ is a solution of the convex quadratic problem
-		\begin{align}\tag{4.10b}
+		\begin{align}\tag{4.11b}
 		\min\limits_{(v, \pi)}\frac{1}{2}\lVert D_{\mathcal{N}}v\rVert^{2}_{2} \text{  subject to } &A_{\mathcal{B}}u = -A_{\mathcal{N}}\Delta x_{\mathcal{N}},\label{44}\\
-		&A_{\mathcal{N}^{T}}\pi+ v =0.\label{45}\tag{4.10c}		 
+		&A_{\mathcal{N}^{T}}\pi+ v =0.\label{45}\tag{4.11c}		 
 		\end{align}
 		The $\Delta s_{\mathcal{N}}$ component is unique.
 	\end{enumerate} 
@@ -1242,7 +1242,7 @@ The next lemma is due essentially to Adler and Montiero \cite{ADL}.  Let us deno
 	\pi = -(AA^{T})^{-1}(A_{\mathcal{N}}v +A_{\mathcal{B}}\Delta s_{\mathcal{B}}),
 	\end{equation*}
 	so the minimization problem can be formulated as
-	\begin{equation}\label{(V)}\tag{4.11}
+	\begin{equation}\label{(V)}\tag{4.12}
 	\min\limits_{v}\frac{1}{2}\lVert D_{\mathcal{N}}v\rVert^{2} \text{ subject to }
 	(I-A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{N}})v =A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\Delta s_{\mathcal{B}}.		 
 	\end{equation}
@@ -1265,7 +1265,7 @@ The next lemma is due essentially to Adler and Montiero \cite{ADL}.  Let us deno
 	\end{equation*}
 	The result follows when we define K$\;=\bar{K} \lVert A_{\mathcal{N}}^{T}(A^{T}A)^{-1}A_{\mathcal{B}}\rVert_{2} C$.
 \end{proof}
-A result similar to Theorem~\ref{(Z)} holds for steps of infeasible interior-point algorithms; we state it with the following theorem, that works (\textcolor{red}{?}) in the extended neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$ defined by (\ref{neigh3}) \cite{Wright}.\\
+A result similar to Theorem~\ref{(Z)} holds for steps of infeasible interior-point algorithms; we state it with the following theorem, that works in the extended neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$ defined in (\ref{neigh3}) \cite{Wright}.\\
 \begin{thm}
 	Suppose that the iteration sequence $(x^{k},\lambda^{k},s^{k})$ is generated by an infeasible interior-point algorithm, whose iterates are confined to the neighborhood $\mathcal{N}_{-\infty}(\gamma,\beta)$, and $\mu_{k}\to 0$. Then if $(\Delta x^{k},\Delta \lambda^{k},\Delta s^{k})$ is the affine-scaling step defined by (\ref{mtx:aff}) at the kth iterate, there is a constant C such that
 	\begin{equation*}
@@ -1310,7 +1310,7 @@ The next lemma is an important tool to prove the following statement.
 \end{lem}
 \begin{proof}
 	By multiplying the last block row of ($\ref{Pb}$) by $(XS)^{-1/2}$ and recalling the definition of $D = X^{1/2}S^{-1/2}$, we obtain 
-	\begin{equation}\label{58}
+	\begin{equation}\label{58}\tag{4.12}
 	D^{-1}\Delta x + D \Delta s = (XS)^{-1/2}(-XSe + \sigma \mu e).
 	\end{equation}
 	Now, applying Lemma \ref{lem1} with $u= D^{-1}\Delta x$ and $v = D \Delta s$, we obtain
@@ -1329,7 +1329,7 @@ The next lemma is an important tool to prove the following statement.
 \end{proof}
 \begin{thm}
 	Given the parameters $\gamma$, $\sigma_{\text{min}}$ and $\sigma_{\text{max}}$ in the long-step path-following algorithm, there is a constant $\delta$ indipendent of n such that
-	\begin{equation}\label{(5.10)}
+	\begin{equation}\label{(5.10)}\tag{4.13}
 	\mu_{k+1} \leq \bigg(1 - \frac{\delta}{n}\bigg)\mu_{k},
 	\end{equation}
 	for all $k\geq0$.\\
@@ -1338,10 +1338,10 @@ The next lemma is an important tool to prove the following statement.
 	First of all we prove that $(x_{k}, \lambda_{k}, s_{k})+\alpha(\Delta x_{k},\Delta \lambda_{k},\Delta s_{k})\in\mathcal{N}_{-\infty}(\gamma)$ for all $\sigma \in \bigg[0,2^{3/2}\gamma \frac{1 - \gamma}{1 +\ \gamma}\frac{\sigma_{k}}{n}\bigg]$.\\
 	
 	From the last $n$ equalities of (\ref{Pb}), we have for $i=1,\dots,n$ that 
-	\begin{align}&(x_{i}^{k}, \lambda_{i}^{k}, s_{i}^{k})+\alpha(\Delta x_{i}^{k},\Delta \lambda_{i}^{k},\Delta s_{i}^{k})\\ 
-	 &=x_{i}^{k}s_{i}^{k} + \alpha(x_{i}^{k} \Delta s_{i}^{k} + s_{i}^{k} \Delta x_{i}^{k})+\alpha^{2}\Delta x_{i}^{k} \Delta s_{i}^{k} \\
-	&=x_{i}^{k}s_{i}^{k}(1 - \alpha) + \alpha \sigma_{k}\mu_{k}-\alpha^{2}|\Delta x_{i}^{k} \Delta s_{i}^{k}| \label{(5.11)}\\
-	&\geq \gamma(1 - \alpha)\mu_{k} + \alpha \sigma_{k}\mu_{k}-\alpha^{2}2^{-3/2}(1 + 1/ \gamma)n\mu_{k} \label{(5.12)},
+	\begin{align}&(x_{i}^{k}, \lambda_{i}^{k}, s_{i}^{k})+\alpha(\Delta x_{i}^{k},\Delta \lambda_{i}^{k},\Delta s_{i}^{k})\notag\\ 
+	 &=x_{i}^{k}s_{i}^{k} + \alpha(x_{i}^{k} \Delta s_{i}^{k} + s_{i}^{k} \Delta x_{i}^{k})+\alpha^{2}\Delta x_{i}^{k} \Delta s_{i}^{k}\notag\\
+	&=x_{i}^{k}s_{i}^{k}(1 - \alpha) + \alpha \sigma_{k}\mu_{k}-\alpha^{2}|\Delta x_{i}^{k} \Delta s_{i}^{k}| \label{(5.11)}\tag{a}\\
+	&\geq \gamma(1 - \alpha)\mu_{k} + \alpha \sigma_{k}\mu_{k}-\alpha^{2}2^{-3/2}(1 + 1/ \gamma)n\mu_{k} \label{(5.12)}\tag{b},
 	\end{align}
 	\\
 	In (\ref{(5.11)}) $\alpha x_{i}^{k}s_{i}^{k}$ is added in order to use the last equations of the matrix system.\\ 
@@ -1415,8 +1415,8 @@ This marginal per-iteration reduction result of $\mu_{k}$ is enough to deliver a
 In the general framework Algorithm 3 the centering parameter is not specified: different interior-point algorithms use a peculiar method to select $\sigma_{k}$.\\
 Now we see two heuristic choices of $\sigma_{k}$ at the $k^{th}$ iteration: the first one is fixed and the second one decreases at each iteration: 
 \begin{align}
-\sigma^{1}_{k} &= 1 -\frac{0.5}{\sqrt{n}},\label{LPF1}\tag{4.22a}\\
-\sigma^{1}_{k} &= \min\{0.1, 100\mu_{k} \},\label{LPF2}\tag{4.22b}
+\sigma^{1}_{k} &= 1 -\frac{0.5}{\sqrt{n}},\label{LPF1}\tag{4.14a}\\
+\sigma^{1}_{k} &= \min\{0.1, 100\mu_{k} \},\label{LPF2}\tag{4.14b}
 \end{align}
 with $\mu_{k}$ the duality measure of the current primal-dual point and $n$ is the number of entries of $x$ and $s$. 
 
@@ -1447,7 +1447,7 @@ It generates sequence of infeasible iterates $\{(x^{k},\lambda^{k},s^{k})\}$ for
 The affine-scaling component is calculated before the centering component; by arranging the computations in this way, we gain a key advantage: the ability to choose the centering parameter $\sigma$ adaptively rather then a priori, as we did in the LPF algorithms.\\
 If the affine-scaling direction makes good progress in reducing the duality measure $\mu$, while remaining inside the positive hyperplane defined by $(x,s)>0$, we conclude that little centering is needed, so we choose $\sigma$ close to 0. Otherwise, we can move only short distance along the affine-scaling direction before violating the positivity constraints, thus we need a significant amount of centering and $\sigma$ must be closer to 1.\\
 Given a general LP problem (\ref{(Prim)}) MPC operates as follows. First af all, requiring the current point $(x, \lambda, s)$ satisfies only $(x, s)> 0$, we compute the affine-scaling directionas follows
-\begin{equation}\label{(A)}\tag{4.21}
+\begin{equation}\label{(A)}\tag{4.15}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\S&0&X
 \end{bmatrix}\begin{bmatrix}
@@ -1457,12 +1457,12 @@ r_{c}\\r_{b}\\XSe
 \end{bmatrix}.
 \end{equation}
 Now we find the step lengths to the boundary along this direction, performing separate calculations for the primal and dual components reported below:
-\begin{align}\label{Qw}\tag{4.22a}
+\begin{align}\label{Qw}\tag{4.16a}
 \alpha_{\text{aff}}^{\text{pri}}=\arg\max\{\alpha\in[0,1]\;|\;x +\alpha\Delta x^{\text{aff}}\geq 0\}, \\
-\alpha_{\text{aff}}^{\text{dual}}=\arg\max\{\alpha\in[0,1]\;|\;s +\alpha\Delta s^{\text{aff}}\geq 0\}\tag{4.22b}.
+\alpha_{\text{aff}}^{\text{dual}}=\arg\max\{\alpha\in[0,1]\;|\;s +\alpha\Delta s^{\text{aff}}\geq 0\}\tag{4.16b}.
 \end{align}
 To measure the efficacy of the affine-scaling direction, it is defined $\mu_{\text{aff}}$ as the hypothetical value of $\mu$ resulting from a full step to the boundary, that is,
-\begin{equation}\tag{4.22c}
+\begin{equation}\tag{4.16c}
 	\mu_{\text{aff}}= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n.
 \end{equation}
 If $\mu_{\text{aff}}\ll\mu$, the affine-scaling direction is a good search direction that permits significant progress to be made in reducing $\mu$, so we choose the centering parameter $\sigma$ close to 0. Instead, if $\mu_{\text{aff}}$ is just a little smaller than $\mu$, we compute a bigger $\sigma$. The latter choice has the effect of moving us closer  to the central path $\mathcal{C}$, so that the algorithm is in a better position to achieve a substantial decrease in $\mu$ on the next iteration.\\
@@ -1476,7 +1476,7 @@ To motivate the corrector step, we see how the $i^{th}$ pairwise product $x_{i}s
 (x_{i}+\Delta x_{i}^{\text{aff}})(s_{i}+\Delta s_{i}^{\text{aff}})= x_{i}s_{i}+ x_{i}\Delta s_{i}^{\text{aff}}+s_{i}\Delta x_{i}^{\text{aff}}+\Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{aff}} =\Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{aff}}.
 \end{equation*}
 Hence a full step is taken, the pairwise product $x_{i}s_{i}$ transforms to $\Delta x_{i}^{\text{aff}}\Delta s_{i}^{\text{aff}}$, instead of 0. The corrector component vector $(\Delta x^{\text{cor}}, \Delta \lambda^{\text{cor}}, \Delta s^{\text{cor}})$ tries to compensate for this deviation from linearity, modifying the search direction so that the pairwise products come closer to their target value to 0. This step satisfies the following system:
-\begin{equation}\label{(B)}
+\begin{equation*}\label{(B)}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\S&0&X
 \end{bmatrix}\begin{bmatrix}
@@ -1484,7 +1484,7 @@ Hence a full step is taken, the pairwise product $x_{i}s_{i}$ transforms to $\De
 \end{bmatrix}=-\begin{bmatrix}
 0\\0\\\Delta X^{\text{aff}}\Delta S^{\text{aff}}e
 \end{bmatrix},
-\end{equation}
+\end{equation*}
 where
 $
 \Delta X^{\text{aff}} = \text{diag}(\Delta x_{1}^{\text{aff}}, \Delta x_{2}^{\text{aff}},\dots,\Delta x_{n}^{\text{aff}})$ and $\Delta S^{\text{aff}} = \text{diag}(\Delta s_{1}^{\text{aff}}, \Delta s_{2}^{\text{aff}},\dots,\Delta s_{n}^{\text{aff}})$.\\
@@ -1498,7 +1498,7 @@ This result yelds to a better reduction of the duality measure, in fact we repor
 \end{equation*}
 When the limiting matrix is singular, the corrector step may no longer be smaller in norm than the affine-scaling step, ideed, it is often larger. Even in this situation, the use of the corrector component usually enhances the overall efficiency of the algorithm in practice.\\
 Since the centering and corrector components are obtained by solving linear system with the same coefficient matrix and they are indipendent each other, we merge them into a single direction by adding their corresponding right-hand sides and compute the combined direction. We obtain the combined centering-corrector step $(\Delta x^{\text{cc}}, \Delta \lambda^{\text{cc}}, \Delta s^{\text{cc}})$ solving the following system:
-\begin{equation}\label{(C)}
+\begin{equation}\label{(C)}\tag{4.17}
 \begin{bmatrix}
 0&A^{T}&I \\A&0&0\\S&0&X
 \end{bmatrix}\begin{bmatrix}
@@ -1519,7 +1519,7 @@ Once the predictor and corrector terms are computed they are added to produce th
 	\textbf{Given} $(x^{0}, \lambda^{0}, s^{0})$ with $(x^{0}, s^{0})> 0$ ; \\
 	\textbf{for} \= $k = 0, 1, 2,...$ \\
 	\> solve (\ref{(A)}) for $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$;\\
-	\> calculate $\alpha_{\text{aff}}^{\text{pri}}$, $\alpha_{\text{aff}}^{\text{dual}}$ and $\mu_{\text{aff}}$ as in (4.22);\\
+	\> calculate $\alpha_{\text{aff}}^{\text{pri}}$, $\alpha_{\text{aff}}^{\text{dual}}$ and $\mu_{\text{aff}}$ as in (4.16);\\
 	\> set centering parameter to $\sigma = (\mu_{\text{aff}}/\mu)^{3}$; \\
 	\> solve (\ref{(C)}) for $(\Delta x^{cc},\Delta \lambda^{cc},\Delta s^{cc})$;\\
 	\> compute the search direction and step to boundary from: \\
@@ -1539,8 +1539,8 @@ Once the predictor and corrector terms are computed they are added to produce th
 It is worth noting that here it needed two step length parameters $\alpha_{k}^{\text{pri}$ and $\alpha_{k}^{\text{dual}$ instead of only one per iteration in the long-path following algorithms.
 \newpage
 \subsection*{Analysis of MPC}
-In order to study the performance of the Mehrotra's algorithm, we introduce the trajectory-following methods from ODEs. These one define a trajectory from the current point, we say $(x,\lambda,s)$, to the solution $(x^{*},\lambda^{*},s^{*})$. There are infinitely many trajectories to choose from, but in this case it is obtained from a linear scaling of the function (\ref{F}).\\ Denoting this trajectory by $\mathcal{H}$ and parametrizing it by $\tau\in[0,1)$, we find that each point $(\hat{x},\hat{\lambda},\hat{s})_{\tau}\in\mathcal{H}$ is a solution of the following nonlinear system:
-\begin{equation}\label{T}
+In order to study the performance of the Mehrotra's algorithm, we introduce the trajectory-following methods from ODEs. These one define a trajectory from the current point, we say $(x,\lambda,s)$, to the solution $(x^{*},\lambda^{*},s^{*})$. There are infinitely many trajectories to choose from, but in this case it is obtained from a linear scaling of the function F defined in (\ref{F}).\\ Denoting this trajectory by $\mathcal{H}$ and parametrizing it by $\tau\in[0,1)$, we find that each point $(\hat{x},\hat{\lambda},\hat{s})_{\tau}\in\mathcal{H}$ is a solution of the following nonlinear system:
+\begin{equation}\label{T}\tag{4.18}
 \begin{bmatrix}
 A^{T}\hat{\lambda}+\hat{s}-c \\A\hat{x}-b \\\hat{X}\hat{S}e
 \end{bmatrix}=\begin{bmatrix}
@@ -1578,18 +1578,18 @@ Instead here we see that $(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\De
 (\hat{x},\hat{\lambda},\hat{s})_{\tau}\approx(x, \lambda, s)+ \tau(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+\tau^{2}(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\Delta s^{\text{cor}}).
 \end{equation*}
 Now let us compare this approximation to the Mehrotra's iteration: ignoring the centering term by setting $\sigma =0$, if we constrain the primal and dual step lengths to be identical, we see in the algorithm the successive point will be
-\begin{equation}
+\begin{equation*}
 (\hat{x},\hat{\lambda},\hat{s})_{\tau}\approx(x, \lambda, s)+ \tau(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+\tau(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\Delta s^{\text{cor}}),
 \end{equation} 
 in which the $\tau^{2}$ coefficient in the last term is replaced by $\tau$.\\ Alternately, when we account for the centering parameter, the correspondence between the derivatives of the trajectory and the MPC search direction no longer holds. \\
 Then, the modified trajectory $\mathcal{H}_{\sigma}$ is introduced for which the correspondence delineated above holds even in the presence of $\sigma$. Also $\mathcal{H}_{\sigma}$ starts at $(x, \lambda, s)$ and aims at the solution $(x^{*},\lambda^{*},s^{*})$ and all $(\hat{x},\hat{\lambda},\hat{s})_{\tau}$ in this trajectory satisfy:
-\begin{equation}\label{Tt}
+\begin{equation*}\label{Tt}
 \begin{bmatrix}
 A^{T}\lambda+s-c \\Ax-b \\XSe
 \end{bmatrix}=\begin{bmatrix}
 (1-\tau)r_{c}\\(1-\tau)r_{b}\\(1-\tau)XSe+\tau^{2}(1-\tau)\sigma\mu e
 \end{bmatrix},(x,s)\geq0.
-\end{equation}
+\end{equation*}
 The tangent to this trajectory is the affine-scaling direction, as for $\mathcal{H}$, but the curvature can be identified with the combined centering-corrector step rather than the corrector component alone. The trajectory $\mathcal{H}_{\sigma}$ approximates more the central path than $\mathcal{H}$. Despite the closer relationship between $\mathcal{H}_{\sigma}$  and MPC algorithm, we can not qualify it as a second-order trajectory-following algorithm because it still searches along a linear direction rather than a quadratic path.\\
 The Newton step produced by MPC algorithm can be interpreted as a perturbed composite Newton method \cite{Col} and Tapia, Zhang and Dennys gave results on the order of convergence \cite{Topia}. Under additional assumption such as feasibility of the initial point, strict complementary and nondegeneracy of the $\epsilon$-solution the Mehrotra's method has cubic convergence. But in a recent study in \cite{Carta} it is provided a redable example that Mehrotra's technique may produce a correcotr which is larger in magnitude than the predictor and points in the wrong direction, possibly causing the algorithm to fail.
 \\In the numerical testing we will see that the implementation yields excellent results in vast majority of cases. 
@@ -1601,12 +1601,13 @@ technique may further accelerate the performance obtained by the LPF methods out
 
 We have applied the adaptivity strategy as well. Let suppose we have computed the $k^{th}$ iterate, then we compute the affine-scaling direction: with $(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$ the following predictor step length $\alpha_{\text{aff}}^{\text{pre}}$ is necessary to measure $\mu_{\text{aff}}$, as following:
 \begin{align}
-\alpha_{\text{aff}}^{\text{pre}}&=\arg\max\{\alpha\in[0,1]\;|\;(x^{k}, \lambda^{k}, s^{k})+ \alpha(\Delta x^{\text{aff}}, \Delta\lambda^{\text{aff}}, \Delta s^{\text{aff}})\in\mathcal{N}_{-\infty}(\gamma,\beta)\}\label{QWw}\\
-\mu_{\text{aff}}&= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n.\label{QWz}
+\alpha_{\text{aff}}^{\text{pre}}&=\arg\max\{\alpha\in[0,1]\;|\;(x^{k}, \lambda^{k}, s^{k})+ \alpha(\Delta x^{\text{aff}}, \Delta\lambda^{\text{aff}}, \Delta s^{\text{aff}})\in\mathcal{N}_{-\infty}(\gamma,\beta)\}\label{QWw}\tag{4.19}\\
+\mu_{\text{aff}}&= (x+\alpha_{\text{aff}}^{\text{pri}}\Delta x^{\text{aff}})^{T}(s+\alpha_{\text{aff}}^{\text{dual}}\Delta s^{\text{aff}})/n.\label{QWz}\tag{4.20}
 \end{align}
 in which $\mu_{\text{aff}}$ measures the efficiency of the affine-scaling direction, like in predictor step of MPC algorithm.
 Then, the corrector step consists on solving the general linear system with the centering parameter equal to \begin{center*}
-$\sigma_{k} = (\mu_{\text{aff}}/\mu)^{3}$, as in MPC. The value of the step length is performed in order to guarantee that the next iterate $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma,\beta)$ and, as we have already noticed, the step length selection is different from the one in the MPC.\\The LPF variant is completely described by the following pseudocode.
+$\sigma_{k} = (\mu_{\text{aff}}/\mu)^{3}$, as in MPC. The value of the step length is performed in order to guarantee that the next iterate $(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma,\beta)$ and, as we have already noticed, the step length selection is different from the one in the MPC.\newpage
+The LPF variant is completely described by the following pseudocode.
 \end{center*}\\
 \begin{algorithm}[H]\caption{\label{alg:pc}PC LPF Algorithm}
 	\begin{tabbing}
@@ -1634,7 +1635,7 @@ for a pair of real numbers $\alpha$ and $\beta$. This multiplicative representat
 \log T \approx \alpha \log 2 +\beta \log (m+n) +\epsilon.
 \end{equation*}
 Now we compute $T$ related to the IPM methods proposed in this thesis: long-path following algorithms with centering parameter $\sigma_{k}^{1}$ and with $\sigma_{k}^{2}$ formulated respctively in (\ref{LPF1}) and in (\ref{LPF2}), PC LPF and Mehrotra's algorithms. In order to find $\alpha$ and $\beta$  for each method, we introduce the following regression model, with $k$ observations:\\
-\begin{equation}
+\begin{equation*}
 \begin{bmatrix}
 \log T_{1}\\\log T_{2}\\\dots\\\log T_{k}\\
 \end{bmatrix}
@@ -1652,7 +1653,7 @@ Now we compute $T$ related to the IPM methods proposed in this thesis: long-path
 \dots\\
 \epsilon_{k}
 \end{bmatrix}.
-\end{equation}
+\end{equation*}
 We test the algorithms on 30 small scale LP problems in standard form with model data $A\in\mathbb{R}^{m,n}$, $b\in\mathbb{R}^{m}$ and $c\in\mathbb{R}^{n}$. In Table \ref{tab:numite} the statistics from the runs is collected, summarizing the number of iterations $T_{k}$ required to solve the $k^{th}$ example, with $k =1,\dots,30$.
 \begin{table}\caption{\label{tab:numite}Number of iterations required to solve standard LP problems with $n$ variables and $m$ constraints.}
 	\begin{center}
@@ -1790,7 +1791,7 @@ The starting point is then defined as
 				\textbf{else} \=\\
 				\> $\hat{s} = \tilde{s}$;\\
 				compute \=(\ref{72}) with $\hat{x}$ and $\hat{s}$\\
-				\>$(x^{0}, \lambda^{0}, s^{0}) = (\tilde{x}+\tilde{\delta}_{x} e,\;\tilde{\lambda},\;\tilde{s}+\tilde{\delta}_{s} e)$\\
+				\>$(x^{0}, \lambda^{0}, s^{0}) = (\tilde{x}+\tilde{\delta}_{x} e,\;\tilde{\lambda},\;\tilde{s}+\tilde{\delta}_{s} e)$;\\
 				\textbf{end}
 			\end{tabbing}
 		\end{boxedminipage}
@@ -1934,9 +1935,9 @@ x_{n}s_{n}\\
 \end{equation}
 With the centering deviation we are able to check the gap between the primal-dual point and $\mathcal{C}$, which gives informations about the behaviour of each IPM described in this research.\\  
 Instead, the \textit{residual feasibility error} is defined as follows:
-\begin{equation*}\label{RES}
+\begin{equation}\label{RES}\tag{5.6}
 Res_{err}(x,\lambda,s)=\frac{\lVert (r_{b},r_{c})\rVert_{2}}{\lVert (b,c) \rVert_{2}},
-\end{equation*} 
+\end{equation} 
  with $r_{b}$ and $r_{c}$ the residuals valued in $(x,\lambda,s)$. This framework facilitates a unified analysis of most IPMs: in fact the centering deviation and the feasibility error of the iterates computed by each algorithm are sketched in the next chapter.
 \chapter{Numerical testing}
 %\begin{center}
@@ -1953,7 +1954,7 @@ perform in practice; they are recalled with the tags labelled in Chapter 5 as fo
 	\item Mehrotra's method
 \end{itemize}\\ We solve the following four real problems: the forest service allocation, the Swedish steel model, the tubular products operations planning and the Ohio national planning.\\
 The fictitious data used to test the algorithms come from \cite{RR}.
-For each LP model we test the implementations with the two initial point schemes outlined previously. Then we list the optimal cost, the number of iterations, the dual gap and the residual valued at the $\epsilon$-optimal solution, with $\epsilon= 10^{-8}$.\\ To gain a better understanding of the performance of each algorithm, the results of the numerical testing are additionally analysed with two graphics. The first one illustrates the behaviour of the duality measure $\mu$, the dual gap $g$ and the centering deviationv$\delta(xs, \mu)$, defined respectively in (\ref{eq:dm}), in (\ref{dualgap}) and in (\ref{cendev}). The second one illustrates the convergence of the iterates to the feasible set $\mathcal{F}$, determining the residual errors computing the formula (\ref{RES}).\\
+For each LP model we test the implementations with the two initial point schemes outlined previously. Then we list the optimal cost, the number of iterations, the dual gap and the residual valued at the $\epsilon$-optimal solution, with $\epsilon= 10^{-8}$.\\ To gain a better understanding of the performance of each algorithm, the results of the numerical testing are additionally analysed with two graphics. The first one illustrates the behaviour of the duality measure $\mu$, the dual gap $g$ and the centering deviation $\delta(xs, \mu)$, defined respectively in (\ref{eq:dm}), in (\ref{dualgap}) and in (\ref{cendev}). The second one illustrates the convergence of the iterates to the feasible set $\mathcal{F}$, determining the residual errors computing the formula (\ref{RES}).\\
 In this study, we provide a general framework about the IPMs approach and we focus on the effects of using predictor-corrector method in place of a fixed function to compute $\sigma$ in an LPF setting. 
 \section{Forest service allocation} 
 The first model proposed is the \textit{Forest service allocation}. It is part of model class in which the main issue is how to divide or allocate a valuable resource among competing needs and the resource may be for example land, capital, time or fuel. We will see how the U.S Forest Service, one of the major Federal land managing agencies, has used this model to address the sensitive task of managing 191 million acres of national forestland \cite{(Natural)}.\\
@@ -2056,7 +2057,7 @@ In fact, the smallest residuals are computed by the solutions of the LPF 1 and L
 		\multicolumn{1}{c|}{} & STP1 & 3.225150E+05 & 9 & 9.526700E-06 & 3.739456E-13 \\ \hline
 	\end{tabular}
 \end{table}
-With Figure \ref{figure:for} and Figure \ref{figure:for2} this conjecture it is illustrated.\\ 
+With Figure \ref{figure:for} and Figure \ref{figure:for2} this conjecture is illustrated.\\ 
 The affine algorithm achieves the solution in fiewer iterations with STP 1 but the velocity to reach the feasible region is similar with both strategies (see graphic (b) and (d)). Instead, the sequence computed by LPF 1 reaches the feasible region after less than 25 iterations, then the performance gets worse;  in fact, although the computational cost is high, the rate of speed of the dual gap $g$ doesn't improve.  
 In the LPF 2 the improvement of $g$ is noticeable: when the primal-dual point sequence approaches to $\mathcal{F}$, $\mu$ tends to 0 with more velocity.\\ 
 Now we look at the predictor-corrector methods in Figure \ref{figure:for2}: the performance of choosing $\sigma$ adaptively is evident in Mehrotra's algorithm.
@@ -2116,7 +2117,7 @@ ingredient\\
 	\end{tabular}
 	\Bigg).
 \end{equation*}		
-The compostion constraints have been simplified by taking the blend total weight fixed at 1000 kilograms, in parenthesis in the formulation below. Collecting all the elements, the LP model of the Swedish example is: 
+The compostion constraints have been simplified by taking the blend total weight fixed at 1000 kilograms, in parenthesis in the formulation above.\\ Collecting all the elements, the LP model of the Swedish example is: 
 \begin{align*}
 \min16x_{1}+10x_{2}+8x_{3}+9x_{4}+48x_{5}+60x_{6}+53x_{7}& &\text{(cost)}&\\
 x_{1}+x_{2}+x_{3}+x_{4}+x_{5}+x_{6} + x_{7}&= 1000&\text{(weight)}&\\
@@ -2153,7 +2154,7 @@ x_{5}^{*} &= 13.59 \text{ kg,}& x_{6}^{*}&= 0\text{ kg,}  & x_{7}^{*} &= 10.91 \
 	\end{tabular}
 \end{table}
 Now it is developed an analysis that leads to 
-some different results respect to the previous one. First of all, we observe in Table \ref{table:SWE} that the starting point strategy is indifferent, except for the Affine and the both predictor-corrector algorithms.\\As already occured, the LPF 1 requires a huge computational cost respect to the others and, after achieved the boundary of the feasible set, the duality measure $\mu$ is far to satisfy the termination conditions. In this case the number of iterations computing LPF 2 is the smallest comparing to the other LPF's ones, but the $\mu$ reveals that it is not the most accurate in term of convergence.\\
+some different results respect to the previous one. \\First of all, we observe in Table \ref{table:SWE} that the starting point strategy is indifferent, except for the Affine and the both predictor-corrector algorithms. As already occured, the LPF 1 requires a huge computational cost respect to the others and, after achieved the boundary of the feasible set, the duality measure $\mu$ is far to satisfy the termination conditions. In this case the number of iterations computing LPF 2 is the smallest comparing to the other LPF's ones, but the $\mu$ reveals that it is not the most accurate in term of convergence.\\
 In Figure \ref{figure:swe} the graphics (e) and (f) confirm the bad behaviour of LPF1 and (h) disproves the asymptotic convergence in LPF 2: in the last iterates it computes points that move away from the feasible set.\\
 In Figure \ref{figure:swe2}, it is clear that the two predictor-corrector IPMs perform better with STP. In fact there is an anomaly in the graphic (c), where the dual gap doesn't decrease with regularity, even if the sketch of the feasiblity error speed (d) shows a linear progression. \\
 Now we investigate the Mehrotra's method: since the centering deviation $\sigma$ doesn't increase and hence it is not necessary an adaptive $\sigma$ to obtain aggressive reduction of $\mu$, as we see in (e) and in (g), it seems superior.\\
@@ -2181,7 +2182,7 @@ Although this, we can state the important rule of the adaptive centering paramet
 \newpage
 \section{Tubular products operations planning}
 Another classic LP form deals with operation planning. In organizations ranging from volunteer, to government, to manifacturing, to distribution, planners must decide what to do and when and where to do it.\\
-The Tubular Products Division (TP) of Babcock and Wilcox encountered a problem in investigating how work should be reallocated upon opening a new mill \cite{FEM}. TP manifactured steels tubing in a variety of sizes and for many different uses, including electrical power generation. At the time of the study three mills handled production. The object was to consider how a fourth mill of different configuration would affect the optimal distribution of work (and associated cost) among the mills.\\Table \ref{tab:TPdata} shows fictional data for existing mills 1 to 3 and one design for new mill 4, versus an array of 16 products. The products comprise all combinations of standard or high-pressure tubing: $\frac{1}{2}-$, $1-$, $2-$ or $8-$inch diameters, and thick or thin tube walls. It is included the cost (in dollars) per 1000 pounds of each product according to which mill does the work, and the required processing time (in hours) per 1000 pounds produced. Missing values indicate products that cannot be manufactured feasibly at the mill indicated.\\
+The Tubular Products Division (TPD) of Babcock and Wilcox encountered a problem in investigating how work should be reallocated upon opening a new mill \cite{FEM}. TP manifactured steels tubing in a variety of sizes and for many different uses, including electrical power generation. At the time of the study three mills handled production. The object was to consider how a fourth mill of different configuration would affect the optimal distribution of work (and associated cost) among the mills.\\Table \ref{tab:TPdata} shows fictional data for existing mills 1 to 3 and one design for new mill 4, versus an array of 16 products. The products comprise all combinations of standard or high-pressure tubing: $\frac{1}{2}-$, $1-$, $2-$ or $8-$inch diameters, and thick or thin tube walls. It is included the cost (in dollars) per 1000 pounds of each product according to which mill does the work, and the required processing time (in hours) per 1000 pounds produced. Missing values indicate products that cannot be manufactured feasibly at the mill indicated.\\
 It is also assumed division-wide demand for each of the 16 products in thousands of pounds per week. At present the three existing mills 1 to 3 have 800, 480 and 1280 hours per week of effective production capacity, respectively. New mill 4 is planned for 960 hours per week (see Table \ref{tab:TPdata}).\\
 Here the problem has two index dimensions: $i= 1, \dots, 16$ rappresents the product number and $j=1, \dots, 4$ the mill number. Instead, the decision variables and the constants are:
 \begin{itemize}
@@ -2239,8 +2240,8 @@ The objective function minimizes total production cost and the total optimal wee
 \end{center}
 
 \\In Table \ref{table:TP} we can notice that LPF 1 algorithm doesn't work. Instead, LPF 2 finds the exact solution with the same number of iterations with both two initial point strategies. \\
-Focusing on the PC methods, again their computational cost is smaller, above all the Mehrotra's method, as expected, and they achieve a smaller duality measure $\mu$ in the $\epsilon$ optiml solution.\\ It is interesting to note the different number of iterations computed by the PC algorithms with the MIP and with STP strategies. For the PC LPF method, the speed of convergence of $\{\mu_{k}\}$ and of the sequence points $\{(x_{k},\lambda_{k},s_{k})\}$ to the feasible set $\mathcal{F}$ is linear, in comparing to the irreguliaty of LPF 2 computation progress, illustrated in (e) and in (f) of Figure \ref{figure:tub}.
-The predictor-corrector maneuver in (g) of Figure \ref{figure:tub2} is clear: when the centering deviation increases, then the speed of the the duality measure increases, maintaining such a linearity (see the fourth iteration).\\
+Focusing on the PC methods, as we expect again their computational cost is smaller, above all the Mehrotra's method, and they achieve a smaller duality measure $\mu$ in the $\epsilon$ optiml solution.\\ It is interesting to note the different number of iterations computed by the PC algorithms with the MIP and with STP strategies. For the PC LPF method, the speed of convergence of $\{\mu_{k}\}$ and of the sequence points $\{(x_{k},\lambda_{k},s_{k})\}$ to the feasible set $\mathcal{F}$ is linear, in comparing to the irreguliaty of LPF 2 computation progress, illustrated in (e) and in (f) of Figure \ref{figure:tub}.
+The predictor-corrector maneuver in (g) of Figure \ref{figure:tub2} is clear: when the centering deviation increases, then the speed of the the duality measure increases, maintaining such a linearity (see the $4^{th}$ iteration).\\
 Also in this case, we can assert that the adaptivity choice of the centering parameter $\sigma$ in LPF is not functional as in Mehrotra's algorithm: in a geometric point of view we see the restiction of the neighboorhood does not allow a movement of the sequence to step away from $\mathcal{C}$ and hence improve the $\mu$ convergence speed.\\
 In the end it is interesting observe the superlinear convergence of the Mehrotra's iterates to $\mathcal{F}$: it occurs in this instance a huge improvement of the points to achieve the feasibility region.
 \begin{table}[]\caption{\label{table:TP}Numerical results obtained by the codes.}
@@ -2318,7 +2319,7 @@ One final complication is encoding stations: the number of machines available li
 	\end{tabular}
 	\end{center}
 \end{table}
-The main decisions to be made in shift scheduling models are the number of employees to work various shifts. \\In the ONB case we have all the possibilities in Table \ref{table:Shiftscheduling2}. One additional hour may also be worked in overtime.
+The main decisions to be made in shift scheduling models are the number of employees to work various shifts. In the ONB case we have all the possibilities in Table \ref{table:Shiftscheduling2}. One additional hour may also be worked in overtime.
 Using the index $h$ corresponding the shift start time, we define the following decision variables:
 \begin{itemize}
 	\item $x_{h}$ is the number of full-time employees beginning a shift at hour, for $h =11, \dots, 13$;
@@ -2343,9 +2344,8 @@ To complete the model we have to compute the covering contraints, that assure th
 \begin{equation*}
 \sum\limits_{\text{shifts}}(\text{output/worker})(\text{number on duty})\leq(\text{period requirement}).
 \end{equation*}		
-With the ONB case we have a slight complication in covering requirements. Work arrivals are specified on an hour-by-hour basis, but work completion is limited only by checks being finished at 22:00. To model covering in such a case, we define also $w$ as well:
-\begin{itemize}
-	\item $w_{h}$ as not clompeted work backlog at hour $h$ (in thousands).
+With the ONB case we have a slight complication in covering requirements. Work arrivals are specified on an hour-by-hour basis, but work completion is limited only by checks being finished at 22:00. To model covering in such a case, we define also $w$ as well:\begin{itemize}
+\item $w_{h}$ as not completed work backlog at hour $h$ (in thousands).
 \end{itemize}
 Then, the ONB covering constraints take the form
 \begin{align*}
@@ -2361,7 +2361,7 @@ x_{12}^{*} &=  8.57, & x_{13}^{*}&=  12.86, & y_{12}^{*} &= 4.29, & z_{14}^{*} &
 z_{17}^{*} &= 7.50, & z_{18}^{*}&= 0.71,  & w_{12}^{*} &= 10, & w_{13}^{*} &= 12.43, &w_{14}^{*} &=  6.00,\\
 w_{14}^{*} &=  6.00, & w_{18}^{*}&=  2.29, & w_{19}^{*} &= 20, & w_{20}^{*} &= 17,71, &w_{21}^{*} &= 9.71.\\
 \end{align*}
-From Table \ref{table:ONB} it is again confirmed the big computational cost for LPF 1 and the weakness of the Affine method, since it doesn't work with the STP strategy. In this case study the LPF 2 requires a less number of iterations respect to the other long-path following algorithms, leading a contradiction to the conjecture of the efficiency of the PC type.\\ 
+From Table \ref{table:ONB} it is again confirmed the big computational cost for LPF 1 and the weakness of the Affine-scaling method, since it doesn't work with the STP strategy. In this case study the LPF 2 requires a less number of iterations respect to the other long-path following algorithms, leading a contradiction to the conjecture of the efficiency of the PC type.\\ 
 We look that only the predictor-corrector algorithms work differently using the two initial point strategies.
 Hence, we plotted the performance of PC LPF and Mehrotra's algorithms with both strategies MIP and STP, in order to compare them. The rule of the adaptive choice of the centering parameter $\sigma$ is noticeable in Mehrotra's algorithm with MIP, as showm in (e): in the $6^{th}$ iteration the centering deviation increases because an acceleration of the sequence $\{\mu_{k}\}$ is required; the graphic (f) illustrates this improvement. The STP strategy gives a good initial point for Mehrotra's method: in fact we see that in the computation the sequence tends to the solution with a big order of convergence and the $\sigma$ rule is not appealed.\\
 In (a) and in (c) we observe that the neighborhood $\mathcal{N}_{-\infty}$ prevents the sequence moves away from the $\mathcal{C}$, making the power of the adaptive $\sigma$ impraticable.\\  
@@ -2399,12 +2399,12 @@ In (a) and in (c) we observe that the neighborhood $\mathcal{N}_{-\infty}$ preve
 	\subfloat[Mehrotra's algorithm with STP1]{\includegraphics[width= 7 cm]{onb_MER2b}}\\
 \end{figure}
 \chapter{Conclusion}
-The simplex method is the central computational element of Mathematical Programming Systems and this method works so well in practice but the computational process could break down for large values of $m$ and $n$ and even for reasonably sized problems.
+The Simplex method is the central computational element of Mathematical Programming Systems and this method works so well in practice but the computational process could break down for large values of $m$ and $n$ and even for reasonably sized problems.
 We observed he Klee and Minty problem in which we can see the simplex method is an exponential-time algorithm; thus the algorithm does not have a polynomial bound. In the project we examine this case in order to motivate the centre of attention of the IPMs.
-But it worths marking that all variables $(x, \lambda, s)$ computed by the latter change at each iteration and the linear algebra operations which are required to update them have to involve the complete matrix $A$. This makes a single iteration of the interior-point method significantly more expensive than that of the simplex method.\\
+But it worths marking that all variables $(x, \lambda, s)$ computed by the IPMs change at each iteration and the linear algebra operations which are required to update them have to involve the complete matrix $A$. This makes a single iteration of the interior-point method significantly more expensive than that of the simplex method.\\
 
 It is known that the generic predictor-corrector framework leads to a variety of interior-point methods for solving the linear problems and this research presents one. Our goal is to use the Mehrorta's technique in order to produce an acceleration of the performance of a general LPF method. The present thesis firstly introduces a framework of the IPMs algorithms in
-the primal-dual class, focusing on the convergence analysis of the Affine and the LPF methods. The latter, imposing the iterates staying in a neighborhood,  obtains a potential advantage. In fact, while the neighborhood $\mathcal{N}_{-\infty}$ ensures that some products do not approach zero too early as with the pure Affine method, it does not prevent products from becoming too large with respect to the average. Next, the role of centrality of the predictor–corrector scheme in the implementation of interior-point methods is illustrated . \\
+the primal-dual class, focusing on the convergence analysis of the Affine and the LPF methods. The latter, imposing the iterates staying in a neighborhood,  obtains a potential advantage. In fact, while the neighborhood $\mathcal{N}_{-\infty}$ ensures that some products do not approach zero too early as with the pure Affine method, it does not prevent products from becoming too large with respect to the average. Next, the role of centrality of the predictor–corrector scheme in the implementation of interior-point methods is illustrated.\\
 In order to gather these two potential techinques, we construct a Mehrotra-type method, the Predictor-Corrector LPF method, whose
 behaviour we can understand and explain with computational tests.\\
 The one unmistakable conclusion, with or without iterative refinement, is that the predictor-corrector algorithm is substantially superior to the pure primal-dual algorithm and
@@ -2419,8 +2419,8 @@ In fact, the use of the predictor-corrector technique is advantageous in long-pa
 However, we personally were both gratified and somewhat surprised at how robust and
 efficient this PC LPF code has proved to be, even when geometrically is not evident. \\
 Besides, it is indicated an interesting
-topic for the future research: you can opt for weel-suited the neighborood parameters to remedy such difficulties or investigate whether changing $\gamma$ PC LPF outperforms the Mehrtora's algorithm.\\
-A further study could consist on the reduction of the parameter $\gamma$ in PC LPF in the Affine-scaling step, which has the effect of "opening" the cone, that is, expanding the neighborhood a little. 
+topic for the future research: you can opt for weel-suited neighborood parameters to remedy such difficulties or investigate whether changing $\gamma$ the PC LPF outperforms the Mehrtora's algorithm.\\
+A further study could consist on the reduction of the parameter $\gamma$ in PC LPF only in the Affine-scaling step, which has the effect of "opening" the cone, that is, expanding the neighborhood a little. 
 %\begin{appendices}
 \appendix
 \chapter{The codes}	
