@@ -4,105 +4,29 @@
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
-%
-% PRIMA SLIDE
-%
-\begin{frame}[t]{\textsc{Introduzione al problema PL}}
-\textbf{Modello LP standard:} $A \in \mathbb{R}^{m,n}$ a rango pieno, $c\in \mathbb{R}^{n}, b \in \mathbb{R}^{m}$\\
-\begin{equation*}
-\begin{split}
-\min\;&c^{T}x\\
-\text{tale\;che\;}&Ax= b\;\text{e\;}x\geq0
-\end{split}
-\end{equation*}
-\pause
-\text{L'insieme dei punti ammissibili è:}\\
-\begin{equation*}
-\mathcal{P}=\lbrace x\in\mathbb{R}^{n}\; |\; Ax = b , x \geq0\rbrace
-\end{equation*}
-Il valore ottimale è il valore $c^{T}x^{*}=\min\limits_{x\in\mathcal{P}}c^{T}x$
-\\ e $x^{*}$ è detta soluzione ottimale.
-\end{frame}
 
-%
-% SECONDA SLIDE
-%
-\begin{frame}
-\text{Ipotesi: $m \leq n$} \pause $\longrightarrow m\times m $ \text{sottomatrice di A invertibile, }$\mathbf{A_{B}}$ \\ \text{     con }$B\subseteq\{1,\dots,n\}$ \\
-\pause
-\text{Partizione (B,N):}\\
-\begin{center}
-$\text{min\;} c^{T}_{B}x_{B}+c^{T}_{N}x_{N}$,\\
-\text{tale\;che\;}$A_{B}x_{B}+A_{N}x_{N} = b$\text{\;e\;}$x_{B}, x_{N}\geq0$
-\end{center}
-\pause
-\text{Soluzione di base }$(x_{B},x_{N})=(A_{B}^{-1}b,0_{[N]})$. \text{Se}$\;A_{B}^{-1}b>0$
-\text{ allora è detta soluzione non degenere, altrimenti soluzione degenere.}
-\end{frame}
-%
-% TERZA SLIDE
-%
-\begin{frame}[t]{\textsc{Teorema fondamentale della PL}}
-\pause
-Ogni problema di PL in forma standard soddisfa solo una delle seguenti:
+\begin{frame}[t]{What is this?}
 \begin{itemize}
-	\item se ha una soluzione ottima allora è una soluzione ammssibile di base; 
-	%che ha valore minore o uguale a qualunque altro punto ammissibile;
-	\item è illimitato;
-	\item non ha punti ammissibili.
+\item Beamer is a \LaTeX{} class that allows you to create presentations
+\item The project home page is http://latex-beamer.sourceforge.net/
+\item Beamer contains several themes, but they are a bit ugly
+  \begin{itemize}
+  \item But with a lot of useful features, such as navigation bars, outlines,
+        etc.
+  \end{itemize}
+\item Torino is a pretty theme
+  \begin{itemize}
+  \item With a lot of useless -- but pretty -- features
+  \item But without some useful features
+  \item Well suited for short talks, for longer talks you should use themes
+        with navigation bars
+  \end{itemize}
+\item Why the name?
+  \begin{itemize}
+  \item Other themes are named after locations of Universities or conferences
+  \item Torino (Turin) is the location of Politecnico di Torino, my university
+  \end{itemize}
 \end{itemize}
-\end{frame}
-%
-% QUARTA SLIDE
-%
-\begin{frame}{Esempio di problema PL}
-\begin{columns}
-\begin{column}{.6\textwidth}
-$\min\limits_{(x_{1},x_{2},x_{3})\in\mathbb{R}^{3}} -x_{1}+ x_{2}-4x_{3}$\\
-\text{tale che    }$x_{1}+x_{2}+x_{3}=1$\\
-\text{ con   } $x_{1}, x_{2}, x_{3} \geq 0$
-\end{column}
-\pause
-\begin{column}{.4\textwidth}
-\text{Regione ammissibile $\mathcal{P}$}
-\text{e le soluzioni di base}
-\includegraphics[width=\columnwidth]{Feas.jpg}
-\end{column}
-\end{columns}
-\end{frame}
-%
-% QUINTA SLIDE
-%
-\begin{frame}{\textsc{Metodo del Simplesso}}
-\begin{itemize}
-	\pause
-	\item Dantzig 1947
-	\pause
-	\item si basa sul Teorema Fondamentale:
-	esplora solo le soluzioni ammissibili di base; 
-	\pause
-	\item ad ogni iterazione c'è un cambiamento di base di una sola entrata: \\da un vertice al vertice adiacente $\rightarrow$ pivoting;
-	\pause
-	\item raggiunge
-	il valore ottimale, se esiste, in un numero finito di iterazioni;
-	\pause
-	\item casi di degenerazione $\rightarrow$ regola di Bland. 
-\end{itemize}
-\end{frame}
-%
-% SESTA SLIDE
-%
-\begin{frame}{\textsc{Metodo del Simplesso}: Test di ottimalità}
-Dato un PL e una base ammissibile B: se $c_{N}$ è non
-negativa (non positivi) la soluzione di base ammissibile
-$x_{B} = B^{-1}b \geq 0$, $x_{N} = 0$ è ottimale.
-Infatti, se
-$c_{N}^{T} \geq 0$:\\
-allora $c^{T}x = c^{T}_{B} B^{-1}b + c^{T}_{N}x_{N} \geq c^{T}_{B}B^{-1}b$.
-\end{frame}
-
-\begin{frame}{\textsc{Metodo del Simplesso}: Limiti}
-
 \end{frame}
 
 \begin{frame}[t,fragile]{How to use the theme}

@@ -202,7 +202,7 @@ Although the fundamentals of IPMs had been established several years before that
 The equivalence between Karmarkar's projective method and the Newton barrier method increased interest in the role of barrier functions in the theory of IPMs, but currently it is broadly accepted that the \textit{primal-dual} IPMs are the most efficient interior-point methods.\\
 Over the last 25 years later, the developed simplex method and IPMs are both widely used and continue to compete between each other \cite{25y}. \\
 The thesis is partitioned into four main chapters.
-In the next chapter it gives an overview of the theoretical foundations in linear programming. In the Chapter 3 we delineate the simplex method. The Chapter 4 is dedicated to the primal-dual interior point methods, taking particular attention to the primal-dual LPF methods. It is also examined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\
+In the next one it is given an overview of the theoretical foundations in linear programming. In the Chapter 3 we delineate the simplex method. The Chapter 4 is dedicated to the primal-dual interior point methods, taking particular attention to the primal-dual LPF methods. It is also examined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\
 Then, an infeasible primal-dual LPF algorithm is proposed: with numerical results reported in Chapter 5, we discuss the technique responsable for its practical efficiency.\\
 The numerical testing are formulated in Chapter 6.\\
 Concluding, in the last chapter we give an overview of the work realized in this thesis and comment on possible developments of the IPMs. 
@@ -267,7 +267,9 @@ Since $A_{B}$ is nonsingular, we may uniquely solve the equation $A_{B}x_{B} = b
 	A basis $B$ is \textit{degenerate} if $x_{i}= 0$ for some $i\in B$.\\
 	A LP problem is \textit{degenerate} if it has at least one degenerate basis.
 \end{defn}
-When $m \geq n$ the feasible region is empty or consists in a single point; hence, we assume throughout that $m < n$ and we can find $m$ rows linear indipendent: there is at least one basic point and, accordingly, one solution of the standard equality system in (\ref{(Prim)}). Certainly, if the LP problem is in canonical form, then the extended $m \times (n+m)$ matrix $[A\;|\;I]$ with slack variables satisfies this dimension inequality. \\
+When $m \geq n$ the feasible region is empty or consists in a single point; hence, we assume throughout that $m < n$ and we can find $m$ rows linear indipendent: there is at least one basic point and, accordingly, one solution of the standard equality system in (\ref{(Prim)}). Certainly, if the LP problem is in canonical form, then the extended $m \times (n+m)$ matrix $[A\;|\;I]$ 
+%with slack variables 
+satisfies this dimension inequality. \\
 Now we outline the importance of basic feasible points in solving LP problems with the simplex method.
 Throw the following theorem, we state that it is necessary only to consider basic feasible
 vectors when seeking an optimal solution because the optimal
@@ -355,7 +357,7 @@ We call \textit{Lagrangian function} for the general problem (\ref{NLP}) as
 \end{equation*}
 The necessary conditions, defined in the following theorem, are called \textit{first-order conditions} because they are concerned with properties of the gradients of the objective and constraint functions.
 
-\begin{thm}[First-order necessary conditions]\label{thm:kkt}
+\begin{thm}[\textbf{First-order necessary conditions}]\label{thm:kkt}
 Suppose that $x^{*}$ is a local solution of (\ref{NLP}), that f and $c_{i}$ are continuously differentiable, and the LICQ holds at $x^{*}$. Then there is a Lagrange multiplier vector $\lambda^{*}$, with components $\lambda^{*}_{i}$, $i \in \mathcal{E}\cup\mathcal{I}$, such that 
 \begin{alignat*}{2}
 \nabla_{x}\mathcal{L}(x^{*},\lambda^{*})&=0&&\\
@@ -411,19 +413,19 @@ Note that in (\ref{Lagrangian}) the Lagrange multipliers are the unknowns variab
 	\end{itemize}
 \end{thm}
 \begin{proof}
-For the first point suppose that (\ref{(Prim)}) has a finite optimal solution $x^{*}$, then there is a vector $(\lambda^{*},s^{*})$ such that $\left( x^{*},\lambda^{*},s^{*}\right)$ satisfies (2.6). It follows that $\left(\lambda^{*},s^{*}\right)$ is optimal solution of (D) and $x^{*}^{T}s^{*}=0$. The equalities (\ref{Dual}) lead to the conclusion. 
+For the first point suppose that (\ref{(Prim)}) has a finite optimal solution $x^{*}$, then there is a vector $(\lambda^{*},s^{*})$ such that $\left(x^{*},\lambda^{*},s^{*}\right)$ satisfies (2.6). It follows that $\left(\lambda^{*},s^{*}\right)$ is optimal solution of (D) and $x^{*}^{T}s^{*}=0$. The equalities (\ref{Dual}) lead to the conclusion. 
 \end{proof}
 \\[0.5 cm] Hence, by examining the KKT conditions from both the primal and the dual viewpoints, we conclude that the vector $(x^{*},\lambda^{*},s^{*})$ is a primal-dual solution if ond only if $x^{*}$ solves (P) and $(\lambda^{*},s^{*})$ solves (D).\\[1cm]
 %\onehalfspacing
 Let us define the \textit{dual feasible set} $\mathcal{D}=\{(\lambda,s)\in\mathbb{R}^{m+n}|\;A^{T}\lambda+s= c,\;s>0\}$, then we have that $c^{T}x-b^{T}\lambda=\left(c-A^{T}\lambda\right)^{T}x=s^{T}x \geq0$ for every $x\in\mathcal{P}$ and $\left(\lambda,s\right)\in\mathcal{D}$.\\
-This result leads to the following definition: we call \textit{dual gap} the diffenrence between the primal and the dual optimal cost value. It is labelled with $g$, hence
+This result leads to the following definition: we call \textit{dual gap} the difference between the primal and the dual optimal cost value. It is labelled with $g$, hence
 \begin{equation}\label{dualgap}\tag{2.8}
 g = c^{T}x - b^{T}\lambda.
 \end{equation}
 Since $c^{T}x\geq b^{T}\lambda$ when both primal and dual variables are feasible, we see that:\begin{center}
 	if $(x,\lambda,s)\in\mathcal{P}\times\mathcal{D}$, then $g= x^{T}s \geq0$.
 \end{center}
-At the primal-dual solutions, the duality gap $g$ between primal and dual decreases to zero, as we show in the complementary slackness theorem: an important premise (foundation) in the development of the IPMs.
+At the primal-dual solutions, the duality gap $g$ between primal and dual decreases to zero, as we show in the complementary slackness theorem: an important foundation in the development of the IPMs.
 \newpage
 \begin{thm}[\textbf{Complementary slackness}] \ \\
 	Let $(x^{*},\lambda^{*},s^{*})\in\mathcal{P}\times\mathcal{D}$. The following are equivalent:
@@ -445,6 +447,9 @@ Obviously, $\mathcal{B}$ and $\mathcal{N}$ are disjoint and form a partition of 
 \begin{thm}[\textbf{Goldman-Tucker}]
 	There is at least one solution $(x^{*}, \lambda^{*}, x^{*})$ such that $x^{*}+s^{*}\geq0$.
 \end{thm}
+\begin{proof}
+	For the proof see \cite{Wright}, Chapter 1.
+\end{proof}
 The set $\mathcal{B}$ does not necessarily contain $n$ elements, that is the number of the rows of the matrix $A$. This set must not be confused with the set of the basic variables $B$, by the definition (2.1). In the following example, for istance, we have $|\mathcal{B}|= 2$ and three basis sets $B$ are $\{1\}, \{2\}, \{3\}$ respectively.
 \begin{ex}
 Consider
@@ -483,7 +488,7 @@ In particular, if $\Delta b = \epsilon e_{j}$, we have that $c^{T}\Delta x+\epsi
 %
 \chapter{The simplex method}\\
 %\textcolor{red}{In questo capitolo viene trattato il metodo del simplesso. Ho notato che nella ricerca non viene approfondito abbastanza, poiché è stata elaborato un confronto empirico solo tra i metodi del punto interno. Il professore mi ha detto di inserire nella tesi questo metodo in quanto è importante in letteratura: provvederò a svolgere un'analisi e un confronto tra il metodo del simplesso e i metodi del punto interno nei prossimi capitoli.}\\
-The simplex method was introduced in 1947 by George Dantzig \cite{DAN1}. The discover of this method happened simultaneously with the realization of LP as an efficient modeling tool for practical decision making and, after 60 years later, it remains one of the most important algorithms in mathematical programming and
+The simplex method was introduced in 1947 by George Dantzig \cite{DAN1}. The discover of this method happened simultaneously with the realization of LP as an efficient modelling tool for practical decision making and, after 60 years later, it remains one of the most important algorithms in mathematical programming and
 optimization, in general.\\
 The method exploits the insight provided by the fundamental theorem, Theorem
 (\ref{Fund}), which states that if it exists an optimal solution of the LP, it is at one of the vertices of the feasible polytope. \\
@@ -517,7 +522,7 @@ Hence we have:
 Geometrically speaking, the pivoting operation is a "walk" along an edge of the polytope in order to decrease $c^{T}x$; we continue to move along the edge until a new vertex is encountered. At this vertex, we have $\bar{x}_{s}\geq0$ and one of the components $\bar{x}_{r}\in B$ decreased to zero: we obtain a new basis denoted by $\bar{B} = B \cup \{s\} \backslash \{r\}$.\\
 It is possible that $x_{s}$ increases to $\infty$ without encountering a suitable $x_{r}$: that means that the contraint $\bar{x}_{\bar{B}} = x_{B} - A_{B}^{-1}A_{s}\bar{x}_{s}>0$ holds for all positive values of $\bar{x}_{s}$, due to the fact $d := A_{B}^{-1}A_{s}\leq0$. When it happens, the LP is \textit{unbounded}: the cost value $c^{T}x$ decreases to $-\infty$.\\[0.5cm]
 Let us now verify that the step leads to a decrease of $c^{T}x$.\\
-Since we obtain the new point with variables $\bar{x}_{B}$ defined in \ref{Bar} and $\bar{x}_{N}=(0,\dots, 0, \bar{x}_{s}, 0,\dots, 0)$, the cost function is:
+Since we obtain the new point with variables $\bar{x}_{B}$ defined in (\ref{Bar}) and $\bar{x}_{N}=(0,\dots, 0, \bar{x}_{s}, 0,\dots, 0)$, the cost function is:
 \begin{align*}
 c^{T}\bar{x} &=c^{T}_{B}\bar{x}_{B}+c^{T}_{N}\bar{x}_{N}\\
 			 &=c_{B}^{T}\bar{x}_{B}+c^{T}_{s}\bar{x}_{s}\\
@@ -525,11 +530,11 @@ c^{T}\bar{x} &=c^{T}_{B}\bar{x}_{B}+c^{T}_{N}\bar{x}_{N}\\
 \end{align*}
 Having defined $ \lambda=A_{B}^{-T}c_{B}$ and $A^{T}_{s}\lambda = c_{s}-s_{s}$,
 \begin{align*}
-&= c^{T}_{B}x_{B}-(c_{s} -s_{s})^{T}\bar{x}_{s} +c_{s}^{T}\bar{x}_{s}.
+\;\;&= c^{T}_{B}x_{B}-(c_{s} -s_{s})^{T}\bar{x}_{s} +c_{s}^{T}\bar{x}_{s}.
 \end{align*}
 Since $x_{N}=0$, we have $c^{T}x=c^{T}_{B}x_{B}$ and therefore 
 \begin{align*}
-&=c^{T}\bar{x} = c^{T}x - s_{s}\bar{x}_{s}.
+\;\;\;\;\;\;c^{T}\bar{x}& = c^{T}x - s_{s}^{T}\bar{x}_{s}.
 \end{align*}
 We have covered most of the mechanics of taking a single step of the simplex method. The computational procedure is the following:
 \\
@@ -679,7 +684,7 @@ exponential number in the size of the problem of iterations when solved by the s
 One form of the Klee–Minty example is the following whose feasible polytope has $2^{n}$
 vertices:
 \begin{alignat*}{4}
-\max &\sum_{j=1}^{n}10^{n-j}x_{j}&&&\\
+\min &\sum_{j=1}^{n}10^{n-j}x_{j}&&&\\
 \text{subject to\;}&2\sum_{j=1}^{i-1}10^{i-j}x_{j}+&x_{i}&\leq 100^{i-1}, \, &i = 1,\dots, n;\\
 &&x_{j}&\geq 0, \,&j = 1,\dots, n.\\
 \end{alignat*}
@@ -692,7 +697,7 @@ A specific case is that for $n = 3$, giving:
 \text{and}\;& x_1\geq 0,x_2\geq 0,x_3&&\geq 0,
 \end{alignat*}
 with 3 constraints and 3 variables (along with their nonnegativity constraints).\\
-The Python implementation solves the problem in $2^{3} - 1 = 7$ pivot steps without the Bland's rule: this confirms that the general problem requires $2^{n}- 1$ iterations and this is in fact
+The Python code solves the problem in $2^{3} - 1 = 7$ pivot steps without the Bland's rule: this confirms that the general problem requires $2^{n}- 1$ iterations and this is in fact
 the number of vertices minus $1$ \cite{MINTY}.\\ It is illustrated also the result obtained applying the simplex method with the Bland's rule, in this case the number of iterations is only $5$.  \\
 
 \begin{table}[h]
@@ -734,7 +739,7 @@ It has to be said, however, that it is only a theoretical drawback and in practi
 
 
 \chapter{Interior-Point Methods}
-In the 60 years of research since/after the introduction of the Simplex method, this algorithm has been carefully optimized to perform extremely well in practice. However, a problem arose in the 1970s: it turns out that we cannot guarantee that it will work well on all possible linear programs ~\cite{MINTY}.
+In the 60 years of research after the introduction of the Simplex method, this algorithm has been carefully optimized to perform extremely well in practice. However, a problem arose in the 1970s: it turns out that we cannot guarantee that it will work well on all possible linear programs ~\cite{MINTY}.
 In fact, the Klee and Minty's example, designed in the previous chapter, confirms that we may need an exponential number of iterations to find the optimal solution with the simplex method. \\
 This problem led to the introduction of the interior-point methods for solving LP, which is the argument of this chapter.\\
 The set of the Interior-Point Methods is a family of algorithms solving LP that they share common features that distinguish themselves from the simplex method. The last one moves from vertex to vertex, usually improving the objective function
@@ -1190,7 +1195,7 @@ Now we show that $\lVert \Delta x_{\mathcal{B}}\rVert_{2}$ and $\lVert \Delta s_
 	\end{align*}
 	satisfies $\lVert\bar{w}\rVert_{2}\leq \bar{C}\lVert h\rVert_{2}$.
 \end{lem}\\
-The proof is illustrated in \cite{Wright}, Appendix A.\\
+The proof is illustrated in \cite{Wright}, Appendix A.
 The next lemma is due essentially to Adler and Montiero \cite{ADL}.  Let us denote $A_{\mathcal{B}}$, $A_{\mathcal{N}}$, $D_{\mathcal{B}}$ and $D_{\mathcal{N}}$ a column partition of the matrices $A$ and $D$, according to the sets $\mathcal{B}$ and $\mathcal{N}$, respectively.
 
 \begin{lem}
