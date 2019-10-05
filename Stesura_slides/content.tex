@@ -5,27 +5,74 @@
 \titlepage
 \end{frame}
 
-\begin{frame}[t]{What is this?}
+% SLIDE 2
+
+\begin{frame}
+\includegraphics[width = 11 cm]{intro.png}
+\end{frame}
+
+% SLIDE 3
+
+\begin{frame}{\textrm {Programmazione Lineare}}
+	\begin{center}
+	\includegraphics[width = 7 cm]{fasi.png}
+	\end{center}
+\pause
+\begin{equation*}
+\begin{split}
+\min\limits_{x\in\mathbb{R}^{n}}\;&c^{T}x\\
+\text{tale\;che\;}&Ax= b\;\\\text{e\;}&x\geq0
+\end{split}
+\end{equation*}
+con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango pieno e $b\in\mathbb{R}^{m}$	
+\end{frame}
+
+% SLIDE 4
+
+\begin{frame}{\textrm{Programmazione Lineare}}
+	\pause
+	\begin{itemize}
+		\item \textbf{Punto ammissibile} x: punto tale che $Ax = b, x\geq 0$
+		\pause
+		\item \textbf{Regione ammissibile} $\mathcal{P}=\{x\;|\; Ax = b, x\geq 0\}$
+		\pause
+		\item \textbf{Soluzione ottima} $x^{*}$: minimizza la funzione obiettivo
+		\pause
+	\end{itemize}
+\pause
+\emph{Geometricamente} $\mathcal{P}$ definisce un poliedro
+\end{frame}
+
+% SLIDE 5
+
+\begin{frame}{\textrm{Programmazione Lineare}}
+
+Ipotesi $m \leq n$ \pause$\longrightarrow$ esiste sottomatrice $A_{B}$ invertibile con
+$B\subseteq\{1,\dots,n\}$ insieme degli $m$ indici delle colonne 
+\pause
+\begin{equation*}
+\begin{split}
+\min\;&c_{B}^{T}x_{B}+c_{N}^{T}x_{N}\\
+\text{subject\;to\;}&A_{B}x_{B}+A_{N}x_{N}= b\;\\\text{and\;}&x_{B},x_{N}\geq0
+\end{split}
+\end{equation*}
+\pause
+\begin{equation*}
+x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_{B}^{-1}b\\\mathbf{0}\end{matrix}\right]
+\end{equation*}
+\begin{center}
+	soluzione ammissibile di \textcolor{red}{base}
+\end{center}
+\end{frame}
+
+% SLIDE 6
+
+\begin{frame}[t]{\textrm{Teorema Fondamentale}}
+	Dato un problema PL in forma standard in forma standard, si verifica una delle seguenti condizioni:\pause
 \begin{itemize}
-\item Beamer is a \LaTeX{} class that allows you to create presentations
-\item The project home page is http://latex-beamer.sourceforge.net/
-\item Beamer contains several themes, but they are a bit ugly
-  \begin{itemize}
-  \item But with a lot of useful features, such as navigation bars, outlines,
-        etc.
-  \end{itemize}
-\item Torino is a pretty theme
-  \begin{itemize}
-  \item With a lot of useless -- but pretty -- features
-  \item But without some useful features
-  \item Well suited for short talks, for longer talks you should use themes
-        with navigation bars
-  \end{itemize}
-\item Why the name?
-  \begin{itemize}
-  \item Other themes are named after locations of Universities or conferences
-  \item Torino (Turin) is the location of Politecnico di Torino, my university
-  \end{itemize}
+\item[o] il problema è inammissibile $\;\mathcal{P}=\emptyset$\pause
+\item[o] il problema è illimitato\pause
+\item[o] ammette punti ammissibili di  \textcolor{red}{base} che sono soluzioni ottime $x^{*}$\pause
 \end{itemize}
 \end{frame}
 
