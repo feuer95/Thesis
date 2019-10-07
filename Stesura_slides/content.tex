@@ -15,7 +15,7 @@
 
 \begin{frame}{\textrm {Programmazione Lineare}}
 	\begin{center}
-	\includegraphics[width = 7 cm]{fasi.png}
+	\transblindshorizontal{\includegraphics[width = 7 cm]{fasi.png}}
 	\end{center}
 \pause
 \begin{equation*}
@@ -24,7 +24,9 @@
 \text{tale\;che\;}&Ax= b\;\\\text{e\;}&x\geq0
 \end{split}
 \end{equation*}
-con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango pieno e $b\in\mathbb{R}^{m}$	
+\begin{center}
+con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango pieno e $b\in\mathbb{R}^{m}$
+\end{center}	
 \end{frame}
 
 % SLIDE 4
@@ -36,7 +38,7 @@ con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango pieno e $b\in\mathbb{R}
 		\pause
 		\item \textbf{Regione ammissibile} $\mathcal{P}=\{x\;|\; Ax = b, x\geq 0\}$
 		\pause
-		\item \textbf{Soluzione ottima} $x^{*}$: minimizza la funzione obiettivo
+		\item \textbf{Soluzione ottima} $x^{*}\in\mathbb{R}^{m,n}$: minimizza la funzione obiettivo
 		\pause
 	\end{itemize}
 \pause
@@ -72,11 +74,101 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 \begin{itemize}
 \item[o] il problema è inammissibile $\;\mathcal{P}=\emptyset$\pause
 \item[o] il problema è illimitato\pause
-\item[o] ammette punti ammissibili di  \textcolor{red}{base} che sono soluzioni ottime $x^{*}$\pause
+\item[o] ammette punti ammissibili di  \textcolor{red}{base} che sono soluzioni ottime $x^{*}$
 \end{itemize}
+\pause
+\begin{columns}
+\begin{column}{0.4\textwidth}
+\begin{align*}
+\min\limits_{(x_{1},x_{2},x_{3})\in\mathbb{R}^{3}} -&x_{1}+ x_{2}-4x_{3}\\
+\text{tale che    }&x_{1}+x_{2}+x_{3}=1,\\
+\text{\; e   \;} &x_{1}, x_{2}, x_{3} \geq 0
+\end{align*}
+\end{column}
+\pause
+\begin{column}{0.4\textwidth}
+	\includegraphics[width=\columnwidth]{Feas.jpg}
+\end{column}
+\end{columns}
 \end{frame}
 
-\begin{frame}[t,fragile]{How to use the theme}
+% SLIDE 7
+
+\begin{frame}[t,fragile]{\textrm{Il metodo del simplesso}}
+	\begin{itemize}
+		\item si basa sul Teorema fondamentale
+		\item situazioni di ciclaggio $\rightarrow$ regola di Bland
+		\item richiede di visitare un numero di vertici esponenziale rispetto alle dimensioni del problema $\rightarrow$ \textcolor{blue}{Problema di Klee-Minty}
+		\begin{alignat*}{4}
+		\min &\sum_{j=1}^{n}10^{n-j}x_{j}&&&\\
+		\text{tale che \;}&2\sum_{j=1}^{i-1}10^{i-j}x_{j}+&x_{i}&\leq 100^{i-1}, \, & i = 1,\dots, n\\
+		&&x_{j}&\geq 0, \,& j = 1,\dots, n\\
+		\end{alignat*}
+	\end{itemize}
+\end{frame}
+
+% SLIDE 8
+
+\begin{frame}{\textcolor{blue}{Problema di Klee-Minty}}
+
+\begin{itemize}
+	\item $2^{n}-1$ iterazioni
+	\item $n= 3$
+	\item \verb!SimplexMethod(A,b,c,max\_it $ = 500$,rule$ = 0$,c\_form$ = 0$)\!
+\end{itemize}
+\pause
+\begin{table}[h]
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			Iterazione & Base corrente & x corrente & Costo corrente\\ \hline
+			$0 & [3, 4, 5] & (0, 0, 0, 1, 100, 10000) & 0 \\ 
+			1 & [0, 4, 5] & (1, 0, 0, 0, 80, 9800) & -100 \\
+			2 & [0, 1, 5] & (1, 80, 0, 0, 0, 8200) & -900 \\
+			3 & [3, 1, 5] & (0, 100, 0, 1, 0, 8000) & -1000 \\ 
+			4 & [0, 1, 5] & (0, 100, 8000, 1, 0, 0) & -9000 \\ 
+			5 & [0, 1, 2] & (1, 80, 8200, 0, 0, 0) & -9100 \\
+			6 & [0, 4, 2] & (1, 0, 9800, 0, 80, 0) & -9900 \\ 
+			7 & [3, 4, 2] & (0, 0, 10000, 1, 100, 0) & -10000$ \\ \hline
+		\end{tabular}
+\end{table}
+ \end{frame}
+
+\begin{frame}[t]{\textrm{IPM primale duale}}
+	\begin{itemize}
+		\item articolo di Karmarkar (1984) %in cui veniva proposto un% 
+		$\rightarrow$ algoritmo polinomiale
+		\item si basano sulle condizioni KKT applicate ad un problema PL:\\ se $x^{*}$ è un punto ottimale allora esistono $s^{*}\in\mathbb{R}^{n}$ e $\lambda^{*}\in\mathbb{R}^{m}$ tali che
+		\begin{equation*}
+		\begin{bmatrix}
+		A^{T}\lambda^{*}+s^{*}-c \\Ax^{*}-b \\X^{*}S^{*}e
+		\end{bmatrix}=0.
+		\end{equation*}
+		\pause
+		\begin{columns}
+		\begin{column}{0.4\textwidth}
+		\begin{equation*}
+		\begin{split}
+		&\textcolor{olive}{PL\; primale}\\
+		&\min\;c^{T}x\\
+		&\text{tale che\;}Ax= b\;\\&\text{e\;}x\geq0
+		\end{split}
+		\end{equation*}	
+		\end{column}
+		\begin{column}{0.4\textwidth}
+		\begin{equation*}
+		\begin{split}
+		&\textcolor{olive}{PL\; duale}\\
+		&\text{max\;}b^{T}\lambda\\
+		&\text{tale che\;}A^{T}\lambda+s=c\\ &\text{e\;} s\geq0
+		\end{split}
+		\end{equation*}	
+		\end{column}		
+		\end{columns}
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\end{frame}
+\begin{frame}
 \begin{itemize}
 \item Install Beamer
   \begin{itemize}
@@ -104,7 +196,7 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 \end{itemize}
 \end{frame}
 
-\begin{frame}[t,fragile]{Theme files}
+\begin{frame}[t,fragile]{\textrm{Il metodo del simplesso}}
 \begin{itemize}
 \item Themes are composed by sub-themes for single features
 \item Inner themes define how the title page, the bullet lists, margins,
