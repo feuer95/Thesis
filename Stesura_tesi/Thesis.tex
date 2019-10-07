@@ -184,11 +184,11 @@ results demonstrate the benefits of the predictor-corrector approach in the cont
 The programs that implement these algorithms are written in Python. 
 %\addcontentsline{toc}{chapter}{Abstract}
 \chapter*{Sommario}
-Il concetto di ottimizzazione si basa sull'analisi di problemi decisionali o di assegnazione: la Programmazione Lineare (LP) è uno dei metodi più semplici per risolvere un problema di ottimizzaizone.\\ 
-Vengono inizialmente presentati due dei più importanti metodi di LP: il metodo del Simplesso e i metodi del Punto interno (IPM). Si illustra la rilevante differenza tra i due metodi: con risultati numerici si conferma la complessità esponenziale del metodo del Simplesso rispetto a quella polinomiale degli IPM e la vasta applicabilità di questi ultimi.\\
+Il concetto di ottimizzazione si basa sull'analisi di problemi decisionali o di assegnazione: la Programmazione Lineare (PL) è uno dei metodi più semplici per risolvere un problema di ottimizzazione.\\ 
+Vengono inizialmente presentati due dei più importanti metodi di PL: il metodo del Simplesso e i metodi del Punto interno (IPM). Si illustra la rilevante differenza tra i due metodi: con risultati numerici si conferma la complessità esponenziale del metodo del Simplesso rispetto a quella polinomiale degli IPM e la vasta applicabilità di questi ultimi.\\
 La ricerca pone particolare attenzione sul ruolo del "predictor-corrector step" nell' IPM di Mehrotra e attua questa euristica strategia al metodo \textit{Long-step Path-Following} (LPF), il quale si differenzia dagli altri  IPM operando su un intorno limitato $\mathcal{N}_{-\infty}(\gamma,\beta)$.\\
 Nella seconda parte della tesi si espone una breve descrizione, seguita da un'analisi teorica, dei seguenti IPM: metodo Affine primale-duale, LPF e il metodo di Mehrotra.\\
-Successivamente, essi verranno testati su problemi reali con dati fittizzi, prestando particolare interesse al metodo proposto \textit{Predictor-Corrector LPF}: si deduce che, nonostante ci sia un vantaggio computazionale, l'intorno $\mathcal{N}_{-\infty}(\gamma,\beta)$ limita l'efficacia della strategia.\\   
+Successivamente, essi verranno testati su problemi reali con dati fittizi, prestando particolare interesse al metodo proposto \textit{Predictor-Corrector LPF}: si deduce che, nonostante ci sia un vantaggio computazionale, l'intorno $\mathcal{N}_{-\infty}(\gamma,\beta)$ limita l'efficacia della strategia.\\   
 I metodi sono implementati con il linguaggio di programmazione Python. 
 
 
@@ -2405,7 +2405,7 @@ In (a) and in (c) we observe that the neighborhood $\mathcal{N}_{-\infty}$ preve
 \end{figure}
 \chapter{Conclusion}
 The Simplex method is the central computational element of Mathematical Programming Systems and this method works so well in practice but the computational process could break down for large values of $m$ and $n$ and even for reasonably sized problems.
-We observed he Klee and Minty problem in which we can see the simplex method is an exponential-time algorithm; thus the algorithm does not have a polynomial bound. In the project we examine this case in order to motivate the centre of attention of the IPMs.
+We observed the Klee and Minty problem in which we can see the simplex method is an exponential-time algorithm; thus the algorithm does not have a polynomial bound. In the project we examine this case in order to motivate the centre of attention of the IPMs.
 But it worths marking that all variables $(x, \lambda, s)$ computed by the IPMs change at each iteration and the linear algebra operations which are required to update them have to involve the complete matrix $A$. This makes a single iteration of the interior-point method significantly more expensive than that of the simplex method.\\
 
 It is known that the generic predictor-corrector framework leads to a variety of interior-point methods for solving the linear problems and this research presents one. Our goal is to use the Mehrorta's technique in order to produce an acceleration of the performance of a general LPF method. The present thesis firstly introduces a framework of the IPMs algorithms in

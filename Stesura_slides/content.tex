@@ -15,7 +15,7 @@
 
 \begin{frame}{\textrm {Programmazione Lineare}}
 	\begin{center}
-	\transblindshorizontal{\includegraphics[width = 7 cm]{fasi.png}}
+	\transblindsvertical\includegraphics[width = 9 cm]{fasi.png}
 	\end{center}
 \pause
 \begin{equation*}
@@ -42,7 +42,9 @@ con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango pieno e $b\in\mathbb{R}
 		\pause
 	\end{itemize}
 \pause
-\emph{Geometricamente} $\mathcal{P}$ definisce un poliedro
+\\
+\\
+\centering\emph{Geometricamente} $\mathcal{P}$ definisce un poliedro
 \end{frame}
 
 % SLIDE 5
@@ -55,7 +57,7 @@ $B\subseteq\{1,\dots,n\}$ insieme degli $m$ indici delle colonne
 \begin{equation*}
 \begin{split}
 \min\;&c_{B}^{T}x_{B}+c_{N}^{T}x_{N}\\
-\text{subject\;to\;}&A_{B}x_{B}+A_{N}x_{N}= b\;\\\text{and\;}&x_{B},x_{N}\geq0
+\text{tale che\;}&A_{B}x_{B}+A_{N}x_{N}= b\;\\\text{e\;}&x_{B},x_{N}\geq0
 \end{split}
 \end{equation*}
 \pause
@@ -94,11 +96,13 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 
 % SLIDE 7
 
-\begin{frame}[t,fragile]{\textrm{Il metodo del simplesso}}
+\begin{frame}[t,fragile]{\textcolor{green}{\textsc{\LARGE Metodo del simplesso}}}
 	\begin{itemize}
 		\item si basa sul Teorema fondamentale
+		\pause
 		\item situazioni di ciclaggio $\rightarrow$ regola di Bland
-		\item richiede di visitare un numero di vertici esponenziale rispetto alle dimensioni del problema $\rightarrow$ \textcolor{blue}{Problema di Klee-Minty}
+		\pause
+		\item richiede di visitare un numero di vertici esponenziale rispetto alle dimensioni del problema \pause$\rightarrow$ \textcolor{blue}{Problema di Klee-Minty}
 		\begin{alignat*}{4}
 		\min &\sum_{j=1}^{n}10^{n-j}x_{j}&&&\\
 		\text{tale che \;}&2\sum_{j=1}^{i-1}10^{i-j}x_{j}+&x_{i}&\leq 100^{i-1}, \, & i = 1,\dots, n\\
@@ -110,17 +114,15 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 % SLIDE 8
 
 \begin{frame}{\textcolor{blue}{Problema di Klee-Minty}}
-
-\begin{itemize}
-	\item $2^{n}-1$ iterazioni
-	\item $n= 3$
-	\item \verb!SimplexMethod(A,b,c,max\_it $ = 500$,rule$ = 0$,c\_form$ = 0$)\!
-\end{itemize}
+$2^{n}-1$ iterazioni $\rightarrow$ $n= 3$ \\
+\newline
+\newline
+\verb!SimplexMethod(A,b,c,max\_it $ = 500$,rule$ = 0$,c\_form$ = 0$)\!
 \pause
 \begin{table}[h]
 		\begin{tabular}{|c|c|c|c|}
 			\hline
-			Iterazione & Base corrente & x corrente & Costo corrente\\ \hline
+			Iterazione & Base & x & Costo\\ \hline
 			$0 & [3, 4, 5] & (0, 0, 0, 1, 100, 10000) & 0 \\ 
 			1 & [0, 4, 5] & (1, 0, 0, 0, 80, 9800) & -100 \\
 			2 & [0, 1, 5] & (1, 80, 0, 0, 0, 8200) & -900 \\
@@ -133,15 +135,17 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 \end{table}
  \end{frame}
 
-\begin{frame}[t]{\textrm{IPM primale duale}}
+% SLIDE 9
+
+\begin{frame}[t]{\textcolor{teal}{\textsc{\LARGE IPM primale duale}}}
 	\begin{itemize}
 		\item articolo di Karmarkar (1984) %in cui veniva proposto un% 
 		$\rightarrow$ algoritmo polinomiale
-		\item si basano sulle condizioni KKT applicate ad un problema PL:\\ se $x^{*}$ è un punto ottimale allora esistono $s^{*}\in\mathbb{R}^{n}$ e $\lambda^{*}\in\mathbb{R}^{m}$ tali che
+		\item si basano sulle condizioni KKT di un problema PL:\\ se $x^{*}$ è un punto ottimale allora esistono $s^{*}\in\mathbb{R}^{n}$ e $\lambda^{*}\in\mathbb{R}^{m}$ tali che
 		\begin{equation*}
-		\begin{bmatrix}
+		\mathit{F}(x,\lambda,s)= \begin{bmatrix}
 		A^{T}\lambda^{*}+s^{*}-c \\Ax^{*}-b \\X^{*}S^{*}e
-		\end{bmatrix}=0.
+		\end{bmatrix}=0
 		\end{equation*}
 		\pause
 		\begin{columns}
@@ -166,8 +170,55 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 		\end{columns}
 	\end{itemize}
 \end{frame}
+
+% SLIDE 10
+
+\begin{frame}{\textcolor{teal}{\textsc{\LARGE IPM primale duale}}}
+	\begin{itemize}
+		\item Basati sulla risoluzione di $\mathit{F}= 0$ con il metodo di Newton
+		\item Tempo polinomiale nella risoluzione del problema
+		\item Successione di punti ammissibili e interni al poliedro
+	\end{itemize}
+\pause
+\begin{columns}
+	\begin{column}{0.4\textwidth}
+		\begin{align*}
+		\min\limits_{(x_{1},x_{2},x_{3})\in\mathbb{R}^{3}} -&x_{1}+ x_{2}-4x_{3}\\
+		\text{tale che    }&x_{1}+x_{2}+x_{3}=1,\\
+		\text{\; e   \;} &x_{1}, x_{2}, x_{3} \geq 0
+		\end{align*}
+	\end{column}
+	\pause
+	\begin{column}{0.4\textwidth}
+		\includegraphics[width=\columnwidth]{Feas2.jpg}
+	\end{column}
+\end{columns}
+\end{frame}
+
+% SLIDE 10
+
 \begin{frame}
-	\end{frame}
+	
+\end{frame}
+
+% SLIDE 11
+
+\begin{frame}[t]{\textsc{\LARGE Metodo Affine}}
+\begin{itemize}
+	\item Iterazione $k$
+\end{itemize}
+\begin{equation*}	
+\begin{bmatrix}
+0&A^{T}&I \\A& 0&0\\X^{k}&0&S^{k}
+\end{bmatrix}\begin{bmatrix}
+\Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
+\end{bmatrix}=-\begin{bmatrix}
+r_{c}^{k}\\r_{b}^{k}\\X^{k}S^{k}e
+\end{bmatrix}
+\end{equation*}
+$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$
+\end{frame}
+
 \begin{frame}
 \begin{itemize}
 \item Install Beamer
