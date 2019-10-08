@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.4)  8 OCT 2019 15:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.4)  8 OCT 2019 20:20
 entering extended mode
 **./Slides.tex
 (Slides.tex
@@ -1421,11 +1421,6 @@ With luck, this will get me unwedged. But if you
 really didn't forget anything, try typing `2' now; then
 my insertion and my current dilemma will both disappear.
 
-
-Overfull \hbox (38.94307pt too wide) in paragraph at lines 147--147
- [] 
- []
-
 ! Missing } inserted.
 <inserted text> 
                 }
@@ -1532,11 +1527,6 @@ I've inserted something that you may have forgotten.
 With luck, this will get me unwedged. But if you
 really didn't forget anything, try typing `2' now; then
 my insertion and my current dilemma will both disappear.
-
-
-Overfull \hbox (38.94307pt too wide) in paragraph at lines 147--147
- [] 
- []
 
 ! Missing } inserted.
 <inserted text> 
@@ -1645,11 +1635,6 @@ With luck, this will get me unwedged. But if you
 really didn't forget anything, try typing `2' now; then
 my insertion and my current dilemma will both disappear.
 
-
-Overfull \hbox (38.94307pt too wide) in paragraph at lines 147--147
- [] 
- []
-
 ! Missing } inserted.
 <inserted text> 
                 }
@@ -1756,11 +1741,6 @@ I've inserted something that you may have forgotten.
 With luck, this will get me unwedged. But if you
 really didn't forget anything, try typing `2' now; then
 my insertion and my current dilemma will both disappear.
-
-
-Overfull \hbox (38.94307pt too wide) in paragraph at lines 147--147
- [] 
- []
 
 ! Missing } inserted.
 <inserted text> 
@@ -2213,72 +2193,52 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [51
 
 ]
-! Missing } inserted.
-<inserted text> 
-                }
-l.306 \end{frame}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
 
-! Extra }, or forgotten \endgroup.
-\verb@egroup ...erb@balance@group \@empty \egroup 
-                                                  
-l.306 \end{frame}
-                 
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-
-! LaTeX Error: \verb illegal in command argument.
+! LaTeX Error: There's no line here to end.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.306 \end{frame}
+l.305 \end{frame}
                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
 
-
-Overfull \hbox (3.22629pt too wide) in paragraph at lines 306--306
-[][]\OT1/cmtt/m/n/10 /usr/share/doc/latex-beamer/beameruserguide.pdf.gz! 
- []
-
-! Missing } inserted.
+! Missing $ inserted.
 <inserted text> 
-                }
-l.306 \end{frame}
+                $
+l.305 \end{frame}
                  
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Display math should end with $$.
+<to be read again> 
+                   \par 
+l.305 \end{frame}
+                 
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
 
 
-! LaTeX Error: \verb illegal in command argument.
+! LaTeX Error: Bad math environment delimiter.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.306 \end{frame}
+l.305 \end{frame}
                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
 
-! Missing } inserted.
+! Missing $ inserted.
 <inserted text> 
-                }
-l.306 \end{frame}
+                $
+l.305 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -2286,51 +2246,13 @@ With luck, this will get me unwedged. But if you
 really didn't forget anything, try typing `2' now; then
 my insertion and my current dilemma will both disappear.
 
-
-! LaTeX Error: \verb illegal in command argument.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.306 \end{frame}
+! Display math should end with $$.
+<to be read again> 
+                   \endgroup 
+l.305 \end{frame}
                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.306 \end{frame}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-
-! LaTeX Error: \verb illegal in command argument.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.306 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.306 \end{frame}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
 
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -2345,9 +2267,130 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [52
 
 ]
-\openout4 = `Slides.vrb'.
+! Missing } inserted.
+<inserted text> 
+                }
+l.335 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
 
- (Slides.vrb)
+! Extra }, or forgotten \endgroup.
+\verb@egroup ...erb@balance@group \@empty \egroup 
+                                                  
+l.335 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: \verb illegal in command argument.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.335 \end{frame}
+                 
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (3.22629pt too wide) in paragraph at lines 335--335
+[][]\OT1/cmtt/m/n/10 /usr/share/doc/latex-beamer/beameruserguide.pdf.gz! 
+ []
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.335 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+! LaTeX Error: \verb illegal in command argument.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.335 \end{frame}
+                 
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.335 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+! LaTeX Error: \verb illegal in command argument.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.335 \end{frame}
+                 
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.335 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+! LaTeX Error: \verb illegal in command argument.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.335 \end{frame}
+                 
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.335 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+Overfull \vbox (2.43346pt too high) detected at line 335
+ []
+
+
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -2362,12 +2405,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 ]
 \openout4 = `Slides.vrb'.
 
- (Slides.vrb
-Overfull \hbox (3.22629pt too wide) in paragraph at lines 6--7
-[][]\OT1/cmtt/m/n/10 \usetheme[option1 = value, option2 = value]{Torino}  
- []
-
-)
+ (Slides.vrb)
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -2382,7 +2420,12 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 ]
 \openout4 = `Slides.vrb'.
 
- (Slides.vrb)
+ (Slides.vrb
+Overfull \hbox (3.22629pt too wide) in paragraph at lines 6--7
+[][]\OT1/cmtt/m/n/10 \usetheme[option1 = value, option2 = value]{Torino}  
+ []
+
+)
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -2439,6 +2482,21 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [58
 
+]
+\openout4 = `Slides.vrb'.
+
+ (Slides.vrb)
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[59
+
 ])
 \tf@nav=\write6
 \openout6 = `Slides.nav'.
@@ -2458,10 +2516,10 @@ Package rerunfilecheck Info: File `Slides.out' has not changed.
 (rerunfilecheck)             Checksum: 714A43D21D5989F380977F830775F840;244.
  ) 
 Here is how much of TeX's memory you used:
- 17829 strings out of 492895
- 348836 string characters out of 3123735
- 421188 words of memory out of 3000000
- 21173 multiletter control sequences out of 15000+200000
+ 17837 strings out of 492895
+ 348914 string characters out of 3123735
+ 421235 words of memory out of 3000000
+ 21178 multiletter control sequences out of 15000+200000
  20515 words of font info for 73 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  56i,22n,63p,846b,687s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -2485,9 +2543,9 @@ lic/amsfonts/cm/cmsy8.pfb><C:/Users/elena/AppData/Local/Programs/MiKTeX 2.9/fon
 ts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/elena/AppData/Local/Programs/M
 iKTeX 2.9/fonts/type1/public/amsfonts/symbols/msam7.pfb><C:/Users/elena/AppData
 /Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Slides.pdf (58 pages, 629456 bytes).
+Output written on Slides.pdf (59 pages, 634452 bytes).
 PDF statistics:
- 745 PDF objects out of 1000 (max. 8388607)
- 121 named destinations out of 1000 (max. 500000)
+ 756 PDF objects out of 1000 (max. 8388607)
+ 124 named destinations out of 1000 (max. 500000)
  111 words of extra memory for PDF output out of 10000 (max. 10000000)
 
