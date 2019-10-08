@@ -1,17 +1,24 @@
 % DO NOT COMPILE THIS FILE DIRECTLY!
 % This is included by the other .tex files.
-
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
 
-% SLIDE 2
-
 \begin{frame}
-\includegraphics[width = 11 cm]{intro.png}
+	\frametitle{}
+	\hypersetup{linkcolor=black}
+	\tableofcontents
 \end{frame}
 
+% SLIDE 2
+
+%\begin{frame}
+%\includegraphics[width = 11 cm]{intro.png}
+%\end{frame}
+
 % SLIDE 3
+
+\section{Introduzione alla PL}
 
 \begin{frame}{\textrm {Programmazione Lineare}}
 	\begin{center}
@@ -31,7 +38,7 @@ con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango pieno e $b\in\mathbb{R}
 
 % SLIDE 4
 
-\begin{frame}{\textrm{Programmazione Lineare}}
+\begin{frame}{\textsc{\LARGE Programmazione Lineare}}
 	\pause
 	\begin{itemize}
 		\item \textbf{Punto ammissibile} x: punto tale che $Ax = b, x\geq 0$
@@ -42,16 +49,14 @@ con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango pieno e $b\in\mathbb{R}
 		\pause
 	\end{itemize}
 \pause
-\\
-\\
 \centering\emph{Geometricamente} $\mathcal{P}$ definisce un poliedro
 \end{frame}
 
 % SLIDE 5
 
-\begin{frame}{\textrm{Programmazione Lineare}}
+\begin{frame}{\textsc{\LARGE Programmazione Lineare}}
 
-Ipotesi $m \leq n$ \pause$\longrightarrow$ esiste sottomatrice $A_{B}$ invertibile con
+Ipotesi $m \leq n$ \pause$\longrightarrow$ esiste sottomatrice $\mathbf{A_{B}}$ invertibile con
 $B\subseteq\{1,\dots,n\}$ insieme degli $m$ indici delle colonne 
 \pause
 \begin{equation*}
@@ -71,12 +76,13 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 
 % SLIDE 6
 
-\begin{frame}[t]{\textrm{Teorema Fondamentale}}
-	Dato un problema PL in forma standard in forma standard, si verifica una delle seguenti condizioni:\pause
+\begin{frame}[t]{\textsc{\LARGE Teorema Fondamentale}}
+	Dato un problema PL in forma standard, si verifica una delle seguenti: %condizioni:
+	\pause
 \begin{itemize}
-\item[o] il problema è inammissibile $\;\mathcal{P}=\emptyset$\pause
-\item[o] il problema è illimitato\pause
-\item[o] ammette punti ammissibili di  \textcolor{red}{base} che sono soluzioni ottime $x^{*}$
+\item il problema è inammissibile $\;\mathcal{P}=\emptyset$\pause
+\item il problema è illimitato\pause
+\item ammette punti ammissibili di  \textcolor{red}{base} che sono soluzioni ottime $x^{*}$
 \end{itemize}
 \pause
 \begin{columns}
@@ -96,11 +102,13 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 
 % SLIDE 7
 
+\section{Metodo del simplesso}
+
 \begin{frame}[t,fragile]{\textcolor{green}{\textsc{\LARGE Metodo del simplesso}}}
 	\begin{itemize}
 		\item si basa sul Teorema fondamentale
 		\pause
-		\item situazioni di ciclaggio $\rightarrow$ regola di Bland
+		\item situazioni di ciclaggio \pause $\rightarrow$ regola di Bland
 		\pause
 		\item richiede di visitare un numero di vertici esponenziale rispetto alle dimensioni del problema \pause$\rightarrow$ \textcolor{blue}{Problema di Klee-Minty}
 		\begin{alignat*}{4}
@@ -114,10 +122,10 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 % SLIDE 8
 
 \begin{frame}{\textcolor{blue}{Problema di Klee-Minty}}
-$2^{n}-1$ iterazioni $\rightarrow$ $n= 3$ \\
-\newline
-\newline
-\verb!SimplexMethod(A,b,c,max\_it $ = 500$,rule$ = 0$,c\_form$ = 0$)\!
+$2^{n}-1$ iterazioni\pause $\rightarrow$ $n= 3$ \\
+
+\pause
+\centering\verb!SimplexMethod(A,b,c,max\_it $ = 500$,rule$ = 0$,c\_form$ = 0$)\!
 \pause
 \begin{table}[h]
 		\begin{tabular}{|c|c|c|c|}
@@ -130,20 +138,27 @@ $2^{n}-1$ iterazioni $\rightarrow$ $n= 3$ \\
 			4 & [0, 1, 5] & (0, 100, 8000, 1, 0, 0) & -9000 \\ 
 			5 & [0, 1, 2] & (1, 80, 8200, 0, 0, 0) & -9100 \\
 			6 & [0, 4, 2] & (1, 0, 9800, 0, 80, 0) & -9900 \\ 
-			7 & [3, 4, 2] & (0, 0, 10000, 1, 100, 0) & -10000$ \\ \hline
+			7 & [3, 4, 2] & (0, 0, 10000, 1, 100, 0) & -10000$ 
+			\\ 
+			\hline
 		\end{tabular}
 \end{table}
- \end{frame}
+
+\end{frame}
 
 % SLIDE 9
+
+\section{Metodi del punto interno}
 
 \begin{frame}[t]{\textcolor{teal}{\textsc{\LARGE IPM primale duale}}}
 	\begin{itemize}
 		\item articolo di Karmarkar (1984) %in cui veniva proposto un% 
 		$\rightarrow$ algoritmo polinomiale
-		\item si basano sulle condizioni KKT di un problema PL:\\ se $x^{*}$ è un punto ottimale allora esistono $s^{*}\in\mathbb{R}^{n}$ e $\lambda^{*}\in\mathbb{R}^{m}$ tali che
+		\pause
+		\item si basano sulle \underline{condizioni KKT} di un problema PL:
+		\pause\\ se $x^{*}$ è un punto ottimale allora esistono $s^{*}\in\mathbb{R}^{n}$ e $\lambda^{*}\in\mathbb{R}^{m}$ tali che
 		\begin{equation*}
-		\mathit{F}(x,\lambda,s)= \begin{bmatrix}
+		\mathit{F}(x^{*},\lambda^{*},s^{*})= \begin{bmatrix}
 		A^{T}\lambda^{*}+s^{*}-c \\Ax^{*}-b \\X^{*}S^{*}e
 		\end{bmatrix}=0
 		\end{equation*}
@@ -175,8 +190,11 @@ $2^{n}-1$ iterazioni $\rightarrow$ $n= 3$ \\
 
 \begin{frame}{\textcolor{teal}{\textsc{\LARGE IPM primale duale}}}
 	\begin{itemize}
+		\pause
 		\item Basati sulla risoluzione di $\mathit{F}= 0$ con il metodo di Newton
+		\pause
 		\item Tempo polinomiale nella risoluzione del problema
+		\pause
 		\item Successione di punti ammissibili e interni al poliedro
 	\end{itemize}
 \pause
@@ -195,18 +213,42 @@ $2^{n}-1$ iterazioni $\rightarrow$ $n= 3$ \\
 \end{columns}
 \end{frame}
 
-% SLIDE 10
+% SLIDE 11
 
-\begin{frame}
-	
+\begin{frame}{\textcolor{teal}{\textsc{Inizializzazione e terminazione}}}
+	\begin{itemize}
+		\item Strategia MIP \pause $\rightarrow$ Mehrotra S. (1989)
+		\pause
+		\item Punto iniziale STP \pause $\rightarrow$ D’Apuzzo M., De Simone V., di Serafino D. (2009)
+	\end{itemize}
+\pause
+\begin{columns}
+	\begin{column}{0.4\textwidth}
+		\includegraphics[width=\columnwidth]{MIP.jpg}
+	\end{column}
+	\begin{column}{0.4\textwidth}
+	\includegraphics[width=\columnwidth]{STP.jpg}
+\end{column}
+\end{columns}
 \end{frame}
 
 % SLIDE 11
 
-\begin{frame}[t]{\textsc{\LARGE Metodo Affine}}
-\begin{itemize}
-	\item Iterazione $k$
-\end{itemize}
+\begin{frame}{\textcolor{teal}{\textsc{Inizializzazione e terminazione}}}
+	Condizione di terminazione: \pause $\epsilon$-soluzione $(x^{*},\lambda^{*},s^{*})$ tale che
+\begin{align*}
+\frac{\lVert r_{b}\rVert_{2}}{1+ \lVert b \rVert_{2}}\leq \epsilon, && \frac{\lVert r_{c}\rVert_{2}}{1 + \lVert c \rVert_{2}}\leq \epsilon, &&\frac{|g|}{1+b^{T}y}\leq \epsilon,
+\end{align*}
+con i \textit{residui} $r_{b} = Ax - b$ e $r_{c} =A^{T}\lambda +s - c$.
+\end{frame}
+
+% SLIDE 12
+
+\begin{frame}[t]{\textcolor{orange}{\textsc{\LARGE Metodo Affine}}}
+	\setbeamercolor{block title}{fg=black,bg=white!75!white}
+\setbeamercolor{block body}{fg=black,bg=white!75!white}
+\setbeamertemplate{blocks}[rounded]
+\begin{block}{Iterazione k:}
 \begin{equation*}	
 \begin{bmatrix}
 0&A^{T}&I \\A& 0&0\\X^{k}&0&S^{k}
@@ -214,9 +256,25 @@ $2^{n}-1$ iterazioni $\rightarrow$ $n= 3$ \\
 \Delta x^{k}\\\Delta\lambda^{k} \\\Delta s^{k}
 \end{bmatrix}=-\begin{bmatrix}
 r_{c}^{k}\\r_{b}^{k}\\X^{k}S^{k}e
-\end{bmatrix}
-\end{equation*}
+\end{bmatrix}\\
 $(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$
+\end{equation*}\\
+con $\alpha_{k}\in(0,1]$ tale che $(x^{k+1}, s^{k+1})>0$
+\end{block}
+\end{frame}
+
+% SLIDE 13
+
+\subsection{Metodi Path-Following}
+
+\begin{frame}[t]{\textsc{\LARGE Metodi Path-Following}}
+	Cammino centrale $\mathcal{C}(\tau)$ $\tau  > 0$ e ogni punto $(x_{\tau}, \lambda_{\tau}, s_{\tau})\in \mathcal{C}$ soddisfa:
+		\begin{equation*}
+\mathit{F}(x_{\tau},\lambda_{\tau},s_{\tau})= \begin{bmatrix}
+A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax-b \\X_{\tau}S_{\tau}e
+\end{bmatrix}=\begin{bmatrix}0\\0\\ \tau \end{bmatrix}
+\end{equation*}
+	
 \end{frame}
 
 \begin{frame}

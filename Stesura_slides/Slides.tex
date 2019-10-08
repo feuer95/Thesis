@@ -10,11 +10,24 @@
           watermarkheightmult=4,% The watermark image is 4 times bigger
                                 % than watermarkheight.
           ]{Torino}
-
-\author{Elena Scotto}
-\title{\textbf{\textrm{\LARGE{A Long-step Path-Following algorithm}}}}
+\useoutertheme{sidebar}
+\setbeamercolor*{section in sidebar}{fg=gray}
+\setbeamercolor*{subsection in sidebar}{fg=gray}
+\setbeamercolor{item projected}{fg=black}
+\setbeamercolor*{section in toc}{fg=black}
+\author[]{Elena Scotto}
+\title[]{\textbf{\textrm{\LARGE{A PC Long-step Path-Following algorithm}}}}
 \institute{Università degli Studi di Torino\\Dipartimento di Matematica}
-\date{21 ottobre 2019}
+\date{\today}
+%\useoutertheme{miniframes}
+\useinnertheme{rectangles}
+\AtBeginSection[]
+{
+	\begin{frame}
+		\frametitle{Indice}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
 
 \begin{document}
 \include{content}

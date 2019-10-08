@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.4)  7 OCT 2019 17:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.4)  8 OCT 2019 15:39
 entering extended mode
 **./Slides.tex
 (Slides.tex
@@ -755,24 +755,30 @@ themedefault.sty"))) (beamerthemeTorino.sty (beamerinnerthemefancy.sty
 \beamer@decolines@linebottom=\skip64
 \beamer@decolines@watermarkheightbottom=\skip65
 \beamer@decolines@watermarkheightupperorig=\skip66
-) (beamercolorthemechameleon.sty)) (Slides.aux
-(content.aux))
+) (beamercolorthemechameleon.sty))
+("C:\Users\elena\AppData\Local\Programs\MiKTeX 2.9\tex/latex/beamer\beamerouter
+themesidebar.sty"
+\beamer@sidebarwidth=\dimen189
+\beamer@headheight=\dimen190
+)
+("C:\Users\elena\AppData\Local\Programs\MiKTeX 2.9\tex/latex/beamer\beamerinner
+themerectangles.sty") (Slides.aux (content.aux))
 \openout1 = `Slides.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -782,14 +788,14 @@ LaTeX Font Info:    ... okay on input line 19.
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: includehead includefoot 
-* h-part:(L,W,R)=(21.85083pt, 320.4937pt, 21.85083pt)
+* h-part:(L,W,R)=(59.22636pt, 290.74263pt, 14.22636pt)
 * v-part:(T,H,B)=(0.0pt, 273.14662pt, 0.0pt)
 * \paperwidth=364.19536pt
 * \paperheight=273.14662pt
-* \textwidth=320.4937pt
+* \textwidth=290.74263pt
 * \textheight=244.6939pt
-* \oddsidemargin=-50.41916pt
-* \evensidemargin=-50.41916pt
+* \oddsidemargin=-13.04362pt
+* \evensidemargin=-13.04362pt
 * \topmargin=-72.26999pt
 * \headheight=14.22636pt
 * \headsep=0.0pt
@@ -813,13 +819,13 @@ LaTeX Font Info:    ... okay on input line 19.
 df.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count157
-\scratchdimen=\dimen189
+\scratchdimen=\dimen191
 \scratchbox=\box55
 \nofMPsegments=\count158
 \nofMParguments=\count159
 \everyMPshowfont=\toks43
 \MPscratchCnt=\count160
-\MPscratchDim=\dimen190
+\MPscratchDim=\dimen192
 \MPnumerator=\count161
 \makeMPintoPDFobject=\count162
 \everyMPtoPDFconversion=\toks44
@@ -840,7 +846,7 @@ G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 ) ABD: EveryShipout initializing macros
 \AtBeginShipoutBox=\box56
-Package hyperref Info: Link coloring OFF on input line 19.
+Package hyperref Info: Link coloring OFF on input line 32.
 
 ("C:\Users\elena\AppData\Local\Programs\MiKTeX 2.9\tex/latex/hyperref\nameref.s
 ty"
@@ -852,65 +858,65 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count163
 )
-LaTeX Info: Redefining \ref on input line 19.
-LaTeX Info: Redefining \pageref on input line 19.
-LaTeX Info: Redefining \nameref on input line 19.
+LaTeX Info: Redefining \ref on input line 32.
+LaTeX Info: Redefining \pageref on input line 32.
+LaTeX Info: Redefining \nameref on input line 32.
  (Slides.out) (Slides.out)
 \@outlinefile=\write5
 \openout5 = `Slides.out'.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 19.
+(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 32.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 19.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 32.
 \symnumbers=\mathgroup6
 \sympureletters=\mathgroup7
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 19.
-LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 19.
+(Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 32.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 32.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 19.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 32.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 19.
-LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 19.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 32.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 32.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/m/n on input line 19.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/m/n on input line 32.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> OT1/cmss/m/n on input line 19.
-LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 19.
+(Font)                  OT1/cmss/bx/n --> OT1/cmss/m/n on input line 32.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 32.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> OT1/cmss/m/it on input line 19.
+(Font)                  OT1/cmr/m/it --> OT1/cmss/m/it on input line 32.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> OT1/cmss/m/it on input line 19.
-LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 19.
+(Font)                  OT1/cmr/bx/it --> OT1/cmss/m/it on input line 32.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 32.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 19.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 32.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 19.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 32.
 LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/bx/n on input line 19.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/bx/n on input line 32.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 19.
+(Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 32.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
-(Font)                  OT1/cmss/bx/n --> OT1/cmr/bx/n on input line 19.
+(Font)                  OT1/cmss/bx/n --> OT1/cmr/bx/n on input line 32.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> OT1/cmss/bx/n on input line 19.
+(Font)                  OT1/cmss/bx/n --> OT1/cmss/bx/n on input line 32.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/bx/n on input line 19.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/bx/n on input line 32.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 19.
+(Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 32.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/bx/n on input line 19.
-LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 19.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/bx/n on input line 32.
+LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 32.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `normal'
-(Font)                  OT1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 1
-9.
+(Font)                  OT1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 3
+2.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
 (Font)                  OT1/cmss/bx/it --> OT1/mathkerncmss/m/sl on input line 
-19.
+32.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
 (Font)                  OT1/mathkerncmss/m/sl --> OT1/mathkerncmss/bx/sl on inp
-ut line 19.
+ut line 32.
 
 ("C:\Users\elena\AppData\Local\Programs\MiKTeX 2.9\tex/latex/translator\transla
 tor-basic-dictionary-English.dict"
@@ -939,22 +945,22 @@ Dictionary: translator-theorem-dictionary, Language: English
 \openout2 = `content.aux'.
 
  (content.tex
-<logo.jpg, id=12, 454.69875pt x 462.528pt>
+<logo.jpg, id=28, 454.69875pt x 462.528pt>
 File: logo.jpg Graphic file (type jpg)
 <use logo.jpg>
-Package pdftex.def Info: logo.jpg  used on input line 6.
+Package pdftex.def Info: logo.jpg  used on input line 5.
 (pdftex.def)             Requested size: 107.40233pt x 109.25697pt.
-LaTeX Font Info:    Try loading font information for U+msa on input line 6.
+LaTeX Font Info:    Try loading font information for U+msa on input line 5.
 
 ("C:\Users\elena\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 6.
+LaTeX Font Info:    Try loading font information for U+msb on input line 5.
 ("C:\Users\elena\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Try loading font information for OT1+mathkerncmss on input 
-line 6.
+line 5.
 
 ("C:\Users\elena\AppData\Local\Programs\MiKTeX 2.9\tex/latex/sansmathaccent\ot1
 mathkerncmss.fd"
@@ -964,13 +970,7 @@ thkerncmss.
 
 
 {C:/Users/elena/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./logo.jpg>
-]
-<intro.png, id=24, 619.31375pt x 315.1775pt>
-File: intro.png Graphic file (type png)
-<use intro.png>
-Package pdftex.def Info: intro.png  used on input line 12.
-(pdftex.def)             Requested size: 312.9803pt x 159.28601pt.
-
+] (Slides.toc)
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -982,13 +982,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [2
 
- <./intro.png>]
-<fasi.png, id=31, 655.44875pt x 125.46875pt>
-File: fasi.png Graphic file (type png)
-<use fasi.png>
-Package pdftex.def Info: fasi.png  used on input line 30.
-(pdftex.def)             Requested size: 256.0748pt x 49.01875pt.
-
+] (Slides.toc)
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -1000,10 +994,11 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [3
 
- <./fasi.png>]
+]
+<fasi.png, id=72, 655.44875pt x 125.46875pt>
 File: fasi.png Graphic file (type png)
 <use fasi.png>
-Package pdftex.def Info: fasi.png  used on input line 30.
+Package pdftex.def Info: fasi.png  used on input line 37.
 (pdftex.def)             Requested size: 256.0748pt x 49.01875pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -1017,33 +1012,11 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [4
 
-]
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.48 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.48 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
+ <./fasi.png>]
+File: fasi.png Graphic file (type png)
+<use fasi.png>
+Package pdftex.def Info: fasi.png  used on input line 37.
+(pdftex.def)             Requested size: 256.0748pt x 49.01875pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
@@ -1058,30 +1031,12 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 ]
 
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.48 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
+LaTeX Font Warning: Font shape `OT1/cmss/m/sc' in size <14.4> not available
+(Font)              Font shape `OT1/cmr/m/sc' tried instead on input line 53.
 
 
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.48 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
+LaTeX Font Warning: Font shape `OT1/cmss/m/sc' in size <17.28> not available
+(Font)              Font shape `OT1/cmr/m/sc' tried instead on input line 53.
 
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -1096,33 +1051,6 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [6
 
 ]
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.48 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.48 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -1135,33 +1063,6 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [7
 
 ]
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.48 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.48 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -1174,33 +1075,6 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [8
 
 ]
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.48 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.48 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -1213,33 +1087,6 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [9
 
 ]
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.48 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.48 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -1300,16 +1147,6 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [14
 
 ]
-Overfull \hbox (10.70537pt too wide) detected at line 95
-[]
- []
-
-<Feas.jpg, id=106, 329.43076pt x 285.4665pt>
-File: Feas.jpg Graphic file (type jpg)
-<use Feas.jpg>
-Package pdftex.def Info: Feas.jpg  used on input line 95.
-(pdftex.def)             Requested size: 128.19551pt x 111.08755pt.
-
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -1321,15 +1158,16 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [15
 
- <./Feas.jpg>]
-Overfull \hbox (10.70537pt too wide) detected at line 95
+]
+Overfull \hbox (22.6056pt too wide) detected at line 101
 []
  []
 
+<Feas.jpg, id=208, 329.43076pt x 285.4665pt>
 File: Feas.jpg Graphic file (type jpg)
 <use Feas.jpg>
-Package pdftex.def Info: Feas.jpg  used on input line 95.
-(pdftex.def)             Requested size: 128.19551pt x 111.08755pt.
+Package pdftex.def Info: Feas.jpg  used on input line 101.
+(pdftex.def)             Requested size: 116.29527pt x 100.77287pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
@@ -1342,15 +1180,15 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [16
 
-]
-Overfull \hbox (10.70537pt too wide) detected at line 95
+ <./Feas.jpg>]
+Overfull \hbox (22.6056pt too wide) detected at line 101
 []
  []
 
 File: Feas.jpg Graphic file (type jpg)
 <use Feas.jpg>
-Package pdftex.def Info: Feas.jpg  used on input line 95.
-(pdftex.def)             Requested size: 128.19551pt x 111.08755pt.
+Package pdftex.def Info: Feas.jpg  used on input line 101.
+(pdftex.def)             Requested size: 116.29527pt x 100.77287pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
@@ -1364,14 +1202,14 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [17
 
 ]
-Overfull \hbox (10.70537pt too wide) detected at line 95
+Overfull \hbox (22.6056pt too wide) detected at line 101
 []
  []
 
 File: Feas.jpg Graphic file (type jpg)
 <use Feas.jpg>
-Package pdftex.def Info: Feas.jpg  used on input line 95.
-(pdftex.def)             Requested size: 128.19551pt x 111.08755pt.
+Package pdftex.def Info: Feas.jpg  used on input line 101.
+(pdftex.def)             Requested size: 116.29527pt x 100.77287pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
@@ -1385,14 +1223,14 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [18
 
 ]
-Overfull \hbox (10.70537pt too wide) detected at line 95
+Overfull \hbox (22.6056pt too wide) detected at line 101
 []
  []
 
 File: Feas.jpg Graphic file (type jpg)
 <use Feas.jpg>
-Package pdftex.def Info: Feas.jpg  used on input line 95.
-(pdftex.def)             Requested size: 128.19551pt x 111.08755pt.
+Package pdftex.def Info: Feas.jpg  used on input line 101.
+(pdftex.def)             Requested size: 116.29527pt x 100.77287pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
@@ -1406,14 +1244,14 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [19
 
 ]
-Overfull \hbox (10.70537pt too wide) detected at line 95
+Overfull \hbox (22.6056pt too wide) detected at line 101
 []
  []
 
 File: Feas.jpg Graphic file (type jpg)
 <use Feas.jpg>
-Package pdftex.def Info: Feas.jpg  used on input line 95.
-(pdftex.def)             Requested size: 128.19551pt x 111.08755pt.
+Package pdftex.def Info: Feas.jpg  used on input line 101.
+(pdftex.def)             Requested size: 116.29527pt x 100.77287pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
@@ -1427,17 +1265,14 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [20
 
 ]
-\openout4 = `Slides.vrb'.
+Overfull \hbox (22.6056pt too wide) detected at line 101
+[]
+ []
 
- (Slides.vrb)
-
-LaTeX Font Warning: Font shape `OT1/cmss/m/sc' in size <14.4> not available
-(Font)              Font shape `OT1/cmr/m/sc' tried instead on input line 112.
-
-
-LaTeX Font Warning: Font shape `OT1/cmss/m/sc' in size <17.28> not available
-(Font)              Font shape `OT1/cmr/m/sc' tried instead on input line 112.
-
+File: Feas.jpg Graphic file (type jpg)
+<use Feas.jpg>
+Package pdftex.def Info: Feas.jpg  used on input line 101.
+(pdftex.def)             Requested size: 116.29527pt x 100.77287pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
@@ -1450,7 +1285,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [21
 
-] (Slides.vrb)
+] (Slides.toc)
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -1462,7 +1297,10 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [22
 
-] (Slides.vrb)
+]
+\openout4 = `Slides.vrb'.
+
+ (Slides.vrb)
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -1486,133 +1324,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [24
 
-]
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.136  \end{frame}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.136  \end{frame}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Extra }, or forgotten $.
-<template> \unskip \hfil }
-                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
-l.136  \end{frame}
-                  
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.136  \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.136  \end{frame}
-                  
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Extra }, or forgotten $.
-<template> \unskip \hfil }
-                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
-l.136  \end{frame}
-                  
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.136  \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.136  \end{frame}
-                  
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-
-Overfull \hbox (9.192pt too wide) in paragraph at lines 136--136
- [] 
- []
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.136  \end{frame}
-                  
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Extra }, or forgotten \endgroup.
-\verb@egroup ...erb@balance@group \@empty \egroup 
-                                                  
-l.136  \end{frame}
-                  
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-
-! LaTeX Error: \verb illegal in command argument.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.136  \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
+] (Slides.vrb)
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -1624,133 +1336,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [25
 
-]
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.136  \end{frame}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.136  \end{frame}
-                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Extra }, or forgotten $.
-<template> \unskip \hfil }
-                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
-l.136  \end{frame}
-                  
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.136  \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.136  \end{frame}
-                  
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Extra }, or forgotten $.
-<template> \unskip \hfil }
-                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
-l.136  \end{frame}
-                  
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.136  \end{frame}
-                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.136  \end{frame}
-                  
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-
-Overfull \hbox (9.192pt too wide) in paragraph at lines 136--136
- [] 
- []
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.136  \end{frame}
-                  
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Extra }, or forgotten \endgroup.
-\verb@egroup ...erb@balance@group \@empty \egroup 
-                                                  
-l.136  \end{frame}
-                  
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-
-! LaTeX Error: \verb illegal in command argument.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.136  \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
+] (Slides.vrb)
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -1762,7 +1348,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [26
 
-]
+] (Slides.vrb)
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -1775,6 +1361,106 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [27
 
 ]
+! Extra }, or forgotten $.
+<template> \unskip \hfil }
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.147 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.147 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.147 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Extra }, or forgotten $.
+<template> \unskip \hfil }
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.147 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.147 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.147 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+Overfull \hbox (38.94307pt too wide) in paragraph at lines 147--147
+ [] 
+ []
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.147 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Extra }, or forgotten \endgroup.
+\verb@egroup ...erb@balance@group \@empty \egroup 
+                                                  
+l.147 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: \verb illegal in command argument.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.147 \end{frame}
+                 
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -1787,15 +1473,105 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [28
 
 ]
-Overfull \hbox (10.70537pt too wide) detected at line 196
-[]
+! Extra }, or forgotten $.
+<template> \unskip \hfil }
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.147 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.147 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.147 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Extra }, or forgotten $.
+<template> \unskip \hfil }
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.147 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.147 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.147 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+Overfull \hbox (38.94307pt too wide) in paragraph at lines 147--147
+ [] 
  []
 
-<Feas2.jpg, id=182, 433.01775pt x 386.6445pt>
-File: Feas2.jpg Graphic file (type jpg)
-<use Feas2.jpg>
-Package pdftex.def Info: Feas2.jpg  used on input line 196.
-(pdftex.def)             Requested size: 128.19551pt x 114.46622pt.
+! Missing } inserted.
+<inserted text> 
+                }
+l.147 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Extra }, or forgotten \endgroup.
+\verb@egroup ...erb@balance@group \@empty \egroup 
+                                                  
+l.147 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: \verb illegal in command argument.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.147 \end{frame}
+                 
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
@@ -1808,15 +1584,106 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [29
 
- <./Feas2.jpg>]
-Overfull \hbox (10.70537pt too wide) detected at line 196
-[]
+]
+! Extra }, or forgotten $.
+<template> \unskip \hfil }
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.147 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.147 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.147 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Extra }, or forgotten $.
+<template> \unskip \hfil }
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.147 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.147 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.147 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+Overfull \hbox (38.94307pt too wide) in paragraph at lines 147--147
+ [] 
  []
 
-File: Feas2.jpg Graphic file (type jpg)
-<use Feas2.jpg>
-Package pdftex.def Info: Feas2.jpg  used on input line 196.
-(pdftex.def)             Requested size: 128.19551pt x 114.46622pt.
+! Missing } inserted.
+<inserted text> 
+                }
+l.147 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Extra }, or forgotten \endgroup.
+\verb@egroup ...erb@balance@group \@empty \egroup 
+                                                  
+l.147 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: \verb illegal in command argument.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.147 \end{frame}
+                 
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
@@ -1830,14 +1697,105 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [30
 
 ]
-Overfull \hbox (10.70537pt too wide) detected at line 196
-[]
+! Extra }, or forgotten $.
+<template> \unskip \hfil }
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.147 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.147 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.147 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Extra }, or forgotten $.
+<template> \unskip \hfil }
+                          \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
+l.147 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.147 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.147 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+Overfull \hbox (38.94307pt too wide) in paragraph at lines 147--147
+ [] 
  []
 
-File: Feas2.jpg Graphic file (type jpg)
-<use Feas2.jpg>
-Package pdftex.def Info: Feas2.jpg  used on input line 196.
-(pdftex.def)             Requested size: 128.19551pt x 114.46622pt.
+! Missing } inserted.
+<inserted text> 
+                }
+l.147 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Extra }, or forgotten \endgroup.
+\verb@egroup ...erb@balance@group \@empty \egroup 
+                                                  
+l.147 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: \verb illegal in command argument.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.147 \end{frame}
+                 
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
@@ -1850,7 +1808,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [31
 
-]
+] (Slides.toc)
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -1875,10 +1833,390 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [33
 
 ]
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[34
+
+]
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[35
+
+]
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[36
+
+]
+Overfull \hbox (22.6056pt too wide) detected at line 214
+[]
+ []
+
+<Feas2.jpg, id=429, 433.01775pt x 386.6445pt>
+File: Feas2.jpg Graphic file (type jpg)
+<use Feas2.jpg>
+Package pdftex.def Info: Feas2.jpg  used on input line 214.
+(pdftex.def)             Requested size: 116.29527pt x 103.84084pt.
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[37
+
+ <./Feas2.jpg>]
+Overfull \hbox (22.6056pt too wide) detected at line 214
+[]
+ []
+
+File: Feas2.jpg Graphic file (type jpg)
+<use Feas2.jpg>
+Package pdftex.def Info: Feas2.jpg  used on input line 214.
+(pdftex.def)             Requested size: 116.29527pt x 103.84084pt.
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[38
+
+]
+Overfull \hbox (22.6056pt too wide) detected at line 214
+[]
+ []
+
+File: Feas2.jpg Graphic file (type jpg)
+<use Feas2.jpg>
+Package pdftex.def Info: Feas2.jpg  used on input line 214.
+(pdftex.def)             Requested size: 116.29527pt x 103.84084pt.
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[39
+
+]
+Overfull \hbox (22.6056pt too wide) detected at line 214
+[]
+ []
+
+File: Feas2.jpg Graphic file (type jpg)
+<use Feas2.jpg>
+Package pdftex.def Info: Feas2.jpg  used on input line 214.
+(pdftex.def)             Requested size: 116.29527pt x 103.84084pt.
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[40
+
+]
+Overfull \hbox (22.6056pt too wide) detected at line 214
+[]
+ []
+
+File: Feas2.jpg Graphic file (type jpg)
+<use Feas2.jpg>
+Package pdftex.def Info: Feas2.jpg  used on input line 214.
+(pdftex.def)             Requested size: 116.29527pt x 103.84084pt.
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[41
+
+]
+Overfull \hbox (22.6056pt too wide) detected at line 214
+[]
+ []
+
+File: Feas2.jpg Graphic file (type jpg)
+<use Feas2.jpg>
+Package pdftex.def Info: Feas2.jpg  used on input line 214.
+(pdftex.def)             Requested size: 116.29527pt x 103.84084pt.
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[42
+
+]
+<MIP.jpg, id=492, 312.56775pt x 325.81725pt>
+File: MIP.jpg Graphic file (type jpg)
+<use MIP.jpg>
+Package pdftex.def Info: MIP.jpg  used on input line 233.
+(pdftex.def)             Requested size: 116.29527pt x 121.22661pt.
+<STP.jpg, id=493, 268.00125pt x 229.45724pt>
+File: STP.jpg Graphic file (type jpg)
+<use STP.jpg>
+Package pdftex.def Info: STP.jpg  used on input line 233.
+(pdftex.def)             Requested size: 116.29527pt x 99.568pt.
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[43
+
+ <./MIP.jpg> <./STP.jpg>]
+File: MIP.jpg Graphic file (type jpg)
+<use MIP.jpg>
+Package pdftex.def Info: MIP.jpg  used on input line 233.
+(pdftex.def)             Requested size: 116.29527pt x 121.22661pt.
+File: STP.jpg Graphic file (type jpg)
+<use STP.jpg>
+Package pdftex.def Info: STP.jpg  used on input line 233.
+(pdftex.def)             Requested size: 116.29527pt x 99.568pt.
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[44
+
+]
+File: MIP.jpg Graphic file (type jpg)
+<use MIP.jpg>
+Package pdftex.def Info: MIP.jpg  used on input line 233.
+(pdftex.def)             Requested size: 116.29527pt x 121.22661pt.
+File: STP.jpg Graphic file (type jpg)
+<use STP.jpg>
+Package pdftex.def Info: STP.jpg  used on input line 233.
+(pdftex.def)             Requested size: 116.29527pt x 99.568pt.
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[45
+
+]
+File: MIP.jpg Graphic file (type jpg)
+<use MIP.jpg>
+Package pdftex.def Info: MIP.jpg  used on input line 233.
+(pdftex.def)             Requested size: 116.29527pt x 121.22661pt.
+File: STP.jpg Graphic file (type jpg)
+<use STP.jpg>
+Package pdftex.def Info: STP.jpg  used on input line 233.
+(pdftex.def)             Requested size: 116.29527pt x 99.568pt.
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[46
+
+]
+File: MIP.jpg Graphic file (type jpg)
+<use MIP.jpg>
+Package pdftex.def Info: MIP.jpg  used on input line 233.
+(pdftex.def)             Requested size: 116.29527pt x 121.22661pt.
+File: STP.jpg Graphic file (type jpg)
+<use STP.jpg>
+Package pdftex.def Info: STP.jpg  used on input line 233.
+(pdftex.def)             Requested size: 116.29527pt x 99.568pt.
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[47
+
+]
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[48
+
+]
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[49
+
+]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.264 \end{frame}
+                 
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.264 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Display math should end with $$.
+<to be read again> 
+                   \par 
+l.264 \end{frame}
+                 
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+
+! LaTeX Error: Bad math environment delimiter.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.264 \end{frame}
+                 
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.264 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Display math should end with $$.
+<to be read again> 
+                   \endgroup 
+l.264 \end{frame}
+                 
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[50
+
+]
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[51
+
+]
 ! Missing } inserted.
 <inserted text> 
                 }
-l.248 \end{frame}
+l.306 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1889,7 +2227,7 @@ my insertion and my current dilemma will both disappear.
 ! Extra }, or forgotten \endgroup.
 \verb@egroup ...erb@balance@group \@empty \egroup 
                                                   
-l.248 \end{frame}
+l.306 \end{frame}
                  
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1904,15 +2242,20 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.248 \end{frame}
+l.306 \end{frame}
                  
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
+
+Overfull \hbox (3.22629pt too wide) in paragraph at lines 306--306
+[][]\OT1/cmtt/m/n/10 /usr/share/doc/latex-beamer/beameruserguide.pdf.gz! 
+ []
+
 ! Missing } inserted.
 <inserted text> 
                 }
-l.248 \end{frame}
+l.306 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1927,7 +2270,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.248 \end{frame}
+l.306 \end{frame}
                  
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1935,7 +2278,7 @@ If that doesn't work, type  X <return>  to quit.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.248 \end{frame}
+l.306 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1950,7 +2293,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.248 \end{frame}
+l.306 \end{frame}
                  
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1958,7 +2301,7 @@ If that doesn't work, type  X <return>  to quit.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.248 \end{frame}
+l.306 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1973,7 +2316,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.248 \end{frame}
+l.306 \end{frame}
                  
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1981,7 +2324,7 @@ If that doesn't work, type  X <return>  to quit.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.248 \end{frame}
+l.306 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1999,7 +2342,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[34
+[52
 
 ]
 \openout4 = `Slides.vrb'.
@@ -2014,7 +2357,27 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[35
+[53
+
+]
+\openout4 = `Slides.vrb'.
+
+ (Slides.vrb
+Overfull \hbox (3.22629pt too wide) in paragraph at lines 6--7
+[][]\OT1/cmtt/m/n/10 \usetheme[option1 = value, option2 = value]{Torino}  
+ []
+
+)
+Underfull \hbox (badness 10000) has occurred while \output is active
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+[]
+ []
+
+[54
 
 ]
 \openout4 = `Slides.vrb'.
@@ -2029,7 +2392,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[36
+[55
 
 ]
 \openout4 = `Slides.vrb'.
@@ -2044,7 +2407,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[37
+[56
 
 ]
 \openout4 = `Slides.vrb'.
@@ -2059,7 +2422,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[38
+[57
 
 ]
 \openout4 = `Slides.vrb'.
@@ -2074,22 +2437,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[39
-
-]
-\openout4 = `Slides.vrb'.
-
- (Slides.vrb)
-Underfull \hbox (badness 10000) has occurred while \output is active
-[][]
- []
-
-
-Underfull \hbox (badness 10000) has occurred while \output is active
-[]
- []
-
-[40
+[58
 
 ])
 \tf@nav=\write6
@@ -2101,22 +2449,22 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 \tf@snm=\write8
 \openout8 = `Slides.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 21.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 21.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 34.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 34.
  (Slides.aux (content.aux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 21.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 21.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 34.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 34.
 Package rerunfilecheck Info: File `Slides.out' has not changed.
-(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+(rerunfilecheck)             Checksum: 714A43D21D5989F380977F830775F840;244.
  ) 
 Here is how much of TeX's memory you used:
- 17511 strings out of 492895
- 339961 string characters out of 3123735
- 420524 words of memory out of 3000000
- 20912 multiletter control sequences out of 15000+200000
- 20208 words of font info for 72 fonts, out of 3000000 for 9000
+ 17829 strings out of 492895
+ 348836 string characters out of 3123735
+ 421188 words of memory out of 3000000
+ 21173 multiletter control sequences out of 15000+200000
+ 20515 words of font info for 73 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 56i,22n,55p,846b,680s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 56i,22n,63p,846b,687s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/elena/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts
 /cm/cmbx12.pfb><C:/Users/elena/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
 blic/amsfonts/cm/cmcsc10.pfb><C:/Users/elena/AppData/Local/Programs/MiKTeX 2.9/
@@ -2137,9 +2485,9 @@ lic/amsfonts/cm/cmsy8.pfb><C:/Users/elena/AppData/Local/Programs/MiKTeX 2.9/fon
 ts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/elena/AppData/Local/Programs/M
 iKTeX 2.9/fonts/type1/public/amsfonts/symbols/msam7.pfb><C:/Users/elena/AppData
 /Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Slides.pdf (40 pages, 494011 bytes).
+Output written on Slides.pdf (58 pages, 629456 bytes).
 PDF statistics:
- 322 PDF objects out of 1000 (max. 8388607)
- 81 named destinations out of 1000 (max. 500000)
- 68 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 745 PDF objects out of 1000 (max. 8388607)
+ 121 named destinations out of 1000 (max. 500000)
+ 111 words of extra memory for PDF output out of 10000 (max. 10000000)
 

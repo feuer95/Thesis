@@ -200,6 +200,7 @@ For several decades the simplex algorithm was the only method available to solve
 In the 1980s the monopoly of the simplex algorithm in the solution of the LP has been challenged. Since Dantzig's initial contribution, researchers have made many efforts in order to enhance the performance of simplex algorithm: Interior-Point Methods were the result of subsequent research and their performance has been more satisfactory compared to the simplex algorithm. The main idea of IPMs is that the computation of the optimal solution can be achieved by moving inside the feasible region, defined by the constraints.\\
 Although the fundamentals of IPMs had been established several years before that Leonid Khachiyan (in 1979) and then Narendra Karmarkar (in 1984) proposed their algorithms for solving LP, it is true that \textit{Khachiyan’s ellipsoid algorithm} was the first algorithm for LP to be actually proven to be theoretically efficient. Nevertheless, although the simplex method is highly inefficient for some pathological examples (we outline the Klee-Minty example), it is turned out that it was clearly superior on average in comparison to the ellipsoid method and, in particular, on essentially any practical problem that would occur in a real-life context. This state changed with \textit{Karmarkar’s algorithm} that is both efficient in theory and practice and nowadays widely considered the first interior-point method for LP.\\
 The equivalence between Karmarkar's projective method and the Newton barrier method increased interest in the role of barrier functions in the theory of IPMs, but currently it is broadly accepted that the \textit{primal-dual} IPMs are the most efficient interior-point methods.\\
+\newpage
 Over the last 25 years later, the developed simplex method and IPMs are both widely used and continue to compete between each other \cite{25y}. \\
 The thesis is partitioned into four main chapters.
 In the next one it is given an overview of the theoretical foundations in linear programming. In the Chapter 3 we delineate the simplex method. The Chapter 4 is dedicated to the primal-dual interior point methods, taking particular attention to the primal-dual LPF methods. It is also examined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\
@@ -934,6 +935,7 @@ This method often does not allow us to make much progress toward a solution, eve
 
 Most primal-dual methods use less aggressive Newton search direction, making a perturbation of the system $F$ and they are presented in the next section.
 
+
 \section{Long-step Path-Following Methods}
 
 %Another method for solving LP is to follow a path from a given initial primal-dual point.\\
@@ -1585,7 +1587,7 @@ Instead here we see that $(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\De
 Now let us compare this approximation to the Mehrotra's iteration: ignoring the centering term by setting $\sigma =0$, if we constrain the primal and dual step lengths to be identical, we see in the algorithm the successive point will be
 \begin{equation*}
 (\hat{x},\hat{\lambda},\hat{s})_{\tau}\approx(x, \lambda, s)+ \tau(\Delta x^{\text{aff}},\Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})+\tau(\Delta x^{\text{cor}},\Delta \lambda^{\text{cor}},\Delta s^{\text{cor}}),
-\end{equation} 
+\end{equation*} 
 in which the $\tau^{2}$ coefficient in the last term is replaced by $\tau$.\\ Alternately, when we account for the centering parameter, the correspondence between the derivatives of the trajectory and the MPC search direction no longer holds. \\
 Then, the modified trajectory $\mathcal{H}_{\sigma}$ is introduced for which the correspondence delineated above holds even in the presence of $\sigma$. Also $\mathcal{H}_{\sigma}$ starts at $(x, \lambda, s)$ and aims at the solution $(x^{*},\lambda^{*},s^{*})$ and all $(\hat{x},\hat{\lambda},\hat{s})_{\tau}$ in this trajectory satisfy:
 \begin{equation*}\label{Tt}
@@ -2507,7 +2509,7 @@ for some line search parameter $\alpha\in(0,1]$, labelled as \textit{step length
 	\bibitem{Col}Colombo M, Gondzio J, \emph{"Further development of multiple centrality correctors for interior point
 	methods"}, Computational optimization and applications, vol. 41, no. 3, pp: 277-305, (2008).
 
-	\bibitem{SPS} D'Apuzzo M., De Simone V., di Serafino D., \emph{"Starting-point strategies for an infeassible potential reduction method"}, Springer-Verlag, D. Optim Lett, 4, pp: 131-146, (2010).
+	\bibitem{SPS} D'Apuzzo M., De Simone V., di Serafino D., \emph{"Starting-point strategies for an infeasible potential reduction method"}, Springer-Verlag, D. Optim Lett, 4, pp: 131-146, (2010).
 	\bibitem{DAN1}Dantzig, G. B., \emph{"Maximization of a linear function of variables subject to linear
 	inequalities"}, Activity Analysis of Production and Allocation, pp: 339-347, (1947).
 	\bibitem{1}Dantzig, G. B.,\emph{\;"Linear Programming and Extensions"}, Princeton University Press, Princeton, N.J., (1963).	
@@ -2557,7 +2559,7 @@ Princeton University, Springer Science + Business Media, (2001).
 %
 %W
 %
-\bibitem{SSM} Westerberg, C.-H., Bjorklund B., Hultman E., \emph{"An Application of Mixed Integer Programming in a Swedish Steel Mill" }, Interfaces, 7:2, pp: 39-43, (1977).
+\bibitem{SSM} Westerberg, C. H., Bjorklund B., Hultman E., \emph{"An Application of Mixed Integer Programming in a Swedish Steel Mill" }, Interfaces, 7:2, pp: 39-43, (1977).
 \bibitem {Wright} Wright J. Stephen, \emph{\;"Primal-Dual Interior Point Methods"}, SIAM: society for industrial and applied mathematics. Philadelphia, (1997).
 \bibitem{WWW}Wright M. H.,\textit{ “Interior point methods for constrained optimization”}, Acta Numerica, Cambridge Univ. Press, Cambridge, UK, pp: 341–407, (1992).
 \bibitem{XY}Xiaojie Xu, Yinyu Ye, \emph{"A generalized homogeneous and self-dual algorithm for linear programming"}, Operations Research Letters, 17, pp: 181-190, (1995).
