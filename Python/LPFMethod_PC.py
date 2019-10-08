@@ -33,7 +33,7 @@ Output data: vector x primal solution
             
 '''
 
-def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 0):
+def longpathPC(A, b, c, gamma = 0.1, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 0):
         
     print('\n\tLPF predictor-corrector')       
             
@@ -97,7 +97,23 @@ def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, i
        
        # Find the maximum alpha s.t the next iteration is in N_gamma      
        v = np.arange(0, 1.0000, 0.0001)
-       i = len(v)-1
+       i = len(v)-1       
+       while i >= 0:
+        gamma = 10**-8
+        if (E(v[i]) > 0).all():
+            t = v[i]
+#            print('Largest step length:{}'.format("%10.3f"%t))
+            break
+        else:
+            i -= 1       
+       mi = np.dot(x,s)/c_A                  # Duality measure
+       mi_aff = np.dot(x + t*x1,s + t*s1)/c_A # Average value of the incremented vectors
+       Sigma = (mi_aff/mi)**3
+       
+       """ Corrector step: compute (x_k+1, lambda_k+1, s_k+1) """
+       
+       (x1, y1, s1, rb, rc) = augm(A, b, c, x, y, s, Sigma)      
+
        while i >= 0:
         if (E(v[i]) > 0).all():
             t = v[i]
@@ -105,14 +121,6 @@ def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, i
             break
         else:
             i -= 1
-       mi = np.dot(x,s)/c_A                  # Duality measure
-       mi_aff = np.dot(x + t*x1,s + t*s1)/c_A # Average value of the incremented vectors
-       Sigma = (mi_aff/mi)**3
-       
-       """ Corrector step: compute (x_k+1, lambda_k+1, s_k+1) """
-       
-       (x1, y1, s1, rb, rc) = augm(A, b, c, x, y, s, Sigma)
-       
        if info == 0:
            print('Search direction vectors: \n delta_x = {} \n delta_lambda = {} \n delta_s = {}.\n'.format(x1.round(decimals = 3),x1.round(decimals = 3),s1.round(decimals = 3)))      
        i = len(v)-1
@@ -127,15 +135,18 @@ def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, i
        x += t*x1            # Current x
        y += t*y1            # Current y
        s += t*s1            # Current s
+       rb = b - np.dot(A, x)
+       rc = c - np.dot(A.T, y) - s
+       
        z = np.dot(c, x)     # Current optimal solution
        g = z - np.dot(y, b) # Current gap 
        it += 1
-       u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()]) 
+       u.append([it, g.copy(), x.copy(), s.copy(), rb.copy(), rc.copy()]) 
        sig.append(Sigma)
 
        # Termination elements
-       tm = term(it, b, c, rb, rc, z, g)
-
+       m, n, q = term(it, b, c, rb, rc, z, g)
+       tm = max(m, n, q)
        if it == max_it:
            raise TimeoutError("Iterations maxed out")
           
@@ -147,7 +158,7 @@ def longpathPC(A, b, c, gamma = 0.001, c_form = 0, w = 10**(-8), max_it = 500, i
 
     print_boxed("Found optimal solution of the problem at\n x* = {}.\n\n".format(x.round(decimals = 3)) +
             "Dual gap: {}\n".format("%2.2e"%g) +
-            "Optimal cost: {}\n".format("%10.3f"%z) +
+            "Optimal cost: {}\n".format("%10.8E"%z) +
             "Number of iteration: {}".format(it))
 
     return x, s, u, sig

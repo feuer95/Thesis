@@ -5,22 +5,20 @@ Created on Mon May 13 13:52:17 2019
 @author: Elena
 """
 import numpy as np
+
+from SimplexMethodIIphases import SimplexMethod
+
 from AffineMethod import affine 
-
-from MehrotraMethod import mehrotra
-from MehrotraMethod2 import mehrotra2
-
 from LPFMethod import longpath1
 from LPFMethod2 import longpath2
-
-from LPFMethod_cp import longpathC
+from MehrotraMethod import mehrotra
+from MehrotraMethod2 import mehrotra2
 from LPFMethod_PC import longpathPC
 
-import pandas as pd # Export to excel 
+import pandas as pd             # Export to excel 
 import matplotlib.pyplot as plt # Print plot
 from cent_meas import cent_meas
-from SimplexMethodIIphases import SimplexMethod
-import time
+
 
 # Clean form of printed vectors
 np.set_printoptions(precision = 4, threshold = 10, edgeitems = 4, linewidth = 120, suppress = True)
@@ -69,7 +67,7 @@ def forest():
 
 #%%
 
-""" run the methods """
+""" RUN THE METHODS """
 '''
 For every method we obtain the optimal vector (x,s), a dataframe with all sequences
 time of the algorithm 
@@ -78,45 +76,30 @@ time of the algorithm
 if __name__ == "__main__":
     
     (A, b, c) = forest() # already in standard form
-    
+    IP = 0
     """                           Affine                                    """
     #                              29 it
-    x_a, s_a , u_a = affine(A, b, -c, c_form = 1)
-    dfu = cent_meas(x_a, u_a, label = 'Affine') 
+    x, s , u = affine(A, b, -c, c_form = 1, ip = IP)
+    dfu = cent_meas(x, u, label = 'Affine', plot = 0) 
     
     """                               LPF1                                  """
     #                                183 it
-    start = time.time()
-    x_l, s_l, u_l = longpath1(A, b, -c, c_form = 1, info = 1)
-    time_lpf1 = time.time()-start
-    print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf1))
-    
-    dful = cent_meas(x_l, u_l, label = 'LPF', plot = 0) 
+    x, s, u = longpath1(A, b, -c, c_form = 1, info = 1, ip = IP)    
+    dful = cent_meas(x, u, label = 'LPF', plot = 0) 
     
     """                               LPF2                                  """
     #                                15 it
-    start = time.time()
-    x_c, s_c, u_c, sigma_l2 = longpath2(A, b, -c, c_form = 1, info = 1) 
-    time_lpf2 = time.time()-start
-    print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpf2))
-    
+    x_c, s_c, u_c, sigma_l2 = longpath2(A, b, -c, c_form = 1, info = 1, ip = IP)     
     dfc = cent_meas(x_c, u_c, label = 'LPF2', plot = 0)
     
     """                            LPF predictor corrector                  """
     #                               19 iterations
-    start = time.time()
-    x_pc, s_pc, u_pc, sigma_pc = longpathPC(A, b, -c, c_form = 1,info = 1)
-    time_lpfpc = time.time()-start
-    print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_lpfpc))
-    
-    dfpc = cent_meas(x_pc, u_pc, label = 'LPF PC', plot = 0) 
+    x, s, u, sigma_pc = longpathPC(A, b, -c, c_form = 1, info = 1, ip = IP)
+    dfpc = cent_meas(x, u, label = 'LPF PC', plot = 0) 
     
     """                                  Mehrotra                           """
     #                                 9 iterations
-    start = time.time()
-    x_m, s_m, u_m, sigma_m = mehrotra(A, b, -c, c_form = 1, info = 1)
-    time_mer = time.time()-start
-    print('Time of the algorithm is {} \n\n'.format("%2.2e"%time_mer))
-    dfm = cent_meas(x_m, u_m, label = 'Mehrotra', plot = 0) 
+    x, s, u, sigma = mehrotra(A, b, -c, c_form = 1, info = 1, ip = IP)
+    dfm = cent_meas(x, u, label = 'Mehrotra', plot = 0) 
     
     P1, u = SimplexMethod(A, b, -c, rule = 0, c_form = 1) # 45 iterations

@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{Introduzione alla PL}{3}{0}{1}
+\beamer@sectionintoc {2}{Metodo del simplesso}{22}{0}{2}
+\beamer@sectionintoc {3}{Metodi del punto interno}{32}{0}{3}
+\beamer@subsectionintoc {3}{1}{Metodi Path-Following}{51}{0}{3}

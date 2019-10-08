@@ -166,15 +166,19 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 1):
         x += Alfa1*x2            # Current x
         y += Alfa2*y2            # Current y
         s += Alfa2*s2            # Current s
-        z = np.dot(c, x)         # Current optimal solution
-        g = z - np.dot(y, b)     # Current gap 
+        rb = b - np.dot(A, x) 
+        rc = c - np.dot(A.T, y) - s
+        z = np.dot(c, x)         # Current optimal primal solution
+        d = np.dot(y, b)         # Current optimal dual solution      
+        g = z - d                # Current gap 
+
         it += 1
         u.append([it, g, x.copy(), s.copy(), rb.copy(), rc.copy()])
         sig.append([Sigma]) 
 
         # Termination elements
-        tm = term(it, b, c, rb, rc, z, g)
-
+        m, n, q = term(it, b, c, rb, rc, z, g, d)
+        tm = max(m, n, q)
         if it == max_it:
            raise TimeoutError("Iterations maxed out")
            
@@ -185,8 +189,8 @@ def mehrotra(A, b, c, c_form = 0, w = 10**(-8), max_it = 500, info = 0, ip = 1):
 #%%
         
     print_boxed("Found optimal solution of the standard problem at\n x* = {}.\n\n".format(x) +
-                "Dual gap: {}\n".format("%2.2e"%g) +
-                "Optimal cost: {}\n".format("%10.3f"%z) +
+                "Dual gap: {}\n".format(g) +
+                "Optimal cost: {}\n".format("%10.8E"%z) +
                 "Number of iteration: {}".format(it))
     
     return x, s, u, sig

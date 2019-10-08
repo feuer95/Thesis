@@ -14,7 +14,7 @@ import numpy as np
       
 Input data: x -> optimal solution x 
             u -> list created in the algorithm u = [it, g, x, s, rb, rc]
-            label -> Name of th tested algorithm
+            label -> Name of the tested algorithm
             plot -> by default 1 (NO PLOT)
                         ===
 '''
@@ -44,33 +44,38 @@ def cent_meas(x, u, label, plot = 1):
         cm.append(np.linalg.norm(s, 2))
         
     dfu['cd'] = cm # Dataframe with centering deviation
-    dfu['sm'] = sm # mi   
-    pf = []
+    dfu['sm'] = sm # Duality measure   
+    pf = np.zeros(len(u))
     for i in range(len(u)):
-        r = max(u[i][4])
-        pf.append('%.5f'% r)
+        r = np.linalg.norm(u[i][4], 2)
+        pf[i] = r
 
     dfu['pf'] = pf # Dataframe with feasibility
     
-    # Convergence rate    
-#    pr = []
-#    for i in range(len(u)-1):
-#        r = abs(max(u[i][4]))
-#        s = abs(max(u[i+1][4]))
-#        pr.append('%.5f'% np.divide(s,r))
+#     Convergence rate    
+    pr = []
+    for i in range(len(u)):
+        r = abs(max(u[i][4]))
+        pr.append(r)
     
     """ Plot the graphic with dataframe elements """   
     
     if plot == 0:
         plt.figure()
-        plt.plot(dfu['it'], dfu['sm'], label = 'sTx', c = 'm', marker = '.')
-        plt.plot(dfu['it'], dfu['Current g'], label = 'Current g', marker = 'o')
-        plt.plot(dfu['it'], dfu['cd'], label = 'Centering deviation', marker = '.')
+        plt.plot(dfu['it'], dfu['sm'], label = 'Duality measure', c = 'r', marker = '.')
+        plt.plot(dfu['it'], dfu['Current g'], label = 'Current g', c = 'C1', marker = '.')
+        plt.plot(dfu['it'], dfu['cd'], label = 'Centering deviation', c = 'b', marker = '.')
         plt.grid(b = True, which = 'major')
-        locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
+#        locs, labels = plt.xticks(np.arange(0, len(u), step = 1))
         
-        plt.title('Dual gap & Centering deviation '+ label)
         plt.xlabel('iterations')
         plt.yscale('log')
         plt.legend()
+       
+        plt.figure()
+        plt.yscale('log')   
+        plt.xlabel('iterations')
+        plt.ylabel('error')
+        plt.plot(dfu['pf'], c = 'b')
+#        locs, labels = plt.xticks(np.arange(0, len(u), step = 1))    
     return dfu
