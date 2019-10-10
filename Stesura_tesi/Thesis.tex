@@ -1423,7 +1423,7 @@ In the general framework Algorithm 3 the centering parameter is not specified: d
 Now we see two heuristic choices of $\sigma_{k}$ at the $k^{th}$ iteration: the first one is fixed and the second one decreases at each iteration: 
 \begin{align}
 \sigma^{1}_{k} &= 1 -\frac{0.5}{\sqrt{n}},\label{LPF1}\tag{4.14a}\\
-\sigma^{1}_{k} &= \min\{0.1, 100\mu_{k} \},\label{LPF2}\tag{4.14b}
+\sigma^{2}_{k} &= \min\{0.1, 100\mu_{k} \},\label{LPF2}\tag{4.14b}
 \end{align}
 with $\mu_{k}$ the duality measure of the current primal-dual point and $n$ is the number of entries of $x$ and $s$. 
 

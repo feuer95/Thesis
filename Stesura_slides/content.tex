@@ -1,5 +1,7 @@
 % DO NOT COMPILE THIS FILE DIRECTLY!
 % This is included by the other .tex files.
+% \usepackage{subfig}
+% \usepackage{pgfplots}
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
@@ -20,9 +22,10 @@
 
 \section{Introduzione alla PL}
 
-\begin{frame}{\textrm {Programmazione Lineare}}
+\begin{frame}{\textsc{\LARGE Programmazione Lineare}}
+	\pause
 	\begin{center}
-	\transblindsvertical\includegraphics[width = 9 cm]{fasi.png}
+	\includegraphics[width = 9 cm]{fasi.png}
 	\end{center}
 \pause
 \begin{equation*}
@@ -42,11 +45,8 @@ con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango pieno e $b\in\mathbb{R}
 	\pause
 	\begin{itemize}
 		\item \textbf{Punto ammissibile} x: punto tale che $Ax = b, x\geq 0$
-		\pause
 		\item \textbf{Regione ammissibile} $\mathcal{P}=\{x\;|\; Ax = b, x\geq 0\}$
-		\pause
 		\item \textbf{Soluzione ottima} $x^{*}\in\mathbb{R}^{m,n}$: minimizza la funzione obiettivo
-		\pause
 	\end{itemize}
 \pause
 \centering\emph{Geometricamente} $\mathcal{P}$ definisce un poliedro
@@ -56,7 +56,7 @@ con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango pieno e $b\in\mathbb{R}
 
 \begin{frame}{\textsc{\LARGE Programmazione Lineare}}
 
-Ipotesi $m \leq n$ \pause$\longrightarrow$ esiste sottomatrice $\mathbf{A_{B}}$ invertibile con
+Ipotesi $m \leq n$ \pause$\longrightarrow$ sottomatrice $\mathbf{A_{B}}$ invertibile con
 $B\subseteq\{1,\dots,n\}$ insieme degli $m$ indici delle colonne 
 \pause
 \begin{equation*}
@@ -100,6 +100,7 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 \end{columns}
 \end{frame}
 
+
 % SLIDE 7
 
 \section{Metodo del simplesso}
@@ -110,7 +111,7 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 		\pause
 		\item situazioni di ciclaggio \pause $\rightarrow$ regola di Bland
 		\pause
-		\item richiede di visitare un numero di vertici esponenziale rispetto alle dimensioni del problema \pause$\rightarrow$ \textcolor{blue}{Problema di Klee-Minty}
+		\item costo computazionale esponenziale \pause$\rightarrow$ \textcolor{blue}{Problema di Klee-Minty}
 		\begin{alignat*}{4}
 		\min &\sum_{j=1}^{n}10^{n-j}x_{j}&&&\\
 		\text{tale che \;}&2\sum_{j=1}^{i-1}10^{i-j}x_{j}+&x_{i}&\leq 100^{i-1}, \, & i = 1,\dots, n\\
@@ -122,11 +123,10 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 % SLIDE 8
 
 \begin{frame}{\textcolor{blue}{Problema di Klee-Minty}}
-$2^{n}-1$ iterazioni\pause $\rightarrow$ $n= 3$ \\
-
+\verb!SimplexMethod(A,b,c,max\_it $ = 500$,rule$ = 0$,c\_form$ = 0$)\!
 \pause
-\centering\verb!SimplexMethod(A,b,c,max\_it $ = 500$,rule$ = 0$,c\_form$ = 0$)\!
-\pause
+\begin{center} $n= 3 $ \pause $\rightarrow$ $2^{n}-1$ iterazioni
+\end{center}\\
 \begin{table}[h]
 		\begin{tabular}{|c|c|c|c|}
 			\hline
@@ -138,12 +138,10 @@ $2^{n}-1$ iterazioni\pause $\rightarrow$ $n= 3$ \\
 			4 & [0, 1, 5] & (0, 100, 8000, 1, 0, 0) & -9000 \\ 
 			5 & [0, 1, 2] & (1, 80, 8200, 0, 0, 0) & -9100 \\
 			6 & [0, 4, 2] & (1, 0, 9800, 0, 80, 0) & -9900 \\ 
-			7 & [3, 4, 2] & (0, 0, 10000, 1, 100, 0) & -10000$ 
-			\\ 
+			7 & [3, 4, 2] & (0, 0, 10000, 1, 100, 0) & -10000$\\
 			\hline
 		\end{tabular}
 \end{table}
-
 \end{frame}
 
 % SLIDE 9
@@ -151,39 +149,41 @@ $2^{n}-1$ iterazioni\pause $\rightarrow$ $n= 3$ \\
 \section{Metodi del punto interno}
 
 \begin{frame}[t]{\textcolor{teal}{\textsc{\LARGE IPM primale duale}}}
+
+\pause
 	\begin{itemize}
 		\item articolo di Karmarkar (1984) %in cui veniva proposto un% 
 		$\rightarrow$ algoritmo polinomiale
 		\pause
 		\item si basano sulle \underline{condizioni KKT} di un problema PL:
-		\pause\\ se $x^{*}$ è un punto ottimale allora esistono $s^{*}\in\mathbb{R}^{n}$ e $\lambda^{*}\in\mathbb{R}^{m}$ tali che
+		\pause\\[0.5 cm] se $x^{*}$ è un punto ottimale allora esistono $s^{*}\in\mathbb{R}^{n}$ e $\lambda^{*}\in\mathbb{R}^{m}$ tali che
 		\begin{equation*}
 		\mathit{F}(x^{*},\lambda^{*},s^{*})= \begin{bmatrix}
 		A^{T}\lambda^{*}+s^{*}-c \\Ax^{*}-b \\X^{*}S^{*}e
 		\end{bmatrix}=0
 		\end{equation*}
+		\end{itemize}
 		\pause
-		\begin{columns}
+	\begin{columns}
 		\begin{column}{0.4\textwidth}
-		\begin{equation*}
-		\begin{split}
-		&\textcolor{olive}{PL\; primale}\\
-		&\min\;c^{T}x\\
-		&\text{tale che\;}Ax= b\;\\&\text{e\;}x\geq0
-		\end{split}
-		\end{equation*}	
+			\begin{equation*}
+			\begin{split}
+			&\textcolor{olive}{PL\; primale}\\
+			&\min\;c^{T}x\\
+			&\text{tale che\;}Ax= b\;\\&\text{e\;}x\geq0
+			\end{split}
+			\end{equation*}	
 		\end{column}
 		\begin{column}{0.4\textwidth}
-		\begin{equation*}
-		\begin{split}
-		&\textcolor{olive}{PL\; duale}\\
-		&\text{max\;}b^{T}\lambda\\
-		&\text{tale che\;}A^{T}\lambda+s=c\\ &\text{e\;} s\geq0
-		\end{split}
-		\end{equation*}	
+			\begin{equation*}
+			\begin{split}
+			&\textcolor{olive}{PL\; duale}\\
+			&\text{max\;}b^{T}\lambda\\
+			&\text{tale che\;}A^{T}\lambda+s=c\\ &\text{e\;} s\geq0
+			\end{split}
+			\end{equation*}	
 		\end{column}		
-		\end{columns}
-	\end{itemize}
+	\end{columns}
 \end{frame}
 
 % SLIDE 10
@@ -191,7 +191,7 @@ $2^{n}-1$ iterazioni\pause $\rightarrow$ $n= 3$ \\
 \begin{frame}{\textcolor{teal}{\textsc{\LARGE IPM primale duale}}}
 	\begin{itemize}
 		\pause
-		\item Basati sulla risoluzione di $\mathit{F}= 0$ con il metodo di Newton
+		\item Applicazione del metodo di Newton
 		\pause
 		\item Tempo polinomiale nella risoluzione del problema
 		\pause
@@ -239,7 +239,8 @@ $2^{n}-1$ iterazioni\pause $\rightarrow$ $n= 3$ \\
 \begin{align*}
 \frac{\lVert r_{b}\rVert_{2}}{1+ \lVert b \rVert_{2}}\leq \epsilon, && \frac{\lVert r_{c}\rVert_{2}}{1 + \lVert c \rVert_{2}}\leq \epsilon, &&\frac{|g|}{1+b^{T}y}\leq \epsilon,
 \end{align*}
-con i \textit{residui} $r_{b} = Ax - b$ e $r_{c} =A^{T}\lambda +s - c$.
+con i \textit{residui} $r_{b} = Ax - b$ e $r_{c} =A^{T}\lambda +s - c$\\
+e la \textit{distanza duale} $g = c^{T}x - b^{T}\lambda$ 
 \end{frame}
 
 % SLIDE 12
@@ -267,12 +268,14 @@ con $\alpha_{k}\in(0,1]$ tale che $(x^{k+1}, s^{k+1})>0$
 % SLIDE 13
 
 \subsection{Metodi Path-Following}
+\definecolor{burntumber}{rgb}{0.54, 0.2, 0.14}
+\definecolor{iris}{rgb}{0.35, 0.31, 0.81}
 
-\begin{frame}[t]{\textsc{\LARGE Metodi Path-Following}}
+\begin{frame}[t]{\textsc{\LARGE \textcolor{burntumber}{Metodi Path-Following}}}
 	Cammino centrale $\mathcal{C}(\tau)$ con $\tau  > 0$: ogni punto $(x_{\tau}, \lambda_{\tau}, s_{\tau})\in \mathcal{C}$ soddisfa:
 \begin{equation}\label{Ftao}\tag{1}
 \mathit{F}(x_{\tau},\lambda_{\tau},s_{\tau})= \begin{bmatrix}
-A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax-b \\X_{\tau}S_{\tau}e
+A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 \end{bmatrix}=\begin{bmatrix}0\\0\\ \tau e \end{bmatrix}
 \end{equation}
 \begin{theorem}
@@ -283,13 +286,30 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax-b \\X_{\tau}S_{\tau}e
 
 % SLIDE 14
 
-\begin{frame}[t]{\textsc{\LARGE Metodi Path-Following}}
-Sia \begin{equation*}
-\mathit{F}_{\tau}(x,\lambda,s)= \begin{bmatrix}
-A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax-b \\X_{\tau}S_{\tau}e-\tau e,
-\end{bmatrix}
-\end{equation*}
-lo Jacobiano di $\mathit{F}$ e di $\mathit{F}_{\tau}$ è lo stesso. Quindi
+\begin{frame}{\textsc{\LARGE \textcolor{burntumber}{Metodi Path-Following}}}
+Sia   $\mathit{F}_{\tau}(x,\lambda,s)= \begin{bmatrix}
+A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax-b \\X_{\tau}S_{\tau}e-\tau e
+\end{bmatrix}$
+\\[1 cm]
+\begin{itemize}
+	\item Perturbazione che garantisce la convergenza di $g$ a $0$\\ $\rightarrow \tau = \sigma \mu$ 
+con $\mu = \frac{x^{T}s}{n}$ e $\sigma \in(0,1)$ \textbf{parametro centrale}:
+\pause
+\begin{itemize}
+	\item[o] $\sigma^{1}_{k} = 1 -\frac{0.5}{\sqrt{n}}\rightarrow$\textrm{ LPF 1}\pause
+	\item[o] $\sigma^{2}_{k} = \min\{0.1, 100\mu_{k}\}\rightarrow$\textrm{ LPF 2}	
+\end{itemize}
+\pause
+\item Intorno di $\mathcal{C}$\\ 
+$\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \geq \gamma \mu,  \gamma \in [0,1)\}$
+\pause
+\item Velocità di convergenza lineare $\mathcal{O}(\mu)$
+\end{itemize}
+\end{frame}
+
+% SLIDE 15
+
+\begin{frame}[t]{\textsc{\LARGE \textcolor{burntumber}{Metodi Path-Following}}}
 \begin{block}{Iterazione k:}
 	\begin{equation*}	
 	\begin{bmatrix}
@@ -299,171 +319,180 @@ lo Jacobiano di $\mathit{F}$ e di $\mathit{F}_{\tau}$ è lo stesso. Quindi
 	\end{bmatrix}=-\begin{bmatrix}
 	r_{c}^{k}\\r_{b}^{k}\\X^{k}S^{k}e-\tau e
 	\end{bmatrix}\\
-	$(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})$
-	\end{equation*}
+	(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})
+	\end{equation*}\\
+	$ \alpha_{k} = max\{\alpha \in[0,1]|(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)\}$
 \end{block}
+\pause
+\centering \includegraphics[width = 4 cm]{LPF.PNG}	
 \end{frame}
 
-% SLIDE 15
+% SLIDE 20
 
-\begin{frame}[t]{\textsc{\LARGE Metodi Path-Following}}
-\begin{itemize}
-\item Install Beamer
-  \begin{itemize}
-  \item Some distros have a \verb!latex-beamer! package
-  \end{itemize}
-\item Read the Beamer documentation
-  \begin{itemize}
-  \item \verb!/usr/share/doc/latex-beamer/beameruserguide.pdf.gz! if you are
-        using Debian
-  \item \verb!doc/beameruserguide.pdf! in the source package
-  \end{itemize}
-\item Install the theme
-  \begin{itemize}
-  \item \verb!mkdir -p ~/texmf/tex/latex/beamer!\\
-  \item \verb!cp *.sty ~/texmf/tex/latex/beamer!
-  \end{itemize}
-\item Read the example files
-  \begin{itemize}
-  \item \verb!chameleon.tex!: green theme, watermark and circles for bullet
-        lists
-  \item \verb!nouvelle.tex!: green and red theme, watermark and squares for
-        bullet lists
-  \item \verb!freewilly.tex!: blue theme, a logo and squares for bullet lists
-  \end{itemize}
-\end{itemize}
+\subsection{Metodo PC Mehrotra}
+
+\begin{frame}{\textsc{\LARGE \textcolor{red}{Metodi Predittore-Correttore}}}
+\pause
+\textcolor{blue}{Iterazione k:}
+\newcounter{elenco}
+\setcounter{elenco}{0}
+\begin{list}{\stepcounter{elenco}\arabic{elenco}}{\setlength{\itemsep}{0.6cm}}
+	\item Step predittore $\rightarrow$ \textcolor{orange}{Step Affine}
+	\pause
+	\item Step correttore $\rightarrow$ Direzione con $\sigma$ adattabile
+	\end{list}
+\\[1 cm]
+\pause
+\centering \includegraphics[width = 6 cm]{MEH.PNG}
 \end{frame}
 
-\begin{frame}[t,fragile]{\textrm{Il metodo del simplesso}}
+% SLIDE 22
+
+\definecolor{sapphire}{rgb}{0.03, 0.15, 0.4}
+\begin{frame}[t]{\textsc{\LARGE \textcolor{sapphire}{Metodo PC Path-Following}}}
 \begin{itemize}
-\item Themes are composed by sub-themes for single features
-\item Inner themes define how the title page, the bullet lists, margins,
-      etc. work
-  \begin{itemize}
-    \item \verb!beamerinnerthemefancy.sty!
-  \end{itemize}
-\item Outer themes define how headers and footers look like
-  \begin{itemize}
-    \item \verb!beamerouterthemedecolines.sty!
-  \end{itemize}
-\item Color themes define the colors to be used in outer and inner themes
-  \begin{itemize}
-    \item \verb!beamercolorthemechameleon.sty!: green footers and headers
-    \item \verb!beamercolorthemenouvelle.sty!: green footers, red headers and
-          and frame title
-    \item \verb!beamercolorthemefreewilly.sty!: blue footers, headers and
-          frame title
-  \end{itemize}
-\item Global themes just include inner, outer and color themes
-  \begin{itemize}
-    \item \verb!beamerthemeTorino.sty!
-  \end{itemize}
+\item step Predittore-Correttore: metodo euristico predictor-corrector di \textbf{Mehrotra}
+\item Vincolo dell'intorno $\mathcal{N}_{-\infty}$
 \end{itemize}
+\pause
+\textcolor{red}{Ipotesi}: 
+\begin{enumerate}
+	\item miglioramento nella prestazione del metodo di Mehrotra
+	\item convergenza superlineare di $\{\mu\}\rightarrow \mathcal{O}(\mu^{2})$
+\end{enumerate}
 \end{frame}
 
-\begin{frame}[t,fragile]{Configuring the theme}
-\begin{itemize}
-\item Beamer themes can be configured with options between \verb![! and
-      \verb!]!
-  \begin{itemize}
-  \item \verb!\usetheme[option1 = value, option2 = value]{Torino}!
-  \end{itemize}
-\item If you do not specify any option, you get
-  \begin{itemize}
-  \item Simple title page
-  \item No watermark or logo
-  \item Chameleon (green) color theme
-  \item Squares for bullet lists
-  \end{itemize}
-\item Color themes can be changed with \verb!\usecolortheme!
-  \begin{itemize}
-  \item \verb!\usecolortheme{nouvelle}!: green and red
-  \item \verb!\usecolortheme{freewilly}!: blue
-  \end{itemize}
-\item A logo, shown in the upper right corner, can be choosen with the
-      \verb!\logo! command
-  \begin{itemize}
-  \item \verb!\logo{\includegraphics[height=50px]{logo-image}}!
-  \end{itemize}
-\end{itemize}
+\section{Test}
+
+% SLIDE 24
+
+\begin{frame}
+	Numero di iterazioni rispetto alla dimensione di un problema PL
+	\begin{figure}
+		\includegraphics[width=0.7\paperwidth]{NUM.png}
+	\end{figure}
 \end{frame}
 
-\begin{frame}[t,fragile]{Alternative title page}
-\begin{itemize}
-\item A fancy title page can be enabled with the \verb!alternativetitlepage!
-      option
-\item You can put a logo in the title page, just pass the file name using the
-      \verb!titlepagelogo! option
-\item Remember to use a plain and top-aligned frame when using alternative title
-      pages:\\
-      \vskip1ex
-      \verb!\begin{frame}[t,plain]!\\
-      \verb!\titlepage!\\
-      \verb!\end{frame}!
-\end{itemize}
+% SLIDE 25		
+
+\begin{frame}{\textsc{\LARGE \textcolor{iris}{Servizio di allocazione forestale}}}
+\centering
+\begin{tabular}{c@{}c}
+\small{Metodo affine con MIP} & \small{Metodo affine con STP} \\
+	\includegraphics[scale = 0.33]{for_aff1}
+	&\includegraphics[scale = 0.33]{for_aff3}\\ 
+\end{tabular}
 \end{frame}
 
-\begin{frame}[t,fragile]{Watermark}
-\begin{itemize}
-\item A watermark can be shown in the bottom right corner of frames
-\item Use the \verb!watermark! option to set name of the image file
-\item The \verb!watermarkheight! option specifies the height of the watermark
-      image
-\item It's a good idea to have a big image and shrink it, so it looks good
-      when the slide is full screen
-\item If the image height in the slide is not the same as the original one,
-      you have to use the \verb!watermarkheightmult! option
-  \begin{itemize}
-  \item For example, if the image is 400 pixel tall but you want it to
-        occupy only 100 pixels, use
-        \verb![watermarkheight=100px, watermarkheightmult=4]!
-  \item It's ugly but I don't know how to fix it
-  \end{itemize}
-\end{itemize}
+\begin{frame}{\textsc{\LARGE \textcolor{iris}{Servizio di allocazione forestale}}}
+	\centering
+	\begin{tabular}{c@{}c}
+		\small{Metodo LPF1} & \small{Metodo LPF2} \\
+		\includegraphics[scale = 0.33]{for_LPF1}
+		&\includegraphics[scale = 0.33]{for_LPF2}\\ 
+	\end{tabular}
 \end{frame}
 
-\watermarkoff
-\begin{frame}[t,fragile]{Disabling the watermark}
-\begin{itemize}
-\item You may want to disable the watermark on some frames
-  \begin{itemize}
-  \item For example, an image could partially cover the watermark, with ugly
-        results
-  \end{itemize}
-\item The \verb!\watermarkoff! command can be used to disable the watermark
-      in the following frames
-\item The \verb!\watermarkon! command restores the watermark in the following
-      frames
-\item If you did not specify a watermark, nothing happens
-\vskip5ex
-\item \verb!\watermarkoff! was used for this frame
-\end{itemize}
+\begin{frame}{\textsc{\LARGE \textcolor{iris}{Servizio di allocazione forestale}}}
+	\centering
+	\begin{tabular}{c@{}c}
+		\small{Metodo PC LPF} & \small{Metodo Mehrotra} \\
+		\includegraphics[scale = 0.33]{for_PCLPF}
+		&\includegraphics[scale = 0.33]{for_MER}\\ 
+	\end{tabular}
 \end{frame}
-\watermarkon
 
-\begin{frame}[t,fragile]{Other options}
-\begin{itemize}
-\item The \verb!pageofpages! option defines the string between the current
-      page number and the total page count
-  \begin{itemize}
-  \item The default is ``/''
-  \item The example files set \verb!pageofpages! to ``of''
-  \end{itemize}
-\item The \verb!bullet! option can be used to choose the symbol used in
-      bullet lists
-  \begin{itemize}
-  \item \verb!square!: A filled square
-        ({\usebeamercolor[fg]{item}\tiny\raise0.2ex\hbox{$\blacksquare$}}) for
-        first and third level items, an empty square
-        ({\usebeamercolor[fg]{item}\tiny\raise0.2ex\hbox{$\square$}}) for
-        second level items
-  \item \verb!circle!: A filled circle ({\usebeamercolor[fg]{item}$\bullet$})
-        for first and third level items, an empty circle
-        ({\usebeamercolor[fg]{item}$\circ$}) for second level items
-  \item The default value is \verb!square!
-  \end{itemize}
-\item If the \verb!titleline! option is set to \verb!true!, a horizontal line
-      is drawn below the title
-\end{itemize}
+% SLIDE 25		
+
+\begin{frame}{\textsc{\LARGE \textcolor{iris}{Acciaieria Fagersta AB}}}
+	\centering
+	\begin{tabular}{c@{}c}
+		\small{Metodo affine con MIP} & \small{Metodo affine con STP} \\
+		\includegraphics[scale = 0.33]{swe_aff1}
+		&\includegraphics[scale = 0.33]{swe_aff3}\\ 
+	\end{tabular}
+\end{frame}
+
+\begin{frame}{\textsc{\LARGE \textcolor{iris}{Acciaieria Fagersta AB}}}
+	\centering
+	\begin{tabular}{c@{}c}
+		\small{Metodo LPF1} & \small{Metodo LPF2} \\
+		\includegraphics[scale = 0.33]{swe_LPF1}
+		&\includegraphics[scale = 0.33]{swe_LPF2}\\ 
+	\end{tabular}
+\end{frame}
+
+\begin{frame}{\textsc{\LARGE \textcolor{iris}{Acciaieria Fagersta AB}}}
+	\centering
+	\begin{tabular}{c@{}c}
+		\small{Metodo PC LPF} & \small{Metodo Mehrotra} \\
+		\includegraphics[scale = 0.33]{swe_PCLPF}
+		&\includegraphics[scale = 0.33]{swe_MER}\\ 
+	\end{tabular}
+\end{frame}
+
+% SLIDE 26
+
+\begin{frame}{\textsc{\LARGE \textcolor{iris}{Divisione prodotti tubolari di Babcock and Wilcox}}}
+	\centering
+	\begin{tabular}{c@{}c}
+		\small{Metodo affine con MIP} & \small{Metodo affine con STP} \\
+		\includegraphics[scale = 0.33]{tub_aff1}
+		&\includegraphics[scale = 0.33]{tub_aff3}\\ 
+	\end{tabular}
+\end{frame}
+
+\begin{frame}{\textsc{\LARGE \textcolor{iris}{Divisione prodotti tubolari di Babcock and Wilcox}}}
+	\centering
+	\begin{tabular}{c@{}c}
+		\small{Metodo LPF1} & \small{Metodo LPF2} \\
+		\includegraphics[scale = 0.33]{for_LPF1}
+		&\includegraphics[scale = 0.33]{tub_LPF2}\\ 
+	\end{tabular}
+\end{frame}
+
+\begin{frame}{\textsc{\LARGE \textcolor{iris}{Divisione prodotti tubolari di Babcock and Wilcox}}}
+	\centering
+	\begin{tabular}{c@{}c}
+		\small{Metodo PC LPF} & \small{Metodo Mehrotra} \\
+		\includegraphics[scale = 0.33]{tub_PCLPF}
+		&\includegraphics[scale = 0.33]{tub_MER2}\\ 
+	\end{tabular}
+\end{frame}
+
+% SLIDE 26		
+
+\begin{frame}{\textsc{\LARGE \textcolor{iris}{Banca Nazionale di Ohio}}}
+	\centering
+	\begin{tabular}{c@{}c}
+		\small{Metodo affine con MIP} & \small{Metodo affine con STP} \\
+		\includegraphics[scale = 0.33]{onb_aff1}
+		&\includegraphics[scale = 0.33]{onb_aff3}\\ 
+	\end{tabular}
+\end{frame}
+
+\begin{frame}{\textsc{\LARGE \textcolor{iris}{Banca Nazionale di Ohio}}}
+	\centering
+	\begin{tabular}{c@{}c}
+		\small{Metodo LPF1} & \small{Metodo LPF2} \\
+		\includegraphics[scale = 0.33]{onb_LPF1}
+		&\includegraphics[scale = 0.33]{onb_LPF2}\\ 
+	\end{tabular}
+\end{frame}
+
+\begin{frame}{\textsc{\LARGE \textcolor{iris}{Banca Nazionale di Ohio}}}
+	\centering
+	\begin{tabular}{c@{}c}
+		\small{Metodo PC LPF} & \small{Metodo Mehrotra} \\
+		\includegraphics[scale = 0.33]{onb_PCLPF}
+		&\includegraphics[scale = 0.33]{onb_MER}\\ 
+	\end{tabular}
+\end{frame}
+
+
+\section{Conclusione}
+
+\begin{frame}
+	\includegraphics[scale = 0.45]{CONC.PNG}
 \end{frame}
 

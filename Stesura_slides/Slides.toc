@@ -1,4 +1,7 @@
 \beamer@sectionintoc {1}{Introduzione alla PL}{3}{0}{1}
-\beamer@sectionintoc {2}{Metodo del simplesso}{22}{0}{2}
-\beamer@sectionintoc {3}{Metodi del punto interno}{32}{0}{3}
-\beamer@subsectionintoc {3}{1}{Metodi Path-Following}{51}{0}{3}
+\beamer@sectionintoc {2}{Metodo del simplesso}{20}{0}{2}
+\beamer@sectionintoc {3}{Metodi del punto interno}{29}{0}{3}
+\beamer@subsectionintoc {3}{1}{Metodi Path-Following}{49}{0}{3}
+\beamer@subsectionintoc {3}{2}{Metodo PC Mehrotra}{57}{0}{3}
+\beamer@sectionintoc {4}{Test}{63}{0}{4}
+\beamer@sectionintoc {5}{Conclusione}{77}{0}{5}
