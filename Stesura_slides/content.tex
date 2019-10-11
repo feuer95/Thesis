@@ -21,8 +21,9 @@
 % SLIDE 3
 
 \section{Introduzione alla PL}
-
-\begin{frame}{\textsc{\LARGE Programmazione Lineare}}
+\definecolor{aquamarine}{rgb}{0.5, 1.0, 0.83}
+\definecolor{darkcyan}{rgb}{0.0, 0.55, 0.55}
+\begin{frame}{\textsc{\LARGE \textcolor{darkcyan}{Programmazione Lineare}}}
 	\pause
 	\begin{center}
 	\includegraphics[width = 9 cm]{fasi.png}
@@ -30,18 +31,18 @@
 \pause
 \begin{equation*}
 \begin{split}
-\min\limits_{x\in\mathbb{R}^{n}}\;&c^{T}x\\
+\pause \min\limits_{x\in\mathbb{R}^{n}}\;&c^{T}x\\
 \text{tale\;che\;}&Ax= b\;\\\text{e\;}&x\geq0
 \end{split}
 \end{equation*}
 \begin{center}
-con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango pieno e $b\in\mathbb{R}^{m}$
+con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango massimo e $b\in\mathbb{R}^{m}$
 \end{center}	
 \end{frame}
 
 % SLIDE 4
 
-\begin{frame}{\textsc{\LARGE Programmazione Lineare}}
+\begin{frame}{\textsc{\LARGE \textcolor{darkcyan}{Programmazione Lineare}}}
 	\pause
 	\begin{itemize}
 		\item \textbf{Punto ammissibile} x: punto tale che $Ax = b, x\geq 0$
@@ -54,10 +55,10 @@ con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango pieno e $b\in\mathbb{R}
 
 % SLIDE 5
 
-\begin{frame}{\textsc{\LARGE Programmazione Lineare}}
+\begin{frame}{\textsc{\LARGE \textcolor{darkcyan}{Programmazione Lineare}}}
 
 Ipotesi $m \leq n$ \pause$\longrightarrow$ sottomatrice $\mathbf{A_{B}}$ invertibile con
-$B\subseteq\{1,\dots,n\}$ insieme degli $m$ indici delle colonne 
+$B\subseteq\{1,\dots,n\}$ insieme degli $m$ indici delle colonne e $N = B^{c}$
 \pause
 \begin{equation*}
 \begin{split}
@@ -76,7 +77,8 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 
 % SLIDE 6
 
-\begin{frame}[t]{\textsc{\LARGE Teorema Fondamentale}}
+\definecolor{maroon(x11)}{rgb}{0.69, 0.19, 0.38}
+\begin{frame}[t]{\textsc{\LARGE \textcolor{maroon(x11)}{Teorema Fondamentale}}}
 	Dato un problema PL in forma standard, si verifica una delle seguenti: %condizioni:
 	\pause
 \begin{itemize}
@@ -155,8 +157,8 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 		\item articolo di Karmarkar (1984) %in cui veniva proposto un% 
 		$\rightarrow$ algoritmo polinomiale
 		\pause
-		\item si basano sulle \underline{condizioni KKT} di un problema PL:
-		\pause\\[0.5 cm] se $x^{*}$ è un punto ottimale allora esistono $s^{*}\in\mathbb{R}^{n}$ e $\lambda^{*}\in\mathbb{R}^{m}$ tali che
+		\item si basano sulle \textrm{condizioni KKT} di un problema PL:
+		\pause\\[0.5 cm] \textrm{se $x^{*}$ è un punto ottimale allora esistono $s^{*}\in\mathbb{R}^{n}$ e $\lambda^{*}\in\mathbb{R}^{m}$ tali che}
 		\begin{equation*}
 		\mathit{F}(x^{*},\lambda^{*},s^{*})= \begin{bmatrix}
 		A^{T}\lambda^{*}+s^{*}-c \\Ax^{*}-b \\X^{*}S^{*}e
@@ -215,11 +217,11 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 
 % SLIDE 11
 
-\begin{frame}{\textcolor{teal}{\textsc{Inizializzazione e terminazione}}}
+\begin{frame}{\textcolor{teal}{\textsc{Inizializzazione}}}
 	\begin{itemize}
-		\item Strategia MIP \pause $\rightarrow$ Mehrotra S. (1989)
+		\item Strategia MIP \pause $\rightarrow$ Mehrotra S. \small{(1989)}
 		\pause
-		\item Punto iniziale STP \pause $\rightarrow$ D’Apuzzo M., De Simone V., di Serafino D. (2009)
+		\item Punto iniziale STP \pause $\rightarrow$ D’Apuzzo M., De Simone V., di Serafino D. \small{(2009)}
 	\end{itemize}
 \pause
 \begin{columns}
@@ -234,13 +236,14 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 
 % SLIDE 11
 
-\begin{frame}{\textcolor{teal}{\textsc{Inizializzazione e terminazione}}}
-	Condizione di terminazione: \pause $\epsilon$-soluzione $(x^{*},\lambda^{*},s^{*})$ tale che
+\begin{frame}{\textcolor{teal}{\textsc{Criteri di arresto}}}
+$\epsilon$-soluzione $(x^{*},\lambda^{*},s^{*})$ tale che \pause
 \begin{align*}
-\frac{\lVert r_{b}\rVert_{2}}{1+ \lVert b \rVert_{2}}\leq \epsilon, && \frac{\lVert r_{c}\rVert_{2}}{1 + \lVert c \rVert_{2}}\leq \epsilon, &&\frac{|g|}{1+b^{T}y}\leq \epsilon,
+\frac{\lVert r_{b}\rVert_{2}}{1+ \lVert b \rVert_{2}}\leq \epsilon, &\text{  con } r_{b} = Ax - b\\
+\frac{\lVert r_{c}\rVert_{2}}{1 + \lVert c \rVert_{2}}\leq \epsilon, &\text{  con } r_{c} =A^{T}\lambda +s - c\\
+\frac{|g|}{1+b^{T}y}\leq \epsilon,& \text{  distanza duale } $g = c^{T}x - b^{T}\lambda\\
 \end{align*}
-con i \textit{residui} $r_{b} = Ax - b$ e $r_{c} =A^{T}\lambda +s - c$\\
-e la \textit{distanza duale} $g = c^{T}x - b^{T}\lambda$ 
+
 \end{frame}
 
 % SLIDE 12
@@ -278,6 +281,7 @@ con $\alpha_{k}\in(0,1]$ tale che $(x^{k+1}, s^{k+1})>0$
 A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 \end{bmatrix}=\begin{bmatrix}0\\0\\ \tau e \end{bmatrix}
 \end{equation}
+
 \begin{theorem}
 	Se esistono soluzioni ammissibili strettamente positive allora per ogni $\tau\geq0$ esiste una soluzione di (1). Inoltre tale
 	soluzione ristretta a $(x, s)$ è unica.
@@ -287,23 +291,29 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 % SLIDE 14
 
 \begin{frame}{\textsc{\LARGE \textcolor{burntumber}{Metodi Path-Following}}}
-Sia   $\mathit{F}_{\tau}(x,\lambda,s)= \begin{bmatrix}
-A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax-b \\X_{\tau}S_{\tau}e-\tau e
-\end{bmatrix}$
-\\[1 cm]
+
 \begin{itemize}
-	\item Perturbazione che garantisce la convergenza di $g$ a $0$\\ $\rightarrow \tau = \sigma \mu$ 
-con $\mu = \frac{x^{T}s}{n}$ e $\sigma \in(0,1)$ \textbf{parametro centrale}:
+	\item Perturbazione per garantire la convergenza di $g$ a $0$:
+\end{itemize}
+\pause
+\begin{tikzpicture}
+\node (B) at (-1.5,0) {$\tau = \sigma \mu$};
+\node (A) at (1.65,0.7) {\;\;\;\;\;\;\;\;\;$\mu = \frac{x^{T}s}{n}$\textbf{  misura di dualità} };
+\draw[->] (B) -- (A);
+\node (D) at (1,-0.7) {\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;$\sigma \in(0,1)$ \textbf{parametro centrale}}
+\draw[->] (B) -- (D);
+\end{tikzpicture}
 \pause
 \begin{itemize}
-	\item[o] $\sigma^{1}_{k} = 1 -\frac{0.5}{\sqrt{n}}\rightarrow$\textrm{ LPF 1}\pause
-	\item[o] $\sigma^{2}_{k} = \min\{0.1, 100\mu_{k}\}\rightarrow$\textrm{ LPF 2}	
+	\item[o] $\sigma^{\textcolor{red}{1}} = 1 -\frac{0.5}{\sqrt{n}}\rightarrow$\textrm{ LPF \textcolor{red}{1}}\pause
+	\item[o] $\sigma^{\textcolor{red}{2}}_{k} = \min\{0.1, 100\mu_{k}\}\rightarrow$\textrm{ LPF \textcolor{red}{2}}\pause	
 \end{itemize}
+
+\begin{itemize}
+\item Velocità di convergenza lineare $\mathcal{O}(\mu)$
 \pause
 \item Intorno di $\mathcal{C}$\\ 
 $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \geq \gamma \mu,  \gamma \in [0,1)\}$
-\pause
-\item Velocità di convergenza lineare $\mathcal{O}(\mu)$
 \end{itemize}
 \end{frame}
 
@@ -319,7 +329,7 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 	\end{bmatrix}=-\begin{bmatrix}
 	r_{c}^{k}\\r_{b}^{k}\\X^{k}S^{k}e-\tau e
 	\end{bmatrix}\\
-	(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k})
+	(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k}) \text{ con}
 	\end{equation*}\\
 	$ \alpha_{k} = max\{\alpha \in[0,1]|(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)\}$
 \end{block}
@@ -334,16 +344,25 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 \begin{frame}{\textsc{\LARGE \textcolor{red}{Metodi Predittore-Correttore}}}
 \pause
 \textcolor{blue}{Iterazione k:}
+\pause
 \newcounter{elenco}
 \setcounter{elenco}{0}
 \begin{list}{\stepcounter{elenco}\arabic{elenco}}{\setlength{\itemsep}{0.6cm}}
-	\item Step predittore $\rightarrow$ \textcolor{orange}{Step Affine}
+	\item Step predittore: \textcolor{orange}{Step Affine} $\rightarrow$\pause Direzione $(\Delta x^{\text{aff}}, \Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$
 	\pause
-	\item Step correttore $\rightarrow$ Direzione con $\sigma$ adattabile
+	\item Step correttore:\pause \;\;Direzione con $\sigma$ adattabile
 	\end{list}
 \\[1 cm]
 \pause
-\centering \includegraphics[width = 6 cm]{MEH.PNG}
+\begin{columns}
+	\begin{column}{0.4\textwidth}
+	\includegraphics[width=\columnwidth]{MEH.PNG}
+\end{column}
+\begin{column}{0.4\textwidth}
+	Deviazione centrale $\delta(xs, \mu)$: distanza da $\mathcal{C}$
+\end{column}
+\end{columns}
+
 \end{frame}
 
 % SLIDE 22
@@ -351,7 +370,7 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 \definecolor{sapphire}{rgb}{0.03, 0.15, 0.4}
 \begin{frame}[t]{\textsc{\LARGE \textcolor{sapphire}{Metodo PC Path-Following}}}
 \begin{itemize}
-\item step Predittore-Correttore: metodo euristico predictor-corrector di \textbf{Mehrotra}
+\item step Predittore-Correttore: metodo euristico predittore-correttore di \textbf{Mehrotra}
 \item Vincolo dell'intorno $\mathcal{N}_{-\infty}$
 \end{itemize}
 \pause
@@ -364,16 +383,8 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 
 \section{Test}
 
-% SLIDE 24
-
-\begin{frame}
-	Numero di iterazioni rispetto alla dimensione di un problema PL
-	\begin{figure}
-		\includegraphics[width=0.7\paperwidth]{NUM.png}
-	\end{figure}
-\end{frame}
-
 % SLIDE 25		
+\subsection{Servizio di allocazione forestale}
 
 \begin{frame}{\textsc{\LARGE \textcolor{iris}{Servizio di allocazione forestale}}}
 \centering
@@ -404,21 +415,23 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 
 % SLIDE 25		
 
-\begin{frame}{\textsc{\LARGE \textcolor{iris}{Acciaieria Fagersta AB}}}
-	\centering
-	\begin{tabular}{c@{}c}
-		\small{Metodo affine con MIP} & \small{Metodo affine con STP} \\
-		\includegraphics[scale = 0.33]{swe_aff1}
-		&\includegraphics[scale = 0.33]{swe_aff3}\\ 
-	\end{tabular}
-\end{frame}
+\subsection{Acciaieria Fagersta}
+
+%\begin{frame}{\textsc{\LARGE \textcolor{iris}{Acciaieria Fagersta AB}}}
+%	\centering
+%	\begin{tabular}{c@{}c}
+%		\small{Metodo affine con MIP} & \small{Metodo affine con STP} \\
+%		\includegraphics[scale = 0.33]{swe_aff1}
+%		&\includegraphics[scale = 0.33]{swe_aff3}\\ 
+%	\end{tabular}
+%\end{frame}
 
 \begin{frame}{\textsc{\LARGE \textcolor{iris}{Acciaieria Fagersta AB}}}
 	\centering
 	\begin{tabular}{c@{}c}
-		\small{Metodo LPF1} & \small{Metodo LPF2} \\
-		\includegraphics[scale = 0.33]{swe_LPF1}
-		&\includegraphics[scale = 0.33]{swe_LPF2}\\ 
+		\small{Metodo LPF2} & \small{Metodo PC LPF} \\
+		\includegraphics[scale = 0.33]{swe_LPF2}
+		&\includegraphics[scale = 0.33]{swe_PCLPF}\\ 
 	\end{tabular}
 \end{frame}
 
@@ -432,6 +445,7 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 \end{frame}
 
 % SLIDE 26
+\subsection{Prodotti tubolari}
 
 \begin{frame}{\textsc{\LARGE \textcolor{iris}{Divisione prodotti tubolari di Babcock and Wilcox}}}
 	\centering
@@ -462,6 +476,8 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 
 % SLIDE 26		
 
+\subsection{Banca Nazionale di Ohio}
+
 \begin{frame}{\textsc{\LARGE \textcolor{iris}{Banca Nazionale di Ohio}}}
 	\centering
 	\begin{tabular}{c@{}c}
@@ -484,15 +500,24 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 	\centering
 	\begin{tabular}{c@{}c}
 		\small{Metodo PC LPF} & \small{Metodo Mehrotra} \\
-		\includegraphics[scale = 0.33]{onb_PCLPF}
+		\includegraphics[scale = 0.33]{onb_MER2}
 		&\includegraphics[scale = 0.33]{onb_MER}\\ 
 	\end{tabular}
+\end{frame}
+
+% SLIDE 24
+
+\begin{frame}
+	Numero di iterazioni rispetto alla dimensione di un problema PL
+	\begin{figure}
+		\includegraphics[width=0.7\paperwidth]{NUM.png}
+	\end{figure}
 \end{frame}
 
 
 \section{Conclusione}
 
-\begin{frame}
+\begin{frame}{\textsc{\LARGE \textcolor{iris}{Alterazione di $\mathcal{N}_{-\infty}$}}}
 	\includegraphics[scale = 0.45]{CONC.PNG}
 \end{frame}
 
