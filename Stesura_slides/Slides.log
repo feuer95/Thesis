@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.4)  11 OCT 2019 15:55
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.4)  13 OCT 2019 12:11
 entering extended mode
 **./Slides.tex
 (Slides.tex
@@ -1259,14 +1259,14 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [14
 
 ]
-Overfull \hbox (22.6056pt too wide) detected at line 103
+Overfull \hbox (22.6056pt too wide) detected at line 104
 []
  []
 
 <Feas.jpg, id=336, 329.43076pt x 285.4665pt>
 File: Feas.jpg Graphic file (type jpg)
 <use Feas.jpg>
-Package pdftex.def Info: Feas.jpg  used on input line 103.
+Package pdftex.def Info: Feas.jpg  used on input line 104.
 (pdftex.def)             Requested size: 116.29527pt x 100.77287pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -1281,13 +1281,13 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [15
 
  <./Feas.jpg>]
-Overfull \hbox (22.6056pt too wide) detected at line 103
+Overfull \hbox (22.6056pt too wide) detected at line 104
 []
  []
 
 File: Feas.jpg Graphic file (type jpg)
 <use Feas.jpg>
-Package pdftex.def Info: Feas.jpg  used on input line 103.
+Package pdftex.def Info: Feas.jpg  used on input line 104.
 (pdftex.def)             Requested size: 116.29527pt x 100.77287pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -1302,13 +1302,13 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [16
 
 ]
-Overfull \hbox (22.6056pt too wide) detected at line 103
+Overfull \hbox (22.6056pt too wide) detected at line 104
 []
  []
 
 File: Feas.jpg Graphic file (type jpg)
 <use Feas.jpg>
-Package pdftex.def Info: Feas.jpg  used on input line 103.
+Package pdftex.def Info: Feas.jpg  used on input line 104.
 (pdftex.def)             Requested size: 116.29527pt x 100.77287pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -1323,13 +1323,13 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [17
 
 ]
-Overfull \hbox (22.6056pt too wide) detected at line 103
+Overfull \hbox (22.6056pt too wide) detected at line 104
 []
  []
 
 File: Feas.jpg Graphic file (type jpg)
 <use Feas.jpg>
-Package pdftex.def Info: Feas.jpg  used on input line 103.
+Package pdftex.def Info: Feas.jpg  used on input line 104.
 (pdftex.def)             Requested size: 116.29527pt x 100.77287pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -1344,13 +1344,13 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [18
 
 ]
-Overfull \hbox (22.6056pt too wide) detected at line 103
+Overfull \hbox (22.6056pt too wide) detected at line 104
 []
  []
 
 File: Feas.jpg Graphic file (type jpg)
 <use Feas.jpg>
-Package pdftex.def Info: Feas.jpg  used on input line 103.
+Package pdftex.def Info: Feas.jpg  used on input line 104.
 (pdftex.def)             Requested size: 116.29527pt x 100.77287pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -1365,13 +1365,13 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [19
 
 ]
-Overfull \hbox (22.6056pt too wide) detected at line 103
+Overfull \hbox (22.6056pt too wide) detected at line 104
 []
  []
 
 File: Feas.jpg Graphic file (type jpg)
 <use Feas.jpg>
-Package pdftex.def Info: Feas.jpg  used on input line 103.
+Package pdftex.def Info: Feas.jpg  used on input line 104.
 (pdftex.def)             Requested size: 116.29527pt x 100.77287pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -1468,7 +1468,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.147 \end{frame}
+l.148 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1477,7 +1477,7 @@ or  <return>  to continue without it.
 ! Extra }, or forgotten $.
 <template> \unskip \hfil }
                           \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1488,7 +1488,7 @@ deleted material, e.g., by typing `I$}'.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -1496,7 +1496,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1507,7 +1507,7 @@ my insertion and my current dilemma will both disappear.
 ! Extra }, or forgotten $.
 <template> \unskip \hfil }
                           \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1518,7 +1518,7 @@ deleted material, e.g., by typing `I$}'.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -1526,7 +1526,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1537,7 +1537,7 @@ my insertion and my current dilemma will both disappear.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1548,7 +1548,7 @@ my insertion and my current dilemma will both disappear.
 ! Extra }, or forgotten \endgroup.
 \verb@egroup ...erb@balance@group \@empty \egroup 
                                                   
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1563,7 +1563,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.147 \end{frame}
+l.148 \end{frame}
                  
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1588,7 +1588,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.147 \end{frame}
+l.148 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1597,7 +1597,7 @@ or  <return>  to continue without it.
 ! Extra }, or forgotten $.
 <template> \unskip \hfil }
                           \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1608,7 +1608,7 @@ deleted material, e.g., by typing `I$}'.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -1616,7 +1616,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1627,7 +1627,7 @@ my insertion and my current dilemma will both disappear.
 ! Extra }, or forgotten $.
 <template> \unskip \hfil }
                           \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1638,7 +1638,7 @@ deleted material, e.g., by typing `I$}'.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -1646,7 +1646,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1657,7 +1657,7 @@ my insertion and my current dilemma will both disappear.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1668,7 +1668,7 @@ my insertion and my current dilemma will both disappear.
 ! Extra }, or forgotten \endgroup.
 \verb@egroup ...erb@balance@group \@empty \egroup 
                                                   
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1683,7 +1683,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.147 \end{frame}
+l.148 \end{frame}
                  
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1708,7 +1708,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.147 \end{frame}
+l.148 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1717,7 +1717,7 @@ or  <return>  to continue without it.
 ! Extra }, or forgotten $.
 <template> \unskip \hfil }
                           \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1728,7 +1728,7 @@ deleted material, e.g., by typing `I$}'.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -1736,7 +1736,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1747,7 +1747,7 @@ my insertion and my current dilemma will both disappear.
 ! Extra }, or forgotten $.
 <template> \unskip \hfil }
                           \hskip \tabcolsep \hskip -.5\arrayrulewidth \vrule...
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1758,7 +1758,7 @@ deleted material, e.g., by typing `I$}'.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -1766,7 +1766,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1777,7 +1777,7 @@ my insertion and my current dilemma will both disappear.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1788,7 +1788,7 @@ my insertion and my current dilemma will both disappear.
 ! Extra }, or forgotten \endgroup.
 \verb@egroup ...erb@balance@group \@empty \egroup 
                                                   
-l.147 \end{frame}
+l.148 \end{frame}
                  
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1803,7 +1803,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.147 \end{frame}
+l.148 \end{frame}
                  
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1893,14 +1893,14 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [35
 
 ]
-Overfull \hbox (22.6056pt too wide) detected at line 216
+Overfull \hbox (22.6056pt too wide) detected at line 217
 []
  []
 
 <Feas2.jpg, id=719, 433.01775pt x 386.6445pt>
 File: Feas2.jpg Graphic file (type jpg)
 <use Feas2.jpg>
-Package pdftex.def Info: Feas2.jpg  used on input line 216.
+Package pdftex.def Info: Feas2.jpg  used on input line 217.
 (pdftex.def)             Requested size: 116.29527pt x 103.84084pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -1915,13 +1915,13 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [36
 
  <./Feas2.jpg>]
-Overfull \hbox (22.6056pt too wide) detected at line 216
+Overfull \hbox (22.6056pt too wide) detected at line 217
 []
  []
 
 File: Feas2.jpg Graphic file (type jpg)
 <use Feas2.jpg>
-Package pdftex.def Info: Feas2.jpg  used on input line 216.
+Package pdftex.def Info: Feas2.jpg  used on input line 217.
 (pdftex.def)             Requested size: 116.29527pt x 103.84084pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -1936,13 +1936,13 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [37
 
 ]
-Overfull \hbox (22.6056pt too wide) detected at line 216
+Overfull \hbox (22.6056pt too wide) detected at line 217
 []
  []
 
 File: Feas2.jpg Graphic file (type jpg)
 <use Feas2.jpg>
-Package pdftex.def Info: Feas2.jpg  used on input line 216.
+Package pdftex.def Info: Feas2.jpg  used on input line 217.
 (pdftex.def)             Requested size: 116.29527pt x 103.84084pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -1957,13 +1957,13 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [38
 
 ]
-Overfull \hbox (22.6056pt too wide) detected at line 216
+Overfull \hbox (22.6056pt too wide) detected at line 217
 []
  []
 
 File: Feas2.jpg Graphic file (type jpg)
 <use Feas2.jpg>
-Package pdftex.def Info: Feas2.jpg  used on input line 216.
+Package pdftex.def Info: Feas2.jpg  used on input line 217.
 (pdftex.def)             Requested size: 116.29527pt x 103.84084pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -1978,13 +1978,13 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [39
 
 ]
-Overfull \hbox (22.6056pt too wide) detected at line 216
+Overfull \hbox (22.6056pt too wide) detected at line 217
 []
  []
 
 File: Feas2.jpg Graphic file (type jpg)
 <use Feas2.jpg>
-Package pdftex.def Info: Feas2.jpg  used on input line 216.
+Package pdftex.def Info: Feas2.jpg  used on input line 217.
 (pdftex.def)             Requested size: 116.29527pt x 103.84084pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -1999,13 +1999,13 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [40
 
 ]
-Overfull \hbox (22.6056pt too wide) detected at line 216
+Overfull \hbox (22.6056pt too wide) detected at line 217
 []
  []
 
 File: Feas2.jpg Graphic file (type jpg)
 <use Feas2.jpg>
-Package pdftex.def Info: Feas2.jpg  used on input line 216.
+Package pdftex.def Info: Feas2.jpg  used on input line 217.
 (pdftex.def)             Requested size: 116.29527pt x 103.84084pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -2023,12 +2023,12 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 <MIP.jpg, id=824, 312.56775pt x 325.81725pt>
 File: MIP.jpg Graphic file (type jpg)
 <use MIP.jpg>
-Package pdftex.def Info: MIP.jpg  used on input line 235.
+Package pdftex.def Info: MIP.jpg  used on input line 236.
 (pdftex.def)             Requested size: 116.29527pt x 121.22661pt.
 <STP.jpg, id=825, 268.00125pt x 229.45724pt>
 File: STP.jpg Graphic file (type jpg)
 <use STP.jpg>
-Package pdftex.def Info: STP.jpg  used on input line 235.
+Package pdftex.def Info: STP.jpg  used on input line 236.
 (pdftex.def)             Requested size: 116.29527pt x 99.568pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -2045,11 +2045,11 @@ Underfull \hbox (badness 10000) has occurred while \output is active
  <./MIP.jpg> <./STP.jpg>]
 File: MIP.jpg Graphic file (type jpg)
 <use MIP.jpg>
-Package pdftex.def Info: MIP.jpg  used on input line 235.
+Package pdftex.def Info: MIP.jpg  used on input line 236.
 (pdftex.def)             Requested size: 116.29527pt x 121.22661pt.
 File: STP.jpg Graphic file (type jpg)
 <use STP.jpg>
-Package pdftex.def Info: STP.jpg  used on input line 235.
+Package pdftex.def Info: STP.jpg  used on input line 236.
 (pdftex.def)             Requested size: 116.29527pt x 99.568pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -2066,11 +2066,11 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 ]
 File: MIP.jpg Graphic file (type jpg)
 <use MIP.jpg>
-Package pdftex.def Info: MIP.jpg  used on input line 235.
+Package pdftex.def Info: MIP.jpg  used on input line 236.
 (pdftex.def)             Requested size: 116.29527pt x 121.22661pt.
 File: STP.jpg Graphic file (type jpg)
 <use STP.jpg>
-Package pdftex.def Info: STP.jpg  used on input line 235.
+Package pdftex.def Info: STP.jpg  used on input line 236.
 (pdftex.def)             Requested size: 116.29527pt x 99.568pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -2087,11 +2087,11 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 ]
 File: MIP.jpg Graphic file (type jpg)
 <use MIP.jpg>
-Package pdftex.def Info: MIP.jpg  used on input line 235.
+Package pdftex.def Info: MIP.jpg  used on input line 236.
 (pdftex.def)             Requested size: 116.29527pt x 121.22661pt.
 File: STP.jpg Graphic file (type jpg)
 <use STP.jpg>
-Package pdftex.def Info: STP.jpg  used on input line 235.
+Package pdftex.def Info: STP.jpg  used on input line 236.
 (pdftex.def)             Requested size: 116.29527pt x 99.568pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -2108,11 +2108,11 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 ]
 File: MIP.jpg Graphic file (type jpg)
 <use MIP.jpg>
-Package pdftex.def Info: MIP.jpg  used on input line 235.
+Package pdftex.def Info: MIP.jpg  used on input line 236.
 (pdftex.def)             Requested size: 116.29527pt x 121.22661pt.
 File: STP.jpg Graphic file (type jpg)
 <use STP.jpg>
-Package pdftex.def Info: STP.jpg  used on input line 235.
+Package pdftex.def Info: STP.jpg  used on input line 236.
 (pdftex.def)             Requested size: 116.29527pt x 99.568pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -2130,7 +2130,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 ! Missing } inserted.
 <inserted text> 
                 }
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -2141,7 +2141,7 @@ my insertion and my current dilemma will both disappear.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2149,7 +2149,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing { inserted.
 <inserted text> 
                 {
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I've put in what seems to be necessary to fix
 the current column of the current alignment.
@@ -2158,7 +2158,7 @@ Try to go on, since this might almost work.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -2169,7 +2169,7 @@ my insertion and my current dilemma will both disappear.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2177,7 +2177,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing \endgroup inserted.
 <inserted text> 
                 \endgroup 
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -2188,7 +2188,7 @@ my insertion and my current dilemma will both disappear.
 ! Misplaced \omit.
 \math@cr@@@ ...@ \@ne \add@amps \maxfields@ \omit 
                                                   \kern -\alignsep@ \iftag@ ...
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I expect to see \omit only after tab marks or the \cr of
 an alignment. Proceed, and I'll ignore this case.
@@ -2196,7 +2196,7 @@ an alignment. Proceed, and I'll ignore this case.
 ! Missing { inserted.
 <inserted text> 
                 {
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I've put in what seems to be necessary to fix
 the current column of the current alignment.
@@ -2218,7 +2218,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 ! Missing } inserted.
 <inserted text> 
                 }
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -2229,7 +2229,7 @@ my insertion and my current dilemma will both disappear.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2237,7 +2237,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing { inserted.
 <inserted text> 
                 {
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I've put in what seems to be necessary to fix
 the current column of the current alignment.
@@ -2246,7 +2246,7 @@ Try to go on, since this might almost work.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -2257,7 +2257,7 @@ my insertion and my current dilemma will both disappear.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2265,7 +2265,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing \endgroup inserted.
 <inserted text> 
                 \endgroup 
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -2276,7 +2276,7 @@ my insertion and my current dilemma will both disappear.
 ! Misplaced \omit.
 \math@cr@@@ ...@ \@ne \add@amps \maxfields@ \omit 
                                                   \kern -\alignsep@ \iftag@ ...
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I expect to see \omit only after tab marks or the \cr of
 an alignment. Proceed, and I'll ignore this case.
@@ -2284,7 +2284,7 @@ an alignment. Proceed, and I'll ignore this case.
 ! Missing { inserted.
 <inserted text> 
                 {
-l.247 \end{frame}
+l.248 \end{frame}
                  
 I've put in what seems to be necessary to fix
 the current column of the current alignment.
@@ -2310,7 +2310,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.268 \end{frame}
+l.269 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2319,7 +2319,7 @@ or  <return>  to continue without it.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.268 \end{frame}
+l.269 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2327,7 +2327,7 @@ you left one out. Proceed, with fingers crossed.
 ! Display math should end with $$.
 <to be read again> 
                    \par 
-l.268 \end{frame}
+l.269 \end{frame}
                  
 The `$' that I just saw supposedly matches a previous `$$'.
 So I shall assume that you typed `$$' both times.
@@ -2339,7 +2339,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.268 \end{frame}
+l.269 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2348,7 +2348,7 @@ or  <return>  to continue without it.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.268 \end{frame}
+l.269 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -2359,7 +2359,7 @@ my insertion and my current dilemma will both disappear.
 ! Display math should end with $$.
 <to be read again> 
                    \endgroup 
-l.268 \end{frame}
+l.269 \end{frame}
                  
 The `$' that I just saw supposedly matches a previous `$$'.
 So I shall assume that you typed `$$' both times.
@@ -2396,7 +2396,7 @@ See the tikz package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.318 \end{frame}
+l.319 \end{frame}
                  
 This error message was generated by an \errmessage
 command, so I can't give any explicit help.
@@ -2423,7 +2423,7 @@ See the tikz package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.318 \end{frame}
+l.319 \end{frame}
                  
 (That was another \errmessage.)
 
@@ -2447,7 +2447,7 @@ See the tikz package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.318 \end{frame}
+l.319 \end{frame}
                  
 (That was another \errmessage.)
 
@@ -2471,7 +2471,7 @@ See the tikz package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.318 \end{frame}
+l.319 \end{frame}
                  
 (That was another \errmessage.)
 
@@ -2495,7 +2495,7 @@ See the tikz package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.318 \end{frame}
+l.319 \end{frame}
                  
 (That was another \errmessage.)
 
@@ -2519,7 +2519,7 @@ See the tikz package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.318 \end{frame}
+l.319 \end{frame}
                  
 (That was another \errmessage.)
 
@@ -2543,7 +2543,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.338 \end{frame}
+l.339 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2552,7 +2552,7 @@ or  <return>  to continue without it.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.338 \end{frame}
+l.339 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2560,7 +2560,7 @@ you left one out. Proceed, with fingers crossed.
 ! Display math should end with $$.
 <to be read again> 
                    \par 
-l.338 \end{frame}
+l.339 \end{frame}
                  
 The `$' that I just saw supposedly matches a previous `$$'.
 So I shall assume that you typed `$$' both times.
@@ -2568,7 +2568,7 @@ So I shall assume that you typed `$$' both times.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.338 \end{frame}
+l.339 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2576,7 +2576,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.338 \end{frame}
+l.339 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -2587,10 +2587,10 @@ my insertion and my current dilemma will both disappear.
 <LPF.PNG, id=1088, 457.71pt x 416.15475pt>
 File: LPF.PNG Graphic file (type png)
 <use LPF.PNG>
-Package pdftex.def Info: LPF.PNG  used on input line 338.
-(pdftex.def)             Requested size: 113.81102pt x 103.47328pt.
+Package pdftex.def Info: LPF.PNG  used on input line 339.
+(pdftex.def)             Requested size: 99.58464pt x 90.53831pt.
 
-Overfull \vbox (10.08456pt too high) detected at line 338
+Overfull \vbox (5.3321pt too high) detected at line 339
  []
 
 
@@ -2613,7 +2613,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.338 \end{frame}
+l.339 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2622,7 +2622,7 @@ or  <return>  to continue without it.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.338 \end{frame}
+l.339 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2630,7 +2630,7 @@ you left one out. Proceed, with fingers crossed.
 ! Display math should end with $$.
 <to be read again> 
                    \par 
-l.338 \end{frame}
+l.339 \end{frame}
                  
 The `$' that I just saw supposedly matches a previous `$$'.
 So I shall assume that you typed `$$' both times.
@@ -2638,7 +2638,7 @@ So I shall assume that you typed `$$' both times.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.338 \end{frame}
+l.339 \end{frame}
                  
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2646,7 +2646,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.338 \end{frame}
+l.339 \end{frame}
                  
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -2656,10 +2656,10 @@ my insertion and my current dilemma will both disappear.
 
 File: LPF.PNG Graphic file (type png)
 <use LPF.PNG>
-Package pdftex.def Info: LPF.PNG  used on input line 338.
-(pdftex.def)             Requested size: 113.81102pt x 103.47328pt.
+Package pdftex.def Info: LPF.PNG  used on input line 339.
+(pdftex.def)             Requested size: 99.58464pt x 90.53831pt.
 
-Overfull \vbox (10.08456pt too high) detected at line 338
+Overfull \vbox (5.3321pt too high) detected at line 339
  []
 
 
@@ -2684,7 +2684,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.367 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2693,7 +2693,7 @@ or  <return>  to continue without it.
 <MEH.PNG, id=1124, 574.5465pt x 346.29375pt>
 File: MEH.PNG Graphic file (type png)
 <use MEH.PNG>
-Package pdftex.def Info: MEH.PNG  used on input line 366.
+Package pdftex.def Info: MEH.PNG  used on input line 367.
 (pdftex.def)             Requested size: 116.29527pt x 70.09239pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -2716,7 +2716,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.367 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2729,7 +2729,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.367 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2737,7 +2737,7 @@ or  <return>  to continue without it.
 
 File: MEH.PNG Graphic file (type png)
 <use MEH.PNG>
-Package pdftex.def Info: MEH.PNG  used on input line 366.
+Package pdftex.def Info: MEH.PNG  used on input line 367.
 (pdftex.def)             Requested size: 116.29527pt x 70.09239pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -2760,7 +2760,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.367 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2773,7 +2773,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.367 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2781,7 +2781,7 @@ or  <return>  to continue without it.
 
 File: MEH.PNG Graphic file (type png)
 <use MEH.PNG>
-Package pdftex.def Info: MEH.PNG  used on input line 366.
+Package pdftex.def Info: MEH.PNG  used on input line 367.
 (pdftex.def)             Requested size: 116.29527pt x 70.09239pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -2804,7 +2804,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.367 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2817,7 +2817,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.367 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2825,7 +2825,7 @@ or  <return>  to continue without it.
 
 File: MEH.PNG Graphic file (type png)
 <use MEH.PNG>
-Package pdftex.def Info: MEH.PNG  used on input line 366.
+Package pdftex.def Info: MEH.PNG  used on input line 367.
 (pdftex.def)             Requested size: 116.29527pt x 70.09239pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -2848,7 +2848,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.367 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2861,7 +2861,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.367 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2869,7 +2869,7 @@ or  <return>  to continue without it.
 
 File: MEH.PNG Graphic file (type png)
 <use MEH.PNG>
-Package pdftex.def Info: MEH.PNG  used on input line 366.
+Package pdftex.def Info: MEH.PNG  used on input line 367.
 (pdftex.def)             Requested size: 116.29527pt x 70.09239pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -2892,7 +2892,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.367 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2905,7 +2905,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.367 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2913,7 +2913,7 @@ or  <return>  to continue without it.
 
 File: MEH.PNG Graphic file (type png)
 <use MEH.PNG>
-Package pdftex.def Info: MEH.PNG  used on input line 366.
+Package pdftex.def Info: MEH.PNG  used on input line 367.
 (pdftex.def)             Requested size: 116.29527pt x 70.09239pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -2936,7 +2936,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.367 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2949,7 +2949,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.366 \end{frame}
+l.367 \end{frame}
                  
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2957,7 +2957,7 @@ or  <return>  to continue without it.
 
 File: MEH.PNG Graphic file (type png)
 <use MEH.PNG>
-Package pdftex.def Info: MEH.PNG  used on input line 366.
+Package pdftex.def Info: MEH.PNG  used on input line 367.
 (pdftex.def)             Requested size: 116.29527pt x 70.09239pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -3008,18 +3008,18 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 [68
 
 ]
-<for_aff1.png, id=1307, 462.528pt x 344.0052pt>
-File: for_aff1.png Graphic file (type png)
-<use for_aff1.png>
-Package pdftex.def Info: for_aff1.png  used on input line 396.
+<for_LPF1.png, id=1307, 462.528pt x 344.0052pt>
+File: for_LPF1.png Graphic file (type png)
+<use for_LPF1.png>
+Package pdftex.def Info: for_LPF1.png  used on input line 406.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
-<for_aff3.png, id=1308, 462.528pt x 344.0052pt>
-File: for_aff3.png Graphic file (type png)
-<use for_aff3.png>
-Package pdftex.def Info: for_aff3.png  used on input line 396.
+<for_LPF2.png, id=1308, 462.528pt x 344.0052pt>
+File: for_LPF2.png Graphic file (type png)
+<use for_LPF2.png>
+Package pdftex.def Info: for_LPF2.png  used on input line 406.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
 
-Overfull \hbox (26.52678pt too wide) in paragraph at lines 396--396
+Overfull \hbox (26.52678pt too wide) in paragraph at lines 406--406
  [][] 
  []
 
@@ -3035,19 +3035,19 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [69
 
- <./for_aff1.png> <./for_aff3.png>]
-<for_LPF1.png, id=1327, 462.528pt x 344.0052pt>
-File: for_LPF1.png Graphic file (type png)
-<use for_LPF1.png>
-Package pdftex.def Info: for_LPF1.png  used on input line 405.
+ <./for_LPF1.png> <./for_LPF2.png>]
+<for_PCLPF.png, id=1327, 462.528pt x 344.0052pt>
+File: for_PCLPF.png Graphic file (type png)
+<use for_PCLPF.png>
+Package pdftex.def Info: for_PCLPF.png  used on input line 415.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
-<for_LPF2.png, id=1328, 462.528pt x 344.0052pt>
-File: for_LPF2.png Graphic file (type png)
-<use for_LPF2.png>
-Package pdftex.def Info: for_LPF2.png  used on input line 405.
+<for_MER.png, id=1328, 462.528pt x 344.0052pt>
+File: for_MER.png Graphic file (type png)
+<use for_MER.png>
+Package pdftex.def Info: for_MER.png  used on input line 415.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
 
-Overfull \hbox (26.52678pt too wide) in paragraph at lines 405--405
+Overfull \hbox (26.52678pt too wide) in paragraph at lines 415--415
  [][] 
  []
 
@@ -3063,19 +3063,19 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [70
 
- <./for_LPF1.png> <./for_LPF2.png>]
-<for_PCLPF.png, id=1348, 462.528pt x 344.0052pt>
-File: for_PCLPF.png Graphic file (type png)
-<use for_PCLPF.png>
-Package pdftex.def Info: for_PCLPF.png  used on input line 414.
+ <./for_PCLPF.png> <./for_MER.png>]
+<swe_LPF2.png, id=1348, 462.528pt x 344.0052pt>
+File: swe_LPF2.png Graphic file (type png)
+<use swe_LPF2.png>
+Package pdftex.def Info: swe_LPF2.png  used on input line 437.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
-<for_MER.png, id=1349, 462.528pt x 344.0052pt>
-File: for_MER.png Graphic file (type png)
-<use for_MER.png>
-Package pdftex.def Info: for_MER.png  used on input line 414.
+<swe_PCLPF.png, id=1349, 462.528pt x 344.0052pt>
+File: swe_PCLPF.png Graphic file (type png)
+<use swe_PCLPF.png>
+Package pdftex.def Info: swe_PCLPF.png  used on input line 437.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
 
-Overfull \hbox (26.52678pt too wide) in paragraph at lines 414--414
+Overfull \hbox (26.52678pt too wide) in paragraph at lines 437--437
  [][] 
  []
 
@@ -3091,19 +3091,18 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [71
 
- <./for_PCLPF.png> <./for_MER.png>]
-<swe_LPF2.png, id=1369, 462.528pt x 344.0052pt>
-File: swe_LPF2.png Graphic file (type png)
-<use swe_LPF2.png>
-Package pdftex.def Info: swe_LPF2.png  used on input line 436.
-(pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
-<swe_PCLPF.png, id=1370, 462.528pt x 344.0052pt>
+ <./swe_LPF2.png> <./swe_PCLPF.png>]
 File: swe_PCLPF.png Graphic file (type png)
 <use swe_PCLPF.png>
-Package pdftex.def Info: swe_PCLPF.png  used on input line 436.
+Package pdftex.def Info: swe_PCLPF.png  used on input line 446.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
+<swe_MER.png, id=1368, 385.44pt x 266.9975pt>
+File: swe_MER.png Graphic file (type png)
+<use swe_MER.png>
+Package pdftex.def Info: swe_MER.png  used on input line 446.
+(pdftex.def)             Requested size: 127.19559pt x 88.10944pt.
 
-Overfull \hbox (26.52678pt too wide) in paragraph at lines 436--436
+Overfull \hbox (1.08766pt too wide) in paragraph at lines 446--446
  [][] 
  []
 
@@ -3119,18 +3118,19 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [72
 
- <./swe_LPF2.png> <./swe_PCLPF.png>]
-File: swe_PCLPF.png Graphic file (type png)
-<use swe_PCLPF.png>
-Package pdftex.def Info: swe_PCLPF.png  used on input line 445.
+ <./swe_MER.png>]
+<tub_aff1.png, id=1387, 462.528pt x 344.0052pt>
+File: tub_aff1.png Graphic file (type png)
+<use tub_aff1.png>
+Package pdftex.def Info: tub_aff1.png  used on input line 458.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
-<swe_MER.png, id=1389, 385.44pt x 266.9975pt>
-File: swe_MER.png Graphic file (type png)
-<use swe_MER.png>
-Package pdftex.def Info: swe_MER.png  used on input line 445.
-(pdftex.def)             Requested size: 127.19559pt x 88.10944pt.
+<tub_aff3.png, id=1388, 462.528pt x 344.0052pt>
+File: tub_aff3.png Graphic file (type png)
+<use tub_aff3.png>
+Package pdftex.def Info: tub_aff3.png  used on input line 458.
+(pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
 
-Overfull \hbox (1.08766pt too wide) in paragraph at lines 445--445
+Overfull \hbox (26.52678pt too wide) in paragraph at lines 458--458
  [][] 
  []
 
@@ -3146,19 +3146,18 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [73
 
- <./swe_MER.png>]
-<tub_aff1.png, id=1409, 462.528pt x 344.0052pt>
-File: tub_aff1.png Graphic file (type png)
-<use tub_aff1.png>
-Package pdftex.def Info: tub_aff1.png  used on input line 457.
+ <./tub_aff1.png> <./tub_aff3.png>]
+File: for_LPF1.png Graphic file (type png)
+<use for_LPF1.png>
+Package pdftex.def Info: for_LPF1.png  used on input line 467.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
-<tub_aff3.png, id=1410, 462.528pt x 344.0052pt>
-File: tub_aff3.png Graphic file (type png)
-<use tub_aff3.png>
-Package pdftex.def Info: tub_aff3.png  used on input line 457.
+<tub_LPF2.png, id=1408, 462.528pt x 344.0052pt>
+File: tub_LPF2.png Graphic file (type png)
+<use tub_LPF2.png>
+Package pdftex.def Info: tub_LPF2.png  used on input line 467.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
 
-Overfull \hbox (26.52678pt too wide) in paragraph at lines 457--457
+Overfull \hbox (26.52678pt too wide) in paragraph at lines 467--467
  [][] 
  []
 
@@ -3174,18 +3173,19 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [74
 
- <./tub_aff1.png> <./tub_aff3.png>]
-File: for_LPF1.png Graphic file (type png)
-<use for_LPF1.png>
-Package pdftex.def Info: for_LPF1.png  used on input line 466.
+ <./tub_LPF2.png>]
+<tub_PCLPF.png, id=1427, 462.528pt x 344.0052pt>
+File: tub_PCLPF.png Graphic file (type png)
+<use tub_PCLPF.png>
+Package pdftex.def Info: tub_PCLPF.png  used on input line 476.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
-<tub_LPF2.png, id=1429, 462.528pt x 344.0052pt>
-File: tub_LPF2.png Graphic file (type png)
-<use tub_LPF2.png>
-Package pdftex.def Info: tub_LPF2.png  used on input line 466.
+<tub_MER2.png, id=1428, 462.528pt x 344.0052pt>
+File: tub_MER2.png Graphic file (type png)
+<use tub_MER2.png>
+Package pdftex.def Info: tub_MER2.png  used on input line 476.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
 
-Overfull \hbox (26.52678pt too wide) in paragraph at lines 466--466
+Overfull \hbox (26.52678pt too wide) in paragraph at lines 476--476
  [][] 
  []
 
@@ -3201,19 +3201,19 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [75
 
- <./tub_LPF2.png>]
-<tub_PCLPF.png, id=1448, 462.528pt x 344.0052pt>
-File: tub_PCLPF.png Graphic file (type png)
-<use tub_PCLPF.png>
-Package pdftex.def Info: tub_PCLPF.png  used on input line 475.
+ <./tub_PCLPF.png> <./tub_MER2.png>]
+<onb_LPF1.png, id=1448, 462.528pt x 344.0052pt>
+File: onb_LPF1.png Graphic file (type png)
+<use onb_LPF1.png>
+Package pdftex.def Info: onb_LPF1.png  used on input line 498.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
-<tub_MER2.png, id=1449, 462.528pt x 344.0052pt>
-File: tub_MER2.png Graphic file (type png)
-<use tub_MER2.png>
-Package pdftex.def Info: tub_MER2.png  used on input line 475.
+<onb_LPF2.png, id=1449, 462.528pt x 344.0052pt>
+File: onb_LPF2.png Graphic file (type png)
+<use onb_LPF2.png>
+Package pdftex.def Info: onb_LPF2.png  used on input line 498.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
 
-Overfull \hbox (26.52678pt too wide) in paragraph at lines 475--475
+Overfull \hbox (26.52678pt too wide) in paragraph at lines 498--498
  [][] 
  []
 
@@ -3229,26 +3229,21 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [76
 
- <./tub_PCLPF.png> <./tub_MER2.png>]
-<onb_aff1.png, id=1469, 462.528pt x 344.0052pt>
-File: onb_aff1.png Graphic file (type png)
-<use onb_aff1.png>
-Package pdftex.def Info: onb_aff1.png  used on input line 488.
+ <./onb_LPF1.png> <./onb_LPF2.png>]
+<onb_MER2.png, id=1468, 462.528pt x 344.0052pt>
+File: onb_MER2.png Graphic file (type png)
+<use onb_MER2.png>
+Package pdftex.def Info: onb_MER2.png  used on input line 507.
+(pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
+<onb_MER.png, id=1469, 462.528pt x 344.0052pt>
+File: onb_MER.png Graphic file (type png)
+<use onb_MER.png>
+Package pdftex.def Info: onb_MER.png  used on input line 507.
 (pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
 
-
-! LaTeX Error: File `onb_aff3' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.488 \end{frame}
-                 
-I could not locate the file with any of these extensions:
-.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+Overfull \hbox (26.52678pt too wide) in paragraph at lines 507--507
+ [][] 
+ []
 
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -3262,20 +3257,14 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [77
 
- <./onb_aff1.png>]
-<onb_LPF1.png, id=1487, 462.528pt x 344.0052pt>
-File: onb_LPF1.png Graphic file (type png)
-<use onb_LPF1.png>
-Package pdftex.def Info: onb_LPF1.png  used on input line 497.
-(pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
-<onb_LPF2.png, id=1488, 462.528pt x 344.0052pt>
-File: onb_LPF2.png Graphic file (type png)
-<use onb_LPF2.png>
-Package pdftex.def Info: onb_LPF2.png  used on input line 497.
-(pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
+ <./onb_MER2.png> <./onb_MER.png>]
+<NUM.png, id=1489, 462.528pt x 344.0052pt>
+File: NUM.png Graphic file (type png)
+<use NUM.png>
+Package pdftex.def Info: NUM.png  used on input line 516.
+(pdftex.def)             Requested size: 254.93564pt x 189.61287pt.
 
-Overfull \hbox (26.52678pt too wide) in paragraph at lines 497--497
- [][] 
+Overfull \vbox (3.34753pt too high) detected at line 516
  []
 
 
@@ -3290,23 +3279,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [78
 
- <./onb_LPF1.png> <./onb_LPF2.png>]
-<onb_MER2.png, id=1508, 462.528pt x 344.0052pt>
-File: onb_MER2.png Graphic file (type png)
-<use onb_MER2.png>
-Package pdftex.def Info: onb_MER2.png  used on input line 506.
-(pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
-<onb_MER.png, id=1509, 462.528pt x 344.0052pt>
-File: onb_MER.png Graphic file (type png)
-<use onb_MER.png>
-Package pdftex.def Info: onb_MER.png  used on input line 506.
-(pdftex.def)             Requested size: 152.6347pt x 113.52206pt.
-
-Overfull \hbox (26.52678pt too wide) in paragraph at lines 506--506
- [][] 
- []
-
-
+ <./NUM.png>] (Slides.toc)
 Underfull \hbox (badness 10000) has occurred while \output is active
 [][]
  []
@@ -3318,45 +3291,11 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 [79
 
- <./onb_MER2.png> <./onb_MER.png>]
-<NUM.png, id=1530, 462.528pt x 344.0052pt>
-File: NUM.png Graphic file (type png)
-<use NUM.png>
-Package pdftex.def Info: NUM.png  used on input line 515.
-(pdftex.def)             Requested size: 254.93564pt x 189.61287pt.
-
-Overfull \vbox (3.34753pt too high) detected at line 515
- []
-
-
-Underfull \hbox (badness 10000) has occurred while \output is active
-[][]
- []
-
-
-Underfull \hbox (badness 10000) has occurred while \output is active
-[]
- []
-
-[80
-
- <./NUM.png>] (Slides.toc)
-Underfull \hbox (badness 10000) has occurred while \output is active
-[][]
- []
-
-
-Underfull \hbox (badness 10000) has occurred while \output is active
-[]
- []
-
-[81
-
 ]
-<CONC.PNG, id=1576, 484.209pt x 439.6425pt>
+<CONC.PNG, id=1536, 484.209pt x 439.6425pt>
 File: CONC.PNG Graphic file (type png)
 <use CONC.PNG>
-Package pdftex.def Info: CONC.PNG  used on input line 522.
+Package pdftex.def Info: CONC.PNG  used on input line 523.
 (pdftex.def)             Requested size: 217.89203pt x 197.8373pt.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
@@ -3368,7 +3307,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 []
  []
 
-[82
+[80
 
  <./CONC.PNG>])
 \tf@nav=\write6
@@ -3386,13 +3325,13 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 39.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 39.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 39.
 Package rerunfilecheck Info: File `Slides.out' has not changed.
-(rerunfilecheck)             Checksum: 45ABA00850317D0C35F84CD6E46442E2;698.
+(rerunfilecheck)             Checksum: 352AFA615E271CF68CE45DB719EC19A4;698.
  ) 
 Here is how much of TeX's memory you used:
- 21077 strings out of 492895
- 422278 string characters out of 3123735
+ 21043 strings out of 492895
+ 421913 string characters out of 3123735
  488280 words of memory out of 3000000
- 24281 multiletter control sequences out of 15000+200000
+ 24265 multiletter control sequences out of 15000+200000
  25265 words of font info for 89 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  56i,22n,63p,775b,638s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -3414,9 +3353,9 @@ ena/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 cm/cmsy8.pfb><C:/Users/elena/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publ
 ic/amsfonts/cm/cmtt10.pfb><C:/Users/elena/AppData/Local/Programs/MiKTeX 2.9/fon
 ts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Slides.pdf (82 pages, 1652033 bytes).
+Output written on Slides.pdf (80 pages, 1543659 bytes).
 PDF statistics:
- 1684 PDF objects out of 1728 (max. 8388607)
- 177 named destinations out of 1000 (max. 500000)
- 282 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1643 PDF objects out of 1728 (max. 8388607)
+ 173 named destinations out of 1000 (max. 500000)
+ 267 words of extra memory for PDF output out of 10000 (max. 10000000)
 

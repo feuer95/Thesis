@@ -26,9 +26,9 @@
 \begin{frame}{\textsc{\LARGE \textcolor{darkcyan}{Programmazione Lineare}}}
 	\pause
 	\begin{center}
-	\includegraphics[width = 9 cm]{fasi.png}
+	\includegraphics[width = 9 cm]{fasi.png}\pause
 	\end{center}
-\pause
+
 \begin{equation*}
 \begin{split}
 \pause \min\limits_{x\in\mathbb{R}^{n}}\;&c^{T}x\\
@@ -58,7 +58,7 @@ con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango massimo e $b\in\mathbb{
 \begin{frame}{\textsc{\LARGE \textcolor{darkcyan}{Programmazione Lineare}}}
 
 Ipotesi $m \leq n$ \pause$\longrightarrow$ sottomatrice $\mathbf{A_{B}}$ invertibile con
-$B\subseteq\{1,\dots,n\}$ insieme degli $m$ indici delle colonne e $N = B^{c}$
+$B\subseteq\{1,\dots,n\}$ insieme degli $m$ indici delle colonne e\\ $B^{c} = N$
 \pause
 \begin{equation*}
 \begin{split}
@@ -67,19 +67,20 @@ $B\subseteq\{1,\dots,n\}$ insieme degli $m$ indici delle colonne e $N = B^{c}$
 \end{split}
 \end{equation*}
 \pause
-\begin{equation*}
-x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_{B}^{-1}b\\\mathbf{0}\end{matrix}\right]
-\end{equation*}
 \begin{center}
 	soluzione ammissibile di \textcolor{red}{base}
 \end{center}
+\begin{equation*}
+x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_{B}^{-1}b\\\mathbf{0}\end{matrix}\right]\geq 0
+\end{equation*}
+
 \end{frame}
 
 % SLIDE 6
 
 \definecolor{maroon(x11)}{rgb}{0.69, 0.19, 0.38}
 \begin{frame}[t]{\textsc{\LARGE \textcolor{maroon(x11)}{Teorema Fondamentale}}}
-	Dato un problema PL in forma standard, si verifica una delle seguenti: %condizioni:
+	Dato un problema PL, si verifica una delle seguenti: %condizioni:
 	\pause
 \begin{itemize}
 \item il problema è inammissibile $\;\mathcal{P}=\emptyset$\pause
@@ -150,7 +151,7 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 
 \section{Metodi del punto interno}
 
-\begin{frame}[t]{\textcolor{teal}{\textsc{\LARGE IPM primale duale}}}
+\begin{frame}[t]{\textcolor{teal}{\textsc{\LARGE Metodi del Punto interno}}}
 
 \pause
 	\begin{itemize}
@@ -158,10 +159,10 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 		$\rightarrow$ algoritmo polinomiale
 		\pause
 		\item si basano sulle \textrm{condizioni KKT} di un problema PL:
-		\pause\\[0.5 cm] \textrm{se $x^{*}$ è un punto ottimale allora esistono $s^{*}\in\mathbb{R}^{n}$ e $\lambda^{*}\in\mathbb{R}^{m}$ tali che}
+		\pause\\[0.5 cm] \textrm{se $\mathbf{x}^{*}$ è un punto ottimale allora esistono $\mathbf{s}^{*}\in\mathbb{R}^{n}$ e $\mathbf{\lambda}^{*}\in\mathbb{R}^{m}$ tali che}
 		\begin{equation*}
 		\mathit{F}(x^{*},\lambda^{*},s^{*})= \begin{bmatrix}
-		A^{T}\lambda^{*}+s^{*}-c \\Ax^{*}-b \\X^{*}S^{*}e
+		A^{T}\lambda^{*}+s^{*}-c \\Ax^{*}-b \\x^{*}_{i}s^{*}_{i}
 		\end{bmatrix}=0
 		\end{equation*}
 		\end{itemize}
@@ -190,7 +191,7 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 
 % SLIDE 10
 
-\begin{frame}{\textcolor{teal}{\textsc{\LARGE IPM primale duale}}}
+\begin{frame}{\textcolor{teal}{\textsc{\LARGE Metodi del Punto interno}}}
 	\begin{itemize}
 		\pause
 		\item Applicazione del metodo di Newton
@@ -331,10 +332,10 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 	\end{bmatrix}\\
 	(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k}) \text{ con}
 	\end{equation*}\\
-	$ \alpha_{k} = max\{\alpha \in[0,1]|(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)\}$
+	$ \alpha_{k} = \max\limits_{\alpha \in[0,1]}\{(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)\}$
 \end{block}
 \pause
-\centering \includegraphics[width = 4 cm]{LPF.PNG}	
+\centering \includegraphics[width = 3.5 cm]{LPF.PNG}	
 \end{frame}
 
 % SLIDE 20
@@ -386,14 +387,14 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 % SLIDE 25		
 \subsection{Servizio di allocazione forestale}
 
-\begin{frame}{\textsc{\LARGE \textcolor{iris}{Servizio di allocazione forestale}}}
-\centering
-\begin{tabular}{c@{}c}
-\small{Metodo affine con MIP} & \small{Metodo affine con STP} \\
-	\includegraphics[scale = 0.33]{for_aff1}
-	&\includegraphics[scale = 0.33]{for_aff3}\\ 
-\end{tabular}
-\end{frame}
+%\begin{frame}{\textsc{\LARGE \textcolor{iris}{Servizio di allocazione forestale}}}
+%\centering
+%\begin{tabular}{c@{}c}
+%\small{Metodo affine con MIP} & \small{Metodo affine con STP} \\
+%	\includegraphics[scale = 0.33]{for_aff1}
+%	&\includegraphics[scale = 0.33]{for_aff3}\\ 
+%\end{tabular}
+%\end{frame}
 
 \begin{frame}{\textsc{\LARGE \textcolor{iris}{Servizio di allocazione forestale}}}
 	\centering
@@ -478,14 +479,14 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 
 \subsection{Banca Nazionale di Ohio}
 
-\begin{frame}{\textsc{\LARGE \textcolor{iris}{Banca Nazionale di Ohio}}}
-	\centering
-	\begin{tabular}{c@{}c}
-		\small{Metodo affine con MIP} & \small{Metodo affine con STP} \\
-		\includegraphics[scale = 0.33]{onb_aff1}
-		&\includegraphics[scale = 0.33]{onb_aff3}\\ 
-	\end{tabular}
-\end{frame}
+%\begin{frame}{\textsc{\LARGE \textcolor{iris}{Banca Nazionale di Ohio}}}
+%	\centering
+%	\begin{tabular}{c@{}c}
+%		\small{Metodo affine con MIP} & \small{Metodo affine con STP} \\
+%		\includegraphics[scale = 0.33]{onb_aff1}
+%		&\includegraphics[scale = 0.33]{onb_aff3}\\ 
+%	\end{tabular}
+%\end{frame}
 
 \begin{frame}{\textsc{\LARGE \textcolor{iris}{Banca Nazionale di Ohio}}}
 	\centering

@@ -5,7 +5,7 @@
 \beamer@subsectionintoc {3}{2}{Metodo PC Mehrotra}{59}{0}{3}
 \beamer@sectionintoc {4}{Test}{68}{0}{4}
 \beamer@subsectionintoc {4}{1}{Servizio di allocazione forestale}{69}{0}{4}
-\beamer@subsectionintoc {4}{2}{Acciaieria Fagersta}{72}{0}{4}
-\beamer@subsectionintoc {4}{3}{Prodotti tubolari}{74}{0}{4}
-\beamer@subsectionintoc {4}{4}{Banca Nazionale di Ohio}{77}{0}{4}
-\beamer@sectionintoc {5}{Conclusione}{81}{0}{5}
+\beamer@subsectionintoc {4}{2}{Acciaieria Fagersta}{71}{0}{4}
+\beamer@subsectionintoc {4}{3}{Prodotti tubolari}{73}{0}{4}
+\beamer@subsectionintoc {4}{4}{Banca Nazionale di Ohio}{76}{0}{4}
+\beamer@sectionintoc {5}{Conclusione}{79}{0}{5}
