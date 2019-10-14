@@ -1,11 +1,11 @@
 \beamer@sectionintoc {1}{Introduzione alla PL}{3}{0}{1}
-\beamer@sectionintoc {2}{Metodo del simplesso}{21}{0}{2}
-\beamer@sectionintoc {3}{Metodi del punto interno}{30}{0}{3}
-\beamer@subsectionintoc {3}{1}{Metodi Path-Following}{50}{0}{3}
-\beamer@subsectionintoc {3}{2}{Metodo PC Mehrotra}{59}{0}{3}
-\beamer@sectionintoc {4}{Test}{68}{0}{4}
-\beamer@subsectionintoc {4}{1}{Servizio di allocazione forestale}{69}{0}{4}
-\beamer@subsectionintoc {4}{2}{Acciaieria Fagersta}{71}{0}{4}
-\beamer@subsectionintoc {4}{3}{Prodotti tubolari}{73}{0}{4}
-\beamer@subsectionintoc {4}{4}{Banca Nazionale di Ohio}{76}{0}{4}
-\beamer@sectionintoc {5}{Conclusione}{79}{0}{5}
+\beamer@sectionintoc {2}{Metodo del simplesso}{22}{0}{2}
+\beamer@sectionintoc {3}{Metodi del punto interno}{31}{0}{3}
+\beamer@subsectionintoc {3}{1}{Metodi Path-Following}{51}{0}{3}
+\beamer@subsectionintoc {3}{2}{Metodo PC Mehrotra}{61}{0}{3}
+\beamer@sectionintoc {4}{Test}{70}{0}{4}
+\beamer@subsectionintoc {4}{1}{Servizio di allocazione forestale}{72}{0}{4}
+\beamer@subsectionintoc {4}{2}{Acciaieria Fagersta}{74}{0}{4}
+\beamer@subsectionintoc {4}{3}{Prodotti tubolari}{76}{0}{4}
+\beamer@subsectionintoc {4}{4}{Banca Nazionale di Ohio}{78}{0}{4}
+\beamer@sectionintoc {5}{Conclusione}{81}{0}{5}

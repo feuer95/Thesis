@@ -1,4 +1,4 @@
-\documentclass[a4paper,10 pt,titlepage,twoside]{book}
+\documentclass[a4paper,10 pt,titlepage,twoside]{report}
 \usepackage[utf8]{inputenc}
 
 \usepackage{listings}
@@ -163,7 +163,18 @@
 
 
 \centerline{Anno accademico 2018/2019}
-
+\chapter*{Ringraziamenti}
+Prima di lasciar spazio alla trattazione, mi permetto di ringraziare chi mi ha sostenuto nel mio percorso di ricerca.\\ In primo luogo è necessario menzionare la relatrice di questo lavoro di tesi, la professoressa Paola Lamberti, che mi ha guidata per concretizzare il lavoro ed è sempre stata disponibile in tutte le circostanze di bisogno. Ringrazio anche il correlatore, il professore Marc Steinbach, che mi ha fornito indicazioni senza le quali questa tesi non sarebbe nata.
+Un grazie speciale ai miei genitori, che affettuosamente mi hanno sempre sostenuta, e alle persone a me care, le quali hanno creduto nelle mie potenzialità.\\ Infine, un pensiero lo devo riservare a Denny perchè è sempre al mio fianco con tanta amorevolezza.
+\chapter*{Acknowledgement}
+Before giving way to the dissertation, let me thank who supported me on my journey
+of research.\\
+First of all, it is necessary to mention my supervisor Prof. Paola Lamberti,
+who guided me to realize the work and has always been available in all circumstances of
+need. I also thank the co-relator Prof. Marc Steinbach, who gave me directions without
+which this thesis would not have been born. A special thanks to my parents, who have me
+always supported throughout my life with kindness, and to all my friends, who have willingly helped me.\\
+Finally, I would like to express my gratitude to Denny because he has always encouraged me with love.
 \tableofcontents
 
 % 
@@ -200,7 +211,6 @@ For several decades the simplex algorithm was the only method available to solve
 In the 1980s the monopoly of the simplex algorithm in the solution of the LP has been challenged. Since Dantzig's initial contribution, researchers have made many efforts in order to enhance the performance of simplex algorithm: Interior-Point Methods were the result of subsequent research and their performance has been more satisfactory compared to the simplex algorithm. The main idea of IPMs is that the computation of the optimal solution can be achieved by moving inside the feasible region, defined by the constraints.\\
 Although the fundamentals of IPMs had been established several years before that Leonid Khachiyan (in 1979) and then Narendra Karmarkar (in 1984) proposed their algorithms for solving LP, it is true that \textit{Khachiyan’s ellipsoid algorithm} was the first algorithm for LP to be actually proven to be theoretically efficient. Nevertheless, although the simplex method is highly inefficient for some pathological examples (we outline the Klee-Minty example), it is turned out that it was clearly superior on average in comparison to the ellipsoid method and, in particular, on essentially any practical problem that would occur in a real-life context. This state changed with \textit{Karmarkar’s algorithm} that is both efficient in theory and practice and nowadays widely considered the first interior-point method for LP.\\
 The equivalence between Karmarkar's projective method and the Newton barrier method increased interest in the role of barrier functions in the theory of IPMs, but currently it is broadly accepted that the \textit{primal-dual} IPMs are the most efficient interior-point methods.\\
-\newpage
 Over the last 25 years later, the developed simplex method and IPMs are both widely used and continue to compete between each other \cite{25y}. \\
 The thesis is partitioned into four main chapters.
 In the next one it is given an overview of the theoretical foundations in linear programming. In the Chapter 3 we delineate the simplex method. The Chapter 4 is dedicated to the primal-dual interior point methods, taking particular attention to the primal-dual LPF methods. It is also examined the Mehrotra's predictor-corrector algorithm, which is the basis of much of the current generation of software, even if no convergence theory is available for this algorithm.\\
@@ -1881,7 +1891,7 @@ We check whether the strategies aim at satisfying the requirement that the start
 \newpage
 Now we deal on the termination criteria; unlike the simplex method, interior-point algorithms never find an exact solution of the LP.\\ All the algorithms studied in this research have in common a finite termination phase that reports an approximate solution for which the residuals $r_{b}$ and $r_{c}$ and the duality gap $g$ are sufficiently small. After determinated a small tollerance $\epsilon$, the algorithms terminate when the following conditions on the relative primal and dual residuals and the relative duality gap are satisfied:
 \begin{align}\label{TermC}
-\frac{\lVert r_{b}\rVert_{2}}{1+ \lVert b \rVert_{2}}\leq \epsilon, && \frac{\lVert r_{c}\rVert_{2}}{1 + \lVert c \rVert_{2}}\leq \epsilon, &&\frac{|g|}{1+b^{T}y}\leq \epsilon,
+\frac{\lVert r_{b}\rVert_{2}}{1+ \lVert b \rVert_{2}}\leq \epsilon, && \frac{\lVert r_{c}\rVert_{2}}{1 + \lVert c \rVert_{2}}\leq \epsilon, &&\frac{|g|}{1+b^{T}y}\leq \epsilon.
 \end{align}
 The tollerance value $\epsilon > 0$ is usually of the order $10^{-8}$, as required both in the literature and in practice \cite{Wright}. It is rare that the third condition is satisfied and at the same time
 other conditions do not hold; consequently, the most important and perhaps
@@ -2510,10 +2520,10 @@ for some line search parameter $\alpha\in(0,1]$, labelled as \textit{step length
 	methods"}, Computational optimization and applications, vol. 41, no. 3, pp: 277-305, (2008).
 
 	\bibitem{SPS} D'Apuzzo M., De Simone V., di Serafino D., \emph{"Starting-point strategies for an infeasible potential reduction method"}, Springer-Verlag, D. Optim Lett, 4, pp: 131-146, (2010).
-	\bibitem{DAN1}Dantzig, G. B., \emph{"Maximization of a linear function of variables subject to linear
+	\bibitem{DAN1}Dantzig G. B., \emph{"Maximization of a linear function of variables subject to linear
 	inequalities"}, Activity Analysis of Production and Allocation, pp: 339-347, (1947).
-	\bibitem{1}Dantzig, G. B.,\emph{\;"Linear Programming and Extensions"}, Princeton University Press, Princeton, N.J., (1963).	
-	\bibitem{DAN}Dantzig, G. B.,\emph{\;"Expected number of steps of the simplex method for a linear program with a convexity constraint"}, Technical Report SOL 80-3, Systems Optimization Laboratory, Department of Operations Research, Stanford University, Stanford, CA, (1980).
+	\bibitem{1}Dantzig G. B.,\emph{\;"Linear Programming and Extensions"}, Princeton University Press, Princeton, N.J., (1963).	
+	\bibitem{DAN}Dantzig G. B.,\emph{\;"Expected number of steps of the simplex method for a linear program with a convexity constraint"}, Technical Report SOL 80-3, Systems Optimization Laboratory, Department of Operations Research, Stanford University, Stanford, CA, (1980).
 	\bibitem{FEM}Drayer W., Seabury S.,\emph{\;"Facilities Expansion Model"}, Interfaces, 5:2, part 2, pp: 104-109, (1975).
 	%\bibitem{DAN} G. B. Dantzig, A. Orden, P. Wolfe, \emph{ Notes on linear programming: Part I- The generalized simplex method for
 	%minimizing a linear form under linear inequality restrictions.} Pacific J Math pp: 183-195, (1955). 
@@ -2526,12 +2536,12 @@ for some line search parameter $\alpha\in(0,1]$, labelled as \textit{step length
 		\bibitem{ONB}Krajewski L. J., McKenzie P., Ritzman L. P.,\textit{ "Shift Scheduling in Banking Operations: A Case Application"}, Interfaces, 10:12, (1980).
 		\bibitem{Kar} Karmarkar N. K.,\emph{ "A new polynomial-time algorithm for linear programming"}, Combinatorica, (1984).
 		\bibitem{(Natural)} Kent B., Bare B. B., Field R. C., Bradley G. A., \textit{"Natural Resource Land Management Planning Using Large-Scale Linear Programs: The USDA Forest Service Experience with FORPLAN"}, OR, 39, pp: 13-27, (1991).
-		\bibitem{Lem} Lemke C.E,\textit{ "The dual method of solving the linear programming problem."}, Naval Research Logistics Quarterly, John Wiley and Sons, (1954).
+		\bibitem{Lem} Lemke C. E.,\textit{ "The dual method of solving the linear programming problem."}, Naval Research Logistics Quarterly, John Wiley and Sons, (1954).
 		\bibitem{MINTY} Klee, V., Minty, G.,\emph{ "How good is the simplex algorithm?"} in O. Shisha, ed., ‘Inequalities–III’, Academic Press, New York, pp: 159–175, (1972).
 		\bibitem{LNP}Luenberger David G., Yinyu Ye, \emph{"Linear and Nonlinear Programming"}, Springer Science+Business Media, 3, pp: 136-140, (2008).
-		\bibitem{LMS} Lustig I. J., Marsten E., Shanno D. F.,\emph{ "Computational experience with a primal-dual interior point method for linear programming"}, Linear algebra and its applications, pp: 191-222, (1991).
-		\bibitem{ComTeq} Maros I., \emph{"Computational Techniques of the Simplex Method"}, 1, Kluwer
-		Academic Publishers, Boston, (2003).
+		\bibitem{LMS} Lustig I. J., Marsten E., Shanno D. F.,\emph{ "Computational experience with a primal-dual interior point method for linear programming"}, Linear Algebra and its Applications, pp: 191-222, (1991).
+		\bibitem{ComTeq} Maros I., \emph{"Computational Techniques of the Simplex Method"}, Kluwer
+		Academic Publishers, Boston, 1, (2003).
 		\bibitem{meg} Megiddo N., \emph{"Pathways to the optimal set in linear programming"}, in Progress in Mathematical Programming: Interior-Point and Related Methods, Springer-Verlag, New York, pp: 131-158, (1986).
 	\bibitem{MER} Mehrotra S., \emph{ "On the implementation of a primal-dual interior point method"}, SIAM Journal on Optimization. 2, pp: 575-601, (1992).
 	\bibitem{MUR} Mehrotra S., \emph{ "Advanced Linear Programming: Computation and
@@ -2542,7 +2552,7 @@ for some line search parameter $\alpha\in(0,1]$, labelled as \textit{step length
 	%N
 	%
 	\bibitem{W}Nocedal J., Wright J. S., \emph{\;"Numerical Optimization"}, Springer Series in OR, Springer, New York, (2006).
-\bibitem{RR} Rardin Ronald L., \textit{"Optimization in operations reseasch"}, Pearson Education (US), 2, University of Arkansas, (2017).
+\bibitem{RR} Rardin Ronald L., \textit{"Optimization in operations reseasch"}, Pearson Education (US), University of Arkansas, 2, (2017).
 \bibitem{rene}Renegar J., \textit{ "A Mathematical View of Interior-Point Methods in Convex Optimization"}, MPS/SIAM
 Ser. Optim., SIAM, Philadelphia, (2001).
 
@@ -2559,7 +2569,7 @@ Princeton University, Springer Science + Business Media, (2001).
 %
 %W
 %
-\bibitem{SSM} Westerberg, C. H., Bjorklund B., Hultman E., \emph{"An Application of Mixed Integer Programming in a Swedish Steel Mill" }, Interfaces, 7:2, pp: 39-43, (1977).
+\bibitem{SSM} Westerberg C. H., Bjorklund B., Hultman E., \emph{"An Application of Mixed Integer Programming in a Swedish Steel Mill" }, Interfaces, 7:2, pp: 39-43, (1977).
 \bibitem {Wright} Wright J. Stephen, \emph{\;"Primal-Dual Interior Point Methods"}, SIAM: society for industrial and applied mathematics. Philadelphia, (1997).
 \bibitem{WWW}Wright M. H.,\textit{ “Interior point methods for constrained optimization”}, Acta Numerica, Cambridge Univ. Press, Cambridge, UK, pp: 341–407, (1992).
 \bibitem{XY}Xiaojie Xu, Yinyu Ye, \emph{"A generalized homogeneous and self-dual algorithm for linear programming"}, Operations Research Letters, 17, pp: 181-190, (1995).

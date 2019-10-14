@@ -36,7 +36,7 @@
 \end{split}
 \end{equation*}
 \begin{center}
-con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango massimo e $b\in\mathbb{R}^{m}$
+con $c\in\mathbb{R}^{n}$, $b\in\mathbb{R}^{m}$ e $A\in\mathbb{R}^{m,n}$ a rango massimo 
 \end{center}	
 \end{frame}
 
@@ -47,7 +47,7 @@ con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango massimo e $b\in\mathbb{
 	\begin{itemize}
 		\item \textbf{Punto ammissibile} x: punto tale che $Ax = b, x\geq 0$
 		\item \textbf{Regione ammissibile} $\mathcal{P}=\{x\;|\; Ax = b, x\geq 0\}$
-		\item \textbf{Soluzione ottima} $x^{*}\in\mathbb{R}^{m,n}$: minimizza la funzione obiettivo
+		\item \textbf{Punto ottimale} $x^{*}$: minimizza la funzione obiettivo
 	\end{itemize}
 \pause
 \centering\emph{Geometricamente} $\mathcal{P}$ definisce un poliedro
@@ -57,8 +57,8 @@ con $c\in\mathbb{R}^{n}$, $A\in\mathbb{R}^{m,n}$ a rango massimo e $b\in\mathbb{
 
 \begin{frame}{\textsc{\LARGE \textcolor{darkcyan}{Programmazione Lineare}}}
 
-Ipotesi $m \leq n$ \pause$\longrightarrow$ sottomatrice $\mathbf{A_{B}}$ invertibile con
-$B\subseteq\{1,\dots,n\}$ insieme degli $m$ indici delle colonne e\\ $B^{c} = N$
+Ipotesi $m \leq n$ \pause$\longrightarrow$ sottomatrice $\mathbf{A_{B}}$ invertibile \pause
+con $B\subseteq\{1,\dots,n\}$ insieme degli $m$ indici delle colonne e\\ $B^{c} = N$
 \pause
 \begin{equation*}
 \begin{split}
@@ -85,7 +85,7 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 \begin{itemize}
 \item il problema è inammissibile $\;\mathcal{P}=\emptyset$\pause
 \item il problema è illimitato\pause
-\item ammette punti ammissibili di  \textcolor{red}{base} che sono soluzioni ottime $x^{*}$
+\item ammette punti ammissibili di  \textcolor{red}{base} che sono punti ottimali $x^{*}$
 \end{itemize}
 \pause
 \begin{columns}
@@ -151,7 +151,7 @@ x = \left[\begin{matrix}x_{B}\\x_{N}\end{matrix}\right] = \left[\begin{matrix}A_
 
 \section{Metodi del punto interno}
 
-\begin{frame}[t]{\textcolor{teal}{\textsc{\LARGE Metodi del Punto interno}}}
+\begin{frame}[t]{\textcolor{teal}{\textsc{\LARGE Metodi del punto interno}}}
 
 \pause
 	\begin{itemize}
@@ -306,16 +306,16 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 \end{tikzpicture}
 \pause
 \begin{itemize}
-	\item[o] $\sigma^{\textcolor{red}{1}} = 1 -\frac{0.5}{\sqrt{n}}\rightarrow$\textrm{ LPF \textcolor{red}{1}}\pause
-	\item[o] $\sigma^{\textcolor{red}{2}}_{k} = \min\{0.1, 100\mu_{k}\}\rightarrow$\textrm{ LPF \textcolor{red}{2}}\pause	
+	\item[] \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;$\sigma^{\textcolor{red}{1}} = 1 -\frac{1}{2\sqrt{n}}\rightarrow$\textrm{ LPF \textcolor{red}{1}}\pause
+	\item[] \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;$\sigma^{\textcolor{red}{2}}_{k} = \min\{0.1, 100\mu_{k}\}\rightarrow$\textrm{ LPF \textcolor{red}{2}}\pause	
 \end{itemize}
-
 \begin{itemize}
 \item Velocità di convergenza lineare $\mathcal{O}(\mu)$
 \pause
 \item Intorno di $\mathcal{C}$\\ 
 $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \geq \gamma \mu,  \gamma \in [0,1)\}$
 \end{itemize}
+\;\;\;\;\;\;\;\;con $\gamma=10^{-k}$.
 \end{frame}
 
 % SLIDE 15
@@ -330,6 +330,7 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 	\end{bmatrix}=-\begin{bmatrix}
 	r_{c}^{k}\\r_{b}^{k}\\X^{k}S^{k}e-\tau e
 	\end{bmatrix}\\
+	\pause
 	(x^{k+1}, \lambda^{k+1}, s^{k+1}) = (x^{k}, \lambda^{k}, s^{k})+ \alpha_{k}(\Delta x^{k}, \Delta\lambda^{k}, \Delta s^{k}) \text{ con}
 	\end{equation*}\\
 	$ \alpha_{k} = \max\limits_{\alpha \in[0,1]}\{(x^{k+1}, \lambda^{k+1}, s^{k+1})\in\mathcal{N}_{-\infty}(\gamma)\}$
@@ -351,7 +352,7 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 \begin{list}{\stepcounter{elenco}\arabic{elenco}}{\setlength{\itemsep}{0.6cm}}
 	\item Step predittore: \textcolor{orange}{Step Affine} $\rightarrow$\pause Direzione $(\Delta x^{\text{aff}}, \Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$
 	\pause
-	\item Step correttore:\pause \;\;Direzione con $\sigma$ adattabile
+	\item Step correttore:\pause \;\;Direzione con $\sigma$ \textbf{adattabile} [Mehrotra]
 	\end{list}
 \\[1 cm]
 \pause
@@ -363,7 +364,6 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 	Deviazione centrale $\delta(xs, \mu)$: distanza da $\mathcal{C}$
 \end{column}
 \end{columns}
-
 \end{frame}
 
 % SLIDE 22
@@ -383,7 +383,15 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 \end{frame}
 
 \section{Test}
-
+\begin{frame}{Test}
+	Algoritmi implementati con Python:
+	\begin{itemize}
+	\item \verb!longpath1(A, b, c, gamma, w, max\_it = 500, ip)\!
+	\item \verb!longpath2(A, b, c, gamma, w, max\_it = 500, ip)\!
+	\item \verb!longpathPC(A, b, c, gamma, w, max\_it = 500, ip)\!
+	\item \verb!mehrotra(A, b, c, w, max\_it = 500, ip)\!
+	\end{itemize}
+\end{frame}
 % SLIDE 25		
 \subsection{Servizio di allocazione forestale}
 
@@ -448,21 +456,21 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 % SLIDE 26
 \subsection{Prodotti tubolari}
 
-\begin{frame}{\textsc{\LARGE \textcolor{iris}{Divisione prodotti tubolari di Babcock and Wilcox}}}
-	\centering
-	\begin{tabular}{c@{}c}
-		\small{Metodo affine con MIP} & \small{Metodo affine con STP} \\
-		\includegraphics[scale = 0.33]{tub_aff1}
-		&\includegraphics[scale = 0.33]{tub_aff3}\\ 
-	\end{tabular}
-\end{frame}
+%\begin{frame}{\textsc{\LARGE \textcolor{iris}{Divisione prodotti tubolari di Babcock and Wilcox}}}
+%	\centering
+%	\begin{tabular}{c@{}c}
+%		\small{Metodo affine con MIP} & \small{Metodo affine con STP} \\
+%		\includegraphics[scale = 0.33]{tub_aff1}
+%		&\includegraphics[scale = 0.33]{tub_aff3}\\ 
+%	\end{tabular}
+%\end{frame}
 
 \begin{frame}{\textsc{\LARGE \textcolor{iris}{Divisione prodotti tubolari di Babcock and Wilcox}}}
 	\centering
 	\begin{tabular}{c@{}c}
-		\small{Metodo LPF1} & \small{Metodo LPF2} \\
-		\includegraphics[scale = 0.33]{for_LPF1}
-		&\includegraphics[scale = 0.33]{tub_LPF2}\\ 
+		\small{Metodo LPF2} & \small{Metodo PC LPF} \\
+		\includegraphics[scale = 0.33]{tub_LPF2}
+		&\includegraphics[scale = 0.33]{tub_PCLPF}\\ 
 	\end{tabular}
 \end{frame}
 
@@ -491,9 +499,9 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 \begin{frame}{\textsc{\LARGE \textcolor{iris}{Banca Nazionale di Ohio}}}
 	\centering
 	\begin{tabular}{c@{}c}
-		\small{Metodo LPF1} & \small{Metodo LPF2} \\
-		\includegraphics[scale = 0.33]{onb_LPF1}
-		&\includegraphics[scale = 0.33]{onb_LPF2}\\ 
+		\small{Metodo LPF2} & \small{Metodo PC LPF} \\
+		\includegraphics[scale = 0.33]{onb_LPF2}
+		&\includegraphics[scale = 0.33]{onb_MER2}\\ 
 	\end{tabular}
 \end{frame}
 
@@ -511,14 +519,23 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 \begin{frame}
 	Numero di iterazioni rispetto alla dimensione di un problema PL
 	\begin{figure}
-		\includegraphics[width=0.7\paperwidth]{NUM.png}
+		\includegraphics[width=0.5\paperwidth]{NUM.png}
 	\end{figure}
+
 \end{frame}
 
 
 \section{Conclusione}
 
 \begin{frame}{\textsc{\LARGE \textcolor{iris}{Alterazione di $\mathcal{N}_{-\infty}$}}}
-	\includegraphics[scale = 0.45]{CONC.PNG}
+	\begin{columns}
+		\begin{column}{0.4\textwidth}
+	\includegraphics[scale=0.3]{CONC.PNG}
+\end{column}
+\begin{column}{0.4\textwidth}
+\textcolor{blue}{Iterazione k}\\
+$\gamma = 10^{-k}$
+\end{column}
+\end{columns}
 \end{frame}
 
