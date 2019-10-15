@@ -253,7 +253,7 @@ $\epsilon$-soluzione $(x^{*},\lambda^{*},s^{*})$ tale che \pause
 %\setbeamercolor{block title}{fg=black,bg=white!75!white}
 \setbeamercolor{block body}{fg=black,bg=white!75!white}
 \setbeamertemplate{blocks}[rounded]
-\begin{block}{Iterazione k:}
+\begin{block}{\textcolor{black}{\underline{ITERAZIONE k:}}}
 \begin{equation*}	
 \begin{bmatrix}
 0&A^{T}&I \\A& 0&0\\X^{k}&0&S^{k}
@@ -270,7 +270,7 @@ con $\alpha_{k}\in(0,1]$ tale che $(x^{k+1}, s^{k+1})>0$
 
 
 % SLIDE 13
-
+\definecolor{amber}{rgb}{1.0, 0.75, 0.0}
 \subsection{Metodi Path-Following}
 \definecolor{burntumber}{rgb}{0.54, 0.2, 0.14}
 \definecolor{iris}{rgb}{0.35, 0.31, 0.81}
@@ -312,16 +312,15 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 \begin{itemize}
 \item Velocità di convergenza lineare $\mathcal{O}(\mu)$
 \pause
-\item Intorno di $\mathcal{C}$\\ 
-$\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \geq \gamma \mu,  \gamma \in [0,1)\}$
+\item Intorno di $\mathcal{C}\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \geq \gamma \mu, \gamma \in [0,1)\}$
 \end{itemize}
-\;\;\;\;\;\;\;\;con $\gamma=10^{-k}$.
+\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;con $ \textcolor{yellow}{\mathbf{\gamma}}=10^{-k}$
 \end{frame}
 
 % SLIDE 15
 
 \begin{frame}[t]{\textsc{\LARGE \textcolor{burntumber}{Metodi Path-Following}}}
-\begin{block}{Iterazione k:}
+\begin{block}{\textcolor{black}{\underline{ITERAZIONE k:}}}
 	\begin{equation*}	
 	\begin{bmatrix}
 	0&A^{T}&I \\A& 0&0\\X^{k}&0&S^{k}
@@ -371,8 +370,8 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 \definecolor{sapphire}{rgb}{0.03, 0.15, 0.4}
 \begin{frame}[t]{\textsc{\LARGE \textcolor{sapphire}{Metodo PC Path-Following}}}
 \begin{itemize}
-\item step Predittore-Correttore: metodo euristico predittore-correttore di \textbf{Mehrotra}
-\item Vincolo dell'intorno $\mathcal{N}_{-\infty}$
+\item step Predittore-Correttore: metodo euristico di \textbf{Mehrotra}
+\item Vincolo dell'intorno $\mathcal{N}_{-\infty}(\gamma)$
 \end{itemize}
 \pause
 \textcolor{red}{Ipotesi}: 
@@ -383,12 +382,12 @@ $\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \g
 \end{frame}
 
 \section{Test}
-\begin{frame}{Test}
+\begin{frame}{\textcolor{purple}{TEST}}
 	Algoritmi implementati con Python:
 	\begin{itemize}
-	\item \verb!longpath1(A, b, c, gamma, w, max\_it = 500, ip)\!
-	\item \verb!longpath2(A, b, c, gamma, w, max\_it = 500, ip)\!
-	\item \verb!longpathPC(A, b, c, gamma, w, max\_it = 500, ip)\!
+	\item \verb!longpath1(A, b, c, \textcolor{yellow}{gamma}, w, max\_it = 500, ip)\!
+	\item \verb!longpath2(A, b, c, \textcolor{yellow}{gamma}, w, max\_it = 500, ip)\!
+	\item \verb!longpathPC(A, b, c, \textcolor{yellow}{gamma}, w, max\_it = 500, ip)\!
 	\item \verb!mehrotra(A, b, c, w, max\_it = 500, ip)\!
 	\end{itemize}
 \end{frame}
