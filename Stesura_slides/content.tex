@@ -314,7 +314,7 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 \pause
 \item Intorno di $\mathcal{C}\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \geq \gamma \mu, \gamma \in [0,1)\}$
 \end{itemize}
-\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;con $ \textcolor{yellow}{\mathbf{\gamma}}=10^{-k}$
+\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;con $ \textcolor{yellow}{\mathbf{\gamma}}=10^{-3}$
 \end{frame}
 
 % SLIDE 15
@@ -344,7 +344,7 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 
 \begin{frame}{\textsc{\LARGE \textcolor{red}{Metodi Predittore-Correttore}}}
 \pause
-\textcolor{blue}{Iterazione k:}
+\textcolor{black}{\underline{ITERAZIONE k:}}
 \pause
 \newcounter{elenco}
 \setcounter{elenco}{0}
@@ -360,7 +360,7 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 	\includegraphics[width=\columnwidth]{MEH.PNG}
 \end{column}
 \begin{column}{0.4\textwidth}
-	Deviazione centrale $\delta(xs, \mu)$: distanza da $\mathcal{C}$
+	Deviazione centrale $\textcolor{blue}{\delta(xs, \mu)}$: distanza da $\mathcal{C}$
 \end{column}
 \end{columns}
 \end{frame}
@@ -374,10 +374,10 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 \item Vincolo dell'intorno $\mathcal{N}_{-\infty}(\gamma)$
 \end{itemize}
 \pause
-\textcolor{red}{Ipotesi}: 
+\textcolor{red}{Obiettivo}: 
 \begin{enumerate}
 	\item miglioramento nella prestazione del metodo di Mehrotra
-	\item convergenza superlineare di $\{\mu\}\rightarrow \mathcal{O}(\mu^{2})$
+	\item convergenza quadratica di $\{\mu\}\rightarrow \mathcal{O}(\mu^{2})$
 \end{enumerate}
 \end{frame}
 
@@ -403,7 +403,7 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 %\end{tabular}
 %\end{frame}
 
-\begin{frame}{\textsc{\LARGE \textcolor{iris}{Servizio di allocazione forestale}}}
+\begin{frame}{\textsc{\LARGE \textcolor{black}{Servizio di allocazione forestale}}}
 	\centering
 	\begin{tabular}{c@{}c}
 		\small{Metodo LPF1} & \small{Metodo LPF2} \\
@@ -412,7 +412,7 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 	\end{tabular}
 \end{frame}
 
-\begin{frame}{\textsc{\LARGE \textcolor{iris}{Servizio di allocazione forestale}}}
+\begin{frame}{\textsc{\LARGE \textcolor{black}{Servizio di allocazione forestale}}}
 	\centering
 	\begin{tabular}{c@{}c}
 		\small{Metodo PC LPF} & \small{Metodo Mehrotra} \\
@@ -434,7 +434,7 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 %	\end{tabular}
 %\end{frame}
 
-\begin{frame}{\textsc{\LARGE \textcolor{iris}{Acciaieria Fagersta AB}}}
+\begin{frame}{\textsc{\LARGE \textcolor{black}{Acciaieria Fagersta AB}}}
 	\centering
 	\begin{tabular}{c@{}c}
 		\small{Metodo LPF2} & \small{Metodo PC LPF} \\
@@ -443,7 +443,7 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 	\end{tabular}
 \end{frame}
 
-\begin{frame}{\textsc{\LARGE \textcolor{iris}{Acciaieria Fagersta AB}}}
+\begin{frame}{\textsc{\LARGE \textcolor{black}{Acciaieria Fagersta AB}}}
 	\centering
 	\begin{tabular}{c@{}c}
 		\small{Metodo PC LPF} & \small{Metodo Mehrotra} \\
@@ -464,20 +464,20 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 %	\end{tabular}
 %\end{frame}
 
-\begin{frame}{\textsc{\LARGE \textcolor{iris}{Divisione prodotti tubolari di Babcock and Wilcox}}}
+\begin{frame}{\textsc{\LARGE \textcolor{black}{Divisione prodotti tubolari di Babcock and Wilcox}}}
 	\centering
 	\begin{tabular}{c@{}c}
 		\small{Metodo LPF2} & \small{Metodo PC LPF} \\
 		\includegraphics[scale = 0.33]{tub_LPF2}
-		&\includegraphics[scale = 0.33]{tub_PCLPF}\\ 
+		&\includegraphics[scale = 0.33]{tub_PCLPF2}\\ 
 	\end{tabular}
 \end{frame}
 
-\begin{frame}{\textsc{\LARGE \textcolor{iris}{Divisione prodotti tubolari di Babcock and Wilcox}}}
+\begin{frame}{\textsc{\LARGE \textcolor{black}{Divisione prodotti tubolari di Babcock and Wilcox}}}
 	\centering
 	\begin{tabular}{c@{}c}
 		\small{Metodo PC LPF} & \small{Metodo Mehrotra} \\
-		\includegraphics[scale = 0.33]{tub_PCLPF}
+		\includegraphics[scale = 0.33]{tub_PCLPF2}
 		&\includegraphics[scale = 0.33]{tub_MER2}\\ 
 	\end{tabular}
 \end{frame}
@@ -495,7 +495,7 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 %	\end{tabular}
 %\end{frame}
 
-\begin{frame}{\textsc{\LARGE \textcolor{iris}{Banca Nazionale di Ohio}}}
+\begin{frame}{\textsc{\LARGE \textcolor{black}{Banca Nazionale di Ohio}}}
 	\centering
 	\begin{tabular}{c@{}c}
 		\small{Metodo LPF2} & \small{Metodo PC LPF} \\
@@ -504,7 +504,7 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 	\end{tabular}
 \end{frame}
 
-\begin{frame}{\textsc{\LARGE \textcolor{iris}{Banca Nazionale di Ohio}}}
+\begin{frame}{\textsc{\LARGE \textcolor{black}{Banca Nazionale di Ohio}}}
 	\centering
 	\begin{tabular}{c@{}c}
 		\small{Metodo PC LPF} & \small{Metodo Mehrotra} \\
@@ -532,7 +532,7 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 	\includegraphics[scale=0.3]{CONC.PNG}
 \end{column}
 \begin{column}{0.4\textwidth}
-\textcolor{blue}{Iterazione k}\\
+\textcolor{black}{\underline{ITERAZIONE k:}}\\
 $\gamma = 10^{-k}$
 \end{column}
 \end{columns}
