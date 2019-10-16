@@ -305,21 +305,22 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 \draw[->] (B) -- (D);
 \end{tikzpicture}
 \pause
-\begin{itemize}
-	\item[] \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;$\sigma^{\textcolor{red}{1}} = 1 -\frac{1}{2\sqrt{n}}\rightarrow$\textrm{ LPF \textcolor{red}{1}}\pause
-	\item[] \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;$\sigma^{\textcolor{red}{2}}_{k} = \min\{0.1, 100\mu_{k}\}\rightarrow$\textrm{ LPF \textcolor{red}{2}}\pause	
-\end{itemize}
+
 \begin{itemize}
 \item Velocità di convergenza lineare $\mathcal{O}(\mu)$
 \pause
 \item Intorno di $\mathcal{C}\rightarrow \mathcal{N}_{-\infty}(\gamma) =\{ (x, \lambda,s)\;|\; x_{i}s_{i} \geq \gamma \mu, \gamma \in [0,1)\}$
 \end{itemize}
 \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;con $ \textcolor{yellow}{\mathbf{\gamma}}=10^{-3}$
+\begin{itemize}
+	\item[] \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;$\sigma^{\textcolor{red}{1}} = 1 -\frac{1}{2\sqrt{n}}\rightarrow$\textrm{ LPF \textcolor{red}{1}}\pause
+	\item[] \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;$\sigma^{\textcolor{red}{2}}_{k} = \min\{0.1, 100\mu_{k}\}\rightarrow$\textrm{ LPF \textcolor{red}{2}}\pause	
+\end{itemize}
 \end{frame}
 
 % SLIDE 15
 
-\begin{frame}[t]{\textsc{\LARGE \textcolor{burntumber}{Metodi Path-Following}}}
+\begin{frame}[t]{\textsc{\LARGE \textcolor{burntumber}{Metodi Long Path-Following}}}
 \begin{block}{\textcolor{black}{\underline{ITERAZIONE k:}}}
 	\begin{equation*}	
 	\begin{bmatrix}
@@ -351,7 +352,10 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 \begin{list}{\stepcounter{elenco}\arabic{elenco}}{\setlength{\itemsep}{0.6cm}}
 	\item Step predittore: \textcolor{orange}{Step Affine} $\rightarrow$\pause Direzione $(\Delta x^{\text{aff}}, \Delta \lambda^{\text{aff}},\Delta s^{\text{aff}})$
 	\pause
-	\item Step correttore:\pause \;\;Direzione con $\sigma$ \textbf{adattabile} [Mehrotra]
+	\item Step correttore:\pause \;\;Direzione con $\sigma$ \textbf{adattabile}\pause \\[0.6cm]
+	
+	\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;Mehrotra: $\sigma = \big(\frac{\mu_{\text{aff}}}{\mu}\big)^{3}$
+	
 	\end{list}
 \\[1 cm]
 \pause
@@ -368,7 +372,7 @@ A^{T}\lambda_{\tau}+s_{\tau}-c \\Ax_{\tau}-b \\X_{\tau}S_{\tau}e
 % SLIDE 22
 
 \definecolor{sapphire}{rgb}{0.03, 0.15, 0.4}
-\begin{frame}[t]{\textsc{\LARGE \textcolor{sapphire}{Metodo PC Path-Following}}}
+\begin{frame}[t]{\textsc{\LARGE \textcolor{sapphire}{Metodo PC Long Path-Following}}}
 \begin{itemize}
 \item step Predittore-Correttore: metodo euristico di \textbf{Mehrotra}
 \item Vincolo dell'intorno $\mathcal{N}_{-\infty}(\gamma)$

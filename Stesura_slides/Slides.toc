@@ -3,9 +3,9 @@
 \beamer@sectionintoc {3}{Metodi del punto interno}{31}{0}{3}
 \beamer@subsectionintoc {3}{1}{Metodi Path-Following}{51}{0}{3}
 \beamer@subsectionintoc {3}{2}{Metodo PC Mehrotra}{61}{0}{3}
-\beamer@sectionintoc {4}{Test}{70}{0}{4}
-\beamer@subsectionintoc {4}{1}{Servizio di allocazione forestale}{72}{0}{4}
-\beamer@subsectionintoc {4}{2}{Acciaieria Fagersta}{74}{0}{4}
-\beamer@subsectionintoc {4}{3}{Prodotti tubolari}{76}{0}{4}
-\beamer@subsectionintoc {4}{4}{Banca Nazionale di Ohio}{78}{0}{4}
-\beamer@sectionintoc {5}{Conclusione}{81}{0}{5}
+\beamer@sectionintoc {4}{Test}{71}{0}{4}
+\beamer@subsectionintoc {4}{1}{Servizio di allocazione forestale}{73}{0}{4}
+\beamer@subsectionintoc {4}{2}{Acciaieria Fagersta}{75}{0}{4}
+\beamer@subsectionintoc {4}{3}{Prodotti tubolari}{77}{0}{4}
+\beamer@subsectionintoc {4}{4}{Banca Nazionale di Ohio}{79}{0}{4}
+\beamer@sectionintoc {5}{Conclusione}{82}{0}{5}
